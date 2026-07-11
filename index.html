@@ -1854,11 +1854,19 @@ PRESETS.forEach((m,i)=>{
    small inline note (rendered in refreshSettings) explains it's a preview.
    Picking a free theme, or reloading, reverts it. */
 function cancelPreview(){
+  if(PV.iv) clearTimeout(PV.iv);
   PV.iv = null; PV.id = null;
 }
 function previewTheme(id){
+  if(PV.iv) clearTimeout(PV.iv);
   PV.id = id;
   applyTheme(); refreshSettings();
+  // A short taste only — it reverts to your saved (free) theme so Pro themes
+  // aren't actually usable for free. No popup; the inline note explains it.
+  PV.iv = setTimeout(()=>{
+    PV.id = null; PV.iv = null;
+    applyTheme(); refreshSettings();
+  }, PREVIEW_SECONDS * 1000);
 }
 function previewSound(id){
   if(!st.muted) (PLAYERS[id]||PLAYERS.chime)(); // just play it — that's the preview
@@ -1931,7 +1939,7 @@ function refreshSettings(){
   if(pn){
     if(PV.id && !isPro()){
       const nm = (THEMES.find(t=>t.id===PV.id)||{}).name || PV.id;
-      pn.innerHTML = `Previewing <b>${nm}</b> — Get Pro Lifetime Access to keep it.`;
+      pn.innerHTML = `Previewing <b>${nm}</b> — reverts in a few seconds. Get Pro Lifetime Access to keep it.`;
       pn.style.display = "block";
     } else pn.style.display = "none";
   }
