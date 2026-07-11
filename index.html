@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Workshop Timer</title>
 <meta name="description" content="A big, beautiful fullscreen countdown timer for workshops, meetings, and classrooms. No ads, no login, works offline.">
+<meta name="theme-color" content="#101014">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Workshop Timer">
 <style>
   /* Roboto (Apache 2.0) — Android's system font, embedded for the Squiggle theme */
   @font-face{
@@ -795,6 +799,7 @@
   <section>
     <h3>Theme</h3>
     <div class="chip-row" id="themeRow"></div>
+    <div id="previewNote" style="display:none; margin-top:.6rem; font-size:.78rem; color:var(--muted)"></div>
     <div id="lampSec" style="display:none; margin-top:.9rem">
       <h3 id="lampHead">Theme style <span class="pro-tag">PRO</span></h3>
       <div class="chip-row" id="lampRow"></div>
@@ -843,16 +848,6 @@
     </div>
   </section>
 
-  <section id="macApp" style="display:none">
-    <h3>Use as a Mac app</h3>
-    <div class="help">
-      1. Open this file in <b>Safari</b><br>
-      2. Menu bar → File → <b>Add to Dock</b><br>
-      3. Launch it from your Dock like any app<br><br>
-      In Chrome (Mac or Windows): ⋮ menu → Cast, Save &amp; Share → <b>Install page as app</b>.
-    </div>
-  </section>
-
   <section>
     <h3 id="proHead">Pro</h3>
     <div id="trialStatus"></div>
@@ -871,8 +866,19 @@
   <section>
     <h3>About</h3>
     <div class="help">
-      A fullscreen visual timer for focused work and group sessions.<br>
+      A big, calm timer for workshops, meetings, and classrooms.<br>
       No ads · no account · works offline.
+    </div>
+  </section>
+
+  <section>
+    <h3>Use it as an app (Mac &amp; PC)</h3>
+    <div class="help">
+      Install Workshop Timer so it opens in its own window — no tabs, no address bar — and launches like any native app.<br><br>
+      <b>Mac · Safari:</b> File menu → <b>Add to Dock</b> → Add. Launch it from your Dock.<br>
+      <b>Mac &amp; PC · Chrome:</b> click the <b>install icon</b> (monitor with a down-arrow) at the right edge of the address bar → <b>Install</b>. Or ⋮ menu → <b>Cast, Save &amp; Share → Install page as app</b>.<br>
+      <b>PC · Edge:</b> ⋯ menu → <b>Apps → Install this site as an app</b>.<br><br>
+      Once it's open, the timer runs entirely on your device — no internet needed to keep time. Perfect for a projector or TV.
     </div>
   </section>
 </aside>
@@ -940,10 +946,10 @@ const LS = { state:"wt_state_v3", logo:"wt_logo_v1", license:"wt_license_v1" };
 const THEMES = [
   {id:"midnight", name:"Midnight",    pro:false, mode:"digits",   prog:"x",    font:"helvetica"},
   {id:"paper",    name:"Typography",  pro:false, mode:"words",    prog:"x",    font:"helvetica"},
-  {id:"flip",     name:"Flip Clock",  pro:false, mode:"flip",     prog:"none", font:"helvetica"},
+  {id:"flip",     name:"Flip Clock",  pro:true,  mode:"flip",     prog:"none", font:"helvetica"},
   {id:"nasa",     name:"T-Minus",     pro:true,  mode:"nasa",     prog:"none", font:"orbitron"},
   {id:"squiggle", name:"Squiggle",    pro:true,  mode:"squiggle", prog:"none", font:"roboto"},
-  {id:"disc",     name:"Time Disc",   pro:true,  mode:"disc",     prog:"none", font:"helvetica"},
+  {id:"disc",     name:"Time Disc",   pro:false, mode:"disc",     prog:"none", font:"helvetica"},
   {id:"days",     name:"Countdown",   pro:true,  mode:"days",     prog:"none", font:"helvetica"},
   {id:"lcd",      name:"LED Clock",   pro:true,  mode:"seg",      prog:"none", font:"mono"},
   {id:"kitchen",  name:"Kitchen",     pro:true,  mode:"kitchen",  prog:"none", font:"helvetica"},
@@ -1843,37 +1849,19 @@ PRESETS.forEach((m,i)=>{
 /* =========================================================
    THEME PREVIEW (free build: try any Pro theme for a bit)
    ========================================================= */
+/* Live, no-nag preview: clicking a locked theme shows it on the timer while
+   you're in Settings. No over-timer badge, no countdown, no auto-popup — a
+   small inline note (rendered in refreshSettings) explains it's a preview.
+   Picking a free theme, or reloading, reverts it. */
 function cancelPreview(){
-  if(PV.iv) clearInterval(PV.iv);
   PV.iv = null; PV.id = null;
-  $("previewBadge").style.display = "none";
 }
 function previewTheme(id){
-  cancelPreview();
-  PV.id = id; PV.left = PREVIEW_SECONDS;
-  const name = (THEMES.find(t=>t.id===id)||{}).name || id;
-  const b = $("previewBadge");
-  b.innerHTML = `Previewing <b>${name}</b> · <span id="pvCount">${PV.left}</span>s — <u id="pvBuy">keep it for ${PRICE}</u>`;
-  b.style.display = "block";
-  $("pvBuy").onclick = openModal;
+  PV.id = id;
   applyTheme(); refreshSettings();
-  PV.iv = setInterval(()=>{
-    PV.left--;
-    const c = $("pvCount"); if(c) c.textContent = PV.left;
-    if(PV.left <= 0){
-      cancelPreview();
-      applyTheme(); refreshSettings();
-      openModal();
-    }
-  }, 1000);
 }
 function previewSound(id){
-  if(!st.muted) (PLAYERS[id]||PLAYERS.chime)();
-  const b = $("previewBadge");
-  b.innerHTML = `That's a Pro sound — <u id="pvBuy">keep it for ${PRICE}</u>`;
-  b.style.display = "block";
-  $("pvBuy").onclick = openModal;
-  setTimeout(()=>{ if(!PV.id) b.style.display = "none"; }, 3500);
+  if(!st.muted) (PLAYERS[id]||PLAYERS.chime)(); // just play it — that's the preview
 }
 
 /* =========================================================
@@ -1937,8 +1925,17 @@ function refreshSettings(){
     st.theme = id;
     st.font = (THEMES.find(x=>x.id===id)||{}).font || "helvetica"; // theme picks its default font
     save(); applyTheme();
-  });
-  chip(SOUNDS, $("soundRow"), st.sound, id=>{ st.sound=id; save(); if(!st.muted)(PLAYERS[id]||PLAYERS.chime)(); });
+  }, previewTheme);
+  // inline preview note (no over-timer popups)
+  const pn = $("previewNote");
+  if(pn){
+    if(PV.id && !isPro()){
+      const nm = (THEMES.find(t=>t.id===PV.id)||{}).name || PV.id;
+      pn.innerHTML = `Previewing <b>${nm}</b> — Get Pro Lifetime Access to keep it.`;
+      pn.style.display = "block";
+    } else pn.style.display = "none";
+  }
+  chip(SOUNDS, $("soundRow"), st.sound, id=>{ st.sound=id; save(); if(!st.muted)(PLAYERS[id]||PLAYERS.chime)(); }, previewSound);
   chip(FONTS, $("fontRow"), st.font, id=>{ st.font=id; save(); applyTheme(); });
   const tid = curThemeId(), vs = VARIANTS[tid];
   $("lampSec").style.display = vs ? "block" : "none";
@@ -1960,7 +1957,6 @@ function refreshSettings(){
 
   $("brandBody").classList.toggle("locked-section", !isPro());
   $("brandUnlock").style.display = isPro()? "none":"inline";
-  $("macApp").style.display = PRO_UNLOCKED ? "block" : "none";
 
   const status = $("trialStatus"), btn = $("btnTrial"), head = $("proHead"), lbox = $("licenseBox");
   if(isPro()){
@@ -1971,7 +1967,7 @@ function refreshSettings(){
   }else{
     head.textContent = "Pro";
     status.innerHTML = `All 16 themes with style variants, clock &amp; stopwatch modes, voice alert, custom colors &amp; logo, 11 fonts, 5 end sounds, final-countdown tick. One-time <b>${PRICE}</b> — yours forever, no subscription.`;
-    btn.textContent = "Buy the app — " + PRICE;
+    btn.textContent = "Get Pro Lifetime Access: " + PRICE;
     btn.style.display="block";
     btn.onclick = ()=>window.open(BUY_URL,"_blank");
     if(lbox) lbox.style.display = "block";
@@ -2067,6 +2063,24 @@ $("overlay").addEventListener("click", e=>{ if(e.target.id==="overlay") closeMod
    INIT
    ========================================================= */
 (function init(){
+  // Make it installable as a desktop app (Chrome/Edge show an install button).
+  // Best-effort — the manual "Install page as app" menu works regardless.
+  try{
+    const manifest = { name:"Workshop Timer", short_name:"Workshop Timer",
+      display:"standalone", start_url:".", scope:".",
+      background_color:"#101014", theme_color:"#101014" };
+    const mlink = document.createElement("link");
+    mlink.rel = "manifest";
+    mlink.href = URL.createObjectURL(new Blob([JSON.stringify(manifest)], {type:"application/manifest+json"}));
+    document.head.appendChild(mlink);
+  }catch(e){}
+
+  // Register the service worker so the installed app launches fully offline.
+  // (Needs sw.js sitting next to index.html in the repo root.)
+  if("serviceWorker" in navigator){
+    try{ navigator.serviceWorker.register("./sw.js").catch(()=>{}); }catch(e){}
+  }
+
   // Restore a previously entered license (optimistically), then re-check it
   // in the background so a cleared/refunded key gets revoked cleanly.
   const saved = storedLicense();
