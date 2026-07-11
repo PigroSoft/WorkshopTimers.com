@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fullscreen Timer</title>
-<meta name="description" content="A beautiful fullscreen visual countdown timer. No ads, no login, works offline.">
+<title>Workshop Timer</title>
+<meta name="description" content="A big, beautiful fullscreen countdown timer for workshops, meetings, and classrooms. No ads, no login, works offline.">
 <style>
   /* Roboto (Apache 2.0) — Android's system font, embedded for the Squiggle theme */
   @font-face{
@@ -659,7 +659,7 @@
 
 <div id="stage">
   <img id="logo" alt="logo">
-  <div id="label" contenteditable="true" spellcheck="false">Fullscreen Timer</div>
+  <div id="label" contenteditable="true" spellcheck="false">Workshop Timer</div>
 
   <div id="display">
     <div id="time">10:00</div>
@@ -702,7 +702,7 @@
     <div id="lcarsWrap">
       <div class="lc-head">
         <div class="lc-cap"></div>
-        <div class="lc-title" id="lcTitle" contenteditable="true" spellcheck="false">Fullscreen Timer</div>
+        <div class="lc-title" id="lcTitle" contenteditable="true" spellcheck="false">Workshop Timer</div>
         <div class="lc-bar"></div>
         <div class="lc-date" id="lcDate"></div>
       </div>
@@ -732,7 +732,7 @@
     <div id="kitchenWrap">
       <div id="ktBody">
         <div id="ktScreen"></div>
-        <div id="ktLabel" contenteditable="true" spellcheck="false">Fullscreen Timer</div>
+        <div id="ktLabel" contenteditable="true" spellcheck="false">Workshop Timer</div>
         <div id="ktButtons">
           <div class="ktCol"><span>MIN</span><button class="ktBtn" id="ktM" title="+1 minute"></button></div>
           <div class="ktCol"><span>SEC</span><button class="ktBtn" id="ktS" title="+10 seconds"></button></div>
@@ -990,7 +990,7 @@ const PRESETS = [0.5,1,2,5,10,15,20,30,45,60];
    ========================================================= */
 let st = Object.assign({
   duration: 600, theme:"midnight", sound:"chime", tick:false, muted:false, clock:false, voice:false, stopwatch:false,
-  accent:"#e8c15a", bg:"#101014", useBg:false, font:"helvetica", label:"Fullscreen Timer",
+  accent:"#e8c15a", bg:"#101014", useBg:false, font:"helvetica", label:"Workshop Timer",
   lc1:"SET PHASERS TO FUN", lc2:"SHIELDS: 98%", lc3:"WARP 9.9"
 }, load(LS.state));
 st.flavors = Object.assign({sunset:"classic", terminal:"green", lcd:"red", photo:"forest"}, st.flavors||{});
@@ -1021,7 +1021,7 @@ function saveLicense(obj){ try{ localStorage.setItem(LS.license, JSON.stringify(
 function clearLicense(){ try{ localStorage.removeItem(LS.license); }catch(e){} }
 function deviceLabel(){
   const p = (navigator.platform || "web").slice(0,40);
-  return ("Fullscreen Timer · " + p + " · " + new Date().toISOString().slice(0,10)).slice(0,120);
+  return ("Workshop Timer · " + p + " · " + new Date().toISOString().slice(0,10)).slice(0,120);
 }
 
 /* Confirm an existing key (+ its device activation) is still granted. */
@@ -2076,7 +2076,7 @@ $("overlay").addEventListener("click", e=>{ if(e.target.id==="overlay") closeMod
       if(!ok){ LICENSE_OK = false; clearLicense(); refreshSettings(); render(); }
     });
   }
-  elLabel.textContent = st.label || "Fullscreen Timer";
+  elLabel.textContent = st.label || "Workshop Timer";
   $("accentInput").value = st.accent;
   $("bgInput").value = st.bg;
   $("bgToggle").checked = !!st.useBg;
