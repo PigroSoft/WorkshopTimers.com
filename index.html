@@ -799,7 +799,6 @@
   <section>
     <h3>Theme</h3>
     <div class="chip-row" id="themeRow"></div>
-    <div id="previewNote" style="display:none; margin-top:.6rem; font-size:.78rem; color:var(--muted)"></div>
     <div id="lampSec" style="display:none; margin-top:.9rem">
       <h3 id="lampHead">Theme style <span class="pro-tag">PRO</span></h3>
       <div class="chip-row" id="lampRow"></div>
@@ -881,6 +880,10 @@
       Once it's open, the timer runs entirely on your device — no internet needed to keep time. Perfect for a projector or TV.
     </div>
   </section>
+
+  <div id="removeLicenseWrap" style="display:none; text-align:center; margin:.4rem 0 .2rem">
+    <a href="#" id="removeLicense" style="font-size:.68rem; color:var(--muted); opacity:.5; text-decoration:underline; cursor:pointer">Remove license from this device</a>
+  </div>
 </aside>
 
 <div id="overlay">
@@ -1854,19 +1857,26 @@ PRESETS.forEach((m,i)=>{
    small inline note (rendered in refreshSettings) explains it's a preview.
    Picking a free theme, or reloading, reverts it. */
 function cancelPreview(){
-  if(PV.iv) clearTimeout(PV.iv);
+  if(PV.iv) clearInterval(PV.iv);
   PV.iv = null; PV.id = null;
+  const b = $("previewBadge"); if(b) b.style.display = "none";
 }
 function previewTheme(id){
-  if(PV.iv) clearTimeout(PV.iv);
-  PV.id = id;
+  if(PV.iv) clearInterval(PV.iv);
+  PV.id = id; PV.left = PREVIEW_SECONDS;
+  const name = (THEMES.find(t=>t.id===id)||{}).name || id;
+  const b = $("previewBadge");
+  b.innerHTML = `Previewing <b>${name}</b> · <span id="pvCount">${PV.left}</span>s — <u id="pvBuy">Buy Pro for Life: ${PRICE}</u>`;
+  b.style.display = "block";
+  $("pvBuy").onclick = openModal; // nudges to the Pro section in Settings (no overlay)
   applyTheme(); refreshSettings();
-  // A short taste only — it reverts to your saved (free) theme so Pro themes
-  // aren't actually usable for free. No popup; the inline note explains it.
-  PV.iv = setTimeout(()=>{
-    PV.id = null; PV.iv = null;
-    applyTheme(); refreshSettings();
-  }, PREVIEW_SECONDS * 1000);
+  // Count down visibly, then revert to your saved (free) theme — so the snap
+  // back is expected, and Pro themes still aren't usable for free.
+  PV.iv = setInterval(()=>{
+    PV.left--;
+    const c = $("pvCount"); if(c) c.textContent = PV.left;
+    if(PV.left <= 0){ cancelPreview(); applyTheme(); refreshSettings(); }
+  }, 1000);
 }
 function previewSound(id){
   if(!st.muted) (PLAYERS[id]||PLAYERS.chime)(); // just play it — that's the preview
@@ -1934,15 +1944,6 @@ function refreshSettings(){
     st.font = (THEMES.find(x=>x.id===id)||{}).font || "helvetica"; // theme picks its default font
     save(); applyTheme();
   }, previewTheme);
-  // inline preview note (no over-timer popups)
-  const pn = $("previewNote");
-  if(pn){
-    if(PV.id && !isPro()){
-      const nm = (THEMES.find(t=>t.id===PV.id)||{}).name || PV.id;
-      pn.innerHTML = `Previewing <b>${nm}</b> — reverts in a few seconds. Get Pro Lifetime Access to keep it.`;
-      pn.style.display = "block";
-    } else pn.style.display = "none";
-  }
   chip(SOUNDS, $("soundRow"), st.sound, id=>{ st.sound=id; save(); if(!st.muted)(PLAYERS[id]||PLAYERS.chime)(); }, previewSound);
   chip(FONTS, $("fontRow"), st.font, id=>{ st.font=id; save(); applyTheme(); });
   const tid = curThemeId(), vs = VARIANTS[tid];
@@ -1965,6 +1966,7 @@ function refreshSettings(){
 
   $("brandBody").classList.toggle("locked-section", !isPro());
   $("brandUnlock").style.display = isPro()? "none":"inline";
+  { const rl = $("removeLicenseWrap"); if(rl) rl.style.display = (LICENSE_OK && !PRO_UNLOCKED) ? "block" : "none"; }
 
   const status = $("trialStatus"), btn = $("btnTrial"), head = $("proHead"), lbox = $("licenseBox");
   if(isPro()){
@@ -1975,7 +1977,7 @@ function refreshSettings(){
   }else{
     head.textContent = "Pro";
     status.innerHTML = `All 16 themes with style variants, clock &amp; stopwatch modes, voice alert, custom colors &amp; logo, 11 fonts, 5 end sounds, final-countdown tick. One-time <b>${PRICE}</b> — yours forever, no subscription.`;
-    btn.textContent = "Get Pro Lifetime Access: " + PRICE;
+    btn.textContent = "Buy Pro for Life: " + PRICE;
     btn.style.display="block";
     btn.onclick = ()=>window.open(BUY_URL,"_blank");
     if(lbox) lbox.style.display = "block";
@@ -2029,6 +2031,21 @@ async function submitLicense(){
 }
 $("licenseBtn").addEventListener("click", submitLicense);
 $("licenseInput").addEventListener("keydown", e=>{ e.stopPropagation(); if(e.key==="Enter"){ e.preventDefault(); submitLicense(); } });
+
+/* Remove license from this device — frees the activation slot on Polar (so it
+   can be re-used elsewhere), clears local storage, and re-locks Pro. */
+async function removeLicense(){
+  const saved = storedLicense();
+  if(saved && saved.key && saved.activationId && orgReady()){
+    try{
+      await fetch(LK_API + "/deactivate", { method:"POST", headers:LK_HEAD,
+        body: JSON.stringify({ key:saved.key, organization_id:POLAR_ORG_ID, activation_id:saved.activationId }) });
+    }catch(e){}
+  }
+  clearLicense();
+  location.reload(); // cleanest way back to the full free state
+}
+$("removeLicense").addEventListener("click", e=>{ e.preventDefault(); removeLicense(); });
 
 $("logoInput").addEventListener("change", e=>{
   const f = e.target.files[0]; if(!f) return;
