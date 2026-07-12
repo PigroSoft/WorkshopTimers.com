@@ -88,7 +88,7 @@
   }
   @keyframes kenburns{from{transform:scale(1) translate(0,0);} to{transform:scale(1.07) translate(1.2%,-1%);}}
   body.theme-photo #time{font-weight:var(--fontw,300); letter-spacing:.01em;}
-  body.theme-photo #label{font-weight:500; letter-spacing:.22em; font-size:clamp(.9rem,2.4vh,1.4rem); color:rgba(255,255,255,.85);}
+  body.theme-photo #label{font-weight:500; letter-spacing:.22em; font-size:clamp(1.1rem,2.9vh,1.7rem); color:rgba(255,255,255,.85);}
   body.theme-photo #subline{text-transform:uppercase; letter-spacing:.18em; font-size:clamp(.7rem,1.7vh,.95rem);}
   body.theme-terminal, body.theme-lcd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
   body.theme-web1{font-family:Tahoma,'MS Sans Serif',Verdana,sans-serif;}
@@ -131,7 +131,7 @@
   #stage{
     position:relative; z-index:1; height:100%;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:1.2rem; cursor:default;
+    gap:.55rem; cursor:default;
     /* reserve the bottom strip for the controls so nothing ever overlaps them */
     padding-bottom:clamp(7rem,17vh,11rem); padding-top:2vh;
   }
@@ -154,8 +154,8 @@
   body.theme-midnight #time{font-weight:var(--fontw,700); letter-spacing:.04em; font-size:clamp(5rem,33vw,42vh);}
   body.theme-midnight #label{
     text-transform:none; letter-spacing:.02em; font-weight:500;
-    font-size:clamp(1rem,2.5vh,1.55rem); color:#6f6f76;
-    margin-bottom:.6vh;
+    font-size:clamp(1.2rem,3vh,1.85rem); color:#6f6f76;
+    margin-bottom:0;
   }
   body.theme-sunset #label{font-family:'Arial Rounded MT Bold','Trebuchet MS',sans-serif; letter-spacing:.28em; font-weight:700;}
 
@@ -171,7 +171,10 @@
   #time.danger{color:var(--danger);}
   #time.over{color:var(--danger); animation:pulse 1s ease-in-out 3;} /* a few blinks, then calm — stage-friendly */
   @keyframes pulse{50%{opacity:.55}}
-  #subline{color:var(--muted); font-size:clamp(.85rem,2vh,1.2rem); height:1.4em;}
+  #subline{color:var(--muted); font-size:clamp(.85rem,2vh,1.2rem); height:1.4em;
+    position:fixed; left:50%; transform:translateX(-50%); bottom:clamp(8rem,18vh,12rem);
+    z-index:1; white-space:nowrap; text-align:center; pointer-events:none;}
+  body.hide-ui #subline{bottom:clamp(2rem,6vh,4rem);}
 
   /* paper: text-driven, Swiss-poster style */
   #wordsWrap{
@@ -183,7 +186,7 @@
   #wordsWrap.danger{color:#c0392b;}
   #wordsWrap.over{color:#c0392b; animation:pulse 1s ease-in-out 3;}
   body.theme-paper #display{align-items:flex-start; width:min(84vw,1100px);}
-  body.theme-paper #subline{align-self:center; width:min(84vw,1100px); margin-left:0; text-align:left;}
+  body.theme-paper #subline{position:static; transform:none; left:auto; bottom:auto; align-self:center; width:min(84vw,1100px); margin-left:0; text-align:left;}
 
   /* sunset: aura lamp + funky rounded font */
   body.theme-sunset #time{
@@ -206,7 +209,7 @@
   body.theme-nixie #label{
     font-family:Georgia,'Times New Roman',serif; font-weight:400;
     text-transform:none; letter-spacing:.14em; font-style:italic;
-    color:#6e5a3e; font-size:clamp(.95rem,2.4vh,1.4rem);
+    color:#6e5a3e; font-size:clamp(1.15rem,2.9vh,1.7rem);
     opacity:.45; border-bottom-color:transparent;
   }
   body.theme-nixie #label:hover, body.theme-nixie #label:focus{opacity:.8;}
@@ -288,15 +291,29 @@
   }
   .fc-gap{width:.02em;}
 
-  /* ---------- time disc: minimal — just the number and the pie ---------- */
-  body.theme-disc #label{display:none;}
-  #discWrap{display:none; flex-direction:column; align-items:center; gap:2.4rem;}
-  #discTime{
-    font-size:clamp(2.6rem,10vh,5.6rem); font-weight:500; color:#8a7c5e;
-    font-variant-numeric:tabular-nums;
+  /* ---------- time disc: card lockup (title top-left, time bottom-right) ---------- */
+  body.theme-disc #label{display:none;}     /* the card shows its own editable title */
+  #discWrap{
+    display:none; position:relative;
+    width:min(82vw,64vh); aspect-ratio:1 / 1.06;
+    background:#ece7dc; border-radius:9%;
+    box-shadow:0 18px 50px rgba(70,58,34,.18);
   }
   #discPie{
-    width:min(54vh,78vw); aspect-ratio:1; border-radius:50%;
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-46%);
+    width:72%; aspect-ratio:1; border-radius:50%;
+  }
+  #discLabel{
+    position:absolute; top:6.5%; left:7%; right:7%; z-index:2;
+    font-family:var(--font); font-size:clamp(1.4rem,5.4vw,3rem); font-weight:500;
+    line-height:1.05; letter-spacing:-.01em; color:#5c5446;
+    text-transform:none; outline:none; cursor:text;
+  }
+  #discLabel:focus{opacity:.75;}
+  #discTime{
+    position:absolute; right:7%; bottom:5.5%; left:7%; z-index:2; text-align:right;
+    font-family:var(--font); font-size:clamp(2rem,9vw,4.4rem); font-weight:500;
+    letter-spacing:-.01em; color:#3f3a31; font-variant-numeric:tabular-nums;
   }
 
   #timeInput{
@@ -422,7 +439,7 @@
   body.theme-days[data-flavor="blue"]{--cdc:#4da6ff;}
   body.theme-days #label{display:none;}
   body.theme-days #logo{order:4; margin-top:5vh; max-height:9vh;}
-  #daysWrap{display:none; width:min(94vw,170vh); max-width:100%; color:var(--cdc);}
+  #daysWrap{display:none; width:min(76vw,116vh); max-width:100%; color:var(--cdc);}
   #daysWrap svg{width:100%; height:auto; display:block;
     filter:drop-shadow(0 0 4px currentColor) drop-shadow(0 0 20px currentColor);}
   #daysWrap svg circle{fill:currentColor;}
@@ -464,7 +481,7 @@
   body.theme-sunset #label{
     font-family:var(--font); font-weight:300; letter-spacing:.4em;
     text-transform:uppercase; color:rgba(255,248,238,.8);
-    font-size:clamp(.75rem,1.9vh,1.05rem);
+    font-size:clamp(.9rem,2.3vh,1.26rem);
   }
   #meterSvg{width:min(52vw,60vh); height:auto; display:block; overflow:visible;}
   #meterSvg line.mk{stroke:rgba(255,246,230,.55); stroke-width:.7;}
@@ -590,7 +607,7 @@
   .chip-row{display:flex; flex-wrap:wrap; gap:.45rem;}
   .chip{position:relative; font-size:.85rem;}
   .chip.active{border-color:var(--accent); color:var(--accent);}
-  .chip .lock{margin-left:.35rem; font-size:.75em; opacity:.8;}
+  .chip .lock{margin-left:.35rem; width:.95em; height:.95em; vertical-align:-.14em; opacity:.65;}
   .pro-tag{
     display:inline-block; font-size:.62rem; font-weight:800; letter-spacing:.08em;
     background:var(--accent); color:#111; border-radius:4px; padding:.1rem .35rem;
@@ -640,7 +657,6 @@
   #label, #ktLabel, .lc-title{ text-transform:none !important; }
   /* Show the single editable title in themes that previously hid it
      (kitchen & starship keep their own on-screen title element) */
-  body.theme-disc  #label,
   body.theme-nixie #label,
   body.theme-days  #label,
   body.theme-nasa  #label{ display:block; }
@@ -670,8 +686,9 @@
     <div id="segWrap"></div>
     <div id="flipWrap"></div>
     <div id="discWrap">
-      <div id="discTime">10:00</div>
       <div id="discPie"></div>
+      <div id="discLabel" contenteditable="true" spellcheck="false">Workshop Timer</div>
+      <div id="discTime">10:00</div>
     </div>
     <div id="eggWrap">
       <div id="eggShape">
@@ -789,10 +806,10 @@
   <section>
     <h3>Mode</h3>
     <label class="switch">
-      <input type="checkbox" id="swToggle"> Stopwatch — count up instead
+      <input type="checkbox" id="swToggle"> Stopwatch (count up instead)
     </label>
     <label class="switch" style="margin-top:.8rem">
-      <input type="checkbox" id="clockToggle"> Clock mode — show the time of day <span class="pro-tag">PRO</span>
+      <input type="checkbox" id="clockToggle"> Clock mode (show the time of day) <span class="pro-tag">PRO</span>
     </label>
   </section>
 
@@ -807,10 +824,10 @@
 
   <section>
     <h3>Sound</h3>
-    <div id="muteNote" style="display:none; margin-bottom:.8rem">All sound is off — previews and alerts are silenced. Press M or the speaker icon to unmute.</div>
+    <div id="muteNote" style="display:none; margin-bottom:.8rem">All sound is off. Previews and alerts are silenced. Press M or the speaker icon to unmute.</div>
     <div class="chip-row" id="soundRow"></div>
     <label class="switch" style="margin-top:.8rem">
-      <input type="checkbox" id="tickToggle"> Tick during final 10 seconds <span class="pro-tag">PRO</span>
+      <input type="checkbox" id="tickToggle"> Tick during final 10 seconds
     </label>
     <label class="switch" style="margin-top:.8rem">
       <input type="checkbox" id="voiceToggle"> Voice alert at 30 seconds left <span class="pro-tag">PRO</span>
@@ -819,7 +836,18 @@
 
   <section>
     <h3>Font <span class="pro-tag">PRO</span></h3>
-    <div class="chip-row" id="fontRow"></div>
+    <select id="fontSelect" style="width:100%; padding:.5rem .6rem; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--fg); font-family:inherit; font-size:.9rem"></select>
+    <div id="fontProNote" class="help" style="margin-top:.5rem; display:none">Free themes use their own default font. Pro unlocks a set of beautiful fonts and lets you upload your own.</div>
+    <div id="customFontBox" style="display:none; margin-top:.8rem">
+      <div class="field">
+        <label>Upload your own font (.ttf, .otf, .woff, .woff2)</label>
+        <input type="file" id="fontFile" accept=".ttf,.otf,.woff,.woff2,font/*">
+      </div>
+      <div class="field" id="customWeightRow" style="display:none">
+        <label>Weight: <span id="customWeightVal">400</span></label>
+        <input type="range" id="customWeight" min="100" max="900" step="100" value="400" style="width:100%">
+      </div>
+    </div>
   </section>
 
   <section>
@@ -865,11 +893,11 @@
   <section>
     <h3>Use it as an app (Mac &amp; PC)</h3>
     <div class="help">
-      Install Workshop Timer so it opens in its own window — no tabs, no address bar — and launches like any native app.<br><br>
+      Install Workshop Timer so it opens in its own window, with no tabs or address bar, and launches like any native app.<br><br>
       <b>Mac · Safari:</b> File menu → <b>Add to Dock</b> → Add. Launch it from your Dock.<br>
       <b>Mac &amp; PC · Chrome:</b> click the <b>install icon</b> (monitor with a down-arrow) at the right edge of the address bar → <b>Install</b>. Or ⋮ menu → <b>Cast, Save &amp; Share → Install page as app</b>.<br>
       <b>PC · Edge:</b> ⋯ menu → <b>Apps → Install this site as an app</b>.<br><br>
-      Once it's open, the timer runs entirely on your device — no internet needed to keep time. Perfect for a projector or TV.
+      Once it's open, the timer runs entirely on your device, with no internet needed to keep time. Perfect for a projector or TV.
     </div>
   </section>
 
@@ -879,10 +907,10 @@
       A big, calm timer for workshops, meetings, and classrooms.<br>
       No ads · no account · works offline.<br><br>
       <b>Legal</b><br>
-      <a href="#" style="color:inherit; text-decoration:underline">Impressum</a> ·
-      <a href="#" style="color:inherit; text-decoration:underline">Datenschutz&nbsp;(Privacy)</a> ·
-      <a href="#" style="color:inherit; text-decoration:underline">AGB&nbsp;(Terms)</a> ·
-      <a href="#" style="color:inherit; text-decoration:underline">Widerrufsrecht&nbsp;(Refunds)</a>
+      <a href="impressum.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Impressum</a> ·
+      <a href="datenschutz.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Datenschutz&nbsp;(Privacy)</a> ·
+      <a href="agb.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">AGB&nbsp;(Terms)</a> ·
+      <a href="widerruf.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Widerrufsrecht&nbsp;(Refunds)</a>
     </div>
   </section>
 
@@ -895,8 +923,8 @@
   <div id="modalCard">
     <div id="modal">
       <button class="close-x" id="modalClose">✕</button>
-      <h2 id="modalTitle">Get Pro — yours forever</h2>
-      <p id="modalBody">One payment. No subscription, no account, no email list. You get the unlocked app — a file that's literally yours, works offline, forever.</p>
+      <h2 id="modalTitle">Get Pro, yours forever</h2>
+      <p id="modalBody">One payment. No subscription, no account, no email list. You unlock every theme, font, sound, and color with a license key that's yours forever.</p>
       <ul id="modalList">
         <li>All 16 themes: countdown board, starship, LED clock &amp; more</li>
         <li>Your logo + custom colors on the big screen</li>
@@ -946,14 +974,14 @@ function localPrice(){
 }
 const PRICE = localPrice();
 const PREVIEW_SECONDS = 15;
-const LS = { state:"wt_state_v3", logo:"wt_logo_v1", license:"wt_license_v1" };
+const LS = { state:"wt_state_v3", logo:"wt_logo_v1", license:"wt_license_v1", customFont:"wt_font_v1" };
 
 /* Themes — ordered by typical use: everyday timers first, then kitchen &
    ambient, then the retro/fun set. First three are free.
    mode: how the time renders · prog: progress · font: default font id */
 const THEMES = [
   {id:"midnight", name:"Midnight",    pro:false, mode:"digits",   prog:"x",    font:"helvetica"},
-  {id:"paper",    name:"Typography",  pro:false, mode:"words",    prog:"x",    font:"helvetica"},
+  {id:"paper",    name:"Typography",  pro:false, mode:"words",    prog:"none", font:"helvetica"},
   {id:"disc",     name:"Time Disc",   pro:false, mode:"disc",     prog:"none", font:"helvetica"},
   {id:"nasa",     name:"T-Minus",     pro:true,  mode:"nasa",     prog:"none", font:"orbitron"},
   {id:"squiggle", name:"Squiggle",    pro:true,  mode:"squiggle", prog:"none", font:"roboto"},
@@ -986,10 +1014,10 @@ const VARIANTS = {
 };
 const FONTS = [
   {id:"helvetica", name:"Helvetica Neue", pro:false, stack:"'Helvetica Neue',Helvetica,Arial,sans-serif"},
-  {id:"thin",      name:"Thin",           pro:false, stack:"'Helvetica Neue',Helvetica,Arial,sans-serif", weight:200},
-  {id:"avenir",    name:"Avenir",         pro:true,  stack:"'Avenir Next',Avenir,'Segoe UI',sans-serif"},
+  {id:"thin",      name:"Thin",           pro:false, stack:"system-ui,-apple-system,'Segoe UI','Helvetica Neue',Arial,sans-serif", weight:200},
+  {id:"slab",      name:"Chunky Slab",    pro:false, stack:"'Superclarendon','Rockwell','Bookman Old Style',Georgia,serif", weight:800},
   {id:"georgia",   name:"Georgia",        pro:true,  stack:"Georgia,'Times New Roman',serif"},
-  {id:"slab",      name:"Chunky Slab",    pro:true,  stack:"'Superclarendon','Rockwell','Bookman Old Style',Georgia,serif", weight:800},
+  {id:"avenir",    name:"Avenir",         pro:true,  stack:"'Avenir Next',Avenir,'Segoe UI',sans-serif"},
   {id:"futura",    name:"Futura",         pro:true,  stack:"Futura,'Century Gothic','Trebuchet MS',sans-serif"},
   {id:"mono",      name:"Mono",           pro:true,  stack:"Menlo,Consolas,'Courier New',monospace"},
   {id:"orbitron",  name:"Orbitron",       pro:true,  stack:"'Orbitron','Helvetica Neue',Helvetica,sans-serif"},
@@ -1248,6 +1276,7 @@ function renderDisc(frac, text){
   const color = isPro() && st.useBg ? st.accent : "#d5442f";
   $("discPie").style.background = `conic-gradient(transparent 0deg ${360-deg}deg, ${color} ${360-deg}deg 360deg)`;
   elDiscTime.textContent = text;
+  syncEditable($("discLabel"), st.label);
 }
 
 /* ----- egg timer: rotating dial band ----- */
@@ -1314,7 +1343,7 @@ function renderDays(totalSec){
       x += ADV;
     }
     const gw = x - gx - 2*S;
-    parts.push(`<text x="${gx+gw/2}" y="${-3.2*S}" font-size="${3*S}" font-weight="700" text-anchor="middle" letter-spacing="2" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif">${gr.label}</text>`);
+    parts.push(`<text x="${gx+gw/2}" y="${-2.7*S}" font-size="${2.2*S}" font-weight="700" text-anchor="middle" letter-spacing="1.5" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif">${gr.label}</text>`);
     if(gi < 3){ // colon dots between groups
       parts.push(`<circle cx="${x}" cy="${2*S}" r="${R}"/><circle cx="${x}" cy="${4.5*S}" r="${R}"/>`);
       x += SEPW;
@@ -1667,7 +1696,7 @@ function loop(){
   const whole = Math.ceil(remaining);
   if(whole !== lastWholeSec){
     lastWholeSec = whole;
-    if(st.tick && isPro() && !st.muted && whole<=10 && whole>0) PLAYERS.tick();
+    if(st.tick && !st.muted && whole<=10 && whole>0) PLAYERS.tick();
     if(st.voice && isPro() && !st.muted && whole===30){
       announce("Attention please. Thirty seconds remaining.");
     }
@@ -1782,6 +1811,7 @@ elLabel.addEventListener("keydown", e=>{
 /* theme-surface text is editable too, and everything stays in sync */
 bindEditable($("lcTitle"), v=>{ st.label = v; syncEditable(elLabel, v); });
 bindEditable($("ktLabel"), v=>{ st.label = v; syncEditable(elLabel, v); });
+bindEditable($("discLabel"), v=>{ st.label = v; syncEditable(elLabel, v); });
 bindEditable($("lcP1"), v=>{ st.lc1 = v; });
 bindEditable($("lcP2"), v=>{ st.lc2 = v; });
 bindEditable($("lcP3"), v=>{ st.lc3 = v; });
@@ -1871,7 +1901,7 @@ function previewTheme(id){
   PV.id = id; PV.left = PREVIEW_SECONDS;
   const name = (THEMES.find(t=>t.id===id)||{}).name || id;
   const b = $("previewBadge");
-  b.innerHTML = `Previewing <b>${name}</b> · <span id="pvCount">${PV.left}</span>s — <u id="pvBuy">Buy Pro for Life: ${PRICE}</u>`;
+  b.innerHTML = `Previewing <b>${name}</b> · <span id="pvCount">${PV.left}</span>s · <u id="pvBuy">Get Pro for Life: ${PRICE}</u>`;
   b.style.display = "block";
   $("pvBuy").onclick = openModal; // nudges to the Pro section in Settings (no overlay)
   applyTheme(); refreshSettings();
@@ -1895,7 +1925,7 @@ function chip(list, row, current, onPick, onLocked){
   list.forEach(item=>{
     const b=document.createElement("button");
     b.className = "chip" + (current===item.id ? " active":"");
-    b.innerHTML = item.name + (item.pro && !isPro() ? '<span class="lock">🔒</span>' : "");
+    b.innerHTML = item.name + (item.pro && !isPro() ? '<svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>' : "");
     b.addEventListener("click", ()=>{
       if(item.pro && !isPro()) return (onLocked || openModal)(item.id);
       onPick(item.id);
@@ -1903,6 +1933,51 @@ function chip(list, row, current, onPick, onLocked){
     });
     row.appendChild(b);
   });
+}
+
+/* ----- fonts: Pro dropdown + custom upload ----- */
+let CUSTOM_FONT_READY = false;
+const CUSTOM_FONT_NAME = "WTCustomFont";
+async function loadCustomFont(dataUrl){
+  try{
+    if(typeof FontFace === "undefined") return false;
+    const face = new FontFace(CUSTOM_FONT_NAME, `url("${dataUrl}")`);
+    await face.load();
+    document.fonts.add(face);
+    CUSTOM_FONT_READY = true;
+    return true;
+  }catch(e){ CUSTOM_FONT_READY = false; return false; }
+}
+function handleFontUpload(e){
+  if(!isPro()) return;
+  const file = e.target.files && e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = async ()=>{
+    const ok = await loadCustomFont(reader.result);
+    if(!ok){ alert("Sorry, that font file could not be loaded."); return; }
+    try{ localStorage.setItem(LS.customFont, reader.result); }catch(err){} // may be too big to persist
+    st.font = "custom"; if(!st.customWeight) st.customWeight = 400; save();
+    applyTheme(); renderFontSelect();
+  };
+  reader.readAsDataURL(file);
+}
+function renderFontSelect(){
+  const selEl = $("fontSelect"); if(!selEl) return;
+  const pro = isPro();
+  const cur = pro ? (st.font || "default") : "default";
+  let opts = '<option value="default">Theme default</option>';
+  FONTS.forEach(f=>{ opts += `<option value="${f.id}">${f.name}</option>`; });
+  opts += '<option value="custom">Custom (your upload)</option>';
+  selEl.innerHTML = opts;
+  selEl.value = cur;
+  selEl.disabled = !pro;
+  $("fontProNote").style.display = pro ? "none" : "block";
+  $("customFontBox").style.display = (pro && cur === "custom") ? "block" : "none";
+  $("customWeightRow").style.display = (pro && cur === "custom" && CUSTOM_FONT_READY) ? "block" : "none";
+  const cw = $("customWeight"), cv = $("customWeightVal");
+  if(cw) cw.value = st.customWeight || 400;
+  if(cv) cv.textContent = st.customWeight || 400;
 }
 
 function applyTheme(){
@@ -1923,14 +1998,21 @@ function applyTheme(){
   document.body.dataset.flavor = vs ? (isPro() ? (st.flavors[tid]||vs[0].id) : vs[0].id) : "";
   // during a preview, show the previewed theme's default font so it looks right;
   // otherwise use the picked font (free users get the free fonts)
-  const fid = PV.id ? (themeDef().font||"helvetica") : st.font;
-  let f = FONTS.find(x=>x.id===fid) || FONTS[0];
-  if(!PV.id && !isPro() && f.pro) f = FONTS[0];
-  document.documentElement.style.setProperty("--font", f.stack);
-  // only force a weight when the picked font defines one — otherwise each
-  // theme keeps its own default (midnight 700, nature 300, …)
-  if(f.weight) document.documentElement.style.setProperty("--fontw", f.weight);
-  else document.documentElement.style.removeProperty("--fontw");
+  // Free users (and any live preview) always get the theme's own default font.
+  // Pro users pick from the dropdown: a named font, "default", or "custom" (upload).
+  const sel = (PV.id || !isPro()) ? "default" : (st.font || "default");
+  if(sel === "custom" && CUSTOM_FONT_READY){
+    document.documentElement.style.setProperty("--font", `'${CUSTOM_FONT_NAME}',` + FONTS[0].stack);
+    document.documentElement.style.setProperty("--fontw", st.customWeight || 400);
+  } else {
+    const fid = (sel === "default" || sel === "custom") ? (themeDef().font || "helvetica") : sel;
+    const f = FONTS.find(x=>x.id===fid) || FONTS[0];
+    document.documentElement.style.setProperty("--font", f.stack);
+    // only force a weight when the picked font defines one; otherwise each theme
+    // keeps its own default (midnight 700, nature 300, ...)
+    if(f.weight) document.documentElement.style.setProperty("--fontw", f.weight);
+    else document.documentElement.style.removeProperty("--fontw");
+  }
   elSeg.dataset.seg = ""; elKtScreen.dataset.seg = ""; // force seg re-render
   updateFX();
   render();
@@ -1950,14 +2032,14 @@ function refreshSettings(){
     save(); applyTheme();
   }, previewTheme);
   chip(SOUNDS, $("soundRow"), st.sound, id=>{ st.sound=id; save(); if(!st.muted)(PLAYERS[id]||PLAYERS.chime)(); }, previewSound);
-  chip(FONTS, $("fontRow"), st.font, id=>{ st.font=id; save(); applyTheme(); });
+  renderFontSelect();
   const tid = curThemeId(), vs = VARIANTS[tid];
   $("lampSec").style.display = vs ? "block" : "none";
   if(vs) chip(vs, $("lampRow"), st.flavors[tid]||vs[0].id, id=>{ st.flavors[tid]=id; save(); applyTheme(); });
 
   const tickBox = $("tickToggle");
-  tickBox.checked = st.tick && isPro();
-  tickBox.disabled = !isPro();
+  tickBox.checked = st.tick;
+  tickBox.disabled = false;
   const clockBox = $("clockToggle");
   clockBox.checked = st.clock && isPro();
   clockBox.disabled = !isPro();
@@ -1975,21 +2057,20 @@ function refreshSettings(){
 
   const status = $("trialStatus"), btn = $("btnTrial"), head = $("proHead"), lbox = $("licenseBox");
   if(isPro()){
-    head.textContent = PRO_UNLOCKED ? "Pro — lifetime" : "Pro — unlocked";
-    status.innerHTML = "You have the full version — every theme, sound, font and color. Thanks for supporting an independent tool ✌️";
+    head.textContent = PRO_UNLOCKED ? "Pro (lifetime)" : "Pro (unlocked)";
+    status.innerHTML = "You have the full version: every theme, sound, font, and color. Thanks for supporting an independent tool.";
     btn.style.display = "none";
     if(lbox) lbox.style.display = "none";
   }else{
     head.textContent = "Pro";
-    status.innerHTML = `All 16 themes with style variants, clock &amp; stopwatch modes, voice alert, custom colors &amp; logo, 11 fonts, 5 end sounds, final-countdown tick. One-time <b>${PRICE}</b> — yours forever, no subscription.`;
-    btn.textContent = "Buy Pro for Life: " + PRICE;
+    status.innerHTML = `All 16 themes with style variants, clock &amp; stopwatch modes, voice alert, custom colors &amp; logo, beautiful fonts &amp; your own uploads, 5 end sounds. One-time <b>${PRICE}</b>, yours forever, no subscription.`;
+    btn.textContent = "Get Pro for Life: " + PRICE;
     btn.style.display="block";
     btn.onclick = ()=>window.open(BUY_URL,"_blank");
     if(lbox) lbox.style.display = "block";
   }
 }
 $("tickToggle").addEventListener("change", e=>{
-  if(!isPro()){ e.target.checked=false; return openModal(); }
   st.tick = e.target.checked; save();
 });
 $("clockToggle").addEventListener("change", e=>{
@@ -2010,6 +2091,17 @@ $("voiceToggle").addEventListener("change", e=>{
 });
 $("brandUnlock").addEventListener("click", openModal);
 
+$("fontSelect").addEventListener("change", e=>{
+  if(!isPro()){ e.target.value = "default"; return openModal(); }
+  st.font = e.target.value; save(); applyTheme(); renderFontSelect();
+});
+$("fontFile").addEventListener("change", handleFontUpload);
+$("customWeight").addEventListener("input", e=>{
+  st.customWeight = +e.target.value; save();
+  const cv = $("customWeightVal"); if(cv) cv.textContent = st.customWeight;
+  applyTheme();
+});
+
 /* license key entry */
 const LICENSE_ERR = {
   invalid: "That key didn't validate. Double-check it and try again.",
@@ -2027,7 +2119,7 @@ async function submitLicense(){
   btn.disabled = false;
   if(res.ok){
     saveLicense({ key: res.key, activationId: res.activationId });
-    msg.style.color = "#37b24d"; msg.textContent = "Unlocked — enjoy Pro ✌️";
+    msg.style.color = "#37b24d"; msg.textContent = "Unlocked. Enjoy Pro.";
     applyUnlocked();
   }else{
     msg.style.display = "block"; msg.style.color = "#e03131";
@@ -2120,6 +2212,11 @@ $("overlay").addEventListener("click", e=>{ if(e.target.id==="overlay") closeMod
       if(!ok){ LICENSE_OK = false; clearLicense(); refreshSettings(); render(); }
     });
   }
+  // restore a previously uploaded custom font (Pro)
+  try{
+    const cf = localStorage.getItem(LS.customFont);
+    if(cf) loadCustomFont(cf).then(ok=>{ if(ok && st.font==="custom"){ applyTheme(); renderFontSelect(); } });
+  }catch(e){}
   elLabel.textContent = st.label || "Workshop Timer";
   $("accentInput").value = st.accent;
   $("bgInput").value = st.bg;
