@@ -35,7 +35,7 @@
   body.theme-paper   { --bg:#fbfaf7; --bg2:#f0efe9; --fg:#1a1a18; --muted:#9a978e; --panel:#ffffff; --border:#e2e0d8; }
   body.theme-sunset  { --bg:#e79ae2; --bg2:rgba(255,255,255,.16); --fg:#fdf3e0; --muted:rgba(255,250,240,.8); --panel:#a4539f; --border:#bd74bb; }
   body.theme-terminal{ --bg:#050805; --bg2:#0a120a; --fg:#4ade80; --muted:#3a7d52; --panel:#0a120a; --border:#1e3323; }
-  body.theme-disc    { --bg:#f4f1ea; --bg2:#eae6dc; --fg:#333; --muted:#a29a8b; --panel:#ffffff; --border:#ddd6c6; --danger:#d5442f; }
+  body.theme-disc    { --bg:#eeeef1; --bg2:#e4e4e8; --fg:#333; --muted:#9a9aa2; --panel:#ffffff; --border:#d4d4da; --danger:#d5442f; }
   body.theme-lcd     { --bg:#000000; --bg2:#0a0a0a; --fg:#ff3b2f; --muted:#7a2620; --panel:#121212; --border:#2a2a2a; }
   body.theme-web1    { --bg:#008080; --bg2:#006e6e; --fg:#ffffff; --muted:#c5e8e8; --panel:#d4d0c8; --border:#808080; --danger:#ffdd57; }
   body.theme-egg     { --bg:#f4f5f7; --bg2:#e9ebee; --fg:#33475a; --muted:#9aa2a9; --panel:#ffffff; --border:#dde1e5; }
@@ -172,7 +172,7 @@
   #time.over{color:var(--danger); animation:pulse 1s ease-in-out 3;} /* a few blinks, then calm — stage-friendly */
   @keyframes pulse{50%{opacity:.55}}
   #subline{color:var(--muted); font-size:clamp(.85rem,2vh,1.2rem); height:1.4em;
-    position:fixed; left:50%; transform:translateX(-50%); bottom:clamp(8rem,18vh,12rem);
+    position:fixed; left:50%; transform:translateX(-50%); bottom:clamp(10rem,21vh,14rem);
     z-index:1; white-space:nowrap; text-align:center; pointer-events:none;}
   body.hide-ui #subline{bottom:clamp(2rem,6vh,4rem);}
 
@@ -296,8 +296,8 @@
   #discWrap{
     display:none; position:relative;
     width:min(82vw,64vh); aspect-ratio:1 / 1.06;
-    background:#ece7dc; border-radius:9%;
-    box-shadow:0 18px 50px rgba(70,58,34,.18);
+    background:#c4c4cb; border-radius:9%;
+    box-shadow:0 18px 50px rgba(40,40,50,.22);
   }
   #discPie{
     position:absolute; top:50%; left:50%; transform:translate(-50%,-46%);
@@ -306,14 +306,14 @@
   #discLabel{
     position:absolute; top:6.5%; left:7%; right:7%; z-index:2;
     font-family:var(--font); font-size:clamp(1.4rem,5.4vw,3rem); font-weight:500;
-    line-height:1.05; letter-spacing:-.01em; color:#5c5446;
+    line-height:1.05; letter-spacing:-.01em; color:#45454d;
     text-transform:none; outline:none; cursor:text;
   }
   #discLabel:focus{opacity:.75;}
   #discTime{
     position:absolute; right:7%; bottom:5.5%; left:7%; z-index:2; text-align:right;
     font-family:var(--font); font-size:clamp(2rem,9vw,4.4rem); font-weight:500;
-    letter-spacing:-.01em; color:#3f3a31; font-variant-numeric:tabular-nums;
+    letter-spacing:-.01em; color:#2b2b32; font-variant-numeric:tabular-nums;
   }
 
   #timeInput{
