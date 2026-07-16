@@ -151,7 +151,7 @@
   }
   /* midnight: Helvetica-poster — bold black & white, digits given air.
      Weight defers to the font picker so Thin/Chunky actually apply. */
-  body.theme-midnight #time{font-weight:var(--fontw,700); letter-spacing:.04em; font-size:clamp(5rem,33vw,42vh);}
+  body.theme-midnight #time{font-weight:var(--fontw,700); letter-spacing:-.01em; font-size:clamp(5.3rem,33vw,48vh);}
   body.theme-midnight #label{
     text-transform:none; letter-spacing:.02em; font-weight:500;
     font-size:clamp(1.2rem,3vh,1.85rem); color:#6f6f76;
@@ -660,10 +660,6 @@
   body.theme-nixie #label,
   body.theme-days  #label,
   body.theme-nasa  #label{ display:block; }
-  /* Fullscreen / TV: with the controls hidden, center the timer
-     truly horizontally AND vertically (drop the reserved control strip) */
-  body.hide-ui #stage{ padding-bottom:2vh; padding-top:2vh; }
-  body.hide-ui #display{ align-items:center; }
   /* Gentle highlight when a locked feature nudges you to the Pro section
      (kept inside Settings — no pop-ups over the timer) */
   #settings section.flash{ animation:proFlash 1.5s ease; border-radius:10px; }
@@ -1038,7 +1034,7 @@ let st = Object.assign({
 st.flavors = Object.assign({sunset:"classic", terminal:"green", lcd:"red", photo:"forest"}, st.flavors||{});
 
 let remaining = st.duration, running = false, deadline = 0, finished = false;
-let rafId = null, lastWholeSec = null, wakeLock = null;
+let tickTimer = null, lastWholeSec = null, wakeLock = null;
 
 function load(k){ try{ return JSON.parse(localStorage.getItem(k)) || {}; }catch(e){ return {}; } }
 function save(){ localStorage.setItem(LS.state, JSON.stringify(st)); }
@@ -1682,14 +1678,27 @@ function updateFX(){
 
 /* =========================================================
    TIMER ENGINE (deadline-based; immune to tab throttling)
+   Ticks on setInterval rather than requestAnimationFrame:
+   rAF gets throttled/paused by the browser as soon as the
+   window loses focus (e.g. shared into Zoom while you click
+   elsewhere), which freezes the display and can trigger
+   Zoom's "screen sharing is paused" auto-pause. setInterval
+   keeps firing for an unfocused-but-visible window.
    ========================================================= */
+function startTicking(){
+  stopTicking();
+  tickTimer = setInterval(loop, 250);
+}
+function stopTicking(){
+  clearInterval(tickTimer);
+  tickTimer = null;
+}
 function loop(){
   if(!running) return;
   if(swOn()){ // stopwatch: count up, never finish
     remaining = swAccum + (Date.now() - swStart)/1000;
     render();
     document.title = fmt(remaining) + " · Stopwatch";
-    rafId = requestAnimationFrame(loop);
     return;
   }
   remaining = (deadline - Date.now())/1000;
@@ -1708,12 +1717,12 @@ function loop(){
     if(navigator.vibrate) navigator.vibrate([200,100,200]);
     document.title = "⏰ Time's up!";
     wakeLock?.release().catch(()=>{}); wakeLock = null;
+    stopTicking();
     showUI(); render();
     return;
   }
   render();
   document.title = fmt(remaining) + " · Timer";
-  rafId = requestAnimationFrame(loop);
 }
 
 async function start(){
@@ -1724,7 +1733,7 @@ async function start(){
     running = true; elStart.textContent = "Pause";
     armHideUI();
     try{ wakeLock = await navigator.wakeLock?.request("screen"); }catch(e){}
-    loop();
+    loop(); startTicking();
     return;
   }
   if(finished || remaining <= 0){ finished = false; remaining = st.duration; }
@@ -1733,13 +1742,13 @@ async function start(){
   running = true; elStart.textContent = "Pause";
   armHideUI();
   try{ wakeLock = await navigator.wakeLock?.request("screen"); }catch(e){}
-  loop();
+  loop(); startTicking();
 }
 function pause(){
   if(swOn() && running) swAccum = remaining;
   running = false; finished = false;
   elStart.textContent = "Start";
-  cancelAnimationFrame(rafId);
+  stopTicking();
   wakeLock?.release().catch(()=>{}); wakeLock = null;
   showUI(); render();
 }
@@ -1770,7 +1779,7 @@ let hideTimer = null;
 function armHideUI(){
   clearTimeout(hideTimer);
   document.body.classList.remove("hide-ui");
-  if(running) hideTimer = setTimeout(()=>document.body.classList.add("hide-ui"), 3000);
+  if(running) hideTimer = setTimeout(()=>document.body.classList.add("hide-ui"), 2000);
 }
 function showUI(){ clearTimeout(hideTimer); document.body.classList.remove("hide-ui"); }
 ["mousemove","touchstart","keydown"].forEach(ev=>document.addEventListener(ev, armHideUI, {passive:true}));
@@ -2242,8 +2251,11 @@ $("overlay").addEventListener("click", e=>{ if(e.target.id==="overlay") closeMod
   applyBranding(); render(); refreshSettings();
   setInterval(()=>{ if(clockOn()) render(); }, 1000); // clock-mode ticker
   document.addEventListener("visibilitychange", async ()=>{
-    if(document.visibilityState==="visible" && running && !wakeLock){
-      try{ wakeLock = await navigator.wakeLock?.request("screen"); }catch(e){}
+    if(document.visibilityState==="visible" && running){
+      if(!wakeLock){
+        try{ wakeLock = await navigator.wakeLock?.request("screen"); }catch(e){}
+      }
+      loop(); // catch up immediately instead of waiting for the next tick
     }
   });
 })();
