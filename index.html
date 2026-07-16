@@ -1269,7 +1269,7 @@ function bindEditable(el, onInput){
 /* ----- time disc renderer: minimal pie ----- */
 function renderDisc(frac, text){
   const deg = Math.max(0,Math.min(1,frac))*360;
-  const color = isPro() && st.useBg ? st.accent : "#d5442f";
+  const color = isPro() ? st.accent : "#d5442f";
   $("discPie").style.background = `conic-gradient(transparent 0deg ${360-deg}deg, ${color} ${360-deg}deg 360deg)`;
   elDiscTime.textContent = text;
   syncEditable($("discLabel"), st.label);
