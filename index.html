@@ -33,9 +33,29 @@
     font-size:16px;
   }
   body.theme-paper   { --bg:#fbfaf7; --bg2:#f0efe9; --fg:#1a1a18; --muted:#9a978e; --panel:#ffffff; --border:#e2e0d8; }
+  /* dark/light mode: offered on themes with a flat, single-mood background — Bold, Typography,
+     Time Disc, T-Minus, Squiggle, Flip Clock, Kitchen, Egg Timer. Skipped on themes that are
+     inherently one specific colorful look (Nixie, Matrix, LCARS, Nature, Sunset Lamp — the glow/hue
+     *is* the theme). The three "physical object" themes (Flip Clock, Kitchen, Egg Timer) keep their
+     own card/body/screen colors fixed either way — only the page around the object follows the mode. */
+  body.theme-midnight.mode-light{ --bg:#fbfaf9; --bg2:#f0efee; --fg:#151513; --muted:#8a8a86; --panel:#ffffff; --border:#e3e2df; }
+  body.theme-midnight.mode-light #label{ color:var(--muted); }
+  body.theme-paper.mode-dark{ --bg:#141414; --bg2:#1c1c1c; --fg:#f2f1ec; --muted:#8f8c83; --panel:#1e1e1e; --border:#333331; }
+  body.theme-disc.mode-dark{ --bg:#1c1c20; --bg2:#242428; --fg:#e8e8ea; --muted:#8b8b90; --panel:#2a2a2f; --border:#38383e; }
+  body.theme-disc.mode-dark #discLabel{ color:#c8c8ce; }
+  body.theme-disc.mode-dark #discTime{ color:#f0f0f2; }
+  body.theme-nasa.mode-dark{ --bg:#141412; --bg2:#1c1c19; --fg:#f0efe9; --muted:#8a8a86; --panel:#1e1e1b; --border:#333330; }
+  body.theme-nasa.mode-dark #label{ color:#8a8a86; }
+  body.theme-nasa.mode-dark #nasaWrap svg .nt{ stroke:#3a3a36; }
+  body.theme-squiggle.mode-light{ --bg:#fbfaf9; --bg2:#f0efee; --fg:#151513; --muted:#8a8a86; --panel:#ffffff; --border:#e3e2df; }
+  body.theme-flip.mode-light{ --bg:#f3f2f0; --bg2:#e8e7e4; --fg:#333338; --muted:#8a8a86; --panel:#ffffff; --border:#dedcd9; }
+  body.theme-kitchen.mode-dark{ --bg:#1c1e21; --bg2:#242628; --fg:#e6e7e9; --muted:#8b9097; --panel:#242628; --border:#38383e; }
+  body.theme-egg.mode-dark{ --bg:#181c22; --bg2:#20242a; --fg:#dbe3ea; --muted:#7f8f9e; --panel:#20242a; --border:#333a42; }
+  body.theme-egg.mode-dark #eggRulerSvg .ruler-mark{ stroke:#5c6874; }
+  body.theme-egg.mode-dark #eggRulerSvg .ruler-num{ fill:#8892a0; }
   body.theme-sunset  { --bg:#e79ae2; --bg2:rgba(255,255,255,.16); --fg:#fdf3e0; --muted:rgba(255,250,240,.8); --panel:#a4539f; --border:#bd74bb; }
   body.theme-terminal{ --bg:#050805; --bg2:#0a120a; --fg:#4ade80; --muted:#3a7d52; --panel:#0a120a; --border:#1e3323; }
-  body.theme-disc    { --bg:#eeeef1; --bg2:#e4e4e8; --fg:#333; --muted:#9a9aa2; --panel:#ffffff; --border:#d4d4da; --danger:#d5442f; }
+  body.theme-disc    { --bg:#eeeef1; --bg2:#e4e4e8; --fg:#333; --muted:#9a9aa2; --panel:#c4c4cb; --border:#d4d4da; --danger:#d5442f; }
   body.theme-lcd     { --bg:#000000; --bg2:#0a0a0a; --fg:#ff3b2f; --muted:#7a2620; --panel:#121212; --border:#2a2a2a; }
   body.theme-web1    { --bg:#008080; --bg2:#006e6e; --fg:#ffffff; --muted:#c5e8e8; --panel:#d4d0c8; --border:#808080; --danger:#ffdd57; }
   body.theme-egg     { --bg:#f4f5f7; --bg2:#e9ebee; --fg:#33475a; --muted:#9aa2a9; --panel:#ffffff; --border:#dde1e5; }
@@ -152,7 +172,7 @@
   /* midnight: Helvetica-poster — bold black & white, digits given air.
      Weight defers to the font picker so Thin/Chunky actually apply. */
   body.theme-midnight #time{font-weight:var(--fontw,700); letter-spacing:-.01em; font-size:clamp(5.3rem,33vw,48vh);}
-  body.theme-midnight #label{
+  body.theme-midnight #label, body.theme-bounce #label{
     text-transform:none; letter-spacing:.02em; font-weight:500;
     font-size:clamp(1.2rem,3vh,1.85rem); color:#6f6f76;
     margin-bottom:0;
@@ -296,8 +316,9 @@
   #discWrap{
     display:none; position:relative;
     width:min(82vw,64vh); aspect-ratio:1 / 1.06;
-    background:#c4c4cb; border-radius:9%;
+    background:var(--panel); border-radius:9%;
     box-shadow:0 18px 50px rgba(40,40,50,.22);
+    transition:background .4s;
   }
   #discPie{
     position:absolute; top:50%; left:50%; transform:translate(-50%,-46%);
@@ -324,24 +345,29 @@
   }
 
   /* ---------- egg timer (slick & minimal, iOS-style) ---------- */
-  body.theme-egg #label{font-size:clamp(.85rem,2.2vh,1.3rem); letter-spacing:.1em; text-transform:none; color:#9aa2a9;}
-  #eggWrap{display:none; flex-direction:column; align-items:center; gap:2.6rem;}
+  body.theme-egg #label{font-size:clamp(.85rem,2.2vh,1.3rem); letter-spacing:.1em; text-transform:none; color:var(--muted);}
+  #eggWrap{display:none; flex-direction:column; align-items:center;}
   #eggShape{
-    position:relative; width:min(46vh,70vw); aspect-ratio:0.82;
+    position:relative; width:min(42vh,66vw); aspect-ratio:0.78;
     border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
     background:radial-gradient(circle at 50% 26%, #ffffff 0%, #eef0f2 52%, #cfd5da 100%);
     box-shadow:0 24px 50px rgba(70,80,90,.16);
     display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:.1em; font-variant-numeric:tabular-nums;
+    gap:1em; font-variant-numeric:tabular-nums; padding-bottom:6%;
   }
+  #eggDigits{display:flex; flex-direction:column; align-items:center; gap:.1em;}
   #eggMin{font-size:clamp(2rem,8.5vh,4.6rem); font-weight:500; color:#b6bfc6; line-height:1;}
   #eggSec{font-size:clamp(2.8rem,12vh,6.6rem); font-weight:600; color:#33475a; line-height:1;}
-  #eggRuler{width:min(64vh,82vw);}
+  #eggRuler{width:84%;}
   #eggRuler svg{width:100%; height:auto; display:block; overflow:visible;}
+  #eggRulerSvg .ruler-mark{stroke:#3a4652;}
+  #eggRulerSvg .ruler-num{fill:#55606a;}
 
   /* ---------- squiggle ring ---------- */
   #squigWrap{display:none; position:relative; width:min(66vh,86vw); height:min(66vh,86vw);}
   #squigWrap svg{width:100%; height:100%; display:block;}
+  #squigTrack{stroke:var(--fg);}
+  #squigProg{stroke:var(--fg);}
   #squigCenter{
     position:absolute; inset:0; display:flex; flex-direction:column;
     align-items:center; justify-content:center; gap:.5rem;
@@ -445,6 +471,22 @@
   #daysWrap svg circle{fill:currentColor;}
   #daysWrap svg text{fill:currentColor; opacity:.85;}
 
+  /* ---------- bounce: a plain time that roams the screen and changes
+     color whenever it hits an edge, screensaver-style ---------- */
+  #bounceWrap{
+    display:none; position:relative;
+    width:min(94vw,1400px); height:min(58vh,640px);
+    border-radius:16px; border:1px solid var(--border); overflow:hidden;
+  }
+  #bounceTime{
+    position:absolute; top:0; left:0;
+    font-family:var(--font); font-weight:800;
+    font-size:clamp(2.2rem,7vw,4.6rem); line-height:1;
+    white-space:nowrap; font-variant-numeric:tabular-nums;
+    will-change:transform;
+    transition:transform .2s linear, color .2s ease;
+  }
+
   /* ---------- NASA T-Minus ---------- */
   #nasaWrap{display:none; position:relative; width:min(54vh,80vw); height:min(54vh,80vw);}
   #nasaWrap svg{width:100%; height:100%; display:block;}
@@ -459,13 +501,13 @@
     align-items:center; justify-content:center; gap:.6rem;
   }
   #nasaLabel{
-    text-transform:uppercase; letter-spacing:.3em; color:#9a9c9e;
+    text-transform:uppercase; letter-spacing:.3em; color:var(--muted);
     font-size:clamp(.7rem,1.9vh,1rem); font-weight:600;
   }
   #nasaLabel.hot{color:#ff5c1f;}
   #nasaTime{
     font-family:var(--font); font-weight:700;
-    font-size:clamp(1.5rem,6vh,3.4rem); color:#1e2124; font-variant-numeric:tabular-nums;
+    font-size:clamp(1.5rem,6vh,3.4rem); color:var(--fg); font-variant-numeric:tabular-nums;
     letter-spacing:.02em; white-space:nowrap;
   }
   #nasaTime .ms{color:#ff5c1f;}
@@ -560,9 +602,33 @@
   }
   button:hover{border-color:var(--muted);}
   button.primary{
-    background:var(--fg); color:var(--bg); border-color:var(--fg); font-weight:800;
+    background:var(--accent); color:#111; border-color:var(--accent); font-weight:800;
     padding:.85rem 2.8rem; font-size:1.15rem; border-radius:14px; letter-spacing:.02em;
   }
+  /* Start: a true pill, and tinted with each theme's own signature color rather
+     than the generic accent — the same hue as that theme's numbers/ring/glow.
+     Themes with no strong color of their own (Bold, Typography, Kitchen, Egg,
+     Flip Clock...) simply keep the accent above. */
+  #btnStart{border-radius:999px;}
+  body.theme-disc #btnStart{background:var(--disc-accent); border-color:var(--disc-accent);}
+  body.theme-nixie #btnStart{background:#ff8a1a; border-color:#ff8a1a;}
+  body.theme-days #btnStart{background:var(--cdc); border-color:var(--cdc);}
+  body.theme-lcd #btnStart{background:var(--fg); border-color:var(--fg);}
+  body.theme-terminal #btnStart{background:var(--fg); border-color:var(--fg);}
+  body.theme-paper #btnStart{background:#e0562f; border-color:#e0562f;}      /* Braun-style burnt orange */
+  body.theme-squiggle #btnStart{background:#a4c639; border-color:#a4c639;}  /* Android green */
+  body.theme-flip #btnStart{background:var(--fg); border-color:var(--fg);}  /* the cards' own grey */
+  /* Flip's button color is var(--fg), which itself flips between a light and a
+     dark grey across the appearance toggle — so the text needs to flip too,
+     or it goes dark-on-dark (or light-on-light) and disappears. */
+  body.theme-flip.mode-light #btnStart{color:#f2f1ec;}
+  body.theme-egg #btnStart{background:#e0392e; border-color:#e0392e;}       /* same red as the ruler pointer */
+  body.theme-photo #btnStart{background:#7f8f4a; border-color:#7f8f4a;}    /* mossy olive green */
+  body.theme-sunset #btnStart{background:#ff2fc4; border-color:#ff2fc4;}   /* neon */
+  body.theme-sunset[data-flavor="magma"] #btnStart{background:#ff3d1a; border-color:#ff3d1a;}
+  body.theme-sunset[data-flavor="violet"] #btnStart{background:#b026ff; border-color:#b026ff;}
+  body.theme-sunset[data-flavor="ocean"] #btnStart{background:#00e5ff; border-color:#00e5ff;}
+  body.theme-bounce #btnStart{background:#39ff14; border-color:#39ff14;}   /* fallback before JS syncs it to the bouncing digit's own color */
   /* quiet icon buttons */
   button.icon, a.icon{
     width:2.8rem; height:2.8rem; padding:.62rem; border-radius:12px;
@@ -577,6 +643,9 @@
   #btnMute .snd-off{display:none;}
   #btnMute.muted .snd-on{display:none;}
   #btnMute.muted .snd-off{display:block;}
+  #btnAppearance .app-moon{display:none;}
+  #btnAppearance.mode-dark .app-sun{display:none;}
+  #btnAppearance.mode-dark .app-moon{display:block;}
   /* whisper-quiet presets + hints */
   button.preset{padding:.4rem .7rem; font-size:.82rem; color:var(--muted); background:transparent; border-color:transparent; opacity:.55;}
   button.preset:hover{color:var(--fg); opacity:1; border-color:var(--border);}
@@ -688,14 +757,16 @@
     </div>
     <div id="eggWrap">
       <div id="eggShape">
-        <div id="eggMin">10</div>
-        <div id="eggSec">00</div>
-      </div>
-      <div id="eggRuler">
-        <svg id="eggRulerSvg" viewBox="0 -6 120 22">
-          <g id="eggTicks"></g>
-          <path id="eggPtr" d="M-1.6 -5 L1.6 -5 L0 -1.8 Z" fill="#e0392e"/>
-        </svg>
+        <div id="eggDigits">
+          <div id="eggMin">10</div>
+          <div id="eggSec">00</div>
+        </div>
+        <div id="eggRuler">
+          <svg id="eggRulerSvg" viewBox="0 -6 120 22">
+            <g id="eggTicks"></g>
+            <path id="eggPtr" d="M-1.6 -5 L1.6 -5 L0 -1.8 Z" fill="#e0392e"/>
+          </svg>
+        </div>
       </div>
     </div>
     <div id="nixieWrap">
@@ -758,6 +829,7 @@
       </div>
     </div>
     <div id="daysWrap"><svg id="daysSvg"></svg></div>
+    <div id="bounceWrap"><div id="bounceTime">10:00</div></div>
   </div>
 
   <input id="timeInput" placeholder="10:00" inputmode="numeric" autocomplete="off">
@@ -785,6 +857,10 @@
     </button>
     <button class="icon" id="btnShuffle" title="Shuffle theme" style="display:none">
       <svg viewBox="0 0 24 24"><path d="M16 4h5v5"/><path d="M3 20 21 4"/><path d="M21 15v5h-5"/><path d="M14.5 14.5 21 20"/><path d="M3 4l6.5 6.5"/></svg>
+    </button>
+    <button class="icon" id="btnAppearance" title="Light / dark" style="display:none">
+      <svg class="app-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="app-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
     <button class="icon" id="btnSettings" title="Settings">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -976,7 +1052,7 @@ const LS = { state:"wt_state_v3", logo:"wt_logo_v1", license:"wt_license_v1", cu
    ambient, then the retro/fun set. First three are free.
    mode: how the time renders · prog: progress · font: default font id */
 const THEMES = [
-  {id:"midnight", name:"Midnight",    pro:false, mode:"digits",   prog:"x",    font:"helvetica"},
+  {id:"midnight", name:"Bold",        pro:false, mode:"digits",   prog:"x",    font:"helvetica"},
   {id:"paper",    name:"Typography",  pro:false, mode:"words",    prog:"none", font:"helvetica"},
   {id:"disc",     name:"Time Disc",   pro:false, mode:"disc",     prog:"none", font:"helvetica"},
   {id:"nasa",     name:"T-Minus",     pro:true,  mode:"nasa",     prog:"none", font:"orbitron"},
@@ -992,7 +1068,11 @@ const THEMES = [
   {id:"terminal", name:"Matrix",      pro:true,  mode:"digits",   prog:"none", font:"mono"},
   {id:"web1",     name:"Web 1.0",     pro:true,  mode:"digits",   prog:"none", font:"mono"},
   {id:"lcars",    name:"Starship",    pro:true,  mode:"lcars",    prog:"none", font:"narrow"},
+  {id:"bounce",   name:"Bounce",      pro:true,  mode:"bounce",   prog:"none", font:"helvetica"},
 ];
+// themes flat/simple enough to offer both a dark and a light look; each theme's
+// own hue (accent, glow, etc.) stays untouched — only bg/fg/panel/border shift.
+const APPEARANCE_THEMES = { midnight:"dark", paper:"light", disc:"light", nasa:"light", squiggle:"dark", flip:"dark", kitchen:"light", egg:"light" };
 const SOUNDS = [
   {id:"chime",   name:"Chime",   pro:false},
   {id:"bell",    name:"Bell",    pro:true},
@@ -1028,7 +1108,7 @@ const PRESETS = [0.5,1,2,5,10,15,20,30,45,60];
    ========================================================= */
 let st = Object.assign({
   duration: 600, theme:"midnight", sound:"chime", tick:false, muted:false, clock:false, voice:false, stopwatch:false,
-  accent:"#e8c15a", bg:"#101014", useBg:false, font:"helvetica", label:"Workshop Timer",
+  accent:"#e8c15a", bg:"#101014", useBg:false, font:"helvetica", label:"Workshop Timer", appearance:null,
   lc1:"SET PHASERS TO FUN", lc2:"SHIELDS: 98%", lc3:"WARP 9.9"
 }, load(LS.state));
 st.flavors = Object.assign({sunset:"classic", terminal:"green", lcd:"red", photo:"forest"}, st.flavors||{});
@@ -1155,7 +1235,7 @@ function announce(text){
    ========================================================= */
 const $ = id => document.getElementById(id);
 const elTime=$("time"), elLabel=$("label"), elSub=$("subline"), elProgress=$("progress"),
-      elInput=$("timeInput"), elStart=$("btnStart"), elMute=$("btnMute"), elLogo=$("logo"),
+      elInput=$("timeInput"), elStart=$("btnStart"), elMute=$("btnMute"), elAppearance=$("btnAppearance"), elLogo=$("logo"),
       elSeg=$("segWrap"), elFlip=$("flipWrap"), elDiscWrap=$("discWrap"),
       elDiscTime=$("discTime"),
       elEggWrap=$("eggWrap"),
@@ -1163,7 +1243,8 @@ const elTime=$("time"), elLabel=$("label"), elSub=$("subline"), elProgress=$("pr
       elWords=$("wordsWrap"),
       elSquigWrap=$("squigWrap"), elSquigTime=$("squigTime"), elSquigSub=$("squigSub"),
       elKitchenWrap=$("kitchenWrap"), elKtScreen=$("ktScreen"),
-      elNasaWrap=$("nasaWrap"), elNasaTime=$("nasaTime"), elNasaLabel=$("nasaLabel");
+      elNasaWrap=$("nasaWrap"), elNasaTime=$("nasaTime"), elNasaLabel=$("nasaLabel"),
+      elBounceWrap=$("bounceWrap"), elBounceTime=$("bounceTime");
 
 function fmt(s){
   s = Math.max(0, Math.round(s));
@@ -1281,12 +1362,12 @@ function initEggRuler(totalMin){
   if(totalMin === eggRulerMax) return;
   eggRulerMax = totalMin;
   const g = $("eggTicks"); let s = "";
-  s += `<line x1="0" y1="0" x2="120" y2="0" stroke="#3a4652" stroke-width=".5"/>`;
+  s += `<line x1="0" y1="0" x2="120" y2="0" class="ruler-mark" stroke-width=".5"/>`;
   const labelStep = totalMin > 30 ? 10 : 5;
   for(let m=0;m<=totalMin;m++){
     const x = m/totalMin*120, big = m%labelStep===0;
-    s += `<line x1="${x.toFixed(2)}" y1="0" x2="${x.toFixed(2)}" y2="${big?5:3}" stroke="#3a4652" stroke-width="${big?.7:.35}"/>`;
-    if(big && m>0) s += `<text x="${x.toFixed(2)}" y="11" font-size="4.2" fill="#55606a" text-anchor="middle" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif">${m}</text>`;
+    s += `<line x1="${x.toFixed(2)}" y1="0" x2="${x.toFixed(2)}" y2="${big?5:3}" class="ruler-mark" stroke-width="${big?.7:.35}"/>`;
+    if(big && m>0) s += `<text x="${x.toFixed(2)}" y="11" font-size="4.2" class="ruler-num" text-anchor="middle" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif">${m}</text>`;
   }
   g.innerHTML = s;
 }
@@ -1317,9 +1398,8 @@ const DOTS = {
 let daysLast = null;
 function renderDays(totalSec){
   const s = Math.max(0, Math.floor(totalSec));
-  const dd = Math.floor(s/86400), hh = Math.floor(s%86400/3600), mm = Math.floor(s%3600/60), ss = s%60;
+  const hh = Math.floor(s/3600), mm = Math.floor(s%3600/60), ss = s%60;
   const groups = [
-    {label:"DAYS", str:String(dd)},
     {label:"HRS",  str:String(hh).padStart(2,"0")},
     {label:"MIN",  str:String(mm).padStart(2,"0")},
     {label:"SEC",  str:String(ss).padStart(2,"0")}
@@ -1340,7 +1420,7 @@ function renderDays(totalSec){
     }
     const gw = x - gx - 2*S;
     parts.push(`<text x="${gx+gw/2}" y="${-2.7*S}" font-size="${2.2*S}" font-weight="700" text-anchor="middle" letter-spacing="1.5" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif">${gr.label}</text>`);
-    if(gi < 3){ // colon dots between groups
+    if(gi < 2){ // colon dots between groups
       parts.push(`<circle cx="${x}" cy="${2*S}" r="${R}"/><circle cx="${x}" cy="${4.5*S}" r="${R}"/>`);
       x += SEPW;
     }
@@ -1398,9 +1478,12 @@ function renderNixie(text){
 }
 
 /* ----- squiggle ring renderer, Play-Store install style:
-   the remaining portion is a live wobbling squiggle, the spent portion
-   is a thin plain arc, with a small gap between them ----- */
-const SQ = { R:40, A:6.0, WAVES:13, TOP:-Math.PI/2, GAP:0.10 };
+   the elapsed portion is a live wobbling squiggle, the remaining portion
+   is a thin plain arc, with a small gap between them. The squiggle also
+   breathes: it gently grows past the true elapsed point and eases back,
+   pausing between breaths, so the ring feels alive without ever
+   understating how much time is actually left. ----- */
+const SQ = { R:40, A:6.0, WAVES:13, TOP:-Math.PI/2, GAP:0.10, BREATHE:3400, BREATHE_MAX:0.3 };
 function squigArc(from, to, wavy, phase, amp){
   if(to - from < 0.02) return "";
   const steps = Math.max(8, Math.ceil((to-from)*46));
@@ -1422,8 +1505,15 @@ function renderSquiggle(frac, text, sub){
   const now = performance.now();
   const phase = running ? now/160 : 0;                       // wave travels
   const amp = running ? SQ.A + 1.2*Math.sin(now/300) : SQ.A; // amplitude breathes
-  $("squigProg").setAttribute("d", elapsed < 0.02 ? "" : squigArc(SQ.TOP, SQ.TOP + elapsed, true, phase, amp));
-  const t0 = SQ.TOP + elapsed + SQ.GAP, t1 = SQ.TOP + Math.PI*2 - SQ.GAP;
+  // the visible squiggle briefly reaches further than true elapsed, then relaxes
+  // back to it (a slow in-out pulse with a rest between breaths); never runs short
+  const room = Math.PI*2 - elapsed - SQ.GAP*2;
+  const breathe = running && room > 0
+    ? room*SQ.BREATHE_MAX*Math.max(0, Math.sin(now/SQ.BREATHE))
+    : 0;
+  const elapsedVisual = elapsed + breathe;
+  $("squigProg").setAttribute("d", elapsedVisual < 0.02 ? "" : squigArc(SQ.TOP, SQ.TOP + elapsedVisual, true, phase, amp));
+  const t0 = SQ.TOP + elapsedVisual + SQ.GAP, t1 = SQ.TOP + Math.PI*2 - SQ.GAP;
   $("squigTrack").setAttribute("d", t0 >= t1 ? "" : squigArc(t0, t1, false, 0, 0));
   elSquigTime.textContent = text;
   elSquigSub.textContent = sub;
@@ -1571,6 +1661,7 @@ function render(){
   $("dotsWrap").style.display  = mode==="dots"  ? "flex":"none";
   $("lcarsWrap").style.display = mode==="lcars" ? "flex":"none";
   $("daysWrap").style.display  = mode==="days"  ? "block":"none";
+  elBounceWrap.style.display   = mode==="bounce"? "block":"none";
 
   if(mode==="digits"){
     elTime.textContent = text;
@@ -1593,6 +1684,7 @@ function render(){
     const n = new Date();
     renderDays(clock ? n.getHours()*3600 + n.getMinutes()*60 + n.getSeconds() : remaining);
   }
+  else if(mode==="bounce") elBounceTime.textContent = text;
 }
 
 /* =========================================================
@@ -1674,6 +1766,71 @@ function updateFX(){
   const tid = curThemeId();
   if(tid==="terminal") startMatrix(); else stopMatrix();
   if(tid==="web1") startToasters(); else stopToasters();
+  if(tid==="bounce") startBounce(); else stopBounce();
+}
+
+/* ----- bounce: DVD-screensaver-style roaming, color-changing time.
+   Position runs on setInterval rather than requestAnimationFrame, for the
+   same reason the core timer engine does (see note above startTicking):
+   rAF gets fully suspended in a backgrounded/unfocused tab — e.g. shared
+   into Zoom while the presenter's focus is elsewhere — which would freeze
+   a theme whose entire point is motion. setInterval keeps firing (even if
+   throttled) so it keeps moving; a CSS transition smooths each step. ----- */
+const BOUNCE_COLORS = ["#ff073a","#ff6600","#f3ff00","#39ff14","#00f0ff","#bc13fe","#ff10f0"];
+const BOUNCE_STEP_MS = 200;
+let bounceTimer = null, bounceLast = 0;
+const BOUNCE = { x:0, y:0, vx:0, vy:0, colorIdx:0, seeded:false };
+function bounceSeed(){
+  const maxX = Math.max(0, elBounceWrap.clientWidth - elBounceTime.offsetWidth);
+  const maxY = Math.max(0, elBounceWrap.clientHeight - elBounceTime.offsetHeight);
+  BOUNCE.x = Math.random()*maxX;
+  BOUNCE.y = Math.random()*maxY;
+  let angle;
+  do { angle = Math.random()*Math.PI*2; }
+  while(Math.abs(Math.cos(angle))<0.25 || Math.abs(Math.sin(angle))<0.25); // skip near-straight angles
+  const speed = 90; // px/sec — a calm, unhurried screensaver pace
+  BOUNCE.vx = Math.cos(angle)*speed;
+  BOUNCE.vy = Math.sin(angle)*speed;
+  elBounceTime.style.color = BOUNCE_COLORS[BOUNCE.colorIdx];
+  elStart.style.background = BOUNCE_COLORS[BOUNCE.colorIdx];
+  elStart.style.borderColor = BOUNCE_COLORS[BOUNCE.colorIdx];
+  elBounceTime.style.transform = `translate(${BOUNCE.x}px,${BOUNCE.y}px)`;
+  BOUNCE.seeded = true;
+}
+function bounceStep(){
+  const now = Date.now();
+  // real elapsed time, not an assumed fixed step — so a throttled/backgrounded
+  // tab catches up instead of drifting; capped so a very long gap doesn't teleport
+  const dt = bounceLast ? Math.min(2, (now-bounceLast)/1000) : BOUNCE_STEP_MS/1000;
+  bounceLast = now;
+  const maxX = Math.max(0, elBounceWrap.clientWidth - elBounceTime.offsetWidth);
+  const maxY = Math.max(0, elBounceWrap.clientHeight - elBounceTime.offsetHeight);
+  BOUNCE.x += BOUNCE.vx*dt;
+  BOUNCE.y += BOUNCE.vy*dt;
+  let bounced = false;
+  if(BOUNCE.x<=0){ BOUNCE.x=0; BOUNCE.vx=Math.abs(BOUNCE.vx); bounced=true; }
+  else if(BOUNCE.x>=maxX){ BOUNCE.x=maxX; BOUNCE.vx=-Math.abs(BOUNCE.vx); bounced=true; }
+  if(BOUNCE.y<=0){ BOUNCE.y=0; BOUNCE.vy=Math.abs(BOUNCE.vy); bounced=true; }
+  else if(BOUNCE.y>=maxY){ BOUNCE.y=maxY; BOUNCE.vy=-Math.abs(BOUNCE.vy); bounced=true; }
+  if(bounced){
+    BOUNCE.colorIdx = (BOUNCE.colorIdx+1) % BOUNCE_COLORS.length;
+    elBounceTime.style.color = BOUNCE_COLORS[BOUNCE.colorIdx];
+    elStart.style.background = BOUNCE_COLORS[BOUNCE.colorIdx];
+    elStart.style.borderColor = BOUNCE_COLORS[BOUNCE.colorIdx];
+  }
+  elBounceTime.style.transform = `translate(${BOUNCE.x}px,${BOUNCE.y}px)`;
+}
+function startBounce(){
+  if(bounceTimer) return;
+  elBounceWrap.style.display = "block"; // so sizes are measurable before render() confirms it
+  if(!BOUNCE.seeded) bounceSeed();
+  bounceLast = 0;
+  bounceTimer = setInterval(bounceStep, BOUNCE_STEP_MS);
+}
+function stopBounce(){
+  if(!bounceTimer) return;
+  clearInterval(bounceTimer); bounceTimer = null;
+  elStart.style.background = ""; elStart.style.borderColor = ""; // back to the CSS-driven color
 }
 
 /* =========================================================
@@ -1851,6 +2008,7 @@ $("btnPlus30").addEventListener("click", ()=>adjust(30));
 $("btnReset").addEventListener("click", reset);
 $("btnFull").addEventListener("click", toggleFullscreen);
 elMute.addEventListener("click", toggleMute);
+elAppearance.addEventListener("click", toggleAppearance);
 $("btnShuffle").addEventListener("click", ()=>{
   const others = THEMES.filter(x=>x.id!==st.theme);
   const next = others[Math.floor(Math.random()*others.length)];
@@ -1867,6 +2025,12 @@ $("btnSettings").addEventListener("click", ()=>{
   if(opening) refreshSettings();
 });
 $("btnCloseSettings").addEventListener("click", ()=>$("settings").classList.remove("open"));
+document.addEventListener("click", e=>{
+  const s = $("settings");
+  if(!s.classList.contains("open")) return;
+  if(s.contains(e.target) || $("btnSettings").contains(e.target)) return;
+  s.classList.remove("open");
+});
 
 /* kitchen timer physical buttons */
 $("ktM").addEventListener("click", e=>{ e.stopPropagation(); adjust(60); });
@@ -1876,6 +2040,14 @@ $("ktSS").addEventListener("click", e=>{ e.stopPropagation(); start(); });
 function toggleFullscreen(){
   if(document.fullscreenElement) document.exitFullscreen();
   else document.documentElement.requestFullscreen().catch(()=>{});
+}
+function toggleAppearance(){
+  const tid = curThemeId();
+  const naturalMode = APPEARANCE_THEMES[tid];
+  if(!naturalMode) return;
+  const current = st.appearance || naturalMode;
+  st.appearance = current === "dark" ? "light" : "dark";
+  save(); applyTheme();
 }
 function toggleMute(){
   st.muted = !st.muted; save();
@@ -1995,6 +2167,14 @@ function applyTheme(){
     .split(/\s+/).filter(c=>c && !c.startsWith("theme-") && !c.startsWith("prog-")).join(" ");
   document.body.classList.add("theme-"+tid);
   document.body.classList.add("prog-"+themeDef().prog);
+  const naturalMode = APPEARANCE_THEMES[tid]; // "dark" | "light" | undefined (unsupported)
+  document.body.classList.remove("mode-dark","mode-light");
+  elAppearance.style.display = naturalMode ? "" : "none";
+  if(naturalMode){
+    const effective = st.appearance || naturalMode;
+    document.body.classList.add("mode-"+effective);
+    elAppearance.classList.toggle("mode-dark", effective==="dark");
+  }
   if(isPro() && st.useBg){
     document.body.style.background = st.bg;
     document.body.style.setProperty("--bg", st.bg);
@@ -2003,6 +2183,9 @@ function applyTheme(){
     document.body.style.removeProperty("--bg");
   }
   document.documentElement.style.setProperty("--accent", isPro()? st.accent : "#e8c15a");
+  // Time Disc's own pie color (see renderDisc) — kept as a var so the Start
+  // button can match it: red for free users, the picked accent for Pro.
+  document.documentElement.style.setProperty("--disc-accent", isPro() ? st.accent : "#d5442f");
   const vs = VARIANTS[tid];
   document.body.dataset.flavor = vs ? (isPro() ? (st.flavors[tid]||vs[0].id) : vs[0].id) : "";
   // during a preview, show the previewed theme's default font so it looks right;
