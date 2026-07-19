@@ -172,6 +172,10 @@
   /* midnight: Helvetica-poster — bold black & white, digits given air.
      Weight defers to the font picker so Thin/Chunky actually apply. */
   body.theme-midnight #time{font-weight:var(--fontw,700); letter-spacing:-.01em; font-size:clamp(5.3rem,33vw,48vh);}
+  body.theme-midnight #time .tick-cell{display:inline-block; overflow:hidden; height:1em; line-height:1; vertical-align:top;}
+  body.theme-midnight #time .tick-track{display:block;}
+  body.theme-midnight #time .tick-track > span{display:block; line-height:1;}
+  body.theme-midnight #time .tick-track.tick-rolling{transform:translateY(-1em); transition:transform .5s cubic-bezier(.3,.85,.35,1);}
   body.theme-midnight #label, body.theme-bounce #label{
     text-transform:none; letter-spacing:.02em; font-weight:500;
     font-size:clamp(1.2rem,3vh,1.85rem); color:#6f6f76;
@@ -1453,6 +1457,52 @@ function timeWords(s){
   return `<span class="wline">${line1}</span><span class="wline">${line2}</span>`;
 }
 
+/* ----- ticker renderer (bold theme): rolls only the digits that changed,
+   like an odometer/speedometer wheel ----- */
+let tickerPrev = "";
+function renderTicker(el, text){
+  if(el.children.length !== text.length){
+    el.innerHTML = "";
+    for(const ch of text){
+      const cell = document.createElement("span");
+      cell.className = "tick-cell";
+      const track = document.createElement("span");
+      track.className = "tick-track";
+      const cur = document.createElement("span");
+      cur.textContent = ch;
+      track.appendChild(cur);
+      cell.appendChild(track);
+      el.appendChild(cell);
+    }
+    tickerPrev = text;
+    return;
+  }
+  const cells = el.children;
+  for(let i=0;i<text.length;i++){
+    if(text[i] !== tickerPrev[i]) rollDigit(cells[i], text[i]);
+  }
+  tickerPrev = text;
+}
+function rollDigit(cell, ch){
+  const track = cell.querySelector(".tick-track");
+  if(track.children.length > 1) return; // already mid-roll, let it finish
+  const next = document.createElement("span");
+  next.textContent = ch;
+  track.appendChild(next);
+  void track.offsetWidth;
+  track.classList.add("tick-rolling");
+  const cleanup = () => {
+    track.classList.remove("tick-rolling");
+    track.style.transition = "none";
+    track.removeChild(track.firstChild);
+    track.style.transform = "";
+    void track.offsetWidth;
+    track.style.transition = "";
+    track.removeEventListener("transitionend", cleanup);
+  };
+  track.addEventListener("transitionend", cleanup);
+}
+
 /* ----- nixie tube renderer ----- */
 function renderNixie(text){
   const tpl = text.replace(/\d/g,"D");
@@ -1664,7 +1714,8 @@ function render(){
   elBounceWrap.style.display   = mode==="bounce"? "block":"none";
 
   if(mode==="digits"){
-    elTime.textContent = text;
+    if(def.id === "midnight") renderTicker(elTime, text);
+    else elTime.textContent = text;
     elTime.className = finished ? "over" : danger ? "danger" : warn ? "warn" : "";
   } else if(mode==="seg") renderSegInto(elSeg, text, false);
   else if(mode==="flip") renderFlip(text);
