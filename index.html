@@ -53,7 +53,24 @@
   body.theme-egg.mode-dark{ --bg:#181c22; --bg2:#20242a; --fg:#dbe3ea; --muted:#7f8f9e; --panel:#20242a; --border:#333a42; }
   body.theme-egg.mode-dark #eggRulerSvg .ruler-mark{ stroke:#5c6874; }
   body.theme-egg.mode-dark #eggRulerSvg .ruler-num{ fill:#8892a0; }
-  body.theme-sunset  { --bg:#e79ae2; --bg2:rgba(255,255,255,.16); --fg:#fdf3e0; --muted:rgba(255,250,240,.8); --panel:#a4539f; --border:#bd74bb; }
+  /* the rest of the themes below are strong single-look "objects" (a CRT,
+     a console, a photo) rather than a neutral page — a full light/dark
+     redesign doesn't really apply. Per-request, they still get a toggle:
+     at minimum the backdrop behind the main readout swaps, even where the
+     object itself (screen glass, console panel, photo) stays as-is. */
+  body.theme-lcd.mode-light{ --bg:#e9e6e0; --bg2:#dedad2; --fg:#c2261c; --muted:#a08a86; --panel:#f4f2ee; --border:#cfcabf; }
+  body.theme-terminal.mode-light{ --bg:#eef2ee; --bg2:#e2e8e2; --fg:#1f7a3f; --muted:#7a9884; --panel:#e2e8e2; --border:#c7d2c7; }
+  body.theme-web1.mode-light{ --bg:#c8dede; --bg2:#b8d0d0; --fg:#004040; --muted:#3a6060; --panel:#e8e4d8; --border:#909890; }
+  body.theme-nixie.mode-light{ --bg:#f0e6d4; --bg2:#e6d8c0; --fg:#b5691a; --muted:#a8875a; --panel:#f6efe0; --border:#d8c6a0; }
+  body.theme-photo.mode-light{ --bg:#e8e6e0; --bg2:#dcdad2; --fg:#181818; --muted:rgba(20,20,20,.68); }
+  body.theme-lcars.mode-light{ --bg:#e8e4dc; --bg2:#dcd6ca; --fg:#c05a00; --muted:#a08560; --panel:#f0ece2; --border:#c9c0ac; }
+  body.theme-bounce.mode-light{ --bg:#f3f2f0; --bg2:#e8e7e4; --fg:#333338; --muted:#8a8a86; --panel:#ffffff; --border:#dedcd9; }
+  body.theme-sunset.mode-light{ --fg:#181018; --muted:rgba(24,16,24,.72); }
+  body.theme-aurora.mode-light{ --bg:#eef1ee; --bg2:#e2e8e2; --fg:#12140f; --muted:rgba(15,20,12,.65); }
+  body.theme-sunset  { --bg:#e79ae2; --bg2:rgba(255,255,255,.16); --fg:#fdf3e0; --muted:rgba(255,250,240,.8); --panel:#a4539f; --border:#bd74bb; --sunset-accent:#ff2fc4; }
+  body.theme-sunset[data-flavor="magma"]{ --sunset-accent:#ff3d1a; }
+  body.theme-sunset[data-flavor="violet"]{ --sunset-accent:#b026ff; }
+  body.theme-sunset[data-flavor="ocean"]{ --sunset-accent:#00e5ff; }
   body.theme-terminal{ --bg:#050805; --bg2:#0a120a; --fg:#4ade80; --muted:#3a7d52; --panel:#0a120a; --border:#1e3323; }
   body.theme-disc    { --bg:#eeeef1; --bg2:#e4e4e8; --fg:#333; --muted:#9a9aa2; --panel:#c4c4cb; --border:#d4d4da; --danger:#d5442f; }
   body.theme-lcd     { --bg:#000000; --bg2:#0a0a0a; --fg:#ff3b2f; --muted:#7a2620; --panel:#121212; --border:#2a2a2a; }
@@ -62,6 +79,10 @@
   body.theme-flip    { --bg:#000000; --bg2:#0e0e10; --fg:#c6c6c9; --muted:#5a5a5e; --panel:#141416; --border:#26262a; }
   body.theme-nixie   { --bg:#161009; --bg2:#1e1710; --fg:#ffab40; --muted:#8a6a45; --panel:#211a12; --border:#3a2d1e; }
   body.theme-squiggle{ --bg:#000000; --bg2:#111113; --fg:#ffffff; --muted:#8f8f96; --panel:#17171a; --border:#2c2c31; }
+  body.theme-aurora  { --bg:#050807; --bg2:#0a100c; --fg:#f2fbf5; --muted:#8fa89a; --panel:#0d1712; --border:#1c2b22; --aurora-glow:#7cff9a; }
+  body.theme-aurora[data-flavor="violet"]{ --aurora-glow:#b497cf; }
+  body.theme-aurora[data-flavor="sunset"]{ --aurora-glow:#ff9e7d; }
+  body.theme-aurora[data-flavor="ice"]{ --aurora-glow:#5ad0ff; }
   body.theme-kitchen { --bg:#dfe2e6; --bg2:#d3d7dc; --fg:#26282b; --muted:#8b9097; --panel:#f4f5f6; --border:#c6cbd1; }
   body.theme-photo   { --bg:#0d120d; --bg2:rgba(255,255,255,.08); --fg:#ffffff; --muted:rgba(255,255,255,.65); --panel:#141a14; --border:#2c352c; }
   body.theme-nasa    { --bg:#f1f0ec; --bg2:#e7e5e0; --fg:#1e2124; --muted:#9a9c9e; --accent:#ff5c1f; --danger:#ff5c1f; --panel:#ffffff; --border:#d8d6d0; }
@@ -83,11 +104,14 @@
     overflow:hidden; transition:background .4s,color .4s;
   }
   body.theme-sunset{background:radial-gradient(circle at 50% 52%, #ffb46b 0%, #ff7bb0 32%, #f07ae2 58%, #dc9df2 82%, #d5a8f2 100%);}
+  body.theme-sunset.mode-dark{background:radial-gradient(circle at 50% 52%, #7a4a8a 0%, #5c3470 32%, #3a2158 58%, #241344 82%, #180d38 100%);}
   body.theme-nixie{background:radial-gradient(circle at 50% 45%, #120b05 0%, #000 68%);}
+  body.theme-nixie.mode-light{background:radial-gradient(circle at 50% 45%, #f6ecd8 0%, #eaddc0 68%);}
   /* Forest theme photos (Unsplash license: free for commercial use).
      The image lives on a fixed layer with a slow Ken Burns drift — a subtle cinemagraph feel.
      The dark gradient keeps white text readable; the tinted bg is the offline fallback. */
   body.theme-photo{background:#0d120d;}
+  body.theme-photo.mode-light{background:#e8e6e0;}
   body.theme-photo::before{
     content:""; position:fixed; inset:-6%; z-index:0; pointer-events:none;
     background:linear-gradient(rgba(0,0,0,.42), rgba(0,0,0,.55)),
@@ -106,9 +130,28 @@
     background:linear-gradient(rgba(0,0,0,.38), rgba(0,0,0,.52)),
       url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1920&auto=format&fit=crop") center/cover no-repeat;
   }
+  /* day mode: a light wash instead of the dark tint, same idea as Gradient
+     lightening its shader colors — the photo itself stays, only the
+     dimming layer over it flips from darkening to brightening */
+  body.theme-photo.mode-light::before{
+    background:linear-gradient(rgba(255,255,255,.35), rgba(255,255,255,.5)),
+      url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1920&auto=format&fit=crop") center/cover no-repeat;
+  }
+  body.theme-photo.mode-light[data-flavor="mountain"]::before{
+    background:linear-gradient(rgba(255,255,255,.35), rgba(255,255,255,.5)),
+      url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1920&auto=format&fit=crop") center/cover no-repeat;
+  }
+  body.theme-photo.mode-light[data-flavor="ocean"]::before{
+    background:linear-gradient(rgba(255,255,255,.3), rgba(255,255,255,.48)),
+      url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1920&auto=format&fit=crop") center/cover no-repeat;
+  }
+  body.theme-photo.mode-light[data-flavor="fog"]::before{
+    background:linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.55)),
+      url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1920&auto=format&fit=crop") center/cover no-repeat;
+  }
   @keyframes kenburns{from{transform:scale(1) translate(0,0);} to{transform:scale(1.07) translate(1.2%,-1%);}}
   body.theme-photo #time{font-weight:var(--fontw,300); letter-spacing:.01em;}
-  body.theme-photo #label{font-weight:500; letter-spacing:.22em; font-size:clamp(1.1rem,2.9vh,1.7rem); color:rgba(255,255,255,.85);}
+  body.theme-photo #label{font-weight:500; letter-spacing:.22em; font-size:clamp(1.1rem,2.9vh,1.7rem); color:var(--muted);}
   body.theme-photo #subline{text-transform:uppercase; letter-spacing:.18em; font-size:clamp(.7rem,1.7vh,.95rem);}
   body.theme-terminal, body.theme-lcd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
   body.theme-web1{font-family:Tahoma,'MS Sans Serif',Verdana,sans-serif;}
@@ -125,6 +168,9 @@
 
   /* ---------- fx layers (matrix rain / flying toasters) ---------- */
   #fx{position:fixed; inset:0; z-index:0; pointer-events:none; display:none;}
+  #lavaBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
+  #gradientBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
+  #auroraBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
   #toasters{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; display:none;}
   .toaster{position:absolute; will-change:transform; animation:flyby linear infinite;}
   .toaster .wing{animation:flap .3s ease-in-out infinite alternate; transform-origin:28px 20px;}
@@ -181,6 +227,10 @@
     font-size:clamp(1.2rem,3vh,1.85rem); color:#6f6f76;
     margin-bottom:0;
   }
+  /* pull the title down out of #display's default 1rem gap, closer to the
+     big digits below it — Bold's numbers are large enough that the normal
+     gap reads as too much empty space between title and time */
+  body.theme-midnight #label{margin-bottom:-.6rem;}
   body.theme-sunset #label{font-family:'Arial Rounded MT Bold','Trebuchet MS',sans-serif; letter-spacing:.28em; font-weight:700;}
 
   #display{cursor:pointer; user-select:none; display:flex; flex-direction:column; align-items:center; gap:1rem;}
@@ -189,7 +239,7 @@
     font-family:var(--font); /* the font picker always wins for the digits */
     font-size:clamp(4rem,26vw,32vh); font-weight:var(--fontw,700); line-height:1;
     font-variant-numeric:tabular-nums; letter-spacing:-.02em;
-    transition:color .3s;
+    transition:color .3s; white-space:nowrap; max-width:94vw;
   }
   #time.warn{color:var(--accent);}
   #time.danger{color:var(--danger);}
@@ -206,7 +256,12 @@
     font-size:clamp(2.3rem,7.8vw,7.2rem); font-weight:500; line-height:1.12;
     letter-spacing:-.025em; color:var(--fg); text-transform:lowercase;
   }
-  #wordsWrap .wline{display:block; white-space:nowrap;}
+  #wordsWrap{perspective:600px;}
+  #wordsWrap .wline{display:block; white-space:nowrap; transform-origin:50% 50%; backface-visibility:hidden;}
+  #wordsWrap .wline.wflip-out{animation:wflipOut .16s cubic-bezier(.4,0,1,.6) forwards;}
+  #wordsWrap .wline.wflip-in{animation:wflipIn .18s cubic-bezier(0,0,.2,1) forwards;}
+  @keyframes wflipOut{0%{transform:rotateX(0);}100%{transform:rotateX(-90deg);}}
+  @keyframes wflipIn{0%{transform:rotateX(90deg);}100%{transform:rotateX(0);}}
   #wordsWrap.danger{color:#c0392b;}
   #wordsWrap.over{color:#c0392b; animation:pulse 1s ease-in-out 3;}
   body.theme-paper #display{align-items:flex-start; width:min(84vw,1100px);}
@@ -217,6 +272,26 @@
     font-family:'Arial Rounded MT Bold','Trebuchet MS','Comic Sans MS',sans-serif;
     font-weight:700; letter-spacing:.04em;
     text-shadow:0 2px 28px rgba(120,40,90,.3);
+  }
+  /* aurora: thin luminous digits with a heavy colored bloom behind them —
+     a soft glow halo bleeding out of light text, echoing the aurora's own
+     soft-edged color wash rather than a hard neon outline. */
+  body.theme-aurora #time{
+    font-weight:var(--fontw,200); letter-spacing:.02em; color:var(--fg);
+    text-shadow:
+      0 0 14px var(--aurora-glow),
+      0 0 42px var(--aurora-glow),
+      0 0 90px var(--aurora-glow);
+  }
+  body.theme-aurora.mode-light #time{
+    text-shadow:
+      0 0 10px var(--aurora-glow),
+      0 0 30px var(--aurora-glow),
+      0 0 60px rgba(0,0,0,.12);
+  }
+  body.theme-aurora #label{
+    font-weight:300; letter-spacing:.3em; text-transform:uppercase;
+    color:var(--muted); text-shadow:0 0 18px var(--aurora-glow);
   }
   /* matrix: glow + cursor (currentColor so rain-color variants recolor it) */
   body.theme-terminal #time{
@@ -461,19 +536,19 @@
   .nixie-sep i{width:.08em; height:.08em; border-radius:50%; background:#ff8a1a; display:block;
     box-shadow:0 0 .08em #ffedc8, 0 0 .3em rgba(255,80,0,.9);}
 
-  /* ---------- countdown (days · hrs · min · sec, dotted glow) ---------- */
-  body.theme-days{--bg:#000; --bg2:#111; --fg:#f2f2f2; --muted:#6a6a70; --panel:#141416; --border:#2a2a2e; --cdc:#f2f2f2;}
-  body.theme-days[data-flavor="orange"]{--cdc:#ff7a1c;}
-  body.theme-days[data-flavor="volt"]{--cdc:#c8ff2e;}
-  body.theme-days[data-flavor="red"]{--cdc:#ff3b30;}
-  body.theme-days[data-flavor="blue"]{--cdc:#4da6ff;}
-  body.theme-days #label{display:none;}
-  body.theme-days #logo{order:4; margin-top:5vh; max-height:9vh;}
-  #daysWrap{display:none; width:min(76vw,116vh); max-width:100%; color:var(--cdc);}
-  #daysWrap svg{width:100%; height:auto; display:block;
-    filter:drop-shadow(0 0 4px currentColor) drop-shadow(0 0 20px currentColor);}
-  #daysWrap svg circle{fill:currentColor;}
-  #daysWrap svg text{fill:currentColor; opacity:.85;}
+  /* ---------- lava (molten WebGL background + a burned-in timecode bar) ---------- */
+  body.theme-days{--bg:#000; --bg2:#111; --fg:#f2f2f2; --muted:#c9c9ce; --panel:#141416; --border:#2a2a2e; --cdc:#fff; --cdc-text:#111;}
+  body.theme-days.mode-light{--bg:#f5f5f3; --bg2:#ebebe8; --fg:#151513; --muted:#8a8a86; --panel:#ffffff; --border:#e3e2df; --cdc:#151513; --cdc-text:#fff;}
+  body.theme-days[data-flavor="orange"]{--cdc:#ff7a1c; --cdc-text:#111;}
+  body.theme-days[data-flavor="volt"]{--cdc:#c8ff2e; --cdc-text:#111;}
+  body.theme-days[data-flavor="red"]{--cdc:#ff3b30; --cdc-text:#111;}
+  body.theme-days[data-flavor="blue"]{--cdc:#4da6ff; --cdc-text:#111;}
+  body.theme-days #time{
+    display:inline-block; background:#000; color:#fff;
+    padding:.2em .5em; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-weight:400;
+    font-size:clamp(2.6rem,8.4vw,5.2rem); letter-spacing:.01em;
+  }
+  body.theme-days #label{font-weight:400; font-size:clamp(.85rem,2.2vh,1.3rem);}
 
   /* ---------- bounce: a plain time that roams the screen and changes
      color whenever it hits an edge, screensaver-style ---------- */
@@ -524,15 +599,19 @@
     letter-spacing:.12em; font-variant-numeric:tabular-nums; line-height:1;
     text-shadow:0 2px 30px rgba(120,40,90,.28); padding:0 .06em;
   }
+  body.theme-sunset.mode-dark #sunsetTime{color:#fff; text-shadow:0 2px 30px rgba(0,0,0,.45);}
+  body.theme-sunset.mode-light #sunsetTime{color:#181018; text-shadow:0 2px 20px rgba(255,255,255,.35);}
   body.theme-sunset #label{
     font-family:var(--font); font-weight:300; letter-spacing:.4em;
-    text-transform:uppercase; color:rgba(255,248,238,.8);
+    text-transform:uppercase; color:var(--muted);
     font-size:clamp(.9rem,2.3vh,1.26rem);
   }
   #meterSvg{width:min(52vw,60vh); height:auto; display:block; overflow:visible;}
   #meterSvg line.mk{stroke:rgba(255,246,230,.55); stroke-width:.7;}
   #meterSvg line.mk.big{stroke:rgba(255,246,230,.85); stroke-width:1;}
-  #meterSvg line#meterCur{stroke:#ffe94a; stroke-width:1.8;}
+  #meterSvg line#meterCur{stroke:var(--sunset-accent); stroke-width:1.8;}
+  body.theme-sunset.mode-light #meterSvg line.mk{stroke:rgba(24,16,24,.4);}
+  body.theme-sunset.mode-light #meterSvg line.mk.big{stroke:rgba(24,16,24,.65);}
   /* pro lamp color combos */
   body.theme-sunset[data-flavor="magma"]{background:radial-gradient(circle at 50% 52%, #ffd08a 0%, #ff9a5c 30%, #ff5c7a 60%, #c2407a 85%, #a83a72 100%);}
   body.theme-sunset[data-flavor="violet"]{background:radial-gradient(circle at 50% 52%, #ffb2d9 0%, #e07ae8 38%, #a06cf0 68%, #7a5cd8 100%);}
@@ -597,6 +676,27 @@
   }
   body.hide-ui #controls{opacity:0; transform:translateY(12px); pointer-events:none;}
   body.hide-ui{cursor:none;}
+  #topLeft{
+    position:fixed; top:1rem; left:1rem; z-index:4;
+    display:flex; gap:.4rem; transition:opacity .4s, transform .4s;
+  }
+  body.hide-ui #topLeft{opacity:0; transform:translateY(-10px); pointer-events:none;}
+  button.icon.corner-bl{position:fixed; bottom:1rem; left:1rem; z-index:4; transition:opacity .4s, transform .4s, background .15s, border-color .15s;}
+  button.icon.corner-br{position:fixed; bottom:1rem; right:1rem; z-index:4; transition:opacity .4s, transform .4s, background .15s, border-color .15s;}
+  body.hide-ui button.icon.corner-bl, body.hide-ui button.icon.corner-br{opacity:0; transform:translateY(10px); pointer-events:none;}
+  /* hamburger settings toggle, fixed top-right, morphs into an X when open */
+  button.icon.hamburger{
+    position:fixed; top:1rem; right:1rem; z-index:6;
+    flex-direction:column; gap:.28rem; transition:opacity .4s, transform .4s, background .15s, border-color .15s;
+  }
+  body.hide-ui button.icon.hamburger{opacity:0; transform:translateY(-10px); pointer-events:none;}
+  button.icon.hamburger span{
+    display:block; width:60%; height:2px; background:currentColor; border-radius:1px;
+    transition:transform .3s ease, opacity .2s ease;
+  }
+  button.icon.hamburger.open span:nth-child(1){transform:translateY(.44rem) rotate(45deg);}
+  button.icon.hamburger.open span:nth-child(2){opacity:0;}
+  button.icon.hamburger.open span:nth-child(3){transform:translateY(-.44rem) rotate(-45deg);}
   .row{display:flex; gap:.5rem; flex-wrap:wrap; justify-content:center; align-items:center;}
   button{
     background:var(--panel); color:var(--fg); border:1px solid var(--border);
@@ -616,10 +716,10 @@
   #btnStart{border-radius:999px;}
   body.theme-disc #btnStart{background:var(--disc-accent); border-color:var(--disc-accent);}
   body.theme-nixie #btnStart{background:#ff8a1a; border-color:#ff8a1a;}
-  body.theme-days #btnStart{background:var(--cdc); border-color:var(--cdc);}
+  body.theme-days #btnStart{background:var(--cdc); border-color:var(--cdc); color:var(--cdc-text);}
   body.theme-lcd #btnStart{background:var(--fg); border-color:var(--fg);}
   body.theme-terminal #btnStart{background:var(--fg); border-color:var(--fg);}
-  body.theme-paper #btnStart{background:#e0562f; border-color:#e0562f;}      /* Braun-style burnt orange */
+  body.theme-paper #btnStart{background:#e87249; border-color:#e87249;}      /* Braun-style burnt orange, lightened */
   body.theme-squiggle #btnStart{background:#a4c639; border-color:#a4c639;}  /* Android green */
   body.theme-flip #btnStart{background:var(--fg); border-color:var(--fg);}  /* the cards' own grey */
   /* Flip's button color is var(--fg), which itself flips between a light and a
@@ -628,11 +728,9 @@
   body.theme-flip.mode-light #btnStart{color:#f2f1ec;}
   body.theme-egg #btnStart{background:#e0392e; border-color:#e0392e;}       /* same red as the ruler pointer */
   body.theme-photo #btnStart{background:#7f8f4a; border-color:#7f8f4a;}    /* mossy olive green */
-  body.theme-sunset #btnStart{background:#ff2fc4; border-color:#ff2fc4;}   /* neon */
-  body.theme-sunset[data-flavor="magma"] #btnStart{background:#ff3d1a; border-color:#ff3d1a;}
-  body.theme-sunset[data-flavor="violet"] #btnStart{background:#b026ff; border-color:#b026ff;}
-  body.theme-sunset[data-flavor="ocean"] #btnStart{background:#00e5ff; border-color:#00e5ff;}
+  body.theme-sunset #btnStart{background:var(--sunset-accent); border-color:var(--sunset-accent);}
   body.theme-bounce #btnStart{background:#39ff14; border-color:#39ff14;}   /* fallback before JS syncs it to the bouncing digit's own color */
+  body.theme-aurora #btnStart{background:var(--aurora-glow); border-color:var(--aurora-glow);}
   /* quiet icon buttons */
   button.icon, a.icon{
     width:2.8rem; height:2.8rem; padding:.62rem; border-radius:12px;
@@ -655,7 +753,7 @@
   button.preset:hover{color:var(--fg); opacity:1; border-color:var(--border);}
   button.gold{border-color:var(--accent); color:var(--accent); font-weight:700; opacity:.9;}
   #hint{color:var(--muted); font-size:.72rem; letter-spacing:.04em; opacity:.45;}
-  body.theme-web1 #controls button, body.theme-web1 a.btn-link{border-radius:0; border:2px outset #e8e4dc; background:#d4d0c8; color:#000; font-family:Tahoma,Verdana,sans-serif; opacity:1;}
+  body.theme-web1 #controls button, body.theme-web1 #topLeft button, body.theme-web1 button.icon.hamburger, body.theme-web1 button.icon.corner-bl, body.theme-web1 button.icon.corner-br, body.theme-web1 a.btn-link{border-radius:0; border:2px outset #e8e4dc; background:#d4d0c8; color:#000; font-family:Tahoma,Verdana,sans-serif; opacity:1;}
   body.theme-web1 #controls button.primary{color:#fff; background:#000080; border:2px outset #4a4ad0;}
   body.theme-web1 button.preset{color:#333;}
 
@@ -722,8 +820,9 @@
   #modalCard{position:relative;}
   a.buy-btn{
     display:block; background:var(--accent); color:#111; font-weight:800; text-decoration:none;
-    border-radius:10px; padding:.75rem 1.4rem; font-size:1.05rem;
+    border-radius:999px; padding:.75rem 1.4rem; font-size:1.05rem; text-align:center;
   }
+  #btnTrial{border-radius:999px;}
 
   /* ---------- global overrides (title, TV centering, in-settings Pro) ---------- */
   /* The editable title is shown in Title Case exactly as typed, in every theme */
@@ -743,6 +842,9 @@
 
 <div id="progress"></div>
 <canvas id="fx"></canvas>
+<canvas id="lavaBg"></canvas>
+<canvas id="gradientBg"></canvas>
+<canvas id="auroraBg"></canvas>
 <div id="toasters"></div>
 <div id="previewBadge"></div>
 
@@ -832,7 +934,6 @@
         </div>
       </div>
     </div>
-    <div id="daysWrap"><svg id="daysSvg"></svg></div>
     <div id="bounceWrap"><div id="bounceTime">10:00</div></div>
   </div>
 
@@ -840,43 +941,48 @@
   <div id="subline"></div>
 </div>
 
+<div id="topLeft">
+  <button class="icon" id="btnAppearance" title="Light / dark" style="display:none">
+    <svg class="app-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    <svg class="app-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</div>
+
+<button class="icon hamburger" id="btnSettings" title="Settings" aria-label="Settings">
+  <span></span><span></span><span></span>
+</button>
+
+<button class="icon corner-bl" id="btnMute" title="Sound on/off (M)">
+  <svg class="snd-on" viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L13 19V5L7.5 9.5H4z"/><path d="M16 9a4.5 4.5 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg>
+  <svg class="snd-off" viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L13 19V5L7.5 9.5H4z"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5"/></svg>
+</button>
+
+<button class="icon corner-br" id="btnFull" title="Fullscreen (F)">
+  <svg viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg>
+</button>
+
 <div id="controls">
   <div class="row">
-    <button class="primary" id="btnStart">Start</button>
-  </div>
-  <div class="row" id="presets"></div>
-  <div class="row">
-    <button class="icon" id="btnPlus30" title="Add 30 seconds">
-      <svg viewBox="0 0 24 24"><path d="M19.4 12a7.4 7.4 0 1 1-3.2-6.1"/><polyline points="16.6 2.4 16.4 6.1 12.7 5.9"/><text x="12" y="15.2" text-anchor="middle" font-size="7.4" stroke="none" fill="currentColor" font-weight="700" font-family="inherit">30</text></svg>
-    </button>
     <button class="icon" id="btnReset" title="Reset (R)">
       <svg viewBox="0 0 24 24"><path d="M4.6 12a7.4 7.4 0 1 0 3.2-6.1"/><polyline points="7.4 2.4 7.6 6.1 11.3 5.9"/></svg>
     </button>
-    <button class="icon" id="btnFull" title="Fullscreen (F)">
-      <svg viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg>
+    <button class="primary" id="btnStart">Start</button>
+    <button class="icon" id="btnPlus30" title="Add 30 seconds">
+      <svg viewBox="0 0 24 24"><path d="M19.4 12a7.4 7.4 0 1 1-3.2-6.1"/><polyline points="16.6 2.4 16.4 6.1 12.7 5.9"/><text x="12" y="15.2" text-anchor="middle" font-size="7.4" stroke="none" fill="currentColor" font-weight="700" font-family="inherit">30</text></svg>
     </button>
-    <button class="icon" id="btnMute" title="Sound on/off (M)">
-      <svg class="snd-on" viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L13 19V5L7.5 9.5H4z"/><path d="M16 9a4.5 4.5 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg>
-      <svg class="snd-off" viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L13 19V5L7.5 9.5H4z"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5"/></svg>
-    </button>
+  </div>
+  <div class="row" id="presets"></div>
+  <div class="row">
     <button class="icon" id="btnShuffle" title="Shuffle theme" style="display:none">
       <svg viewBox="0 0 24 24"><path d="M16 4h5v5"/><path d="M3 20 21 4"/><path d="M21 15v5h-5"/><path d="M14.5 14.5 21 20"/><path d="M3 4l6.5 6.5"/></svg>
     </button>
-    <button class="icon" id="btnAppearance" title="Light / dark" style="display:none">
-      <svg class="app-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-      <svg class="app-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    </button>
-    <button class="icon" id="btnSettings" title="Settings">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    </button>
   </div>
-  <div id="hint">Space start · R reset · F fullscreen · ↑↓ ±1 min · ←→ ±10 sec · Click the Time or Any Label to Type</div>
+  <div id="hint">Space start · R reset · F fullscreen · T theme · ↑↓ ±1 min · ←→ ±10 sec · Click the Time or Any Label to Type</div>
 </div>
 
 <aside id="settings">
   <div class="section-head">
     <h2>Settings</h2>
-    <button id="btnCloseSettings" style="border:none;background:none;font-size:1.2rem;color:var(--muted);cursor:pointer">✕</button>
   </div>
 
   <section>
@@ -1062,21 +1168,25 @@ const THEMES = [
   {id:"nasa",     name:"T-Minus",     pro:true,  mode:"nasa",     prog:"none", font:"orbitron"},
   {id:"squiggle", name:"Squiggle",    pro:true,  mode:"squiggle", prog:"none", font:"roboto"},
   {id:"flip",     name:"Flip Clock",  pro:true,  mode:"flip",     prog:"none", font:"helvetica"},
-  {id:"days",     name:"Countdown",   pro:true,  mode:"days",     prog:"none", font:"helvetica"},
+  {id:"days",     name:"Waves",       pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"lcd",      name:"LED Clock",   pro:true,  mode:"seg",      prog:"none", font:"mono"},
   {id:"kitchen",  name:"Kitchen",     pro:true,  mode:"kitchen",  prog:"none", font:"helvetica"},
   {id:"egg",      name:"Egg Timer",   pro:true,  mode:"egg",      prog:"none", font:"helvetica"},
   {id:"photo",    name:"Nature",      pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
-  {id:"sunset",   name:"Sunset Lamp", pro:true,  mode:"dots",     prog:"none", font:"helvetica"},
+  {id:"sunset",   name:"Gradient",    pro:true,  mode:"dots",     prog:"none", font:"helvetica"},
   {id:"nixie",    name:"Nixie Tubes", pro:true,  mode:"nixie",    prog:"none", font:"thin"},
   {id:"terminal", name:"Matrix",      pro:true,  mode:"digits",   prog:"none", font:"mono"},
   {id:"web1",     name:"Web 1.0",     pro:true,  mode:"digits",   prog:"none", font:"mono"},
   {id:"lcars",    name:"Starship",    pro:true,  mode:"lcars",    prog:"none", font:"narrow"},
   {id:"bounce",   name:"Bounce",      pro:true,  mode:"bounce",   prog:"none", font:"helvetica"},
+  {id:"aurora",   name:"Aurora",      pro:true,  mode:"digits",   prog:"none", font:"thin"},
 ];
 // themes flat/simple enough to offer both a dark and a light look; each theme's
 // own hue (accent, glow, etc.) stays untouched — only bg/fg/panel/border shift.
-const APPEARANCE_THEMES = { midnight:"dark", paper:"light", disc:"light", nasa:"light", squiggle:"dark", flip:"dark", kitchen:"light", egg:"light" };
+const APPEARANCE_THEMES = {
+  midnight:"dark", paper:"light", disc:"light", nasa:"light", squiggle:"dark", flip:"dark", kitchen:"light", egg:"light", days:"dark",
+  lcd:"dark", terminal:"dark", web1:"dark", nixie:"dark", photo:"dark", sunset:"light", lcars:"dark", bounce:"dark", aurora:"dark"
+};
 const SOUNDS = [
   {id:"chime",   name:"Chime",   pro:false},
   {id:"bell",    name:"Bell",    pro:true},
@@ -1091,6 +1201,7 @@ const VARIANTS = {
   terminal:[{id:"green",name:"Green",pro:true},{id:"amber",name:"Amber",pro:true},{id:"ice",name:"Ice",pro:true},{id:"crimson",name:"Crimson",pro:true}],
   lcd:     [{id:"red",name:"Red",pro:true},{id:"green",name:"Green",pro:true},{id:"blue",name:"Blue",pro:true},{id:"white",name:"White",pro:true}],
   photo:   [{id:"forest",name:"Forest",pro:true},{id:"mountain",name:"Mountain",pro:true},{id:"ocean",name:"Ocean",pro:true},{id:"fog",name:"Fog",pro:true}],
+  aurora:  [{id:"green",name:"Green",pro:true},{id:"violet",name:"Violet",pro:true},{id:"sunset",name:"Sunset",pro:true},{id:"ice",name:"Ice",pro:true}],
 };
 const FONTS = [
   {id:"helvetica", name:"Helvetica Neue", pro:false, stack:"'Helvetica Neue',Helvetica,Arial,sans-serif"},
@@ -1115,7 +1226,7 @@ let st = Object.assign({
   accent:"#e8c15a", bg:"#101014", useBg:false, font:"helvetica", label:"Workshop Timer", appearance:null,
   lc1:"SET PHASERS TO FUN", lc2:"SHIELDS: 98%", lc3:"WARP 9.9"
 }, load(LS.state));
-st.flavors = Object.assign({sunset:"classic", terminal:"green", lcd:"red", photo:"forest"}, st.flavors||{});
+st.flavors = Object.assign({sunset:"classic", terminal:"green", lcd:"red", photo:"forest", aurora:"green"}, st.flavors||{});
 
 let remaining = st.duration, running = false, deadline = 0, finished = false;
 let tickTimer = null, lastWholeSec = null, wakeLock = null;
@@ -1252,8 +1363,25 @@ const elTime=$("time"), elLabel=$("label"), elSub=$("subline"), elProgress=$("pr
 
 function fmt(s){
   s = Math.max(0, Math.round(s));
-  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+  const d = Math.floor(s/86400), h = Math.floor((s%86400)/3600), m = Math.floor((s%3600)/60), sec = s%60;
+  // once a duration crosses 24h, lead with a days segment (unpadded, like the
+  // hours segment already was) rather than letting hours run past 23
+  if(d) return d+":"+String(h).padStart(2,"0")+":"+String(m).padStart(2,"0")+":"+String(sec).padStart(2,"0");
   return (h? h+":"+String(m).padStart(2,"0") : m) + ":" + String(sec).padStart(2,"0");
+}
+// always dd:hh:mm:ss, every segment zero-padded to 2 digits (Waves theme) —
+// the days segment stays "00" until an actual day has elapsed, then grows
+// past 2 digits naturally since padStart never truncates
+function fmtHMS(s){
+  s = Math.max(0, Math.round(s));
+  const d = Math.floor(s/86400), h = Math.floor((s%86400)/3600), m = Math.floor((s%3600)/60), sec = s%60;
+  return String(d).padStart(2,"0") + ":" + String(h).padStart(2,"0") + ":" + String(m).padStart(2,"0") + ":" + String(sec).padStart(2,"0");
+}
+// always hh:mm:ss (no days segment), every segment zero-padded (Nixie Tubes)
+function fmtHM(s){
+  s = Math.max(0, Math.round(s));
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+  return String(h).padStart(2,"0") + ":" + String(m).padStart(2,"0") + ":" + String(sec).padStart(2,"0");
 }
 
 /* ----- generic seven-segment SVG renderer (LED + kitchen) ----- */
@@ -1386,56 +1514,6 @@ function renderEgg(rmMinutes, text){
   $("eggSec").textContent = (p[p.length-1]||"00").padStart(2,"0");
 }
 
-/* ----- countdown board: DAYS · HRS · MIN · SEC in glowing dots ----- */
-const DOTS = {
-  "0":["01110","10001","10011","10101","11001","10001","01110"],
-  "1":["00100","01100","00100","00100","00100","00100","01110"],
-  "2":["01110","10001","00001","00010","00100","01000","11111"],
-  "3":["11111","00010","00100","00010","00001","10001","01110"],
-  "4":["00010","00110","01010","10010","11111","00010","00010"],
-  "5":["11111","10000","11110","00001","00001","10001","01110"],
-  "6":["00110","01000","10000","11110","10001","10001","01110"],
-  "7":["11111","00001","00010","00100","01000","01000","01000"],
-  "8":["01110","10001","10001","01110","10001","10001","01110"],
-  "9":["01110","10001","10001","01111","00001","00010","01100"]
-};
-let daysLast = null;
-function renderDays(totalSec){
-  const s = Math.max(0, Math.floor(totalSec));
-  const hh = Math.floor(s/3600), mm = Math.floor(s%3600/60), ss = s%60;
-  const groups = [
-    {label:"HRS",  str:String(hh).padStart(2,"0")},
-    {label:"MIN",  str:String(mm).padStart(2,"0")},
-    {label:"SEC",  str:String(ss).padStart(2,"0")}
-  ];
-  const key = groups.map(gr=>gr.str).join(":");
-  if(key === daysLast) return;
-  daysLast = key;
-  const S = 4, R = 1.35, ADV = 7*S, SEPW = 4*S;
-  let x = 0; const parts = [];
-  groups.forEach((gr, gi)=>{
-    const gx = x;
-    for(const ch of gr.str){
-      (DOTS[ch]||[]).forEach((row,ri)=>{
-        for(let ci=0;ci<5;ci++) if(row[ci]==="1")
-          parts.push(`<circle cx="${x+ci*S}" cy="${ri*S}" r="${R}"/>`);
-      });
-      x += ADV;
-    }
-    const gw = x - gx - 2*S;
-    parts.push(`<text x="${gx+gw/2}" y="${-2.7*S}" font-size="${2.2*S}" font-weight="700" text-anchor="middle" letter-spacing="1.5" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif">${gr.label}</text>`);
-    if(gi < 2){ // colon dots between groups
-      parts.push(`<circle cx="${x}" cy="${2*S}" r="${R}"/><circle cx="${x}" cy="${4.5*S}" r="${R}"/>`);
-      x += SEPW;
-    }
-  });
-  const svg = $("daysSvg");
-  // generous margins so labels and the glow never clip; scales to full width
-  svg.setAttribute("viewBox", `${-3*S} ${-8*S} ${x - 2*S + 6*S} ${16.5*S}`);
-  svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
-  svg.innerHTML = parts.join("");
-}
-
 /* ----- words renderer (paper theme: no numerals, just language) ----- */
 const W_ONES = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
   "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
@@ -1446,15 +1524,34 @@ function numWords(n){
   return W_TENS[t] + (o ? "-"+W_ONES[o] : "");
 }
 function timeWords(s){
-  // always exactly two lines so the layout never jumps
+  // two lines under an hour, three once hours are involved, so minutes
+  // never silently vanish (e.g. "one hour, zero minutes, twenty-five seconds")
   s = Math.max(0, Math.round(s));
   if(s === 0) return '<span class="wline">time\'s up</span>';
   const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
-  let line1 = h
-    ? numWords(h) + (h===1 ? " hour" : " hours") + (m ? " " + numWords(m) : "")
-    : numWords(m) + (m===1 ? " minute" : " minutes");
-  const line2 = numWords(sec) + (sec===1 ? " second" : " seconds");
-  return `<span class="wline">${line1}</span><span class="wline">${line2}</span>`;
+  const secLine = numWords(sec) + (sec===1 ? " second" : " seconds");
+  if(h){
+    const hourLine = numWords(h) + (h===1 ? " hour" : " hours");
+    const minLine = numWords(m) + (m===1 ? " minute" : " minutes");
+    return `<span class="wline">${hourLine}</span><span class="wline">${minLine}</span><span class="wline">${secLine}</span>`;
+  }
+  const minLine = numWords(m) + (m===1 ? " minute" : " minutes");
+  return `<span class="wline">${minLine}</span><span class="wline">${secLine}</span>`;
+}
+
+/* ----- shrink #time to fit the viewport width instead of overflowing or
+   wrapping to a second line — matters whenever an extra digit shows up
+   (an hour appearing, a theme's own longer format) and the CSS clamp's
+   vw-based size no longer leaves room for it. Resets to the CSS-driven
+   size first so it can grow back once the content shortens again. ----- */
+function autofitTime(el){
+  el.style.fontSize = "";
+  const maxW = Math.min(window.innerWidth * 0.94, el.parentElement ? el.parentElement.clientWidth * 0.98 : Infinity);
+  const w = el.scrollWidth;
+  if(w > maxW && w > 0){
+    const cs = parseFloat(getComputedStyle(el).fontSize);
+    el.style.fontSize = Math.max(1, cs * (maxW / w)) + "px";
+  }
 }
 
 /* ----- ticker renderer (bold theme): rolls only the digits that changed,
@@ -1503,6 +1600,40 @@ function rollDigit(cell, ch){
   track.addEventListener("transitionend", cleanup);
 }
 
+/* ----- words renderer (typography theme): flips only the line that changed ----- */
+function renderWords(el, html){
+  const tmp = document.createElement("div");
+  tmp.innerHTML = html;
+  const newLines = Array.from(tmp.querySelectorAll(".wline")).map(s => s.textContent);
+  const current = el.querySelectorAll(":scope > .wline");
+  if(current.length !== newLines.length){
+    el.innerHTML = html;
+    return;
+  }
+  current.forEach((lineEl, i) => {
+    if(lineEl.textContent !== newLines[i]) flipWordLine(lineEl, newLines[i]);
+  });
+}
+function flipWordLine(el, text){
+  if(el.dataset.flipping === "1") { el.textContent = text; return; }
+  el.dataset.flipping = "1";
+  el.classList.remove("wflip-in");
+  el.classList.add("wflip-out");
+  const toIn = () => {
+    el.removeEventListener("animationend", toIn);
+    el.textContent = text;
+    el.classList.remove("wflip-out");
+    el.classList.add("wflip-in");
+    const done = () => {
+      el.removeEventListener("animationend", done);
+      el.classList.remove("wflip-in");
+      delete el.dataset.flipping;
+    };
+    el.addEventListener("animationend", done);
+  };
+  el.addEventListener("animationend", toIn);
+}
+
 /* ----- nixie tube renderer ----- */
 function renderNixie(text){
   const tpl = text.replace(/\d/g,"D");
@@ -1533,7 +1664,7 @@ function renderNixie(text){
    breathes: it gently grows past the true elapsed point and eases back,
    pausing between breaths, so the ring feels alive without ever
    understating how much time is actually left. ----- */
-const SQ = { R:40, A:6.0, WAVES:13, TOP:-Math.PI/2, GAP:0.10, BREATHE:3400, BREATHE_MAX:0.3 };
+const SQ = { R:40, A:4.2, WAVES:8, TOP:-Math.PI/2, GAP:0.10 };
 function squigArc(from, to, wavy, phase, amp){
   if(to - from < 0.02) return "";
   const steps = Math.max(8, Math.ceil((to-from)*46));
@@ -1548,25 +1679,33 @@ function squigArc(from, to, wavy, phase, amp){
   return d;
 }
 function initSquiggle(){ renderSquiggle(1, "10:00", "remaining"); }
+/* the squiggle's wobble is animated independently of the 250ms core render
+   loop, via requestAnimationFrame, for the same reason the T-Minus milliseconds
+   are: it's a pure function of wall-clock time plus the last-known frac, not
+   accumulated state, so it's safe to drive at 60fps even though the core
+   engine can't be — driving it from the 250ms loop instead is what made it
+   look jumpy/chaotic rather than a smooth continuous wobble. */
+let squigState = { frac:1 };
+let squigRaf = null;
 function renderSquiggle(frac, text, sub){
-  // the ELAPSED portion squiggles and wobbles; the rest stays a thin calm arc
-  const f = Math.max(0, Math.min(1, frac));
-  const elapsed = (1 - f)*Math.PI*2;
-  const now = performance.now();
-  const phase = running ? now/160 : 0;                       // wave travels
-  const amp = running ? SQ.A + 1.2*Math.sin(now/300) : SQ.A; // amplitude breathes
-  // the visible squiggle briefly reaches further than true elapsed, then relaxes
-  // back to it (a slow in-out pulse with a rest between breaths); never runs short
-  const room = Math.PI*2 - elapsed - SQ.GAP*2;
-  const breathe = running && room > 0
-    ? room*SQ.BREATHE_MAX*Math.max(0, Math.sin(now/SQ.BREATHE))
-    : 0;
-  const elapsedVisual = elapsed + breathe;
-  $("squigProg").setAttribute("d", elapsedVisual < 0.02 ? "" : squigArc(SQ.TOP, SQ.TOP + elapsedVisual, true, phase, amp));
-  const t0 = SQ.TOP + elapsedVisual + SQ.GAP, t1 = SQ.TOP + Math.PI*2 - SQ.GAP;
-  $("squigTrack").setAttribute("d", t0 >= t1 ? "" : squigArc(t0, t1, false, 0, 0));
+  squigState.frac = Math.max(0, Math.min(1, frac));
   elSquigTime.textContent = text;
   elSquigSub.textContent = sub;
+  if(!squigRaf) squigRaf = requestAnimationFrame(squiggleFrame);
+}
+function squiggleFrame(){
+  if(curThemeId() !== "squiggle"){ squigRaf = null; return; }
+  const f = squigState.frac;
+  // exactly true elapsed — no overshoot-and-relax "breathing"; only the
+  // wave's travel/amplitude animate continuously, so the ring stays accurate
+  const elapsed = (1 - f)*Math.PI*2;
+  const now = performance.now();
+  const phase = running ? now/200 : 0;                        // wave travels
+  const amp = running ? SQ.A + 0.6*Math.sin(now/900) : SQ.A;  // amplitude pulses slowly
+  $("squigProg").setAttribute("d", elapsed < 0.02 ? "" : squigArc(SQ.TOP, SQ.TOP + elapsed, true, phase, amp));
+  const t0 = SQ.TOP + elapsed + SQ.GAP, t1 = SQ.TOP + Math.PI*2 - SQ.GAP;
+  $("squigTrack").setAttribute("d", t0 >= t1 ? "" : squigArc(t0, t1, false, 0, 0));
+  squigRaf = requestAnimationFrame(squiggleFrame);
 }
 
 /* ----- sunset renderer: soft digits + ruler meter ----- */
@@ -1610,6 +1749,31 @@ function renderLcars(isClock){
   syncEditable($("lcP2"), st.lc2);
   syncEditable($("lcP3"), st.lc3);
 }
+/* LCARS milliseconds: same fix as the T-Minus readout — animated via
+   requestAnimationFrame, independent of the 250ms core render loop, since
+   it's a pure read of wall-clock time each frame rather than accumulated
+   state (safe to run at 60fps even though the core engine can't be). */
+let lcarsMsRaf = null;
+function lcarsMsFrame(){
+  if(!running && !swOn()){ lcarsMsRaf = null; return; }
+  if(clockOn()){ lcarsMsRaf = null; return; } // clock mode shows real seconds, not ms
+  // compute straight from the deadline/stopwatch clock each frame, not the
+  // shared `remaining` var — that's only refreshed once per 250ms by the
+  // core loop, which is what made this readout look stuck between ticks
+  const r = swOn() ? swAccum + (Date.now()-swStart)/1000 : Math.max(0, (deadline-Date.now())/1000);
+  const cc = Math.floor((r%1)*100);
+  const msEl = $("lcarsTime").querySelector(".ms");
+  if(msEl){
+    const digits = "."+String(cc).padStart(2,"0");
+    const spans = msEl.querySelectorAll(".d");
+    if(spans.length === digits.length){
+      spans.forEach((s,i)=>{ if(s.textContent !== digits[i]) s.textContent = digits[i]; });
+    }
+  }
+  lcarsMsRaf = requestAnimationFrame(lcarsMsFrame);
+}
+function startLcarsMs(){ if(!lcarsMsRaf) lcarsMsRaf = requestAnimationFrame(lcarsMsFrame); }
+function stopLcarsMs(){ if(lcarsMsRaf){ cancelAnimationFrame(lcarsMsRaf); lcarsMsRaf = null; } }
 
 /* ----- NASA T-Minus renderer: tick burst + millisecond countdown ----- */
 const NASA_N = 48;
@@ -1652,6 +1816,30 @@ function renderNasa(frac, rem, isClock){
   }
 }
 
+/* ----- NASA millisecond readout: animated independently of the 250ms core
+   render loop, via requestAnimationFrame, so it counts down smoothly like a
+   real launch clock instead of stepping in 250ms jumps. Safe to use rAF here
+   (unlike the core engine) because it's a pure read of wall-clock time each
+   frame, not accumulated state — if a backgrounded tab throttles it, it just
+   catches up instantly on the next frame rather than drifting or freezing. ----- */
+let nasaMsRaf = null;
+function nasaMsFrame(){
+  if(!running && !swOn()){ nasaMsRaf = null; return; }
+  const r = swOn() ? swAccum + (Date.now()-swStart)/1000 : Math.max(0, (deadline-Date.now())/1000);
+  const cc = Math.floor((r%1)*100);
+  const msEl = elNasaTime.querySelector(".ms");
+  if(msEl){
+    const digits = "."+String(cc).padStart(2,"0");
+    const spans = msEl.querySelectorAll(".d");
+    if(spans.length === digits.length){
+      spans.forEach((s,i)=>{ if(s.textContent !== digits[i]) s.textContent = digits[i]; });
+    }
+  }
+  nasaMsRaf = requestAnimationFrame(nasaMsFrame);
+}
+function startNasaMs(){ if(!nasaMsRaf) nasaMsRaf = requestAnimationFrame(nasaMsFrame); }
+function stopNasaMs(){ if(nasaMsRaf){ cancelAnimationFrame(nasaMsRaf); nasaMsRaf = null; } }
+
 /* ----- kitchen timer renderer ----- */
 function renderKitchen(text){
   const p = text.split(":");
@@ -1664,28 +1852,30 @@ function renderKitchen(text){
 function render(){
   const def = themeDef();
   const clock = clockOn();
-  let text, frac, secAngle, wordsHtml;
+  let text, frac, secAngle, wordsHtml, hmsText, hmText;
   if(clock){
     const n = new Date();
     const h12 = n.getHours()%12 || 12, m = n.getMinutes();
     text = h12 + ":" + String(m).padStart(2,"0");
+    hmsText = "00:" + String(n.getHours()).padStart(2,"0") + ":" + String(m).padStart(2,"0") + ":" + String(n.getSeconds()).padStart(2,"0");
+    hmText = String(n.getHours()).padStart(2,"0") + ":" + String(m).padStart(2,"0") + ":" + String(n.getSeconds()).padStart(2,"0");
     frac = (m*60 + n.getSeconds())/3600;
     secAngle = (n.getSeconds()/60)*360;
     wordsHtml = `<span class="wline">${numWords(h12)}</span><span class="wline">${m===0 ? "o'clock" : (m<10 ? "oh "+numWords(m) : numWords(m))}</span>`;
     elSub.textContent = "";
   } else if(finished){
-    text = fmt(0); frac = 0; secAngle = 0;
+    text = fmt(0); hmsText = fmtHMS(0); hmText = fmtHM(0); frac = 0; secAngle = 0;
     wordsHtml = '<span class="wline">time\'s up</span>';
     // themes that announce it themselves don't get a duplicate subline
     elSub.textContent = def.mode==="words" ? "" : "time's up";
   } else if(swOn()){
-    text = fmt(remaining);
+    text = fmt(remaining); hmsText = fmtHMS(remaining); hmText = fmtHM(remaining);
     frac = (remaining%60)/60;
     secAngle = ((remaining%60)/60)*360;
     wordsHtml = remaining < 1 ? '<span class="wline">zero seconds</span>' : timeWords(remaining);
     elSub.textContent = running ? "" : (remaining > 0.5 ? "paused" : "stopwatch");
   } else {
-    text = fmt(remaining);
+    text = fmt(remaining); hmsText = fmtHMS(remaining); hmText = fmtHM(remaining);
     frac = st.duration ? remaining/st.duration : 0;
     secAngle = -((remaining%60)/60)*360;
     wordsHtml = timeWords(remaining);
@@ -1698,6 +1888,8 @@ function render(){
   document.body.classList.toggle("paused", !running);
 
   const mode = def.mode;
+  if(mode !== "nasa") stopNasaMs();
+  if(mode !== "lcars") stopLcarsMs();
   elTime.style.display      = mode==="digits"   ? "block":"none";
   elSeg.style.display       = mode==="seg"      ? "block":"none";
   elFlip.style.display      = mode==="flip"     ? "flex":"none";
@@ -1710,30 +1902,34 @@ function render(){
   elNasaWrap.style.display  = mode==="nasa"     ? "block":"none";
   $("dotsWrap").style.display  = mode==="dots"  ? "flex":"none";
   $("lcarsWrap").style.display = mode==="lcars" ? "flex":"none";
-  $("daysWrap").style.display  = mode==="days"  ? "block":"none";
   elBounceWrap.style.display   = mode==="bounce"? "block":"none";
 
   if(mode==="digits"){
     if(def.id === "midnight") renderTicker(elTime, text);
+    else if(def.id === "days") elTime.textContent = hmsText;
     else elTime.textContent = text;
     elTime.className = finished ? "over" : danger ? "danger" : warn ? "warn" : "";
+    if(def.id === "days") lavaSetActive(running || swOn());
+    autofitTime(elTime);
   } else if(mode==="seg") renderSegInto(elSeg, text, false);
   else if(mode==="flip") renderFlip(text);
   else if(mode==="disc") renderDisc(clock ? frac : frac, text);
   else if(mode==="egg") renderEgg(clock ? frac*60 : remaining/60, text);
-  else if(mode==="nixie") renderNixie(text);
+  else if(mode==="nixie") renderNixie(hmText);
   else if(mode==="words"){
-    elWords.innerHTML = wordsHtml;
+    renderWords(elWords, wordsHtml);
     elWords.className = finished ? "over" : danger ? "danger" : "";
   }
   else if(mode==="squiggle") renderSquiggle(frac, text, clock ? "o'clock" : finished ? "" : "remaining");
   else if(mode==="kitchen") renderKitchen(text);
-  else if(mode==="nasa") renderNasa(frac, remaining, clock);
+  else if(mode==="nasa"){
+    renderNasa(frac, remaining, clock);
+    if(!clock && (running || swOn())) startNasaMs(); else stopNasaMs();
+  }
   else if(mode==="dots") renderDots(text, frac);
-  else if(mode==="lcars") renderLcars(clock);
-  else if(mode==="days"){
-    const n = new Date();
-    renderDays(clock ? n.getHours()*3600 + n.getMinutes()*60 + n.getSeconds() : remaining);
+  else if(mode==="lcars"){
+    renderLcars(clock);
+    if(!clock && (running || swOn())) startLcarsMs(); else stopLcarsMs();
   }
   else if(mode==="bounce") elBounceTime.textContent = text;
 }
@@ -1818,6 +2014,541 @@ function updateFX(){
   if(tid==="terminal") startMatrix(); else stopMatrix();
   if(tid==="web1") startToasters(); else stopToasters();
   if(tid==="bounce") startBounce(); else stopBounce();
+  if(tid==="days") startLava(); else stopLava();
+  if(tid==="sunset") startGradient(); else stopGradient();
+  if(tid==="aurora") startAurora(); else stopAurora();
+}
+
+/* ----- Lava background (Lava/"days" theme): a vanilla-JS/canvas2d port of
+   the open-source "Waves" component (React Bits) — reimplemented without
+   React or a cursor dependency so it stays inside this single
+   dependency-free file and never reacts to the mouse. Runs on
+   requestAnimationFrame, same as the Matrix rain and toasters effects:
+   it's a pure decorative background, not the timer engine, so rAF
+   throttling in a backgrounded tab just means it pauses harmlessly rather
+   than breaking anything. */
+class LavaGrad{
+  constructor(x,y){ this.x=x; this.y=y; }
+  dot2(x,y){ return this.x*x + this.y*y; }
+}
+class LavaNoise{
+  constructor(seed){
+    this.grad3 = [new LavaGrad(1,1),new LavaGrad(-1,1),new LavaGrad(1,-1),new LavaGrad(-1,-1),
+      new LavaGrad(1,0),new LavaGrad(-1,0),new LavaGrad(0,1),new LavaGrad(0,-1)];
+    this.p = [151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,
+      21,10,23,190,6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,88,
+      237,149,56,87,174,20,125,136,171,168,68,175,74,165,71,134,139,48,27,166,77,146,158,231,83,
+      111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,102,143,54,65,25,63,161,1,216,
+      80,73,209,76,132,187,208,89,18,169,200,196,135,130,116,188,159,86,164,100,109,198,173,186,
+      3,64,52,217,226,250,124,123,5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,
+      17,182,189,28,42,223,183,170,213,119,248,152,2,44,154,163,70,221,153,101,155,167,43,172,9,
+      129,22,39,253,19,98,108,110,79,113,224,232,178,185,112,104,218,246,97,228,251,34,242,193,
+      238,210,144,12,191,179,162,241,81,51,145,235,249,14,239,107,49,192,214,31,181,199,106,157,
+      184,84,204,176,115,121,50,45,127,4,150,254,138,236,205,93,222,114,67,29,24,72,243,141,128,
+      195,78,66,215,61,156,180];
+    this.perm = new Array(512); this.gradP = new Array(512);
+    let s = seed>0 && seed<1 ? Math.floor(seed*65536) : Math.floor(seed);
+    if(s < 256) s |= s << 8;
+    for(let i=0;i<256;i++){
+      const v = i & 1 ? this.p[i] ^ (s & 255) : this.p[i] ^ ((s>>8) & 255);
+      this.perm[i] = this.perm[i+256] = v;
+      this.gradP[i] = this.gradP[i+256] = this.grad3[v % 8];
+    }
+  }
+  fade(t){ return t*t*t*(t*(t*6-15)+10); }
+  lerp(a,b,t){ return (1-t)*a + t*b; }
+  perlin2(x,y){
+    let X = Math.floor(x), Y = Math.floor(y);
+    x -= X; y -= Y; X &= 255; Y &= 255;
+    const n00 = this.gradP[X+this.perm[Y]].dot2(x,y);
+    const n01 = this.gradP[X+this.perm[Y+1]].dot2(x,y-1);
+    const n10 = this.gradP[X+1+this.perm[Y]].dot2(x-1,y);
+    const n11 = this.gradP[X+1+this.perm[Y+1]].dot2(x-1,y-1);
+    const u = this.fade(x);
+    return this.lerp(this.lerp(n00,n10,u), this.lerp(n01,n11,u), this.fade(y));
+  }
+}
+const LAVA_CFG = {
+  waveSpeedX:0.012, waveSpeedY:0.006,
+  waveAmpX:36, waveAmpY:18, xGap:14, yGap:34
+};
+// wave color always tracks the Start button's color (--cdc: white by default,
+// switches with the Pro color picker's flavor) so they stay visually paired
+function lavaLineColor(){
+  const c = getComputedStyle(document.body).getPropertyValue("--cdc").trim() || "#fff";
+  return c;
+}
+let LAVA = null; // {ctx, canvas, noise, lines, bounding} once initialized
+function lavaBuildLines(){
+  const { canvas } = LAVA;
+  const width = canvas.clientWidth, height = canvas.clientHeight;
+  LAVA.bounding = { width, height };
+  const oWidth = width + 200, oHeight = height + 30;
+  const { xGap, yGap } = LAVA_CFG;
+  const totalLines = Math.ceil(oWidth / xGap);
+  const totalPoints = Math.ceil(oHeight / yGap);
+  const xStart = (width - xGap*totalLines) / 2;
+  const yStart = (height - yGap*totalPoints) / 2;
+  const lines = [];
+  for(let i=0;i<=totalLines;i++){
+    const pts = [];
+    for(let j=0;j<=totalPoints;j++){
+      pts.push({ x:xStart+xGap*i, y:yStart+yGap*j, wx:0, wy:0 });
+    }
+    lines.push(pts);
+  }
+  LAVA.lines = lines;
+}
+function initLava(){
+  const canvas = $("lavaBg");
+  const ctx = canvas.getContext("2d");
+  if(!ctx) return null;
+  LAVA = { ctx, canvas, noise:new LavaNoise(Math.random()), lines:[], bounding:{width:0,height:0} };
+  lavaResize();
+  return LAVA;
+}
+function lavaResize(){
+  if(!LAVA) return;
+  const { canvas } = LAVA;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(canvas.clientWidth * dpr);
+  canvas.height = Math.round(canvas.clientHeight * dpr);
+  LAVA.ctx.setTransform(dpr,0,0,dpr,0,0);
+  lavaBuildLines();
+}
+function lavaDraw(time){
+  if(!LAVA) return;
+  const { ctx, noise, lines, bounding } = LAVA;
+  const { waveSpeedX, waveSpeedY, waveAmpX, waveAmpY } = LAVA_CFG;
+  lines.forEach(pts => pts.forEach(p => {
+    const move = noise.perlin2((p.x + time*waveSpeedX)*0.002, (p.y + time*waveSpeedY)*0.0015) * 12;
+    p.wx = Math.cos(move) * waveAmpX;
+    p.wy = Math.sin(move) * waveAmpY;
+  }));
+  ctx.clearRect(0, 0, bounding.width, bounding.height);
+  ctx.beginPath();
+  ctx.strokeStyle = lavaLineColor();
+  ctx.globalAlpha = 0.55;
+  ctx.lineWidth = 1;
+  lines.forEach(pts => {
+    ctx.moveTo(pts[0].x + pts[0].wx, pts[0].y + pts[0].wy);
+    for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i].x + pts[i].wx, pts[i].y + pts[i].wy);
+  });
+  ctx.stroke();
+}
+let lavaRaf = null, lavaActive = false;
+function lavaFrame(time){
+  lavaDraw(time);
+  lavaRaf = lavaActive ? requestAnimationFrame(lavaFrame) : null;
+}
+// the waves only animate while the timer is actually running — they sit
+// still (one static frame) until Start is pressed, then drift on their own
+function lavaSetActive(active){
+  lavaActive = active;
+  if(active && !lavaRaf && LAVA) lavaRaf = requestAnimationFrame(lavaFrame);
+}
+function startLava(){
+  if(!LAVA) LAVA = initLava();
+  if(!LAVA) return; // canvas2d unavailable — theme just keeps its plain background
+  $("lavaBg").style.display = "block";
+  lavaResize();
+  addEventListener("resize", lavaResize);
+  lavaDraw(performance.now());
+  lavaSetActive(running || swOn());
+}
+function stopLava(){
+  lavaActive = false;
+  if(lavaRaf){ cancelAnimationFrame(lavaRaf); lavaRaf = null; }
+  removeEventListener("resize", lavaResize);
+  $("lavaBg").style.display = "none";
+}
+
+/* ----- Gradient background (Gradient/"sunset" theme): a vanilla-WebGL2
+   port of the open-source "Grainient" shader (React Bits, GLSL by the
+   original author) — reimplemented with raw WebGL2 instead of React+ogl
+   so it stays inside this single dependency-free file. Runs continuously
+   on requestAnimationFrame like the Matrix rain and toasters effects
+   (pure decoration, not the timer engine). The three colors it blends
+   come from the theme's own flavor picker (Classic/Magma/Violet/Ocean),
+   shaded lighter or darker depending on light/dark mode. */
+const GRAD_VERT = `#version 300 es
+in vec2 position;
+void main() {
+  gl_Position = vec4(position, 0.0, 1.0);
+}
+`;
+const GRAD_FRAG = `#version 300 es
+precision highp float;
+uniform vec2 iResolution;
+uniform float iTime;
+uniform float uTimeSpeed;
+uniform float uColorBalance;
+uniform float uWarpStrength;
+uniform float uWarpFrequency;
+uniform float uWarpSpeed;
+uniform float uWarpAmplitude;
+uniform float uBlendAngle;
+uniform float uBlendSoftness;
+uniform float uRotationAmount;
+uniform float uNoiseScale;
+uniform float uGrainAmount;
+uniform float uGrainScale;
+uniform float uGrainAnimated;
+uniform float uContrast;
+uniform float uGamma;
+uniform float uSaturation;
+uniform vec2 uCenterOffset;
+uniform float uZoom;
+uniform vec3 uColor1;
+uniform vec3 uColor2;
+uniform vec3 uColor3;
+out vec4 fragColor;
+#define S(a,b,t) smoothstep(a,b,t)
+mat2 Rot(float a){float s=sin(a),c=cos(a);return mat2(c,-s,s,c);}
+vec2 hash(vec2 p){p=vec2(dot(p,vec2(2127.1,81.17)),dot(p,vec2(1269.5,283.37)));return fract(sin(p)*43758.5453);}
+float noise(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.0-2.0*f);float n=mix(mix(dot(-1.0+2.0*hash(i+vec2(0.0,0.0)),f-vec2(0.0,0.0)),dot(-1.0+2.0*hash(i+vec2(1.0,0.0)),f-vec2(1.0,0.0)),u.x),mix(dot(-1.0+2.0*hash(i+vec2(0.0,1.0)),f-vec2(0.0,1.0)),dot(-1.0+2.0*hash(i+vec2(1.0,1.0)),f-vec2(1.0,1.0)),u.x),u.y);return 0.5+0.5*n;}
+void mainImage(out vec4 o, vec2 C){
+  float t=iTime*uTimeSpeed;
+  vec2 uv=C/iResolution.xy;
+  float ratio=iResolution.x/iResolution.y;
+  vec2 tuv=uv-0.5+uCenterOffset;
+  tuv/=max(uZoom,0.001);
+
+  float degree=noise(vec2(t*0.1,tuv.x*tuv.y)*uNoiseScale);
+  tuv.y*=1.0/ratio;
+  tuv*=Rot(radians((degree-0.5)*uRotationAmount+180.0));
+  tuv.y*=ratio;
+
+  float frequency=uWarpFrequency;
+  float ws=max(uWarpStrength,0.001);
+  float amplitude=uWarpAmplitude/ws;
+  float warpTime=t*uWarpSpeed;
+  tuv.x+=sin(tuv.y*frequency+warpTime)/amplitude;
+  tuv.y+=sin(tuv.x*(frequency*1.5)+warpTime)/(amplitude*0.5);
+
+  vec3 colLav=uColor1;
+  vec3 colOrg=uColor2;
+  vec3 colDark=uColor3;
+  float b=uColorBalance;
+  float s=max(uBlendSoftness,0.0);
+  mat2 blendRot=Rot(radians(uBlendAngle));
+  float blendX=(tuv*blendRot).x;
+  float edge0=-0.3-b-s;
+  float edge1=0.2-b+s;
+  float v0=0.5-b+s;
+  float v1=-0.3-b-s;
+  vec3 layer1=mix(colDark,colOrg,S(edge0,edge1,blendX));
+  vec3 layer2=mix(colOrg,colLav,S(edge0,edge1,blendX));
+  vec3 col=mix(layer1,layer2,S(v0,v1,tuv.y));
+
+  vec2 grainUv=uv*max(uGrainScale,0.001);
+  if(uGrainAnimated>0.5){grainUv+=vec2(iTime*0.05);}
+  float grain=fract(sin(dot(grainUv,vec2(12.9898,78.233)))*43758.5453);
+  col+=(grain-0.5)*uGrainAmount;
+
+  col=(col-0.5)*uContrast+0.5;
+  float luma=dot(col,vec3(0.2126,0.7152,0.0722));
+  col=mix(vec3(luma),col,uSaturation);
+  col=pow(max(col,0.0),vec3(1.0/max(uGamma,0.001)));
+  col=clamp(col,0.0,1.0);
+
+  o=vec4(col,1.0);
+}
+void main(){
+  vec4 o=vec4(0.0);
+  mainImage(o,gl_FragCoord.xy);
+  fragColor=o;
+}
+`;
+const GRADIENT_CFG = {
+  timeSpeed:0.22, colorBalance:0, warpStrength:1.0, warpFrequency:4.0, warpSpeed:1.3, warpAmplitude:40.0,
+  blendAngle:0, blendSoftness:0.08, rotationAmount:260.0, noiseScale:1.4,
+  grainAmount:0.05, grainScale:2.5, grainAnimated:true, contrast:1.35, gamma:1.0, saturation:1.05,
+  centerX:0, centerY:0, zoom:0.95
+};
+// the three flavor picker options (Classic/Magma/Violet/Ocean), each a base
+// [c1,c2,c3] hex triad — shaded lighter/darker per mode in gradientColors()
+const GRADIENT_PALETTES = {
+  classic: ["#FFB46B","#F07AE2","#7A2D8A"],
+  magma:   ["#FFD08A","#FF5C7A","#7A1030"],
+  violet:  ["#FFB2D9","#A06CF0","#3A1F5C"],
+  ocean:   ["#8DF0DD","#5CB8F0","#1C3A6E"]
+};
+function gradShade(hex, amt, towardWhite){
+  const h = hex.replace("#","");
+  const r = parseInt(h.slice(0,2),16), g = parseInt(h.slice(2,4),16), b = parseInt(h.slice(4,6),16);
+  const t = towardWhite ? 255 : 0;
+  return [
+    Math.round(r+(t-r)*amt)/255,
+    Math.round(g+(t-g)*amt)/255,
+    Math.round(b+(t-b)*amt)/255
+  ];
+}
+function gradientColors(){
+  const palette = GRADIENT_PALETTES[st.flavors.sunset] || GRADIENT_PALETTES.classic;
+  const isDark = document.body.classList.contains("mode-dark");
+  return palette.map(hex => gradShade(hex, isDark ? 0.32 : 0.2, !isDark));
+}
+let GRADIENT = null; // {gl, program, buf, posLoc, u, canvas} once initialized
+function initGradient(){
+  const canvas = $("gradientBg");
+  const gl = canvas.getContext("webgl2");
+  if(!gl) return null;
+  function compile(type, src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){ gl.deleteShader(s); return null; }
+    return s;
+  }
+  const vs = compile(gl.VERTEX_SHADER, GRAD_VERT);
+  const fs = compile(gl.FRAGMENT_SHADER, GRAD_FRAG);
+  if(!vs || !fs) return null;
+  const program = gl.createProgram();
+  gl.attachShader(program, vs);
+  gl.attachShader(program, fs);
+  gl.linkProgram(program);
+  if(!gl.getProgramParameter(program, gl.LINK_STATUS)) return null;
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  const posLoc = gl.getAttribLocation(program, "position");
+  const u = {};
+  ["iTime","iResolution","uTimeSpeed","uColorBalance","uWarpStrength","uWarpFrequency","uWarpSpeed",
+   "uWarpAmplitude","uBlendAngle","uBlendSoftness","uRotationAmount","uNoiseScale","uGrainAmount",
+   "uGrainScale","uGrainAnimated","uContrast","uGamma","uSaturation","uCenterOffset","uZoom",
+   "uColor1","uColor2","uColor3"].forEach(name => u[name] = gl.getUniformLocation(program, name));
+  return { gl, program, buf, posLoc, u, canvas };
+}
+function gradientResize(){
+  if(!GRADIENT) return;
+  const { gl, canvas, u, program } = GRADIENT;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
+  if(canvas.width !== w || canvas.height !== h){ canvas.width = w; canvas.height = h; }
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  gl.useProgram(program);
+  gl.uniform2f(u.iResolution, canvas.width, canvas.height);
+}
+function gradientDraw(time){
+  if(!GRADIENT) return;
+  const { gl, program, buf, posLoc, u } = GRADIENT;
+  gl.useProgram(program);
+  gl.uniform1f(u.iTime, time*0.001);
+  gl.uniform1f(u.uTimeSpeed, GRADIENT_CFG.timeSpeed);
+  gl.uniform1f(u.uColorBalance, GRADIENT_CFG.colorBalance);
+  gl.uniform1f(u.uWarpStrength, GRADIENT_CFG.warpStrength);
+  gl.uniform1f(u.uWarpFrequency, GRADIENT_CFG.warpFrequency);
+  gl.uniform1f(u.uWarpSpeed, GRADIENT_CFG.warpSpeed);
+  gl.uniform1f(u.uWarpAmplitude, GRADIENT_CFG.warpAmplitude);
+  gl.uniform1f(u.uBlendAngle, GRADIENT_CFG.blendAngle);
+  gl.uniform1f(u.uBlendSoftness, GRADIENT_CFG.blendSoftness);
+  gl.uniform1f(u.uRotationAmount, GRADIENT_CFG.rotationAmount);
+  gl.uniform1f(u.uNoiseScale, GRADIENT_CFG.noiseScale);
+  gl.uniform1f(u.uGrainAmount, GRADIENT_CFG.grainAmount);
+  gl.uniform1f(u.uGrainScale, GRADIENT_CFG.grainScale);
+  gl.uniform1f(u.uGrainAnimated, GRADIENT_CFG.grainAnimated ? 1 : 0);
+  gl.uniform1f(u.uContrast, GRADIENT_CFG.contrast);
+  gl.uniform1f(u.uGamma, GRADIENT_CFG.gamma);
+  gl.uniform1f(u.uSaturation, GRADIENT_CFG.saturation);
+  gl.uniform2f(u.uCenterOffset, GRADIENT_CFG.centerX, GRADIENT_CFG.centerY);
+  gl.uniform1f(u.uZoom, GRADIENT_CFG.zoom);
+  const [c1, c2, c3] = gradientColors();
+  gl.uniform3fv(u.uColor1, c1);
+  gl.uniform3fv(u.uColor2, c2);
+  gl.uniform3fv(u.uColor3, c3);
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.enableVertexAttribArray(posLoc);
+  gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+let gradientRaf = null;
+function gradientFrame(time){
+  gradientDraw(time);
+  gradientRaf = requestAnimationFrame(gradientFrame);
+}
+function startGradient(){
+  if(!GRADIENT) GRADIENT = initGradient();
+  if(!GRADIENT) return; // WebGL2 unavailable — theme just keeps its plain CSS gradient
+  $("gradientBg").style.display = "block";
+  gradientResize();
+  addEventListener("resize", gradientResize);
+  if(!gradientRaf) gradientRaf = requestAnimationFrame(gradientFrame);
+}
+function stopGradient(){
+  if(gradientRaf){ cancelAnimationFrame(gradientRaf); gradientRaf = null; }
+  removeEventListener("resize", gradientResize);
+  $("gradientBg").style.display = "none";
+}
+
+/* ----- Aurora background (Aurora theme): a vanilla-WebGL2 port of the
+   open-source "Aurora" shader (React Bits, GLSL by the original author) —
+   reimplemented with raw WebGL2 instead of React+ogl so it stays inside
+   this single dependency-free file. Runs continuously on
+   requestAnimationFrame like Matrix/Gradient (pure decoration, not the
+   timer engine). Colors come from the theme's own flavor picker
+   (Green/Violet/Sunset/Ice), same pattern as Gradient's palette. */
+const AURORA_VERT = `#version 300 es
+in vec2 position;
+void main() {
+  gl_Position = vec4(position, 0.0, 1.0);
+}
+`;
+const AURORA_FRAG = `#version 300 es
+precision highp float;
+uniform float uTime;
+uniform float uAmplitude;
+uniform vec3 uColorStops[3];
+uniform vec2 uResolution;
+uniform float uBlend;
+out vec4 fragColor;
+vec3 permute(vec3 x) { return mod(((x * 34.0) + 1.0) * x, 289.0); }
+float snoise(vec2 v){
+  const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+  vec2 i  = floor(v + dot(v, C.yy));
+  vec2 x0 = v - i + dot(i, C.xx);
+  vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+  vec4 x12 = x0.xyxy + C.xxzz;
+  x12.xy -= i1;
+  i = mod(i, 289.0);
+  vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));
+  vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)), 0.0);
+  m = m * m; m = m * m;
+  vec3 x = 2.0 * fract(p * C.www) - 1.0;
+  vec3 h = abs(x) - 0.5;
+  vec3 ox = floor(x + 0.5);
+  vec3 a0 = x - ox;
+  m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
+  vec3 g;
+  g.x  = a0.x  * x0.x  + h.x  * x0.y;
+  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+  return 130.0 * dot(m, g);
+}
+struct ColorStop { vec3 color; float position; };
+#define COLOR_RAMP(colors, factor, finalColor) {              \\
+  int index = 0;                                            \\
+  for (int i = 0; i < 2; i++) {                               \\
+     ColorStop currentColor = colors[i];                    \\
+     bool isInBetween = currentColor.position <= factor;    \\
+     index = int(mix(float(index), float(i), float(isInBetween))); \\
+  }                                                         \\
+  ColorStop currentColor = colors[index];                   \\
+  ColorStop nextColor = colors[index + 1];                  \\
+  float range = nextColor.position - currentColor.position; \\
+  float lerpFactor = (factor - currentColor.position) / range; \\
+  finalColor = mix(currentColor.color, nextColor.color, lerpFactor); \\
+}
+void main() {
+  vec2 uv = gl_FragCoord.xy / uResolution;
+  ColorStop colors[3];
+  colors[0] = ColorStop(uColorStops[0], 0.0);
+  colors[1] = ColorStop(uColorStops[1], 0.5);
+  colors[2] = ColorStop(uColorStops[2], 1.0);
+  vec3 rampColor;
+  COLOR_RAMP(colors, uv.x, rampColor);
+  float height = snoise(vec2(uv.x * 2.0 + uTime * 0.1, uTime * 0.25)) * 0.5 * uAmplitude;
+  height = exp(height);
+  height = (uv.y * 2.0 - height + 0.2);
+  float intensity = 0.6 * height;
+  float midPoint = 0.20;
+  float auroraAlpha = smoothstep(midPoint - uBlend * 0.5, midPoint + uBlend * 0.5, intensity);
+  vec3 auroraColor = intensity * rampColor;
+  fragColor = vec4(auroraColor * auroraAlpha, auroraAlpha);
+}
+`;
+const AURORA_CFG = { speed:0.5, blend:0.5, amplitude:1.0 };
+// the four flavor picker options (Green/Violet/Sunset/Ice), each a
+// [c1,c2,c3] hex triad fed straight to uColorStops
+const AURORA_PALETTES = {
+  green:  ["#7cff67","#B497CF","#5227FF"],
+  violet: ["#B497CF","#5227FF","#FF94B4"],
+  sunset: ["#FF9E7D","#FF3232","#B497CF"],
+  ice:    ["#5227FF","#00E5FF","#B497CF"]
+};
+function auroraHexToRgb(hex){
+  const h = hex.replace("#","");
+  return [parseInt(h.slice(0,2),16)/255, parseInt(h.slice(2,4),16)/255, parseInt(h.slice(4,6),16)/255];
+}
+let AURORA = null; // {gl, program, buf, posLoc, u, canvas} once initialized
+function initAurora(){
+  const canvas = $("auroraBg");
+  const gl = canvas.getContext("webgl2");
+  if(!gl) return null;
+  gl.clearColor(0,0,0,0);
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  function compile(type, src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){ gl.deleteShader(s); return null; }
+    return s;
+  }
+  const vs = compile(gl.VERTEX_SHADER, AURORA_VERT);
+  const fs = compile(gl.FRAGMENT_SHADER, AURORA_FRAG);
+  if(!vs || !fs) return null;
+  const program = gl.createProgram();
+  gl.attachShader(program, vs);
+  gl.attachShader(program, fs);
+  gl.linkProgram(program);
+  if(!gl.getProgramParameter(program, gl.LINK_STATUS)) return null;
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  const posLoc = gl.getAttribLocation(program, "position");
+  const u = {
+    uTime: gl.getUniformLocation(program, "uTime"),
+    uAmplitude: gl.getUniformLocation(program, "uAmplitude"),
+    uColorStops: gl.getUniformLocation(program, "uColorStops"),
+    uResolution: gl.getUniformLocation(program, "uResolution"),
+    uBlend: gl.getUniformLocation(program, "uBlend")
+  };
+  return { gl, program, buf, posLoc, u, canvas };
+}
+function auroraResize(){
+  if(!AURORA) return;
+  const { gl, canvas, u, program } = AURORA;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
+  if(canvas.width !== w || canvas.height !== h){ canvas.width = w; canvas.height = h; }
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  gl.useProgram(program);
+  gl.uniform2f(u.uResolution, canvas.width, canvas.height);
+}
+function auroraDraw(time){
+  if(!AURORA) return;
+  const { gl, program, buf, posLoc, u } = AURORA;
+  gl.useProgram(program);
+  gl.uniform1f(u.uTime, time*0.001*AURORA_CFG.speed);
+  gl.uniform1f(u.uAmplitude, AURORA_CFG.amplitude);
+  gl.uniform1f(u.uBlend, AURORA_CFG.blend);
+  const palette = AURORA_PALETTES[st.flavors.aurora] || AURORA_PALETTES.green;
+  const stops = new Float32Array(9);
+  palette.forEach((hex,i) => { const [r,g,b] = auroraHexToRgb(hex); stops[i*3]=r; stops[i*3+1]=g; stops[i*3+2]=b; });
+  gl.uniform3fv(u.uColorStops, stops);
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.enableVertexAttribArray(posLoc);
+  gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+let auroraRaf = null;
+function auroraFrame(time){
+  auroraDraw(time);
+  auroraRaf = requestAnimationFrame(auroraFrame);
+}
+function startAurora(){
+  if(!AURORA) AURORA = initAurora();
+  if(!AURORA) return; // WebGL2 unavailable — theme just keeps its plain dark background
+  $("auroraBg").style.display = "block";
+  auroraResize();
+  addEventListener("resize", auroraResize);
+  if(!auroraRaf) auroraRaf = requestAnimationFrame(auroraFrame);
+}
+function stopAurora(){
+  if(auroraRaf){ cancelAnimationFrame(auroraRaf); auroraRaf = null; }
+  removeEventListener("resize", auroraResize);
+  $("auroraBg").style.display = "none";
 }
 
 /* ----- bounce: DVD-screensaver-style roaming, color-changing time.
@@ -1859,16 +2590,26 @@ function bounceStep(){
   BOUNCE.x += BOUNCE.vx*dt;
   BOUNCE.y += BOUNCE.vy*dt;
   let bounced = false;
-  if(BOUNCE.x<=0){ BOUNCE.x=0; BOUNCE.vx=Math.abs(BOUNCE.vx); bounced=true; }
-  else if(BOUNCE.x>=maxX){ BOUNCE.x=maxX; BOUNCE.vx=-Math.abs(BOUNCE.vx); bounced=true; }
-  if(BOUNCE.y<=0){ BOUNCE.y=0; BOUNCE.vy=Math.abs(BOUNCE.vy); bounced=true; }
-  else if(BOUNCE.y>=maxY){ BOUNCE.y=maxY; BOUNCE.vy=-Math.abs(BOUNCE.vy); bounced=true; }
+  // reflect any overshoot past the wall (rather than clamping to it) so the
+  // step still covers its full distance — clamping shortens that one step,
+  // which reads as the ball slowing down/sticking right at the bounce
+  if(BOUNCE.x<0){ BOUNCE.x=-BOUNCE.x; BOUNCE.vx=Math.abs(BOUNCE.vx); bounced=true; }
+  else if(BOUNCE.x>maxX){ BOUNCE.x=2*maxX-BOUNCE.x; BOUNCE.vx=-Math.abs(BOUNCE.vx); bounced=true; }
+  if(BOUNCE.y<0){ BOUNCE.y=-BOUNCE.y; BOUNCE.vy=Math.abs(BOUNCE.vy); bounced=true; }
+  else if(BOUNCE.y>maxY){ BOUNCE.y=2*maxY-BOUNCE.y; BOUNCE.vy=-Math.abs(BOUNCE.vy); bounced=true; }
+  BOUNCE.x = Math.max(0, Math.min(maxX, BOUNCE.x));
+  BOUNCE.y = Math.max(0, Math.min(maxY, BOUNCE.y));
   if(bounced){
     BOUNCE.colorIdx = (BOUNCE.colorIdx+1) % BOUNCE_COLORS.length;
     elBounceTime.style.color = BOUNCE_COLORS[BOUNCE.colorIdx];
     elStart.style.background = BOUNCE_COLORS[BOUNCE.colorIdx];
     elStart.style.borderColor = BOUNCE_COLORS[BOUNCE.colorIdx];
   }
+  // the CSS transition duration must match this step's real dt, not a fixed
+  // .2s — setInterval sometimes fires two steps only a few ms apart (timer
+  // jitter), and a stale .2s transition restarting mid-flight from that tiny
+  // step reads as the ball suddenly sticking/slowing right at that spot
+  elBounceTime.style.transitionDuration = dt + "s";
   elBounceTime.style.transform = `translate(${BOUNCE.x}px,${BOUNCE.y}px)`;
 }
 function startBounce(){
@@ -1933,13 +2674,13 @@ function loop(){
   document.title = fmt(remaining) + " · Timer";
 }
 
-async function start(){
-  if(running) return pause();
+async function start(revealUI = true){
+  if(running) return pause(revealUI);
   if(swOn()){
     audio().resume && audio().resume();
     swStart = Date.now();
     running = true; elStart.textContent = "Pause";
-    armHideUI();
+    if(revealUI) armHideUI();
     try{ wakeLock = await navigator.wakeLock?.request("screen"); }catch(e){}
     loop(); startTicking();
     return;
@@ -1948,17 +2689,18 @@ async function start(){
   audio().resume && audio().resume();
   deadline = Date.now() + remaining*1000;
   running = true; elStart.textContent = "Pause";
-  armHideUI();
+  if(revealUI) armHideUI();
   try{ wakeLock = await navigator.wakeLock?.request("screen"); }catch(e){}
   loop(); startTicking();
 }
-function pause(){
+function pause(revealUI = true){
   if(swOn() && running) swAccum = remaining;
   running = false; finished = false;
   elStart.textContent = "Start";
   stopTicking();
   wakeLock?.release().catch(()=>{}); wakeLock = null;
-  showUI(); render();
+  if(revealUI) showUI();
+  render();
 }
 function reset(){
   pause();
@@ -1990,7 +2732,9 @@ function armHideUI(){
   if(running) hideTimer = setTimeout(()=>document.body.classList.add("hide-ui"), 2000);
 }
 function showUI(){ clearTimeout(hideTimer); document.body.classList.remove("hide-ui"); }
-["mousemove","touchstart","keydown"].forEach(ev=>document.addEventListener(ev, armHideUI, {passive:true}));
+/* keydown intentionally excluded: hotkeys (add time, etc.) shouldn't reveal
+   the controls while projecting — only actual mouse/touch input should. */
+["mousemove","touchstart"].forEach(ev=>document.addEventListener(ev, armHideUI, {passive:true}));
 
 /* =========================================================
    TIME EDITING (click display, type "15", "10:30", "1:00:00")
@@ -2039,15 +2783,16 @@ bindEditable($("lcP3"), v=>{ st.lc3 = v; });
 document.addEventListener("keydown", e=>{
   if(e.target.tagName==="INPUT" || e.target.isContentEditable) return;
   const k = e.key;
-  if(k===" "){ e.preventDefault(); start(); }
+  if(k===" "){ e.preventDefault(); start(false); }
   else if(k==="r"||k==="R") reset();
   else if(k==="f"||k==="F") toggleFullscreen();
   else if(k==="m"||k==="M") toggleMute();
+  else if(k==="t"||k==="T") shuffleTheme();
   else if(k==="ArrowUp"){ e.preventDefault(); adjust(60); }
   else if(k==="ArrowDown"){ e.preventDefault(); adjust(-60); }
   else if(k==="ArrowRight"){ e.preventDefault(); adjust(10); }
   else if(k==="ArrowLeft"){ e.preventDefault(); adjust(-10); }
-  else if(k==="Escape"){ $("settings").classList.remove("open"); closeModal(); }
+  else if(k==="Escape"){ $("settings").classList.remove("open"); $("btnSettings").classList.remove("open"); closeModal(); }
   else if(/^[1-9]$/.test(k)) setDuration(PRESETS[+k-1]*60);
 });
 
@@ -2060,27 +2805,31 @@ $("btnReset").addEventListener("click", reset);
 $("btnFull").addEventListener("click", toggleFullscreen);
 elMute.addEventListener("click", toggleMute);
 elAppearance.addEventListener("click", toggleAppearance);
-$("btnShuffle").addEventListener("click", ()=>{
-  const others = THEMES.filter(x=>x.id!==st.theme);
-  const next = others[Math.floor(Math.random()*others.length)];
+function shuffleTheme(){
+  // free users cycle only the free themes; Pro cycles all of them
+  const pool = THEMES.filter(x=>x.id!==st.theme && (isPro() || !x.pro));
+  if(!pool.length) return;
+  const next = pool[Math.floor(Math.random()*pool.length)];
   cancelPreview();
   st.theme = next.id;
   st.font = next.font || "helvetica";
   save(); applyTheme();
   if($("settings").classList.contains("open")) refreshSettings();
-});
+}
+$("btnShuffle").addEventListener("click", shuffleTheme);
 $("btnSettings").addEventListener("click", ()=>{
   const s = $("settings");
   const opening = !s.classList.contains("open");
   s.classList.toggle("open");
+  $("btnSettings").classList.toggle("open", opening);
   if(opening) refreshSettings();
 });
-$("btnCloseSettings").addEventListener("click", ()=>$("settings").classList.remove("open"));
 document.addEventListener("click", e=>{
   const s = $("settings");
   if(!s.classList.contains("open")) return;
   if(s.contains(e.target) || $("btnSettings").contains(e.target)) return;
   s.classList.remove("open");
+  $("btnSettings").classList.remove("open");
 });
 
 /* kitchen timer physical buttons */
@@ -2238,7 +2987,10 @@ function applyTheme(){
   // button can match it: red for free users, the picked accent for Pro.
   document.documentElement.style.setProperty("--disc-accent", isPro() ? st.accent : "#d5442f");
   const vs = VARIANTS[tid];
-  document.body.dataset.flavor = vs ? (isPro() ? (st.flavors[tid]||vs[0].id) : vs[0].id) : "";
+  // free users previewing a locked theme can still flip through its color/
+  // image variants (like Nature's forest/mountain/ocean/fog) — only a
+  // genuinely free (non-preview) theme is pinned to the first variant
+  document.body.dataset.flavor = vs ? ((isPro() || PV.id) ? (st.flavors[tid]||vs[0].id) : vs[0].id) : "";
   // during a preview, show the previewed theme's default font so it looks right;
   // otherwise use the picked font (free users get the free fonts)
   // Free users (and any live preview) always get the theme's own default font.
@@ -2257,8 +3009,32 @@ function applyTheme(){
     else document.documentElement.style.removeProperty("--fontw");
   }
   elSeg.dataset.seg = ""; elKtScreen.dataset.seg = ""; // force seg re-render
+  syncSublineFont();
   updateFX();
   render();
+  // the waves canvas only repaints on its own rAF loop while running; when
+  // paused, a flavor-picker color change needs an explicit repaint to show
+  if(tid === "days" && LAVA && !lavaActive) lavaDraw(performance.now());
+}
+/* the status line ("paused", "remaining", ...) borrows the label's typography
+   (family/weight/letter-spacing/case/color) so it reads as part of the same
+   title, just smaller — its own font-size is left alone. Copying computed
+   style instead of duplicating every theme's #label rule keeps this correct
+   automatically as themes are added or tweaked. */
+// themes that hide #label and show their own title element instead — read
+// typography from that visible title, not the hidden generic #label (whose
+// wide default tracking otherwise leaked into "paused" for these themes)
+const SUBLINE_TITLE_SRC = { disc:"discLabel", kitchen:"ktLabel", lcars:"lcTitle" };
+function syncSublineFont(){
+  const srcId = SUBLINE_TITLE_SRC[curThemeId()];
+  const src = srcId ? $(srcId) : elLabel;
+  const cs = getComputedStyle(src);
+  elSub.style.fontFamily = cs.fontFamily;
+  elSub.style.fontWeight = cs.fontWeight;
+  elSub.style.fontStyle = cs.fontStyle;
+  elSub.style.letterSpacing = cs.letterSpacing;
+  elSub.style.textTransform = cs.textTransform;
+  elSub.style.color = cs.color;
 }
 function applyBranding(){
   const logo = isPro() ? localStorage.getItem(LS.logo) : null;
@@ -2307,7 +3083,7 @@ function refreshSettings(){
   }else{
     head.textContent = "Pro";
     status.innerHTML = `All 16 themes with style variants, clock &amp; stopwatch modes, voice alert, custom colors &amp; logo, beautiful fonts &amp; your own uploads, 5 end sounds. One-time <b>${PRICE}</b>, yours forever, no subscription.`;
-    btn.textContent = "Get Pro for Life: " + PRICE;
+    btn.textContent = "Get Pro for Life " + PRICE;
     btn.style.display="block";
     btn.onclick = ()=>window.open(BUY_URL,"_blank");
     if(lbox) lbox.style.display = "block";
