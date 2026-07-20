@@ -62,11 +62,11 @@
   body.theme-terminal.mode-light{ --bg:#eef2ee; --bg2:#e2e8e2; --fg:#1f7a3f; --muted:#7a9884; --panel:#e2e8e2; --border:#c7d2c7; }
   body.theme-web1.mode-light{ --bg:#c8dede; --bg2:#b8d0d0; --fg:#004040; --muted:#3a6060; --panel:#e8e4d8; --border:#909890; }
   body.theme-nixie.mode-light{ --bg:#f0e6d4; --bg2:#e6d8c0; --fg:#b5691a; --muted:#a8875a; --panel:#f6efe0; --border:#d8c6a0; }
-  body.theme-photo.mode-light{ --bg:#e8e6e0; --bg2:#dcdad2; --fg:#181818; --muted:rgba(20,20,20,.68); }
+  body.theme-photo.mode-light{ --bg:#e8e6e0; --bg2:#dcdad2; --fg:#181818; --muted:rgba(20,20,20,.68); --panel:#ffffff; --border:#dedcd6; }
   body.theme-lcars.mode-light{ --bg:#e8e4dc; --bg2:#dcd6ca; --fg:#c05a00; --muted:#a08560; --panel:#f0ece2; --border:#c9c0ac; }
   body.theme-bounce.mode-light{ --bg:#f3f2f0; --bg2:#e8e7e4; --fg:#333338; --muted:#8a8a86; --panel:#ffffff; --border:#dedcd9; }
   body.theme-sunset.mode-light{ --fg:#181018; --muted:rgba(24,16,24,.72); }
-  body.theme-aurora.mode-light{ --bg:#eef1ee; --bg2:#e2e8e2; --fg:#12140f; --muted:rgba(15,20,12,.65); }
+  body.theme-aurora.mode-light{ --bg:#eef1ee; --bg2:#e2e8e2; --fg:#12140f; --muted:rgba(15,20,12,.65); --panel:#ffffff; --border:#d7ded7; }
   body.theme-sunset  { --bg:#e79ae2; --bg2:rgba(255,255,255,.16); --fg:#fdf3e0; --muted:rgba(255,250,240,.8); --panel:#a4539f; --border:#bd74bb; --sunset-accent:#ff2fc4; }
   body.theme-sunset[data-flavor="magma"]{ --sunset-accent:#ff3d1a; }
   body.theme-sunset[data-flavor="violet"]{ --sunset-accent:#b026ff; }
@@ -83,6 +83,13 @@
   body.theme-aurora[data-flavor="violet"]{ --aurora-glow:#b497cf; }
   body.theme-aurora[data-flavor="sunset"]{ --aurora-glow:#ff9e7d; }
   body.theme-aurora[data-flavor="ice"]{ --aurora-glow:#5ad0ff; }
+  body.theme-strands{ --bg:#070707; --bg2:#0d0d0d; --fg:#000000; --muted:#7a7a7a; --panel:#111; --border:#232323; --strands-accent:#5227FF; --strands-text:#fff; }
+  body.theme-strands.mode-light{ --bg:#f2f1ee; --bg2:#e8e7e2; --fg:#0a0a0a; --muted:#8a8a86; --panel:#fff; --border:#e0dfda; }
+  /* the theme intentionally keeps --fg black even in dark mode so the digits
+     read as a silhouette over the strands, but that would also blacken the
+     settings-panel text on its dark panel background — restore legible text
+     there without touching the digit color */
+  body.theme-strands:not(.mode-light) #settings{ --fg:#eee; }
   body.theme-kitchen { --bg:#dfe2e6; --bg2:#d3d7dc; --fg:#26282b; --muted:#8b9097; --panel:#f4f5f6; --border:#c6cbd1; }
   body.theme-photo   { --bg:#0d120d; --bg2:rgba(255,255,255,.08); --fg:#ffffff; --muted:rgba(255,255,255,.65); --panel:#141a14; --border:#2c352c; }
   body.theme-nasa    { --bg:#f1f0ec; --bg2:#e7e5e0; --fg:#1e2124; --muted:#9a9c9e; --accent:#ff5c1f; --danger:#ff5c1f; --panel:#ffffff; --border:#d8d6d0; }
@@ -171,6 +178,8 @@
   #lavaBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
   #gradientBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
   #auroraBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
+  #strandsBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%; opacity:.7; transition:opacity .4s;}
+  body.theme-strands.mode-light #strandsBg{opacity:.55;}
   #toasters{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; display:none;}
   .toaster{position:absolute; will-change:transform; animation:flyby linear infinite;}
   .toaster .wing{animation:flap .3s ease-in-out infinite alternate; transform-origin:28px 20px;}
@@ -293,6 +302,18 @@
     font-weight:300; letter-spacing:.3em; text-transform:uppercase;
     color:var(--muted); text-shadow:0 0 18px var(--aurora-glow);
   }
+  /* strands: Bold's plain big digits, but sat as a black silhouette over a
+     slowly drifting glow instead of a flat page color — the letterforms
+     read via the negative space around them rather than raw contrast,
+     which is what keeps it "subtle" instead of a bright neon sign */
+  body.theme-strands #time{font-weight:var(--fontw,600); letter-spacing:.01em; color:var(--fg); font-size:clamp(3.2rem,20vw,26vh);}
+  /* label styled like Time Disc's editable title: normal case, medium weight,
+     tight tracking — but tinted to match the countdown digits rather than disc's muted grey */
+  body.theme-strands #label{color:var(--fg); font-weight:500; letter-spacing:-.01em; text-transform:none; font-size:clamp(1.2rem,3vh,2rem); margin-bottom:-.6rem;}
+  /* the strand weave's glow peaks at true viewport center, but #stage's global
+     bottom padding (reserved elsewhere so content clears the fixed controls)
+     biases everything upward — pull it back down to sit on the glow */
+  body.theme-strands #stage{padding-bottom:4vh;}
   /* matrix: glow + cursor (currentColor so rain-color variants recolor it) */
   body.theme-terminal #time{
     font-weight:var(--fontw,400);
@@ -731,6 +752,7 @@
   body.theme-sunset #btnStart{background:var(--sunset-accent); border-color:var(--sunset-accent);}
   body.theme-bounce #btnStart{background:#39ff14; border-color:#39ff14;}   /* fallback before JS syncs it to the bouncing digit's own color */
   body.theme-aurora #btnStart{background:var(--aurora-glow); border-color:var(--aurora-glow);}
+  body.theme-strands #btnStart{background:var(--strands-accent); border-color:var(--strands-accent); color:var(--strands-text);}
   /* quiet icon buttons */
   button.icon, a.icon{
     width:2.8rem; height:2.8rem; padding:.62rem; border-radius:12px;
@@ -776,13 +798,26 @@
     padding:.55rem .75rem; border-radius:8px; font-size:.78rem; line-height:1.45; font-weight:600;
   }
   .chip-row{display:flex; flex-wrap:wrap; gap:.45rem;}
+  .theme-group-label{
+    font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--muted); margin:.9rem 0 .45rem;
+  }
+  .theme-group-label:first-child{margin-top:0;}
   .chip{position:relative; font-size:.85rem;}
-  .chip.active{border-color:var(--accent); color:var(--accent);}
+  /* selected state reads as a filled/tinted chip with normal-contrast text,
+     rather than accent-colored text alone — a light accent (gold, etc.) on a
+     near-white light-mode panel was often close to unreadable */
+  .chip.active{border-color:var(--accent); color:var(--fg); background:color-mix(in srgb, var(--accent) 20%, transparent); font-weight:600;}
   .chip .lock{margin-left:.35rem; width:.95em; height:.95em; vertical-align:-.14em; opacity:.65;}
   .pro-tag{
     display:inline-block; font-size:.62rem; font-weight:800; letter-spacing:.08em;
     background:var(--accent); color:#111; border-radius:4px; padding:.1rem .35rem;
     vertical-align:middle; margin-left:.4rem;
+  }
+  .eu-badge{
+    display:inline-flex; align-items:center; gap:.35rem; font-size:.7rem; font-weight:700;
+    letter-spacing:.02em; background:transparent; color:var(--fg); border:1px solid var(--border);
+    border-radius:20px; padding:.28rem .7rem; margin:.5rem 0 .8rem; opacity:.7;
   }
   .field{display:flex; flex-direction:column; gap:.35rem; margin-bottom:.8rem;}
   .field label{font-size:.8rem; color:var(--muted);}
@@ -845,6 +880,7 @@
 <canvas id="lavaBg"></canvas>
 <canvas id="gradientBg"></canvas>
 <canvas id="auroraBg"></canvas>
+<canvas id="strandsBg"></canvas>
 <div id="toasters"></div>
 <div id="previewBadge"></div>
 
@@ -982,51 +1018,68 @@
 
 <aside id="settings">
   <div class="section-head">
-    <h2>Settings</h2>
+    <h2 data-i18n="settingsTitle">Settings</h2>
   </div>
 
   <section>
-    <h3>Mode</h3>
-    <label class="switch">
-      <input type="checkbox" id="swToggle"> Stopwatch (count up instead)
-    </label>
-    <label class="switch" style="margin-top:.8rem">
-      <input type="checkbox" id="clockToggle"> Clock mode (show the time of day) <span class="pro-tag">PRO</span>
-    </label>
+    <h3 data-i18n="languageHeading">Language</h3>
+    <div class="chip-row" id="langRow"></div>
   </section>
 
   <section>
-    <h3>Theme</h3>
-    <div class="chip-row" id="themeRow"></div>
+    <h3 data-i18n="themeHeading">Theme</h3>
+    <div id="themeRow"></div>
     <div id="lampSec" style="display:none; margin-top:.9rem">
-      <h3 id="lampHead">Theme style <span class="pro-tag">PRO</span></h3>
+      <h3 id="lampHead"><span data-i18n="themeStyleHeading">Theme style</span> <span class="pro-tag">PRO</span></h3>
       <div class="chip-row" id="lampRow"></div>
     </div>
   </section>
 
   <section>
-    <h3>Sound</h3>
-    <div id="muteNote" style="display:none; margin-bottom:.8rem">All sound is off. Previews and alerts are silenced. Press M or the speaker icon to unmute.</div>
+    <h3 data-i18n="soundHeading">Sound</h3>
+    <div id="muteNote" data-i18n="muteNote" style="display:none; margin-bottom:.8rem">All sound is off. Previews and alerts are silenced. Press M or the speaker icon to unmute.</div>
     <div class="chip-row" id="soundRow"></div>
     <label class="switch" style="margin-top:.8rem">
-      <input type="checkbox" id="tickToggle"> Tick during final 10 seconds
+      <input type="checkbox" id="tickToggle"> <span data-i18n="tickLabel">Tick during final 10 seconds</span>
     </label>
     <label class="switch" style="margin-top:.8rem">
-      <input type="checkbox" id="voiceToggle"> Voice alert at 30 seconds left <span class="pro-tag">PRO</span>
+      <input type="checkbox" id="tickAlwaysToggle"> <span data-i18n="tickAlwaysLabel">Tick throughout the whole timer</span>
+    </label>
+    <label class="switch" style="margin-top:.8rem">
+      <input type="checkbox" id="voiceToggle"> <span data-i18n="voiceLabel">Voice alert at 30 seconds left</span> <span class="pro-tag">PRO</span>
+    </label>
+    <label class="switch" style="margin-top:.8rem">
+      <input type="checkbox" id="voice2minToggle"> <span data-i18n="voice2minLabel">Voice alert at 2 minutes left</span> <span class="pro-tag">PRO</span>
+    </label>
+    <label class="switch" style="margin-top:.8rem">
+      <input type="checkbox" id="voiceHalfToggle"> <span data-i18n="voiceHalfLabel">"Time to switch" alert halfway through</span> <span class="pro-tag">PRO</span>
     </label>
   </section>
 
   <section>
-    <h3>Font <span class="pro-tag">PRO</span></h3>
+    <h3 data-i18n="modeHeading">Mode</h3>
+    <label class="switch">
+      <input type="checkbox" id="swToggle"> <span data-i18n="stopwatchLabel">Stopwatch (count up instead)</span>
+    </label>
+    <label class="switch" style="margin-top:.8rem">
+      <input type="checkbox" id="clockToggle"> <span data-i18n="clockLabel">Clock mode (show the time of day)</span> <span class="pro-tag">PRO</span>
+    </label>
+    <label class="switch" style="margin-top:.8rem">
+      <input type="checkbox" id="pomodoroToggle"> <span data-i18n="pomodoroLabel">Pomodoro mode (25 min focus / 5 min break, auto-repeats)</span> <span class="pro-tag">PRO</span>
+    </label>
+  </section>
+
+  <section>
+    <h3><span data-i18n="fontHeading">Font</span> <span class="pro-tag">PRO</span></h3>
     <select id="fontSelect" style="width:100%; padding:.5rem .6rem; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--fg); font-family:inherit; font-size:.9rem"></select>
-    <div id="fontProNote" class="help" style="margin-top:.5rem; display:none">Free themes use their own default font. Pro unlocks a set of beautiful fonts and lets you upload your own.</div>
+    <div id="fontProNote" class="help" data-i18n="fontProNote" style="margin-top:.5rem; display:none">Free themes use their own default font. Pro unlocks a set of beautiful fonts and lets you upload your own.</div>
     <div id="customFontBox" style="display:none; margin-top:.8rem">
       <div class="field">
-        <label>Upload your own font (.ttf, .otf, .woff, .woff2)</label>
+        <label data-i18n="uploadFontLabel">Upload your own font (.ttf, .otf, .woff, .woff2)</label>
         <input type="file" id="fontFile" accept=".ttf,.otf,.woff,.woff2,font/*">
       </div>
       <div class="field" id="customWeightRow" style="display:none">
-        <label>Weight: <span id="customWeightVal">400</span></label>
+        <label><span data-i18n="weightLabel">Weight:</span> <span id="customWeightVal">400</span></label>
         <input type="range" id="customWeight" min="100" max="900" step="100" value="400" style="width:100%">
       </div>
     </div>
@@ -1034,26 +1087,26 @@
 
   <section>
     <div class="section-head">
-      <h3>Your colors &amp; logo <span class="pro-tag">PRO</span></h3>
-      <span class="unlock-link" id="brandUnlock" style="display:none">Unlock</span>
+      <h3><span data-i18n="colorsHeading">Your colors &amp; logo</span> <span class="pro-tag">PRO</span></h3>
+      <span class="unlock-link" id="brandUnlock" data-i18n="unlockLink" style="display:none">Unlock</span>
     </div>
     <div id="brandBody">
       <div class="field">
-        <label>Logo (shown above the timer)</label>
+        <label data-i18n="logoLabel">Logo (shown above the timer)</label>
         <input type="file" id="logoInput" accept="image/*">
       </div>
       <div class="field">
-        <label>Accent color (digits &amp; highlights)</label>
+        <label data-i18n="accentLabel">Accent color (digits &amp; highlights)</label>
         <input type="color" id="accentInput" value="#e8c15a">
       </div>
       <div class="field">
-        <label>Background color (overrides theme)</label>
+        <label data-i18n="bgLabel">Background color (overrides theme)</label>
         <div style="display:flex;gap:.6rem;align-items:center">
           <input type="color" id="bgInput" value="#101014">
-          <label class="switch" style="font-size:.78rem"><input type="checkbox" id="bgToggle"> use it</label>
+          <label class="switch" style="font-size:.78rem"><input type="checkbox" id="bgToggle"> <span data-i18n="useItLabel">use it</span></label>
         </div>
       </div>
-      <button id="brandReset" class="preset">Reset colors &amp; logo</button>
+      <button id="brandReset" class="preset" data-i18n="resetColorsBtn">Reset colors &amp; logo</button>
     </div>
   </section>
 
@@ -1062,19 +1115,19 @@
     <div id="trialStatus"></div>
     <button id="btnTrial" class="primary" style="margin-top:.7rem">Buy the app</button>
     <div id="licenseBox" style="margin-top:1rem">
-      <label style="display:block; font-size:.8rem; color:var(--muted); margin-bottom:.4rem">Already bought? Paste your license key</label>
+      <label style="display:block; font-size:.8rem; color:var(--muted); margin-bottom:.4rem" data-i18n="haveKeyLabel">Already bought? Paste your license key</label>
       <div style="display:flex; gap:.5rem">
         <input id="licenseInput" type="text" spellcheck="false" autocomplete="off" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
           style="flex:1; min-width:0; padding:.5rem .6rem; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--fg); font-family:inherit; font-size:.85rem">
-        <button id="licenseBtn" class="preset">Unlock</button>
+        <button id="licenseBtn" class="preset" data-i18n="unlockLink">Unlock</button>
       </div>
       <div id="licenseMsg" style="margin-top:.5rem; font-size:.8rem; display:none"></div>
     </div>
   </section>
 
   <section>
-    <h3>Use it as an app (Mac &amp; PC)</h3>
-    <div class="help">
+    <h3 data-i18n="installHeading">Use it as an app (Mac &amp; PC)</h3>
+    <div class="help" data-i18n="installBody">
       Install Workshop Timer so it opens in its own window, with no tabs or address bar, and launches like any native app.<br><br>
       <b>Mac · Safari:</b> File menu → <b>Add to Dock</b> → Add. Launch it from your Dock.<br>
       <b>Mac &amp; PC · Chrome:</b> click the <b>install icon</b> (monitor with a down-arrow) at the right edge of the address bar → <b>Install</b>. Or ⋮ menu → <b>Cast, Save &amp; Share → Install page as app</b>.<br>
@@ -1084,8 +1137,8 @@
   </section>
 
   <section>
-    <h3>About</h3>
-    <div class="help">
+    <h3 data-i18n="aboutHeading">About</h3>
+    <div class="help" data-i18n="aboutBody">
       A big, calm timer for workshops, meetings, and classrooms.<br>
       No ads · no account · works offline.<br><br>
       <b>Legal</b><br>
@@ -1099,6 +1152,13 @@
   <div id="removeLicenseWrap" style="display:none; text-align:center; margin:.4rem 0 .2rem">
     <a href="#" id="removeLicense" style="font-size:.68rem; color:var(--muted); opacity:.5; text-decoration:underline; cursor:pointer">Remove license from this device</a>
   </div>
+
+  <div style="margin-top:.8rem">
+    <span class="eu-badge">
+      <svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><circle cx="10" cy="10" r="9.3" fill="none" stroke="currentColor" stroke-width="1"/><g fill="currentColor"><circle cx="10" cy="3.2" r=".9"/><circle cx="10" cy="16.8" r=".9"/><circle cx="3.2" cy="10" r=".9"/><circle cx="16.8" cy="10" r=".9"/><circle cx="5.1" cy="5.1" r=".9"/><circle cx="14.9" cy="5.1" r=".9"/><circle cx="5.1" cy="14.9" r=".9"/><circle cx="14.9" cy="14.9" r=".9"/><circle cx="6.6" cy="14.1" r=".9"/><circle cx="13.4" cy="5.9" r=".9"/><circle cx="6.6" cy="5.9" r=".9"/><circle cx="13.4" cy="14.1" r=".9"/></g></svg>
+      Made in the EU
+    </span>
+  </div>
 </aside>
 
 <div id="overlay">
@@ -1108,7 +1168,7 @@
       <h2 id="modalTitle">Get Pro, yours forever</h2>
       <p id="modalBody">One payment. No subscription, no account, no email list. You unlock every theme, font, sound, and color with a license key that's yours forever.</p>
       <ul id="modalList">
-        <li>All 16 themes: countdown board, starship, LED clock &amp; more</li>
+        <li>All 19 themes: countdown board, starship, LED clock &amp; more</li>
         <li>Your logo + custom colors on the big screen</li>
         <li>11 fonts, 5 end sounds, voice alert, clock + stopwatch modes</li>
       </ul>
@@ -1158,13 +1218,403 @@ const PRICE = localPrice();
 const PREVIEW_SECONDS = 15;
 const LS = { state:"wt_state_v3", logo:"wt_logo_v1", license:"wt_license_v1", customFont:"wt_font_v1" };
 
+/* =========================================================
+   LANGUAGE (free, EN + DE) — covers the Settings menu chrome and
+   the Typography theme's spoken-word countdown. Theme/sound/font
+   names, and user-editable content (label, LCARS panel text, etc.)
+   stay as typed — only the app's own interface text translates.
+   ========================================================= */
+const LANGS = [
+  {id:"en", name:"EN", pro:false}, {id:"de", name:"DE", pro:false}, {id:"fr", name:"FR", pro:false},
+  {id:"es", name:"ES", pro:false}, {id:"zh", name:"中文", pro:false}, {id:"pt", name:"PT", pro:false},
+  {id:"ja", name:"日本語", pro:false}, {id:"it", name:"IT", pro:false}, {id:"ar", name:"العربية", pro:false},
+  {id:"ru", name:"РУ", pro:false}, {id:"hi", name:"हिन्दी", pro:false}, {id:"ko", name:"한국어", pro:false},
+];
+const I18N = {
+  en: {
+    settingsTitle:"Settings", languageHeading:"Language",
+    modeHeading:"Mode", stopwatchLabel:"Stopwatch (count up instead)", clockLabel:"Clock mode (show the time of day)",
+    pomodoroLabel:"Pomodoro mode (25 min focus / 5 min break, auto-repeats)", pomodoroFocusWord:"Focus", pomodoroBreakWord:"Break",
+    themeHeading:"Theme", themeStyleHeading:"Theme style",
+    groupSimple:"Simple & Clean", groupAmbient:"Ambient & Backgrounds", groupCountdown:"Kitchen & Countdown", groupRetro:"Retro & Fun",
+    soundHeading:"Sound", muteNote:"All sound is off. Previews and alerts are silenced. Press M or the speaker icon to unmute.",
+    tickLabel:"Tick during final 10 seconds", tickAlwaysLabel:"Tick throughout the whole timer", voiceLabel:"Voice alert at 30 seconds left",
+    voice2minLabel:"Voice alert at 2 minutes left", voiceHalfLabel:"\"Time to switch\" alert halfway through",
+    fontHeading:"Font", fontProNote:"Free themes use their own default font. Pro unlocks a set of beautiful fonts and lets you upload your own.",
+    uploadFontLabel:"Upload your own font (.ttf, .otf, .woff, .woff2)", weightLabel:"Weight:",
+    colorsHeading:"Your colors & logo", unlockLink:"Unlock",
+    logoLabel:"Logo (shown above the timer)", accentLabel:"Accent color (digits & highlights)",
+    bgLabel:"Background color (overrides theme)", useItLabel:"use it", resetColorsBtn:"Reset colors & logo",
+    proHeadFree:"Pro", proHeadLifetime:"Pro (lifetime)", proHeadUnlocked:"Pro (unlocked)",
+    proStatusUnlocked:"You have the full version: every theme, sound, font, and color. Thanks for supporting an independent tool.",
+    proStatusLockedPrefix:"All 19 themes with style variants, clock & stopwatch modes, voice alert, custom colors & logo, beautiful fonts & your own uploads, 5 end sounds. One-time",
+    proStatusLockedSuffix:", yours forever, no subscription.",
+    getProBtn:"Get Pro for Life", haveKeyLabel:"Already bought? Paste your license key",
+    installHeading:"Use it as an app (Mac & PC)",
+    installBody:"Install Workshop Timer so it opens in its own window, with no tabs or address bar, and launches like any native app.<br><br><b>Mac · Safari:</b> File menu → <b>Add to Dock</b> → Add. Launch it from your Dock.<br><b>Mac &amp; PC · Chrome:</b> click the <b>install icon</b> (monitor with a down-arrow) at the right edge of the address bar → <b>Install</b>. Or ⋮ menu → <b>Cast, Save &amp; Share → Install page as app</b>.<br><b>PC · Edge:</b> ⋯ menu → <b>Apps → Install this site as an app</b>.<br><br>Once it's open, the timer runs entirely on your device, with no internet needed to keep time. Perfect for a projector or TV.",
+    aboutHeading:"About",
+    aboutBody:"A big, calm timer for workshops, meetings, and classrooms.<br>No ads · no account · works offline.<br><br><b>Legal</b><br><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Datenschutz&nbsp;(Privacy)</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">AGB&nbsp;(Terms)</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Widerrufsrecht&nbsp;(Refunds)</a>",
+    hint:"Space start · R reset · F fullscreen · T theme · ↑↓ ±1 min · ←→ ±10 sec · Click the Time or Any Label to Type",
+    titleAppearance:"Light / dark", titleSettings:"Settings", titleMute:"Sound on/off (M)", titleFull:"Fullscreen (F)",
+    titleReset:"Reset (R)", titlePlus30:"Add 30 seconds", titleShuffle:"Shuffle theme", shortcut:"Shortcut:",
+    startBtn:"Start", pauseBtn:"Pause", sec:"sec", min:"min", previewingLabel:"Previewing",
+    paused:"paused", stopwatchWord:"stopwatch", timesUp:"time's up", remaining:"remaining", oclock:"o'clock"
+  },
+  de: {
+    settingsTitle:"Einstellungen", languageHeading:"Sprache",
+    modeHeading:"Modus", stopwatchLabel:"Stoppuhr (aufwärts zählen)", clockLabel:"Uhrzeit-Modus (Tageszeit anzeigen)",
+    pomodoroLabel:"Pomodoro-Modus (25 Min. Fokus / 5 Min. Pause, wiederholt sich automatisch)", pomodoroFocusWord:"Fokus", pomodoroBreakWord:"Pause",
+    themeHeading:"Design", themeStyleHeading:"Design-Stil",
+    groupSimple:"Einfach & Klar", groupAmbient:"Ambient & Hintergründe", groupCountdown:"Küche & Countdown", groupRetro:"Retro & Spaß",
+    soundHeading:"Ton", muteNote:"Der Ton ist aus. Vorschauen und Signale sind stumm. M oder das Lautsprecher-Symbol schaltet den Ton wieder ein.",
+    tickLabel:"Ticken in den letzten 10 Sekunden", tickAlwaysLabel:"Während des gesamten Timers ticken", voiceLabel:"Sprachansage bei 30 Sekunden",
+    voice2minLabel:"Sprachansage bei 2 Minuten", voiceHalfLabel:"„Zeit zum Wechseln“-Ansage zur Halbzeit",
+    fontHeading:"Schrift", fontProNote:"Kostenlose Designs verwenden ihre eigene Standardschrift. Pro schaltet schöne Schriften frei und erlaubt eigene Uploads.",
+    uploadFontLabel:"Eigene Schrift hochladen (.ttf, .otf, .woff, .woff2)", weightLabel:"Stärke:",
+    colorsHeading:"Farben & Logo", unlockLink:"Freischalten",
+    logoLabel:"Logo (über dem Timer)", accentLabel:"Akzentfarbe (Ziffern & Hervorhebungen)",
+    bgLabel:"Hintergrundfarbe (überschreibt Design)", useItLabel:"verwenden", resetColorsBtn:"Farben & Logo zurücksetzen",
+    proHeadFree:"Pro", proHeadLifetime:"Pro (lebenslang)", proHeadUnlocked:"Pro (freigeschaltet)",
+    proStatusUnlocked:"Du hast die Vollversion: jedes Design, jeden Sound, jede Schrift und Farbe. Danke, dass du ein unabhängiges Tool unterstützt.",
+    proStatusLockedPrefix:"Alle 19 Designs mit Stilvarianten, Uhrzeit- & Stoppuhr-Modus, Sprachansage, eigene Farben & Logo, schöne Schriften & eigene Uploads, 5 Endsignale. Einmalig",
+    proStatusLockedSuffix:", für immer deins, kein Abo.",
+    getProBtn:"Pro fürs Leben holen", haveKeyLabel:"Schon gekauft? Lizenzschlüssel einfügen",
+    installHeading:"Als App nutzen (Mac & PC)",
+    installBody:"Installiere Workshop Timer, damit es in einem eigenen Fenster ohne Tabs oder Adressleiste öffnet und wie eine native App startet.<br><br><b>Mac · Safari:</b> Ablage-Menü → <b>Zum Dock hinzufügen</b> → Hinzufügen. Danach aus dem Dock starten.<br><b>Mac &amp; PC · Chrome:</b> Klicke auf das <b>Installieren-Symbol</b> (Monitor mit Pfeil nach unten) am rechten Rand der Adressleiste → <b>Installieren</b>. Oder ⋮-Menü → <b>Cast, Speichern &amp; Teilen → Seite als App installieren</b>.<br><b>PC · Edge:</b> ⋯-Menü → <b>Apps → Diese Seite als App installieren</b>.<br><br>Einmal geöffnet läuft der Timer komplett auf deinem Gerät, ganz ohne Internet. Perfekt für Beamer oder TV.",
+    aboutHeading:"Über",
+    aboutBody:"Ein großer, ruhiger Timer für Workshops, Meetings und Unterricht.<br>Keine Werbung · kein Konto · funktioniert offline.<br><br><b>Rechtliches</b><br><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Datenschutz</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">AGB</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Widerrufsrecht</a>",
+    hint:"Leertaste Start · R Reset · F Vollbild · T Design · ↑↓ ±1 Min · ←→ ±10 Sek · Zeit oder Bezeichnung anklicken zum Tippen",
+    titleAppearance:"Hell / Dunkel", titleSettings:"Einstellungen", titleMute:"Ton an/aus (M)", titleFull:"Vollbild (F)",
+    titleReset:"Reset (R)", titlePlus30:"30 Sekunden hinzufügen", titleShuffle:"Design mischen", shortcut:"Kürzel:",
+    startBtn:"Start", pauseBtn:"Pause", sec:"Sek", min:"Min", previewingLabel:"Vorschau:",
+    paused:"pausiert", stopwatchWord:"Stoppuhr", timesUp:"Zeit ist um", remaining:"verbleibend", oclock:"Uhr"
+  },
+  fr: {
+    settingsTitle:"Réglages", languageHeading:"Langue",
+    modeHeading:"Mode", stopwatchLabel:"Chronomètre (compte à rebours inversé)", clockLabel:"Mode horloge (afficher l'heure)",
+    themeHeading:"Thème", themeStyleHeading:"Style du thème",
+    groupSimple:"Simple & épuré", groupAmbient:"Ambiance & fonds", groupCountdown:"Cuisine & compte à rebours", groupRetro:"Rétro & fun",
+    soundHeading:"Son", muteNote:"Le son est coupé. Aperçus et alertes sont silencieux. Appuyez sur M ou l'icône haut-parleur pour réactiver.",
+    tickLabel:"Tic-tac pendant les 10 dernières secondes", tickAlwaysLabel:"Tic-tac pendant tout le minuteur", voiceLabel:"Alerte vocale à 30 secondes",
+    voice2minLabel:"Alerte vocale à 2 minutes", voiceHalfLabel:"Alerte « changez d'atelier » à mi-parcours",
+    fontHeading:"Police", fontProNote:"Les thèmes gratuits utilisent leur propre police par défaut. Pro débloque de belles polices et permet d'importer les vôtres.",
+    uploadFontLabel:"Importer votre police (.ttf, .otf, .woff, .woff2)", weightLabel:"Graisse :",
+    colorsHeading:"Vos couleurs & logo", unlockLink:"Débloquer",
+    logoLabel:"Logo (affiché au-dessus du minuteur)", accentLabel:"Couleur d'accent (chiffres & surbrillances)",
+    bgLabel:"Couleur de fond (remplace le thème)", useItLabel:"utiliser", resetColorsBtn:"Réinitialiser couleurs & logo",
+    proHeadFree:"Pro", proHeadLifetime:"Pro (à vie)", proHeadUnlocked:"Pro (débloqué)",
+    proStatusUnlocked:"Vous avez la version complète : chaque thème, son, police et couleur. Merci de soutenir un outil indépendant.",
+    proStatusLockedPrefix:"Les 19 thèmes avec variantes de style, modes horloge & chronomètre, alerte vocale, couleurs & logo personnalisés, belles polices & vos propres imports, 5 sons de fin. Paiement unique",
+    proStatusLockedSuffix:", à vous pour toujours, sans abonnement.",
+    getProBtn:"Obtenir Pro à vie", haveKeyLabel:"Déjà acheté ? Collez votre clé de licence",
+    installHeading:"Utiliser comme application (Mac & PC)",
+    installBody:"Installez Workshop Timer pour qu'il s'ouvre dans sa propre fenêtre, sans onglets ni barre d'adresse, comme une application native.<br><br><b>Mac · Safari :</b> menu Fichier → <b>Ajouter au Dock</b> → Ajouter. Lancez-le ensuite depuis le Dock.<br><b>Mac &amp; PC · Chrome :</b> cliquez sur l'<b>icône d'installation</b> (écran avec flèche vers le bas) à droite de la barre d'adresse → <b>Installer</b>. Ou menu ⋮ → <b>Caster, enregistrer &amp; partager → Installer la page comme application</b>.<br><b>PC · Edge :</b> menu ⋯ → <b>Applications → Installer ce site en tant qu'application</b>.<br><br>Une fois ouvert, le minuteur fonctionne entièrement sur votre appareil, sans connexion Internet nécessaire. Parfait pour un projecteur ou une TV.",
+    aboutHeading:"À propos",
+    aboutBody:"Un grand minuteur apaisant pour ateliers, réunions et salles de classe.<br>Sans publicité · sans compte · fonctionne hors ligne.<br><br><b>Mentions légales</b><br><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Confidentialité</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Conditions</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Droit de rétractation</a>",
+    hint:"Espace démarrer · R réinitialiser · F plein écran · T thème · ↑↓ ±1 min · ←→ ±10 sec · Cliquez l'heure ou une étiquette pour taper",
+    titleAppearance:"Clair / sombre", titleSettings:"Réglages", titleMute:"Son on/off (M)", titleFull:"Plein écran (F)",
+    titleReset:"Réinitialiser (R)", titlePlus30:"Ajouter 30 secondes", titleShuffle:"Thème aléatoire", shortcut:"Raccourci :",
+    startBtn:"Démarrer", pauseBtn:"Pause", sec:"s", min:"min", previewingLabel:"Aperçu",
+    paused:"en pause", stopwatchWord:"chronomètre", timesUp:"c'est l'heure", remaining:"restant", oclock:"heures"
+  },
+  es: {
+    settingsTitle:"Ajustes", languageHeading:"Idioma",
+    modeHeading:"Modo", stopwatchLabel:"Cronómetro (contar hacia arriba)", clockLabel:"Modo reloj (mostrar la hora del día)",
+    themeHeading:"Tema", themeStyleHeading:"Estilo del tema",
+    groupSimple:"Simple y claro", groupAmbient:"Ambiente y fondos", groupCountdown:"Cocina y cuenta atrás", groupRetro:"Retro y diversión",
+    soundHeading:"Sonido", muteNote:"El sonido está desactivado. Vistas previas y alertas están silenciadas. Pulsa M o el icono del altavoz para reactivar.",
+    tickLabel:"Tictac en los últimos 10 segundos", tickAlwaysLabel:"Tictac durante todo el temporizador", voiceLabel:"Alerta de voz a los 30 segundos",
+    voice2minLabel:"Alerta de voz a los 2 minutos", voiceHalfLabel:"Alerta de \"cambio de turno\" a mitad de tiempo",
+    fontHeading:"Fuente", fontProNote:"Los temas gratuitos usan su propia fuente predeterminada. Pro desbloquea fuentes bonitas y permite subir las tuyas.",
+    uploadFontLabel:"Sube tu propia fuente (.ttf, .otf, .woff, .woff2)", weightLabel:"Grosor:",
+    colorsHeading:"Tus colores y logo", unlockLink:"Desbloquear",
+    logoLabel:"Logo (se muestra sobre el temporizador)", accentLabel:"Color de acento (dígitos y detalles)",
+    bgLabel:"Color de fondo (anula el tema)", useItLabel:"usar", resetColorsBtn:"Restablecer colores y logo",
+    proHeadFree:"Pro", proHeadLifetime:"Pro (de por vida)", proHeadUnlocked:"Pro (desbloqueado)",
+    proStatusUnlocked:"Tienes la versión completa: todos los temas, sonidos, fuentes y colores. Gracias por apoyar una herramienta independiente.",
+    proStatusLockedPrefix:"Los 19 temas con variantes de estilo, modos reloj y cronómetro, alerta de voz, colores y logo personalizados, fuentes bonitas y tus propias subidas, 5 sonidos finales. Pago único",
+    proStatusLockedSuffix:", tuyo para siempre, sin suscripción.",
+    getProBtn:"Consigue Pro de por vida", haveKeyLabel:"¿Ya lo compraste? Pega tu clave de licencia",
+    installHeading:"Úsalo como app (Mac y PC)",
+    installBody:"Instala Workshop Timer para que se abra en su propia ventana, sin pestañas ni barra de direcciones, como una app nativa.<br><br><b>Mac · Safari:</b> menú Archivo → <b>Añadir al Dock</b> → Añadir. Luego ábrelo desde el Dock.<br><b>Mac &amp; PC · Chrome:</b> haz clic en el <b>icono de instalación</b> (monitor con flecha hacia abajo) al final de la barra de direcciones → <b>Instalar</b>. O menú ⋮ → <b>Convertir, guardar y compartir → Instalar página como app</b>.<br><b>PC · Edge:</b> menú ⋯ → <b>Aplicaciones → Instalar este sitio como app</b>.<br><br>Una vez abierto, el temporizador funciona totalmente en tu dispositivo, sin necesitar internet. Perfecto para un proyector o TV.",
+    aboutHeading:"Acerca de",
+    aboutBody:"Un temporizador grande y tranquilo para talleres, reuniones y clases.<br>Sin anuncios · sin cuenta · funciona sin conexión.<br><br><b>Legal</b><br><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Privacidad</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Términos</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Derecho de desistimiento</a>",
+    hint:"Espacio iniciar · R reiniciar · F pantalla completa · T tema · ↑↓ ±1 min · ←→ ±10 seg · Haz clic en la hora o una etiqueta para escribir",
+    titleAppearance:"Claro / oscuro", titleSettings:"Ajustes", titleMute:"Sonido on/off (M)", titleFull:"Pantalla completa (F)",
+    titleReset:"Reiniciar (R)", titlePlus30:"Añadir 30 segundos", titleShuffle:"Tema aleatorio", shortcut:"Atajo:",
+    startBtn:"Iniciar", pauseBtn:"Pausa", sec:"seg", min:"min", previewingLabel:"Vista previa",
+    paused:"en pausa", stopwatchWord:"cronómetro", timesUp:"se acabó el tiempo", remaining:"restante", oclock:"en punto"
+  },
+  zh: {
+    settingsTitle:"设置", languageHeading:"语言",
+    modeHeading:"模式", stopwatchLabel:"秒表（正计时）", clockLabel:"时钟模式（显示当前时间）",
+    themeHeading:"主题", themeStyleHeading:"主题风格",
+    groupSimple:"简约清爽", groupAmbient:"氛围与背景", groupCountdown:"厨房与倒计时", groupRetro:"复古趣味",
+    soundHeading:"声音", muteNote:"声音已关闭。预览和提醒均已静音。按 M 或喇叭图标可取消静音。",
+    tickLabel:"最后10秒滴答声", tickAlwaysLabel:"全程滴答声", voiceLabel:"剩余30秒语音提醒",
+    voice2minLabel:"剩余2分钟语音提醒", voiceHalfLabel:"中场“该换人了”语音提醒",
+    fontHeading:"字体", fontProNote:"免费主题使用各自的默认字体。Pro 解锁精美字体并支持上传自定义字体。",
+    uploadFontLabel:"上传你自己的字体（.ttf、.otf、.woff、.woff2）", weightLabel:"字重：",
+    colorsHeading:"你的颜色与logo", unlockLink:"解锁",
+    logoLabel:"Logo（显示在计时器上方）", accentLabel:"强调色（数字与高亮）",
+    bgLabel:"背景色（覆盖主题）", useItLabel:"使用", resetColorsBtn:"重置颜色与logo",
+    proHeadFree:"Pro", proHeadLifetime:"Pro（终身）", proHeadUnlocked:"Pro（已解锁）",
+    proStatusUnlocked:"你已拥有完整版：所有主题、声音、字体与颜色。感谢支持这款独立工具。",
+    proStatusLockedPrefix:"全部19款主题及风格变体、时钟与秒表模式、语音提醒、自定义颜色与logo、精美字体及自定义上传、5种结束提示音。一次性付费",
+    proStatusLockedSuffix:"，永久属于你，无需订阅。",
+    getProBtn:"获取终身版Pro", haveKeyLabel:"已购买？粘贴你的授权密钥",
+    installHeading:"作为应用使用（Mac 与 PC）",
+    installBody:"安装 Workshop Timer，使其在独立窗口中打开，没有标签页或地址栏，如同原生应用一样启动。<br><br><b>Mac · Safari：</b>「文件」菜单 → <b>添加到程序坞</b> → 添加。之后从程序坞启动。<br><b>Mac 与 PC · Chrome：</b>点击地址栏右侧的<b>安装图标</b>（带向下箭头的显示器）→ <b>安装</b>。或点击 ⋮ 菜单 → <b>投射、保存和分享 → 将网页安装为应用</b>。<br><b>PC · Edge：</b> ⋯ 菜单 → <b>应用 → 将此网站安装为应用</b>。<br><br>打开后，计时器完全在你的设备上运行，无需联网即可计时。非常适合投影仪或电视。",
+    aboutHeading:"关于",
+    aboutBody:"一款专为工作坊、会议和课堂设计的大字号沉稳计时器。<br>无广告 · 无需账户 · 支持离线使用。<br><br><b>法律信息</b><br><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">隐私政策</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">条款</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">撤回权</a>",
+    hint:"空格 开始 · R 重置 · F 全屏 · T 切换主题 · ↑↓ ±1分钟 · ←→ ±10秒 · 点击时间或标签可输入文字",
+    titleAppearance:"浅色 / 深色", titleSettings:"设置", titleMute:"声音开关 (M)", titleFull:"全屏 (F)",
+    titleReset:"重置 (R)", titlePlus30:"增加30秒", titleShuffle:"随机主题", shortcut:"快捷键：",
+    startBtn:"开始", pauseBtn:"暂停", sec:"秒", min:"分", previewingLabel:"预览中",
+    paused:"已暂停", stopwatchWord:"秒表", timesUp:"时间到", remaining:"剩余", oclock:"点整"
+  },
+  pt: {
+    settingsTitle:"Configurações", languageHeading:"Idioma",
+    modeHeading:"Modo", stopwatchLabel:"Cronômetro (contagem crescente)", clockLabel:"Modo relógio (mostrar hora do dia)",
+    themeHeading:"Tema", themeStyleHeading:"Estilo do tema",
+    groupSimple:"Simples e limpo", groupAmbient:"Ambiente e fundos", groupCountdown:"Cozinha e contagem regressiva", groupRetro:"Retrô e diversão",
+    soundHeading:"Som", muteNote:"O som está desativado. Prévias e alertas estão silenciados. Pressione M ou o ícone do alto-falante para reativar.",
+    tickLabel:"Tique-taque nos últimos 10 segundos", tickAlwaysLabel:"Tique-taque durante todo o cronômetro", voiceLabel:"Alerta de voz aos 30 segundos",
+    voice2minLabel:"Alerta de voz aos 2 minutos", voiceHalfLabel:"Alerta de \"hora de trocar\" na metade do tempo",
+    fontHeading:"Fonte", fontProNote:"Temas gratuitos usam sua própria fonte padrão. O Pro desbloqueia fontes bonitas e permite enviar as suas.",
+    uploadFontLabel:"Envie sua própria fonte (.ttf, .otf, .woff, .woff2)", weightLabel:"Peso:",
+    colorsHeading:"Suas cores e logo", unlockLink:"Desbloquear",
+    logoLabel:"Logo (exibido acima do cronômetro)", accentLabel:"Cor de destaque (dígitos e realces)",
+    bgLabel:"Cor de fundo (substitui o tema)", useItLabel:"usar", resetColorsBtn:"Redefinir cores e logo",
+    proHeadFree:"Pro", proHeadLifetime:"Pro (vitalício)", proHeadUnlocked:"Pro (desbloqueado)",
+    proStatusUnlocked:"Você tem a versão completa: todos os temas, sons, fontes e cores. Obrigado por apoiar uma ferramenta independente.",
+    proStatusLockedPrefix:"Todos os 19 temas com variantes de estilo, modos relógio e cronômetro, alerta de voz, cores e logo personalizados, fontes bonitas e seus próprios envios, 5 sons de término. Pagamento único",
+    proStatusLockedSuffix:", seu para sempre, sem assinatura.",
+    getProBtn:"Obter Pro vitalício", haveKeyLabel:"Já comprou? Cole sua chave de licença",
+    installHeading:"Usar como app (Mac e PC)",
+    installBody:"Instale o Workshop Timer para que ele abra em sua própria janela, sem abas ou barra de endereço, como um app nativo.<br><br><b>Mac · Safari:</b> menu Arquivo → <b>Adicionar ao Dock</b> → Adicionar. Depois abra pelo Dock.<br><b>Mac &amp; PC · Chrome:</b> clique no <b>ícone de instalação</b> (monitor com seta para baixo) à direita da barra de endereço → <b>Instalar</b>. Ou menu ⋮ → <b>Transmitir, salvar e compartilhar → Instalar página como app</b>.<br><b>PC · Edge:</b> menu ⋯ → <b>Aplicativos → Instalar este site como aplicativo</b>.<br><br>Depois de aberto, o cronômetro roda totalmente no seu dispositivo, sem precisar de internet. Perfeito para um projetor ou TV.",
+    aboutHeading:"Sobre",
+    aboutBody:"Um cronômetro grande e tranquilo para workshops, reuniões e salas de aula.<br>Sem anúncios · sem conta · funciona offline.<br><br><b>Legal</b><br><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Privacidade</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Termos</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Direito de arrependimento</a>",
+    hint:"Espaço iniciar · R reiniciar · F tela cheia · T tema · ↑↓ ±1 min · ←→ ±10 seg · Clique na hora ou em um rótulo para digitar",
+    titleAppearance:"Claro / escuro", titleSettings:"Configurações", titleMute:"Som on/off (M)", titleFull:"Tela cheia (F)",
+    titleReset:"Reiniciar (R)", titlePlus30:"Adicionar 30 segundos", titleShuffle:"Tema aleatório", shortcut:"Atalho:",
+    startBtn:"Iniciar", pauseBtn:"Pausar", sec:"seg", min:"min", previewingLabel:"Pré-visualizando",
+    paused:"pausado", stopwatchWord:"cronômetro", timesUp:"o tempo acabou", remaining:"restante", oclock:"em ponto"
+  },
+  ja: {
+    settingsTitle:"設定", languageHeading:"言語",
+    modeHeading:"モード", stopwatchLabel:"ストップウォッチ（カウントアップ）", clockLabel:"時計モード（現在時刻を表示）",
+    themeHeading:"テーマ", themeStyleHeading:"テーマスタイル",
+    groupSimple:"シンプル", groupAmbient:"雰囲気と背景", groupCountdown:"キッチン & カウントダウン", groupRetro:"レトロ & 遊び心",
+    soundHeading:"サウンド", muteNote:"サウンドはオフです。プレビューとアラートも無音になります。Mキーまたはスピーカーアイコンでミュート解除できます。",
+    tickLabel:"最後の10秒間だけ秒針音を鳴らす", tickAlwaysLabel:"タイマー中ずっと秒針音を鳴らす", voiceLabel:"残り30秒で音声アラート",
+    voice2minLabel:"残り2分で音声アラート", voiceHalfLabel:"折り返し地点で「交代の時間です」音声アラート",
+    fontHeading:"フォント", fontProNote:"無料テーマはそれぞれ専用のデフォルトフォントを使用します。Proでは美しいフォントが解放され、自分のフォントもアップロードできます。",
+    uploadFontLabel:"独自のフォントをアップロード（.ttf、.otf、.woff、.woff2）", weightLabel:"太さ：",
+    colorsHeading:"カラーとロゴ", unlockLink:"解除",
+    logoLabel:"ロゴ（タイマーの上に表示）", accentLabel:"アクセントカラー（数字とハイライト）",
+    bgLabel:"背景色（テーマを上書き）", useItLabel:"使用する", resetColorsBtn:"カラーとロゴをリセット",
+    proHeadFree:"Pro", proHeadLifetime:"Pro（永久）", proHeadUnlocked:"Pro（解除済み）",
+    proStatusUnlocked:"フルバージョンをご利用中です：すべてのテーマ、サウンド、フォント、カラー。独立系ツールを応援いただきありがとうございます。",
+    proStatusLockedPrefix:"スタイルバリエーション付き全19テーマ、時計＆ストップウォッチモード、音声アラート、カラー＆ロゴのカスタマイズ、美しいフォント＆自分のフォントのアップロード、終了音5種。買い切り",
+    proStatusLockedSuffix:"で永久にあなたのもの、サブスクリプションなし。",
+    getProBtn:"Proを永久に入手", haveKeyLabel:"購入済みですか？ライセンスキーを貼り付け",
+    installHeading:"アプリとして使う（Mac & PC）",
+    installBody:"Workshop Timerをインストールすると、タブやアドレスバーのない独自のウィンドウで開き、ネイティブアプリのように起動します。<br><br><b>Mac・Safari：</b>「ファイル」メニュー→<b>Dockに追加</b>→追加。その後Dockから起動してください。<br><b>Mac＆PC・Chrome：</b>アドレスバー右端の<b>インストールアイコン</b>（下矢印付きモニター）をクリック→<b>インストール</b>。または⋮メニュー→<b>キャスト、保存、共有→ページをアプリとしてインストール</b>。<br><b>PC・Edge：</b>⋯メニュー→<b>アプリ→このサイトをアプリとしてインストール</b>。<br><br>開いた後は、タイマーはインターネット接続なしでデバイス上で完全に動作します。プロジェクターやテレビに最適です。",
+    aboutHeading:"このアプリについて",
+    aboutBody:"ワークショップ、会議、教室のための大きく落ち着いたタイマー。<br>広告なし・アカウント不要・オフライン対応。<br><br><b>法的情報</b><br><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">プライバシー</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">利用規約</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">解約権</a>",
+    hint:"スペース 開始 · R リセット · F 全画面 · T テーマ切替 · ↑↓ ±1分 · ←→ ±10秒 · 時刻またはラベルをクリックして入力",
+    titleAppearance:"ライト / ダーク", titleSettings:"設定", titleMute:"サウンド オン/オフ (M)", titleFull:"全画面 (F)",
+    titleReset:"リセット (R)", titlePlus30:"30秒追加", titleShuffle:"テーマをシャッフル", shortcut:"ショートカット：",
+    startBtn:"開始", pauseBtn:"一時停止", sec:"秒", min:"分", previewingLabel:"プレビュー中",
+    paused:"一時停止中", stopwatchWord:"ストップウォッチ", timesUp:"時間になりました", remaining:"残り", oclock:"時"
+  },
+  it: {
+    settingsTitle:"Impostazioni", languageHeading:"Lingua",
+    modeHeading:"Modalità", stopwatchLabel:"Cronometro (conteggio crescente)", clockLabel:"Modalità orologio (mostra l'ora)",
+    themeHeading:"Tema", themeStyleHeading:"Stile del tema",
+    groupSimple:"Semplice e pulito", groupAmbient:"Atmosfera e sfondi", groupCountdown:"Cucina e conto alla rovescia", groupRetro:"Retrò e divertimento",
+    soundHeading:"Suono", muteNote:"L'audio è disattivato. Anteprime e avvisi sono silenziati. Premi M o l'icona dell'altoparlante per riattivare.",
+    tickLabel:"Ticchettio negli ultimi 10 secondi", tickAlwaysLabel:"Ticchettio per tutto il timer", voiceLabel:"Avviso vocale a 30 secondi",
+    voice2minLabel:"Avviso vocale a 2 minuti", voiceHalfLabel:"Avviso \"cambio turno\" a metà tempo",
+    fontHeading:"Carattere", fontProNote:"I temi gratuiti usano il proprio carattere predefinito. Pro sblocca caratteri eleganti e permette di caricarne di propri.",
+    uploadFontLabel:"Carica il tuo carattere (.ttf, .otf, .woff, .woff2)", weightLabel:"Peso:",
+    colorsHeading:"I tuoi colori e logo", unlockLink:"Sblocca",
+    logoLabel:"Logo (mostrato sopra il timer)", accentLabel:"Colore accento (cifre e evidenziazioni)",
+    bgLabel:"Colore di sfondo (sostituisce il tema)", useItLabel:"usa", resetColorsBtn:"Reimposta colori e logo",
+    proHeadFree:"Pro", proHeadLifetime:"Pro (a vita)", proHeadUnlocked:"Pro (sbloccato)",
+    proStatusUnlocked:"Hai la versione completa: ogni tema, suono, carattere e colore. Grazie per il supporto a uno strumento indipendente.",
+    proStatusLockedPrefix:"Tutti i 19 temi con varianti di stile, modalità orologio e cronometro, avviso vocale, colori e logo personalizzati, caratteri eleganti e caricamenti propri, 5 suoni finali. Pagamento unico",
+    proStatusLockedSuffix:", tuo per sempre, senza abbonamento.",
+    getProBtn:"Ottieni Pro a vita", haveKeyLabel:"Già acquistato? Incolla la tua chiave di licenza",
+    installHeading:"Usalo come app (Mac e PC)",
+    installBody:"Installa Workshop Timer così si apre nella propria finestra, senza schede o barra degli indirizzi, come un'app nativa.<br><br><b>Mac · Safari:</b> menu File → <b>Aggiungi al Dock</b> → Aggiungi. Poi avvialo dal Dock.<br><b>Mac &amp; PC · Chrome:</b> clicca sull'<b>icona di installazione</b> (monitor con freccia verso il basso) a destra della barra degli indirizzi → <b>Installa</b>. Oppure menu ⋮ → <b>Trasmetti, salva e condividi → Installa pagina come app</b>.<br><b>PC · Edge:</b> menu ⋯ → <b>App → Installa questo sito come app</b>.<br><br>Una volta aperto, il timer funziona interamente sul tuo dispositivo, senza bisogno di internet. Perfetto per un proiettore o una TV.",
+    aboutHeading:"Informazioni",
+    aboutBody:"Un timer grande e tranquillo per workshop, riunioni e aule.<br>Senza pubblicità · senza account · funziona offline.<br><br><b>Note legali</b><br><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Privacy</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Termini</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Diritto di recesso</a>",
+    hint:"Spazio avvia · R reimposta · F schermo intero · T tema · ↑↓ ±1 min · ←→ ±10 sec · Clicca l'ora o un'etichetta per digitare",
+    titleAppearance:"Chiaro / scuro", titleSettings:"Impostazioni", titleMute:"Audio on/off (M)", titleFull:"Schermo intero (F)",
+    titleReset:"Reimposta (R)", titlePlus30:"Aggiungi 30 secondi", titleShuffle:"Tema casuale", shortcut:"Scorciatoia:",
+    startBtn:"Avvia", pauseBtn:"Pausa", sec:"sec", min:"min", previewingLabel:"Anteprima",
+    paused:"in pausa", stopwatchWord:"cronometro", timesUp:"tempo scaduto", remaining:"rimanente", oclock:"in punto"
+  },
+  ar: {
+    settingsTitle:"الإعدادات", languageHeading:"اللغة",
+    modeHeading:"الوضع", stopwatchLabel:"ساعة إيقاف (عد تصاعدي)", clockLabel:"وضع الساعة (عرض الوقت الحالي)",
+    themeHeading:"السمة", themeStyleHeading:"نمط السمة",
+    groupSimple:"بسيط وواضح", groupAmbient:"أجواء وخلفيات", groupCountdown:"المطبخ والعد التنازلي", groupRetro:"كلاسيكي وممتع",
+    soundHeading:"الصوت", muteNote:"الصوت متوقف. المعاينات والتنبيهات صامتة أيضًا. اضغط M أو أيقونة مكبر الصوت لإعادة تفعيل الصوت.",
+    tickLabel:"صوت تكة خلال آخر 10 ثوانٍ", tickAlwaysLabel:"صوت تكة طوال المؤقت", voiceLabel:"تنبيه صوتي عند 30 ثانية",
+    voice2minLabel:"تنبيه صوتي عند دقيقتين", voiceHalfLabel:"تنبيه \"حان وقت التبديل\" في منتصف الوقت",
+    fontHeading:"الخط", fontProNote:"تستخدم السمات المجانية خطها الافتراضي الخاص. يفتح Pro خطوطًا جميلة ويتيح رفع خطوطك الخاصة.",
+    uploadFontLabel:"ارفع خطك الخاص (.ttf, .otf, .woff, .woff2)", weightLabel:"الوزن:",
+    colorsHeading:"ألوانك وشعارك", unlockLink:"فتح",
+    logoLabel:"الشعار (يظهر أعلى المؤقت)", accentLabel:"لون التمييز (الأرقام والتظليل)",
+    bgLabel:"لون الخلفية (يتجاوز السمة)", useItLabel:"استخدام", resetColorsBtn:"إعادة تعيين الألوان والشعار",
+    proHeadFree:"Pro", proHeadLifetime:"Pro (مدى الحياة)", proHeadUnlocked:"Pro (مفعّل)",
+    proStatusUnlocked:"لديك النسخة الكاملة: كل سمة وصوت وخط ولون. شكرًا لدعمك أداة مستقلة.",
+    proStatusLockedPrefix:"جميع السمات الـ19 مع تنويعات النمط، وضعا الساعة وساعة الإيقاف، تنبيه صوتي، ألوان وشعار مخصصان، خطوط جميلة ورفع خطوطك الخاصة، 5 أصوات نهاية. دفعة واحدة",
+    proStatusLockedSuffix:"، ملكك للأبد، بدون اشتراك.",
+    getProBtn:"احصل على Pro مدى الحياة", haveKeyLabel:"اشتريت بالفعل؟ الصق مفتاح الترخيص",
+    installHeading:"استخدمه كتطبيق (Mac و PC)",
+    installBody:"ثبّت Workshop Timer ليفتح في نافذته الخاصة، بدون تبويبات أو شريط عنوان، مثل تطبيق أصلي.<br><br><b>Mac · Safari:</b> قائمة الملف → <b>إضافة إلى Dock</b> → إضافة. ثم شغّله من الـ Dock.<br><b>Mac و PC · Chrome:</b> انقر على <b>أيقونة التثبيت</b> (شاشة بسهم لأسفل) في نهاية شريط العنوان → <b>تثبيت</b>. أو قائمة ⋮ → <b>البث والحفظ والمشاركة → تثبيت الصفحة كتطبيق</b>.<br><b>PC · Edge:</b> قائمة ⋯ → <b>التطبيقات → تثبيت هذا الموقع كتطبيق</b>.<br><br>بمجرد فتحه، يعمل المؤقت بالكامل على جهازك، دون الحاجة إلى إنترنت. مثالي لجهاز عرض أو تلفاز.",
+    aboutHeading:"حول",
+    aboutBody:"مؤقت كبير وهادئ لورش العمل والاجتماعات والفصول الدراسية.<br>بدون إعلانات · بدون حساب · يعمل دون اتصال.<br><br><b>معلومات قانونية</b><br><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">الخصوصية</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">الشروط</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">حق الانسحاب</a>",
+    hint:"مسافة بدء · R إعادة تعيين · F ملء الشاشة · T تبديل السمة · ↑↓ ±1 دقيقة · ←→ ±10 ثوانٍ · انقر على الوقت أو أي تسمية للكتابة",
+    titleAppearance:"فاتح / داكن", titleSettings:"الإعدادات", titleMute:"الصوت تشغيل/إيقاف (M)", titleFull:"ملء الشاشة (F)",
+    titleReset:"إعادة تعيين (R)", titlePlus30:"إضافة 30 ثانية", titleShuffle:"سمة عشوائية", shortcut:"اختصار:",
+    startBtn:"ابدأ", pauseBtn:"إيقاف مؤقت", sec:"ث", min:"د", previewingLabel:"معاينة",
+    paused:"متوقف مؤقتًا", stopwatchWord:"ساعة إيقاف", timesUp:"انتهى الوقت", remaining:"متبقٍ", oclock:"تمامًا"
+  },
+  ru: {
+    settingsTitle:"Настройки", languageHeading:"Язык",
+    modeHeading:"Режим", stopwatchLabel:"Секундомер (счёт вперёд)", clockLabel:"Режим часов (показывать текущее время)",
+    themeHeading:"Тема", themeStyleHeading:"Стиль темы",
+    groupSimple:"Просто и чисто", groupAmbient:"Атмосфера и фоны", groupCountdown:"Кухня и обратный отсчёт", groupRetro:"Ретро и веселье",
+    soundHeading:"Звук", muteNote:"Звук выключен. Предпросмотр и оповещения также беззвучны. Нажмите M или значок динамика, чтобы включить звук.",
+    tickLabel:"Тиканье в последние 10 секунд", tickAlwaysLabel:"Тиканье на протяжении всего таймера", voiceLabel:"Голосовое оповещение за 30 секунд",
+    voice2minLabel:"Голосовое оповещение за 2 минуты", voiceHalfLabel:"Оповещение «время сменить группу» на середине",
+    fontHeading:"Шрифт", fontProNote:"Бесплатные темы используют собственный шрифт по умолчанию. Pro открывает красивые шрифты и позволяет загружать свои.",
+    uploadFontLabel:"Загрузите свой шрифт (.ttf, .otf, .woff, .woff2)", weightLabel:"Насыщенность:",
+    colorsHeading:"Ваши цвета и логотип", unlockLink:"Разблокировать",
+    logoLabel:"Логотип (отображается над таймером)", accentLabel:"Акцентный цвет (цифры и выделения)",
+    bgLabel:"Цвет фона (переопределяет тему)", useItLabel:"использовать", resetColorsBtn:"Сбросить цвета и логотип",
+    proHeadFree:"Pro", proHeadLifetime:"Pro (навсегда)", proHeadUnlocked:"Pro (разблокировано)",
+    proStatusUnlocked:"У вас полная версия: все темы, звуки, шрифты и цвета. Спасибо за поддержку независимого инструмента.",
+    proStatusLockedPrefix:"Все 19 тем со стилевыми вариантами, режимы часов и секундомера, голосовое оповещение, свои цвета и логотип, красивые шрифты и загрузка своих, 5 финальных звуков. Разовый платёж",
+    proStatusLockedSuffix:", навсегда ваш, без подписки.",
+    getProBtn:"Получить Pro навсегда", haveKeyLabel:"Уже купили? Вставьте лицензионный ключ",
+    installHeading:"Использовать как приложение (Mac и PC)",
+    installBody:"Установите Workshop Timer, чтобы он открывался в отдельном окне, без вкладок и адресной строки, как настоящее приложение.<br><br><b>Mac · Safari:</b> меню «Файл» → <b>Добавить в Dock</b> → Добавить. Затем запускайте из Dock.<br><b>Mac и PC · Chrome:</b> нажмите на <b>значок установки</b> (монитор со стрелкой вниз) справа от адресной строки → <b>Установить</b>. Или меню ⋮ → <b>Трансляция, сохранение и общий доступ → Установить страницу как приложение</b>.<br><b>PC · Edge:</b> меню ⋯ → <b>Приложения → Установить этот сайт как приложение</b>.<br><br>После открытия таймер полностью работает на вашем устройстве, интернет не нужен. Отлично подходит для проектора или ТВ.",
+    aboutHeading:"О приложении",
+    aboutBody:"Большой спокойный таймер для мастер-классов, встреч и занятий.<br>Без рекламы · без аккаунта · работает офлайн.<br><br><b>Правовая информация</b><br><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Конфиденциальность</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Условия</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Право на отказ</a>",
+    hint:"Пробел старт · R сброс · F во весь экран · T смена темы · ↑↓ ±1 мин · ←→ ±10 сек · Нажмите на время или подпись, чтобы ввести текст",
+    titleAppearance:"Светлая / тёмная", titleSettings:"Настройки", titleMute:"Звук вкл/выкл (M)", titleFull:"Во весь экран (F)",
+    titleReset:"Сброс (R)", titlePlus30:"Добавить 30 секунд", titleShuffle:"Случайная тема", shortcut:"Клавиша:",
+    startBtn:"Старт", pauseBtn:"Пауза", sec:"сек", min:"мин", previewingLabel:"Предпросмотр",
+    paused:"пауза", stopwatchWord:"секундомер", timesUp:"время вышло", remaining:"осталось", oclock:"ровно"
+  },
+  hi: {
+    settingsTitle:"सेटिंग्स", languageHeading:"भाषा",
+    modeHeading:"मोड", stopwatchLabel:"स्टॉपवॉच (आगे गिनती)", clockLabel:"घड़ी मोड (दिन का समय दिखाएं)",
+    themeHeading:"थीम", themeStyleHeading:"थीम शैली",
+    groupSimple:"सरल और स्वच्छ", groupAmbient:"माहौल और पृष्ठभूमि", groupCountdown:"किचन और उलटी गिनती", groupRetro:"रेट्रो और मज़ा",
+    soundHeading:"ध्वनि", muteNote:"ध्वनि बंद है। पूर्वावलोकन और अलर्ट भी शांत हैं। ध्वनि फिर से चालू करने के लिए M दबाएं या स्पीकर आइकन पर क्लिक करें।",
+    tickLabel:"आख़िरी 10 सेकंड में टिक ध्वनि", tickAlwaysLabel:"पूरे टाइमर के दौरान टिक ध्वनि", voiceLabel:"30 सेकंड शेष पर आवाज़ अलर्ट",
+    voice2minLabel:"2 मिनट शेष पर आवाज़ अलर्ट", voiceHalfLabel:"आधे समय पर \"बदलने का समय\" अलर्ट",
+    fontHeading:"फ़ॉन्ट", fontProNote:"मुफ़्त थीम अपना डिफ़ॉल्ट फ़ॉन्ट उपयोग करती हैं। Pro सुंदर फ़ॉन्ट अनलॉक करता है और अपने खुद के अपलोड करने देता है।",
+    uploadFontLabel:"अपना फ़ॉन्ट अपलोड करें (.ttf, .otf, .woff, .woff2)", weightLabel:"मोटाई:",
+    colorsHeading:"आपके रंग और लोगो", unlockLink:"अनलॉक करें",
+    logoLabel:"लोगो (टाइमर के ऊपर दिखेगा)", accentLabel:"एक्सेंट रंग (अंक और हाइलाइट)",
+    bgLabel:"पृष्ठभूमि रंग (थीम को ओवरराइड करता है)", useItLabel:"इस्तेमाल करें", resetColorsBtn:"रंग और लोगो रीसेट करें",
+    proHeadFree:"Pro", proHeadLifetime:"Pro (आजीवन)", proHeadUnlocked:"Pro (अनलॉक)",
+    proStatusUnlocked:"आपके पास पूरा संस्करण है: हर थीम, ध्वनि, फ़ॉन्ट और रंग। एक स्वतंत्र टूल का समर्थन करने के लिए धन्यवाद।",
+    proStatusLockedPrefix:"स्टाइल वेरिएंट के साथ सभी 19 थीम, घड़ी और स्टॉपवॉच मोड, आवाज़ अलर्ट, कस्टम रंग और लोगो, सुंदर फ़ॉन्ट और अपने खुद के अपलोड, 5 अंत ध्वनियाँ। एक बार भुगतान",
+    proStatusLockedSuffix:", हमेशा के लिए आपका, कोई सदस्यता नहीं।",
+    getProBtn:"आजीवन Pro पाएं", haveKeyLabel:"पहले ही खरीद लिया? अपनी लाइसेंस कुंजी पेस्ट करें",
+    installHeading:"ऐप के रूप में उपयोग करें (Mac और PC)",
+    installBody:"Workshop Timer इंस्टॉल करें ताकि यह बिना टैब या एड्रेस बार के अपनी खुद की विंडो में खुले, एक नेटिव ऐप की तरह।<br><br><b>Mac · Safari:</b> फ़ाइल मेनू → <b>Dock में जोड़ें</b> → जोड़ें। फिर इसे Dock से खोलें।<br><b>Mac और PC · Chrome:</b> एड्रेस बार के दाईं ओर <b>इंस्टॉल आइकन</b> (नीचे तीर वाला मॉनिटर) पर क्लिक करें → <b>इंस्टॉल करें</b>। या ⋮ मेनू → <b>कास्ट, सेव और शेयर → पेज को ऐप के रूप में इंस्टॉल करें</b>।<br><b>PC · Edge:</b> ⋯ मेनू → <b>ऐप्स → इस साइट को ऐप के रूप में इंस्टॉल करें</b>।<br><br>एक बार खुलने पर, टाइमर पूरी तरह आपके डिवाइस पर चलता है, इंटरनेट की ज़रूरत नहीं। प्रोजेक्टर या टीवी के लिए एकदम सही।",
+    aboutHeading:"परिचय",
+    aboutBody:"वर्कशॉप, मीटिंग और कक्षाओं के लिए एक बड़ा, शांत टाइमर।<br>कोई विज्ञापन नहीं · कोई अकाउंट नहीं · ऑफ़लाइन काम करता है।<br><br><b>कानूनी जानकारी</b><br><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">गोपनीयता</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">शर्तें</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">वापसी का अधिकार</a>",
+    hint:"स्पेस शुरू करें · R रीसेट · F फ़ुलस्क्रीन · T थीम बदलें · ↑↓ ±1 मिनट · ←→ ±10 सेकंड · टाइप करने के लिए समय या किसी लेबल पर क्लिक करें",
+    titleAppearance:"हल्का / गहरा", titleSettings:"सेटिंग्स", titleMute:"ध्वनि चालू/बंद (M)", titleFull:"फ़ुलस्क्रीन (F)",
+    titleReset:"रीसेट (R)", titlePlus30:"30 सेकंड जोड़ें", titleShuffle:"थीम बदलें", shortcut:"शॉर्टकट:",
+    startBtn:"शुरू करें", pauseBtn:"रोकें", sec:"सेकंड", min:"मिनट", previewingLabel:"पूर्वावलोकन",
+    paused:"रुका हुआ", stopwatchWord:"स्टॉपवॉच", timesUp:"समय समाप्त", remaining:"शेष", oclock:"बजे"
+  },
+  ko: {
+    settingsTitle:"설정", languageHeading:"언어",
+    modeHeading:"모드", stopwatchLabel:"스톱워치 (시간 증가)", clockLabel:"시계 모드 (현재 시각 표시)",
+    themeHeading:"테마", themeStyleHeading:"테마 스타일",
+    groupSimple:"심플 & 클린", groupAmbient:"분위기 & 배경", groupCountdown:"주방 & 카운트다운", groupRetro:"레트로 & 재미",
+    soundHeading:"사운드", muteNote:"소리가 꺼져 있습니다. 미리듣기와 알림도 음소거됩니다. M 키나 스피커 아이콘을 눌러 다시 켤 수 있습니다.",
+    tickLabel:"마지막 10초 동안 똑딱 소리", tickAlwaysLabel:"타이머 내내 똑딱 소리", voiceLabel:"30초 남았을 때 음성 알림",
+    voice2minLabel:"2분 남았을 때 음성 알림", voiceHalfLabel:"절반 지점에서 \"교대 시간\" 음성 알림",
+    fontHeading:"글꼴", fontProNote:"무료 테마는 각자의 기본 글꼴을 사용합니다. Pro는 멋진 글꼴을 잠금 해제하고 직접 업로드도 가능하게 합니다.",
+    uploadFontLabel:"나만의 글꼴 업로드 (.ttf, .otf, .woff, .woff2)", weightLabel:"굵기:",
+    colorsHeading:"나만의 색상 & 로고", unlockLink:"잠금 해제",
+    logoLabel:"로고 (타이머 위에 표시)", accentLabel:"강조 색상 (숫자 & 하이라이트)",
+    bgLabel:"배경색 (테마를 덮어씀)", useItLabel:"사용", resetColorsBtn:"색상 & 로고 초기화",
+    proHeadFree:"Pro", proHeadLifetime:"Pro (평생)", proHeadUnlocked:"Pro (잠금 해제됨)",
+    proStatusUnlocked:"전체 버전을 사용 중입니다: 모든 테마, 사운드, 글꼴, 색상. 독립 도구를 지원해 주셔서 감사합니다.",
+    proStatusLockedPrefix:"스타일 변형이 있는 19가지 테마, 시계 & 스톱워치 모드, 음성 알림, 사용자 지정 색상 & 로고, 멋진 글꼴 & 직접 업로드, 5가지 종료음. 1회 결제",
+    proStatusLockedSuffix:"로 평생 소유, 구독 없음.",
+    getProBtn:"평생 Pro 구매", haveKeyLabel:"이미 구매하셨나요? 라이선스 키 붙여넣기",
+    installHeading:"앱으로 사용하기 (Mac & PC)",
+    installBody:"Workshop Timer를 설치하면 탭이나 주소 표시줄 없이 독립된 창에서 열리며, 네이티브 앱처럼 실행됩니다.<br><br><b>Mac · Safari:</b> 파일 메뉴 → <b>Dock에 추가</b> → 추가. 이후 Dock에서 실행하세요.<br><b>Mac & PC · Chrome:</b> 주소 표시줄 오른쪽의 <b>설치 아이콘</b>(아래 화살표가 있는 모니터)을 클릭 → <b>설치</b>. 또는 ⋮ 메뉴 → <b>캐스트, 저장 및 공유 → 페이지를 앱으로 설치</b>.<br><b>PC · Edge:</b> ⋯ 메뉴 → <b>앱 → 이 사이트를 앱으로 설치</b>.<br><br>열리고 나면 타이머는 인터넷 없이 기기에서 완전히 작동합니다. 프로젝터나 TV에 완벽합니다.",
+    aboutHeading:"소개",
+    aboutBody:"워크숍, 회의, 수업을 위한 크고 차분한 타이머.<br>광고 없음 · 계정 불필요 · 오프라인 작동.<br><br><b>법적 정보</b><br><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">개인정보처리방침</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">이용약관</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">철회권</a>",
+    hint:"스페이스 시작 · R 초기화 · F 전체화면 · T 테마 전환 · ↑↓ ±1분 · ←→ ±10초 · 시간이나 라벨을 클릭해 입력",
+    titleAppearance:"라이트 / 다크", titleSettings:"설정", titleMute:"사운드 켜기/끄기 (M)", titleFull:"전체화면 (F)",
+    titleReset:"초기화 (R)", titlePlus30:"30초 추가", titleShuffle:"테마 무작위", shortcut:"단축키:",
+    startBtn:"시작", pauseBtn:"일시정지", sec:"초", min:"분", previewingLabel:"미리보기",
+    paused:"일시정지됨", stopwatchWord:"스톱워치", timesUp:"시간 종료", remaining:"남음", oclock:"정각"
+  }
+};
+function t(key){ return (I18N[st.lang] && I18N[st.lang][key]) || I18N.en[key] || key; }
+/* apply every static [data-i18n] label, plus the handful of title=""
+   tooltips and other chrome that isn't a simple textContent swap */
+function applyLang(){
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const key = el.dataset.i18n, val = t(key);
+    if(/</.test(val)) el.innerHTML = val; else el.textContent = val;
+  });
+  $("btnAppearance").title = t("titleAppearance");
+  $("btnSettings").title = t("titleSettings");
+  $("btnSettings").setAttribute("aria-label", t("titleSettings"));
+  $("btnMute").title = t("titleMute");
+  $("btnFull").title = t("titleFull");
+  $("btnReset").title = t("titleReset");
+  $("btnPlus30").title = t("titlePlus30");
+  $("btnShuffle").title = t("titleShuffle");
+  $("hint").textContent = t("hint");
+  if(!running) elStart.textContent = t("startBtn");
+  presetsRow.querySelectorAll("button.preset").forEach((b,i)=>{
+    const m = PRESETS[i];
+    b.textContent = m < 1 ? (m*60) + " " + t("sec") : m + " " + t("min");
+    if(i < 9) b.title = t("shortcut") + " " + (i+1);
+  });
+}
+
+/* German number words for the Typography theme — compounds like
+   "einundzwanzig" use "ein" rather than the standalone "eins". */
+const W_ONES_DE = ["null","eins","zwei","drei","vier","fünf","sechs","sieben","acht","neun","zehn",
+  "elf","zwölf","dreizehn","vierzehn","fünfzehn","sechzehn","siebzehn","achtzehn","neunzehn"];
+const W_ONES_DE_COMPOUND = ["null","ein","zwei","drei","vier","fünf","sechs","sieben","acht","neun"];
+const W_TENS_DE = ["","","zwanzig","dreißig","vierzig","fünfzig"];
+function numWordsDE(n){
+  if(n < 20) return W_ONES_DE[n];
+  const tt = Math.floor(n/10), o = n%10;
+  if(tt >= W_TENS_DE.length) return String(n); // beyond the countdown-word range this was designed for
+  return (o ? W_ONES_DE_COMPOUND[o]+"und" : "") + W_TENS_DE[tt];
+}
+
 /* Themes — ordered by typical use: everyday timers first, then kitchen &
    ambient, then the retro/fun set. First three are free.
    mode: how the time renders · prog: progress · font: default font id */
 const THEMES = [
+  {id:"disc",     name:"Time Disc",   pro:false, mode:"disc",     prog:"none", font:"helvetica"},
   {id:"midnight", name:"Bold",        pro:false, mode:"digits",   prog:"x",    font:"helvetica"},
   {id:"paper",    name:"Typography",  pro:false, mode:"words",    prog:"none", font:"helvetica"},
-  {id:"disc",     name:"Time Disc",   pro:false, mode:"disc",     prog:"none", font:"helvetica"},
   {id:"nasa",     name:"T-Minus",     pro:true,  mode:"nasa",     prog:"none", font:"orbitron"},
   {id:"squiggle", name:"Squiggle",    pro:true,  mode:"squiggle", prog:"none", font:"roboto"},
   {id:"flip",     name:"Flip Clock",  pro:true,  mode:"flip",     prog:"none", font:"helvetica"},
@@ -1180,18 +1630,27 @@ const THEMES = [
   {id:"lcars",    name:"Starship",    pro:true,  mode:"lcars",    prog:"none", font:"narrow"},
   {id:"bounce",   name:"Bounce",      pro:true,  mode:"bounce",   prog:"none", font:"helvetica"},
   {id:"aurora",   name:"Aurora",      pro:true,  mode:"digits",   prog:"none", font:"thin"},
+  {id:"strands",  name:"Strands",     pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
+];
+// how the Theme picker in Settings is grouped — purely a display grouping,
+// doesn't affect THEMES itself or anything that reads it directly
+const THEME_GROUPS = [
+  {labelKey:"groupSimple",    ids:["disc","midnight","paper","flip","squiggle"]},
+  {labelKey:"groupAmbient",   ids:["days","sunset","aurora","strands","photo"]},
+  {labelKey:"groupCountdown", ids:["nasa","kitchen","egg"]},
+  {labelKey:"groupRetro",     ids:["nixie","terminal","lcars","bounce","lcd","web1"]}
 ];
 // themes flat/simple enough to offer both a dark and a light look; each theme's
 // own hue (accent, glow, etc.) stays untouched — only bg/fg/panel/border shift.
 const APPEARANCE_THEMES = {
   midnight:"dark", paper:"light", disc:"light", nasa:"light", squiggle:"dark", flip:"dark", kitchen:"light", egg:"light", days:"dark",
-  lcd:"dark", terminal:"dark", web1:"dark", nixie:"dark", photo:"dark", sunset:"light", lcars:"dark", bounce:"dark", aurora:"dark"
+  lcd:"dark", terminal:"dark", web1:"dark", nixie:"dark", photo:"dark", sunset:"light", lcars:"dark", bounce:"dark", aurora:"dark", strands:"dark"
 };
 const SOUNDS = [
   {id:"chime",   name:"Chime",   pro:false},
+  {id:"digital", name:"Digital", pro:false},
   {id:"bell",    name:"Bell",    pro:true},
   {id:"gong",    name:"Gong",    pro:true},
-  {id:"digital", name:"Digital", pro:true},
   {id:"fanfare", name:"Fanfare", pro:true},
 ];
 /* per-theme style variants (Pro) — applied via body[data-flavor] */
@@ -1221,14 +1680,31 @@ const PRESETS = [0.5,1,2,5,10,15,20,30,45,60];
 /* =========================================================
    STATE
    ========================================================= */
+// the label people see above the numbers, translated per language — used both
+// as the fresh-install default and to auto-translate on a language switch,
+// as long as the user hasn't typed their own custom label
+const LABEL_DEFAULTS = {
+  en:"Workshop Timer", de:"Workshop-Timer", fr:"Minuteur d'atelier", es:"Temporizador de taller",
+  zh:"工作坊计时器", pt:"Cronômetro de workshop", ja:"ワークショップタイマー",
+  it:"Timer da workshop", ar:"مؤقت الورشة", ru:"Таймер мастер-класса", hi:"वर्कशॉप टाइमर", ko:"워크숍 타이머"
+};
+function detectLang(){
+  try{
+    const code = (navigator.language || "en").toLowerCase();
+    const hit = LANGS.find(l => code.startsWith(l.id));
+    return hit ? hit.id : "en";
+  }catch(e){ return "en"; }
+}
+const POMO_FOCUS_SEC = 25*60, POMO_BREAK_SEC = 5*60;
 let st = Object.assign({
-  duration: 600, theme:"midnight", sound:"chime", tick:false, muted:false, clock:false, voice:false, stopwatch:false,
-  accent:"#e8c15a", bg:"#101014", useBg:false, font:"helvetica", label:"Workshop Timer", appearance:null,
+  duration: 600, theme:"disc", sound:"chime", tick:false, tickAlways:false, muted:false, clock:false, voice:false, voice2min:false, voiceHalf:false, stopwatch:false,
+  pomodoro:false, pomoPhase:"focus",
+  accent:"#e8c15a", bg:"#101014", useBg:false, font:"helvetica", label:LABEL_DEFAULTS[detectLang()] || "Workshop Timer", labelCustom:false, appearance:null, lang:detectLang(),
   lc1:"SET PHASERS TO FUN", lc2:"SHIELDS: 98%", lc3:"WARP 9.9"
 }, load(LS.state));
 st.flavors = Object.assign({sunset:"classic", terminal:"green", lcd:"red", photo:"forest", aurora:"green"}, st.flavors||{});
 
-let remaining = st.duration, running = false, deadline = 0, finished = false;
+let remaining = st.duration, running = false, deadline = 0, finished = false, finishedAt = 0;
 let tickTimer = null, lastWholeSec = null, wakeLock = null;
 
 function load(k){ try{ return JSON.parse(localStorage.getItem(k)) || {}; }catch(e){ return {}; } }
@@ -1518,24 +1994,36 @@ function renderEgg(rmMinutes, text){
 const W_ONES = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
   "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
 const W_TENS = ["","","twenty","thirty","forty","fifty"];
-function numWords(n){
+function numWordsEN(n){
   if(n < 20) return W_ONES[n];
-  const t = Math.floor(n/10), o = n%10;
-  return W_TENS[t] + (o ? "-"+W_ONES[o] : "");
+  const tt = Math.floor(n/10), o = n%10;
+  return W_TENS[tt] + (o ? "-"+W_ONES[o] : "");
+}
+function numWords(n){ return st.lang === "de" ? numWordsDE(n) : numWordsEN(n); }
+const UNIT_WORDS = {
+  en: { hour:["hour","hours"], minute:["minute","minutes"], second:["second","seconds"] },
+  de: { hour:["Stunde","Stunden"], minute:["Minute","Minuten"], second:["Sekunde","Sekunden"] }
+};
+function unitWord(kind, n){ const w = UNIT_WORDS[st.lang] || UNIT_WORDS.en; return w[kind][n===1?0:1]; }
+// German's Stunde/Minute/Sekunde are all feminine — "eine Stunde", not the
+// cardinal "eins Stunde" — so the count word needs its own agreement here
+function numWordsCount(n){
+  if(st.lang === "de" && n === 1) return "eine";
+  return numWords(n);
 }
 function timeWords(s){
   // two lines under an hour, three once hours are involved, so minutes
   // never silently vanish (e.g. "one hour, zero minutes, twenty-five seconds")
   s = Math.max(0, Math.round(s));
-  if(s === 0) return '<span class="wline">time\'s up</span>';
+  if(s === 0) return `<span class="wline">${t("timesUp")}</span>`;
   const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
-  const secLine = numWords(sec) + (sec===1 ? " second" : " seconds");
+  const secLine = numWordsCount(sec) + " " + unitWord("second", sec);
   if(h){
-    const hourLine = numWords(h) + (h===1 ? " hour" : " hours");
-    const minLine = numWords(m) + (m===1 ? " minute" : " minutes");
+    const hourLine = numWordsCount(h) + " " + unitWord("hour", h);
+    const minLine = numWordsCount(m) + " " + unitWord("minute", m);
     return `<span class="wline">${hourLine}</span><span class="wline">${minLine}</span><span class="wline">${secLine}</span>`;
   }
-  const minLine = numWords(m) + (m===1 ? " minute" : " minutes");
+  const minLine = numWordsCount(m) + " " + unitWord("minute", m);
   return `<span class="wline">${minLine}</span><span class="wline">${secLine}</span>`;
 }
 
@@ -1582,22 +2070,36 @@ function renderTicker(el, text){
 }
 function rollDigit(cell, ch){
   const track = cell.querySelector(".tick-track");
-  if(track.children.length > 1) return; // already mid-roll, let it finish
+  if(track.children.length > 1){
+    // still mid-roll (the tick landed faster than the .5s animation) — redirect
+    // the in-flight roll to the newest digit instead of dropping this update,
+    // otherwise a burst of ticks during one transition permanently loses digits
+    track.lastChild.textContent = ch;
+    return;
+  }
   const next = document.createElement("span");
   next.textContent = ch;
   track.appendChild(next);
   void track.offsetWidth;
   track.classList.add("tick-rolling");
+  let done = false;
   const cleanup = () => {
+    if(done) return;
+    done = true;
     track.classList.remove("tick-rolling");
     track.style.transition = "none";
-    track.removeChild(track.firstChild);
+    while(track.children.length > 1) track.removeChild(track.firstChild);
     track.style.transform = "";
     void track.offsetWidth;
     track.style.transition = "";
     track.removeEventListener("transitionend", cleanup);
   };
   track.addEventListener("transitionend", cleanup);
+  // safety net: a backgrounded tab or an interrupted transition can mean
+  // "transitionend" never fires, which would otherwise freeze this digit
+  // mid-roll forever — force the cleanup once the CSS transition (.5s) is
+  // long past due
+  setTimeout(cleanup, 700);
 }
 
 /* ----- words renderer (typography theme): flips only the line that changed ----- */
@@ -1678,7 +2180,7 @@ function squigArc(from, to, wavy, phase, amp){
   }
   return d;
 }
-function initSquiggle(){ renderSquiggle(1, "10:00", "remaining"); }
+function initSquiggle(){ renderSquiggle(1, "10:00", t("remaining")); }
 /* the squiggle's wobble is animated independently of the 250ms core render
    loop, via requestAnimationFrame, for the same reason the T-Minus milliseconds
    are: it's a pure function of wall-clock time plus the last-known frac, not
@@ -1811,8 +2313,8 @@ function renderNasa(frac, rem, isClock){
     elNasaTime.innerHTML = cells(`${String(mm).padStart(2,"0")}:${String(ss).padStart(2,"0")}`) +
       `<span class="ms">${cells("."+String(cc).padStart(2,"0"))}</span>`;
     if(finished){ elNasaLabel.textContent = "liftoff"; elNasaLabel.classList.add("hot"); }
-    else if(swOn()){ elNasaLabel.textContent = running ? "elapsed" : "stopwatch"; elNasaLabel.classList.remove("hot"); }
-    else { elNasaLabel.textContent = running ? "t-minus" : "remaining"; elNasaLabel.classList.toggle("hot", running && r<=10); }
+    else if(swOn()){ elNasaLabel.textContent = running ? "elapsed" : t("stopwatchWord"); elNasaLabel.classList.remove("hot"); }
+    else { elNasaLabel.textContent = running ? "t-minus" : t("remaining"); elNasaLabel.classList.toggle("hot", running && r<=10); }
   }
 }
 
@@ -1861,30 +2363,35 @@ function render(){
     hmText = String(n.getHours()).padStart(2,"0") + ":" + String(m).padStart(2,"0") + ":" + String(n.getSeconds()).padStart(2,"0");
     frac = (m*60 + n.getSeconds())/3600;
     secAngle = (n.getSeconds()/60)*360;
-    wordsHtml = `<span class="wline">${numWords(h12)}</span><span class="wline">${m===0 ? "o'clock" : (m<10 ? "oh "+numWords(m) : numWords(m))}</span>`;
+    wordsHtml = `<span class="wline">${numWords(h12)}</span><span class="wline">${m===0 ? t("oclock") : (m<10 ? numWords(0)+" "+numWords(m) : numWords(m))}</span>`;
     elSub.textContent = "";
   } else if(finished){
     text = fmt(0); hmsText = fmtHMS(0); hmText = fmtHM(0); frac = 0; secAngle = 0;
-    wordsHtml = '<span class="wline">time\'s up</span>';
+    wordsHtml = `<span class="wline">${t("timesUp")}</span>`;
     // themes that announce it themselves don't get a duplicate subline
-    elSub.textContent = def.mode==="words" ? "" : "time's up";
+    elSub.textContent = def.mode==="words" ? "" : t("timesUp");
   } else if(swOn()){
     text = fmt(remaining); hmsText = fmtHMS(remaining); hmText = fmtHM(remaining);
     frac = (remaining%60)/60;
     secAngle = ((remaining%60)/60)*360;
-    wordsHtml = remaining < 1 ? '<span class="wline">zero seconds</span>' : timeWords(remaining);
-    elSub.textContent = running ? "" : (remaining > 0.5 ? "paused" : "stopwatch");
+    wordsHtml = remaining < 1 ? `<span class="wline">${numWords(0)} ${unitWord("second",0)}</span>` : timeWords(remaining);
+    elSub.textContent = running ? "" : (remaining > 0.5 ? t("paused") : t("stopwatchWord"));
   } else {
     text = fmt(remaining); hmsText = fmtHMS(remaining); hmText = fmtHM(remaining);
     frac = st.duration ? remaining/st.duration : 0;
     secAngle = -((remaining%60)/60)*360;
     wordsHtml = timeWords(remaining);
-    elSub.textContent = running ? "" : (remaining===st.duration ? "" : "paused");
+    const pomoWord = (st.pomodoro && isPro()) ? t(st.pomoPhase==="focus" ? "pomodoroFocusWord" : "pomodoroBreakWord") : "";
+    elSub.textContent = running ? pomoWord : (remaining===st.duration ? pomoWord : t("paused"));
   }
   if(def.prog==="x") elProgress.style.transform = `scaleX(${Math.max(0,Math.min(1,frac))})`;
   else if(def.prog==="y") elProgress.style.transform = `scaleY(${Math.max(0,Math.min(1,frac))})`;
 
   const danger = !clock && !finished && !swOn() && remaining<=10, warn = !clock && !finished && !swOn() && !danger && frac<=0.2;
+  // the "over" pulse (3 blinks, ~3s) is meant to grab attention right when the
+  // timer hits zero — after that it should settle back to the theme's normal
+  // digit color instead of staying red/accent-colored indefinitely
+  const justFinished = finished && (Date.now() - finishedAt < 3000);
   document.body.classList.toggle("paused", !running);
 
   const mode = def.mode;
@@ -1908,7 +2415,7 @@ function render(){
     if(def.id === "midnight") renderTicker(elTime, text);
     else if(def.id === "days") elTime.textContent = hmsText;
     else elTime.textContent = text;
-    elTime.className = finished ? "over" : danger ? "danger" : warn ? "warn" : "";
+    elTime.className = justFinished ? "over" : finished ? "" : danger ? "danger" : warn ? "warn" : "";
     if(def.id === "days") lavaSetActive(running || swOn());
     autofitTime(elTime);
   } else if(mode==="seg") renderSegInto(elSeg, text, false);
@@ -1918,9 +2425,9 @@ function render(){
   else if(mode==="nixie") renderNixie(hmText);
   else if(mode==="words"){
     renderWords(elWords, wordsHtml);
-    elWords.className = finished ? "over" : danger ? "danger" : "";
+    elWords.className = justFinished ? "over" : danger ? "danger" : "";
   }
-  else if(mode==="squiggle") renderSquiggle(frac, text, clock ? "o'clock" : finished ? "" : "remaining");
+  else if(mode==="squiggle") renderSquiggle(frac, text, clock ? t("oclock") : finished ? "" : t("remaining"));
   else if(mode==="kitchen") renderKitchen(text);
   else if(mode==="nasa"){
     renderNasa(frac, remaining, clock);
@@ -2017,6 +2524,7 @@ function updateFX(){
   if(tid==="days") startLava(); else stopLava();
   if(tid==="sunset") startGradient(); else stopGradient();
   if(tid==="aurora") startAurora(); else stopAurora();
+  if(tid==="strands") startStrands(); else stopStrands();
 }
 
 /* ----- Lava background (Lava/"days" theme): a vanilla-JS/canvas2d port of
@@ -2551,6 +3059,227 @@ function stopAurora(){
   $("auroraBg").style.display = "none";
 }
 
+/* ----- Strands background (Strands theme): a vanilla-WebGL2 port of the
+   open-source "Strands" shader (React Bits) — the glass-refraction variant
+   is skipped since only the plain woven-light-beam look is used here.
+   Tuned deliberately subtle (low intensity/opacity, slow speed, a near-
+   white/warm palette) since the digits sit directly on top of it as a
+   silhouette rather than a colorful backdrop. */
+const STRANDS_VERT = `#version 300 es
+in vec2 position;
+void main(){ gl_Position = vec4(position, 0.0, 1.0); }
+`;
+const STRANDS_FRAG = `#version 300 es
+precision highp float;
+uniform float uTime;
+uniform vec2 uResolution;
+uniform vec3 uColors[8];
+uniform int uColorCount;
+uniform int uStrandCount;
+uniform float uSpeed;
+uniform float uAmplitude;
+uniform float uWaviness;
+uniform float uThickness;
+uniform float uGlow;
+uniform float uTaper;
+uniform float uSpread;
+uniform float uHueShift;
+uniform float uIntensity;
+uniform float uOpacity;
+uniform float uScale;
+uniform float uSaturation;
+out vec4 fragColor;
+const float PI = 3.14159265;
+vec3 spectrum(float t){ return 0.5 + 0.5 * cos(2.0 * PI * (t + vec3(0.00, 0.33, 0.67))); }
+vec3 samplePalette(float t){
+  t = fract(t);
+  float scaled = t * float(uColorCount);
+  int idx = int(floor(scaled));
+  float blend = fract(scaled);
+  int nextIdx = idx + 1;
+  if(nextIdx >= uColorCount) nextIdx = 0;
+  return mix(uColors[idx], uColors[nextIdx], blend);
+}
+vec3 strandColor(float t){
+  if(uColorCount > 0) return samplePalette(t);
+  return spectrum(t);
+}
+void main(){
+  vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution) / uResolution.y;
+  uv /= max(uScale, 0.0001);
+  float e = 0.06 + uIntensity * 0.94;
+  float env = pow(max(cos(uv.x * PI * 1.3), 0.0), uTaper);
+  vec3 col = vec3(0.0);
+  for(int i = 0; i < 12; i++){
+    if(i >= uStrandCount) break;
+    float fi = float(i);
+    float ph = fi * 1.7 * uSpread;
+    float freq = (2.0 + fi * 0.35) * uWaviness;
+    float spd = 1.4 + fi * 1.2;
+    float tt = uTime * uSpeed;
+    float w = sin(uv.x * freq + tt * spd + ph) * 0.60
+            + sin(uv.x * freq * 1.1 - tt * spd * 0.7 + ph * 1.7) * 0.40;
+    float amp = (0.1 + 0.02 * e) * env * uAmplitude;
+    float y = w * amp;
+    float d = abs(uv.y - y);
+    float thick = (0.001 + 0.05 * e) * (0.35 + env) * uThickness;
+    float g = thick / (d + thick * 0.45);
+    g = g * g;
+    float h = fi / float(uStrandCount) + uv.x * 0.30 + uTime * 0.04 + uHueShift;
+    col += strandColor(h) * g * env;
+  }
+  col *= 0.45 + 0.7 * e;
+  col = 1.0 - exp(-col * uGlow);
+  float gray = dot(col, vec3(0.2126, 0.7152, 0.0722));
+  col = max(mix(vec3(gray), col, uSaturation), 0.0);
+  float lum = max(max(col.r, col.g), col.b);
+  float alpha = clamp(lum, 0.0, 1.0) * uOpacity;
+  fragColor = vec4(col * uOpacity, alpha);
+}
+`;
+// the three strands use React Bits' own reference palette (reactbits.dev/animations/strands)
+// so each strand reads as a distinct color rather than a flat near-white glow
+const STRANDS_CFG = {
+  count:3, speed:0.35, amplitude:0.9, waviness:0.85, thickness:0.55, glow:2.2,
+  taper:3.2, spread:1.1, hueShift:0, intensity:0.55, saturation:0.9, opacity:0.9, scale:1.6,
+  colors:["#5227FF","#FF9FFC","#B19EEF"]
+};
+function strandsHexToRgb(hex){
+  const h = hex.replace("#","");
+  return [parseInt(h.slice(0,2),16)/255, parseInt(h.slice(2,4),16)/255, parseInt(h.slice(4,6),16)/255];
+}
+function strandsHexToHsl(hex){
+  let [r,g,b] = strandsHexToRgb(hex);
+  const max = Math.max(r,g,b), min = Math.min(r,g,b);
+  let h, s, l = (max+min)/2;
+  if(max === min){ h = s = 0; }
+  else{
+    const d = max - min;
+    s = l > 0.5 ? d/(2-max-min) : d/(max+min);
+    switch(max){
+      case r: h = (g-b)/d + (g<b?6:0); break;
+      case g: h = (b-r)/d + 2; break;
+      default: h = (r-g)/d + 4;
+    }
+    h *= 60;
+  }
+  return [h,s,l];
+}
+function strandsHslToHex(h,s,l){
+  h = ((h%360)+360)%360; s = Math.max(0,Math.min(1,s)); l = Math.max(0,Math.min(1,l));
+  const c = (1-Math.abs(2*l-1))*s, x = c*(1-Math.abs((h/60)%2-1)), m = l-c/2;
+  let r,g,b;
+  if(h<60){ [r,g,b]=[c,x,0]; } else if(h<120){ [r,g,b]=[x,c,0]; } else if(h<180){ [r,g,b]=[0,c,x]; }
+  else if(h<240){ [r,g,b]=[0,x,c]; } else if(h<300){ [r,g,b]=[x,0,c]; } else { [r,g,b]=[c,0,x]; }
+  const to255 = v => Math.round((v+m)*255).toString(16).padStart(2,"0");
+  return `#${to255(r)}${to255(g)}${to255(b)}`;
+}
+// derives the strand weave's 3-color palette from a single user-picked accent:
+// the base color plus two lighter, hue-shifted tints, echoing the spread of
+// React Bits' own reference palette (one vivid + two soft pastels)
+function strandsPaletteFromAccent(hex){
+  const [h,s,l] = strandsHexToHsl(hex);
+  const c1 = hex;
+  const c2 = strandsHslToHex(h+28, Math.max(s*0.85,0.55), Math.min(l+0.14,0.72));
+  const c3 = strandsHslToHex(h-32, Math.max(s*0.75,0.5), Math.min(l+0.2,0.78));
+  return [c1,c2,c3];
+}
+function strandsReadableText(hex){
+  const [r,g,b] = strandsHexToRgb(hex);
+  const lum = 0.299*r + 0.587*g + 0.114*b;
+  return lum > 0.6 ? "#111" : "#fff";
+}
+let STRANDS = null;
+function initStrands(){
+  const canvas = $("strandsBg");
+  const gl = canvas.getContext("webgl2");
+  if(!gl) return null;
+  gl.clearColor(0,0,0,0);
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  function compile(type, src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){ gl.deleteShader(s); return null; }
+    return s;
+  }
+  const vs = compile(gl.VERTEX_SHADER, STRANDS_VERT);
+  const fs = compile(gl.FRAGMENT_SHADER, STRANDS_FRAG);
+  if(!vs || !fs) return null;
+  const program = gl.createProgram();
+  gl.attachShader(program, vs);
+  gl.attachShader(program, fs);
+  gl.linkProgram(program);
+  if(!gl.getProgramParameter(program, gl.LINK_STATUS)) return null;
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  const posLoc = gl.getAttribLocation(program, "position");
+  const u = {};
+  ["uTime","uResolution","uColors","uColorCount","uStrandCount","uSpeed","uAmplitude","uWaviness",
+   "uThickness","uGlow","uTaper","uSpread","uHueShift","uIntensity","uOpacity","uScale","uSaturation"]
+    .forEach(name => u[name] = gl.getUniformLocation(program, name));
+  return { gl, program, buf, posLoc, u, canvas };
+}
+function strandsResize(){
+  if(!STRANDS) return;
+  const { gl, canvas, u, program } = STRANDS;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
+  if(canvas.width !== w || canvas.height !== h){ canvas.width = w; canvas.height = h; }
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  gl.useProgram(program);
+  gl.uniform2f(u.uResolution, canvas.width, canvas.height);
+}
+function strandsDraw(time){
+  if(!STRANDS) return;
+  const { gl, program, buf, posLoc, u } = STRANDS;
+  const c = STRANDS_CFG;
+  gl.useProgram(program);
+  gl.uniform1f(u.uTime, time*0.001);
+  const stops = new Float32Array(24);
+  c.colors.forEach((hex,i) => { const [r,g,b] = strandsHexToRgb(hex); stops[i*3]=r; stops[i*3+1]=g; stops[i*3+2]=b; });
+  gl.uniform3fv(u.uColors, stops);
+  gl.uniform1i(u.uColorCount, c.colors.length);
+  gl.uniform1i(u.uStrandCount, c.count);
+  gl.uniform1f(u.uSpeed, c.speed);
+  gl.uniform1f(u.uAmplitude, c.amplitude);
+  gl.uniform1f(u.uWaviness, c.waviness);
+  gl.uniform1f(u.uThickness, c.thickness);
+  gl.uniform1f(u.uGlow, c.glow);
+  gl.uniform1f(u.uTaper, c.taper);
+  gl.uniform1f(u.uSpread, c.spread);
+  gl.uniform1f(u.uHueShift, c.hueShift);
+  gl.uniform1f(u.uIntensity, c.intensity);
+  gl.uniform1f(u.uOpacity, c.opacity);
+  gl.uniform1f(u.uScale, c.scale);
+  gl.uniform1f(u.uSaturation, c.saturation);
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.enableVertexAttribArray(posLoc);
+  gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+let strandsRaf = null;
+function strandsFrame(time){
+  strandsDraw(time);
+  strandsRaf = requestAnimationFrame(strandsFrame);
+}
+function startStrands(){
+  if(!STRANDS) STRANDS = initStrands();
+  if(!STRANDS) return; // WebGL2 unavailable — theme just keeps its plain background
+  $("strandsBg").style.display = "block";
+  strandsResize();
+  addEventListener("resize", strandsResize);
+  if(!strandsRaf) strandsRaf = requestAnimationFrame(strandsFrame);
+}
+function stopStrands(){
+  if(strandsRaf){ cancelAnimationFrame(strandsRaf); strandsRaf = null; }
+  removeEventListener("resize", strandsResize);
+  $("strandsBg").style.display = "none";
+}
+
 /* ----- bounce: DVD-screensaver-style roaming, color-changing time.
    Position runs on setInterval rather than requestAnimationFrame, for the
    same reason the core timer engine does (see note above startTicking):
@@ -2651,22 +3380,50 @@ function loop(){
     return;
   }
   remaining = (deadline - Date.now())/1000;
-  const whole = Math.ceil(remaining);
+  // matches fmt()'s Math.round() so the tick fires exactly when the displayed
+  // digit changes, instead of up to half a second early/late (Math.ceil drifts
+  // out of sync with the rounded number shown on screen)
+  const whole = Math.round(remaining);
   if(whole !== lastWholeSec){
     lastWholeSec = whole;
-    if(st.tick && !st.muted && whole<=10 && whole>0) PLAYERS.tick();
+    const shouldTick = (st.tick && whole<=10 && whole>0) || (st.tickAlways && whole>0);
+    if(shouldTick && !st.muted) PLAYERS.tick();
     if(st.voice && isPro() && !st.muted && whole===30){
       announce("Attention please. Thirty seconds remaining.");
     }
+    if(st.voice2min && isPro() && !st.muted && whole===120){
+      announce("Attention please. Two minutes remaining.");
+    }
+    if(st.voiceHalf && isPro() && !st.muted && st.duration>=60 && whole===Math.round(st.duration/2)){
+      announce("Attention please. Time to switch.");
+    }
+  }
+  if(remaining <= 0 && st.pomodoro && isPro()){
+    // auto-flip focus/break and keep running — that's the whole point of
+    // Pomodoro, no manual restart needed between phases
+    st.pomoPhase = st.pomoPhase === "focus" ? "break" : "focus";
+    st.duration = st.pomoPhase === "focus" ? POMO_FOCUS_SEC : POMO_BREAK_SEC;
+    remaining = st.duration;
+    deadline = Date.now() + remaining*1000;
+    save();
+    playEnd();
+    if(navigator.vibrate) navigator.vibrate([200,100,200]);
+    render();
+    document.title = fmt(remaining) + " · " + t(st.pomoPhase==="focus" ? "pomodoroFocusWord" : "pomodoroBreakWord");
+    return;
   }
   if(remaining <= 0){
-    remaining = 0; finished = true; running = false;
-    elStart.textContent = "Start";
+    remaining = 0; finished = true; running = false; finishedAt = Date.now();
+    elStart.textContent = t("startBtn");
     playEnd();
     if(navigator.vibrate) navigator.vibrate([200,100,200]);
     document.title = "⏰ Time's up!";
     wakeLock?.release().catch(()=>{}); wakeLock = null;
     stopTicking();
+    // the tick loop stops here, so nothing else would repaint the digits once
+    // the "over" pulse settles — force one more render after it does, so the
+    // text color reverts to normal instead of staying red/accent-colored forever
+    setTimeout(()=>{ if(finished) render(); }, 3050);
     showUI(); render();
     return;
   }
@@ -2679,7 +3436,7 @@ async function start(revealUI = true){
   if(swOn()){
     audio().resume && audio().resume();
     swStart = Date.now();
-    running = true; elStart.textContent = "Pause";
+    running = true; elStart.textContent = t("pauseBtn");
     if(revealUI) armHideUI();
     try{ wakeLock = await navigator.wakeLock?.request("screen"); }catch(e){}
     loop(); startTicking();
@@ -2688,7 +3445,7 @@ async function start(revealUI = true){
   if(finished || remaining <= 0){ finished = false; remaining = st.duration; }
   audio().resume && audio().resume();
   deadline = Date.now() + remaining*1000;
-  running = true; elStart.textContent = "Pause";
+  running = true; elStart.textContent = t("pauseBtn");
   if(revealUI) armHideUI();
   try{ wakeLock = await navigator.wakeLock?.request("screen"); }catch(e){}
   loop(); startTicking();
@@ -2696,7 +3453,7 @@ async function start(revealUI = true){
 function pause(revealUI = true){
   if(swOn() && running) swAccum = remaining;
   running = false; finished = false;
-  elStart.textContent = "Start";
+  elStart.textContent = t("startBtn");
   stopTicking();
   wakeLock?.release().catch(()=>{}); wakeLock = null;
   if(revealUI) showUI();
@@ -2764,15 +3521,18 @@ elInput.addEventListener("keydown", e=>{
 });
 elInput.addEventListener("blur", commitInput);
 
-elLabel.addEventListener("input", ()=>{ st.label = elLabel.textContent.trim(); save(); });
+// a genuine edit (typed by the user) stops the label from auto-translating
+// on future language switches — but programmatic updates (like the language
+// switch itself) go through st.label directly, not these listeners, so they're not affected
+elLabel.addEventListener("input", ()=>{ st.label = elLabel.textContent.trim(); st.labelCustom = true; save(); });
 elLabel.addEventListener("keydown", e=>{
   e.stopPropagation();
   if(e.key==="Enter"){ e.preventDefault(); elLabel.blur(); }
 });
 /* theme-surface text is editable too, and everything stays in sync */
-bindEditable($("lcTitle"), v=>{ st.label = v; syncEditable(elLabel, v); });
-bindEditable($("ktLabel"), v=>{ st.label = v; syncEditable(elLabel, v); });
-bindEditable($("discLabel"), v=>{ st.label = v; syncEditable(elLabel, v); });
+bindEditable($("lcTitle"), v=>{ st.label = v; st.labelCustom = true; syncEditable(elLabel, v); });
+bindEditable($("ktLabel"), v=>{ st.label = v; st.labelCustom = true; syncEditable(elLabel, v); });
+bindEditable($("discLabel"), v=>{ st.label = v; st.labelCustom = true; syncEditable(elLabel, v); });
 bindEditable($("lcP1"), v=>{ st.lc1 = v; });
 bindEditable($("lcP2"), v=>{ st.lc2 = v; });
 bindEditable($("lcP3"), v=>{ st.lc3 = v; });
@@ -2806,10 +3566,15 @@ $("btnFull").addEventListener("click", toggleFullscreen);
 elMute.addEventListener("click", toggleMute);
 elAppearance.addEventListener("click", toggleAppearance);
 function shuffleTheme(){
-  // free users cycle only the free themes; Pro cycles all of them
-  const pool = THEMES.filter(x=>x.id!==st.theme && (isPro() || !x.pro));
-  if(!pool.length) return;
-  const next = pool[Math.floor(Math.random()*pool.length)];
+  // steps to the next theme in the same order they're listed in Settings
+  // (THEME_GROUPS' display order), not THEMES' declaration order — free users
+  // only step through the free ones
+  const ordered = THEME_GROUPS.flatMap(g=>g.ids)
+    .map(id=>THEMES.find(x=>x.id===id))
+    .filter(x=>x && (isPro() || !x.pro));
+  if(!ordered.length) return;
+  const curIdx = ordered.findIndex(x=>x.id===st.theme);
+  const next = ordered[(curIdx+1+ordered.length) % ordered.length];
   cancelPreview();
   st.theme = next.id;
   st.font = next.font || "helvetica";
@@ -2882,9 +3647,12 @@ function previewTheme(id){
   PV.id = id; PV.left = PREVIEW_SECONDS;
   const name = (THEMES.find(t=>t.id===id)||{}).name || id;
   const b = $("previewBadge");
-  b.innerHTML = `Previewing <b>${name}</b> · <span id="pvCount">${PV.left}</span>s · <u id="pvBuy">Get Pro for Life: ${PRICE}</u>`;
+  b.innerHTML = `${t("previewingLabel")} <b>${name}</b> · <span id="pvCount">${PV.left}</span>s · <u id="pvBuy">${t("getProBtn")} ${PRICE}</u>`;
   b.style.display = "block";
-  $("pvBuy").onclick = openModal; // nudges to the Pro section in Settings (no overlay)
+  // opens the real Polar checkout in a new tab (same as the main Buy button) —
+  // a plain window.open to Polar's hosted page, not an embedded iframe/script,
+  // so ad blockers that target checkout-embed scripts don't interfere with it
+  $("pvBuy").onclick = ()=>window.open(BUY_URL, "_blank");
   applyTheme(); refreshSettings();
   // Count down visibly, then revert to your saved (free) theme — so the snap
   // back is expected, and Pro themes still aren't usable for free.
@@ -2913,6 +3681,25 @@ function chip(list, row, current, onPick, onLocked){
       refreshSettings();
     });
     row.appendChild(b);
+  });
+}
+
+/* the flat THEMES list rendered as labeled groups (Simple & Clean, Ambient
+   & Backgrounds, Kitchen & Countdown, Retro & Fun) instead of one long chip
+   wall — purely a Settings-panel display grouping, see THEME_GROUPS */
+function renderThemeGroups(wrap, current, onPick, onLocked){
+  wrap.innerHTML = "";
+  THEME_GROUPS.forEach(g=>{
+    const items = g.ids.map(id=>THEMES.find(x=>x.id===id)).filter(Boolean);
+    if(!items.length) return;
+    const h = document.createElement("div");
+    h.className = "theme-group-label";
+    h.textContent = t(g.labelKey);
+    wrap.appendChild(h);
+    const row = document.createElement("div");
+    row.className = "chip-row";
+    wrap.appendChild(row);
+    chip(items, row, current, onPick, onLocked);
   });
 }
 
@@ -2986,6 +3773,18 @@ function applyTheme(){
   // Time Disc's own pie color (see renderDisc) — kept as a var so the Start
   // button can match it: red for free users, the picked accent for Pro.
   document.documentElement.style.setProperty("--disc-accent", isPro() ? st.accent : "#d5442f");
+  // Strands: the woven light-beams take their hue from the same Pro accent
+  // picker as everything else (no separate per-theme swatch needed), and the
+  // Start button + label glow follow the same base color for cohesion.
+  if(tid === "strands"){
+    const base = (isPro() && st.accent) ? st.accent : "#5227FF";
+    STRANDS_CFG.colors = strandsPaletteFromAccent(base);
+    // set directly on body (not documentElement) — body.theme-strands already
+    // declares a fallback for this var in the stylesheet, and a same-element
+    // declaration always wins over an inherited one regardless of ancestor specificity
+    document.body.style.setProperty("--strands-accent", base);
+    document.body.style.setProperty("--strands-text", strandsReadableText(base));
+  }
   const vs = VARIANTS[tid];
   // free users previewing a locked theme can still flip through its color/
   // image variants (like Nature's forest/mountain/ocean/fog) — only a
@@ -3012,6 +3811,15 @@ function applyTheme(){
   syncSublineFont();
   updateFX();
   render();
+  // keep Settings' active-chip/link accent in sync with whatever color the
+  // Start button actually ended up with (theme-disc's disc-accent, aurora's
+  // glow, strands' picked hue, ...) — otherwise a theme with its own signature
+  // button color still shows a mismatched generic gold accent throughout Settings.
+  // Clear any previous override FIRST: leaving it in place would make the button's
+  // computed color read back its own stale value on a theme with no special color
+  // of its own, permanently locking in whatever hue the last special theme used.
+  document.body.style.removeProperty("--accent");
+  document.body.style.setProperty("--accent", getComputedStyle(elStart).backgroundColor);
   // the waves canvas only repaints on its own rAF loop while running; when
   // paused, a flavor-picker color change needs an explicit repaint to show
   if(tid === "days" && LAVA && !lavaActive) lavaDraw(performance.now());
@@ -3044,7 +3852,20 @@ function applyBranding(){
 }
 
 function refreshSettings(){
-  chip(THEMES, $("themeRow"), curThemeId(), id=>{
+  chip(LANGS, $("langRow"), st.lang, id=>{
+    st.lang=id;
+    // only the still-default "Workshop Timer" label follows the language switch —
+    // once someone types their own label, it's theirs and stays put
+    if(!st.labelCustom){
+      st.label = LABEL_DEFAULTS[id] || LABEL_DEFAULTS.en;
+      syncEditable(elLabel, st.label);
+      syncEditable($("lcTitle"), st.label);
+      syncEditable($("ktLabel"), st.label);
+      syncEditable($("discLabel"), st.label);
+    }
+    save(); applyLang(); render();
+  }, ()=>{});
+  renderThemeGroups($("themeRow"), curThemeId(), id=>{
     cancelPreview();
     st.theme = id;
     st.font = (THEMES.find(x=>x.id===id)||{}).font || "helvetica"; // theme picks its default font
@@ -3054,21 +3875,37 @@ function refreshSettings(){
   renderFontSelect();
   const tid = curThemeId(), vs = VARIANTS[tid];
   $("lampSec").style.display = vs ? "block" : "none";
-  if(vs) chip(vs, $("lampRow"), st.flavors[tid]||vs[0].id, id=>{ st.flavors[tid]=id; save(); applyTheme(); });
+  // while actively previewing this theme, its variants should be pickable
+  // too (like Nature's forest/mountain/ocean/fog) — otherwise every swatch
+  // still reads as locked and clicking one just yanks you into the Buy modal
+  const vsPickable = vs && PV.id === tid ? vs.map(v => ({...v, pro:false})) : vs;
+  if(vs) chip(vsPickable, $("lampRow"), st.flavors[tid]||vs[0].id, id=>{ st.flavors[tid]=id; save(); applyTheme(); });
 
   const tickBox = $("tickToggle");
   tickBox.checked = st.tick;
   tickBox.disabled = false;
+  const tickAlwaysBox = $("tickAlwaysToggle");
+  tickAlwaysBox.checked = st.tickAlways;
+  tickAlwaysBox.disabled = false;
   const clockBox = $("clockToggle");
   clockBox.checked = st.clock && isPro();
   clockBox.disabled = !isPro();
   const swBox = $("swToggle");
   swBox.checked = st.stopwatch;
   swBox.disabled = false;
+  const pomodoroBox = $("pomodoroToggle");
+  pomodoroBox.checked = st.pomodoro && isPro();
+  pomodoroBox.disabled = !isPro();
   $("muteNote").style.display = st.muted ? "block" : "none";
   const voiceBox = $("voiceToggle");
   voiceBox.checked = st.voice && isPro();
   voiceBox.disabled = !isPro();
+  const voice2minBox = $("voice2minToggle");
+  voice2minBox.checked = st.voice2min && isPro();
+  voice2minBox.disabled = !isPro();
+  const voiceHalfBox = $("voiceHalfToggle");
+  voiceHalfBox.checked = st.voiceHalf && isPro();
+  voiceHalfBox.disabled = !isPro();
 
   $("brandBody").classList.toggle("locked-section", !isPro());
   $("brandUnlock").style.display = isPro()? "none":"inline";
@@ -3076,14 +3913,14 @@ function refreshSettings(){
 
   const status = $("trialStatus"), btn = $("btnTrial"), head = $("proHead"), lbox = $("licenseBox");
   if(isPro()){
-    head.textContent = PRO_UNLOCKED ? "Pro (lifetime)" : "Pro (unlocked)";
-    status.innerHTML = "You have the full version: every theme, sound, font, and color. Thanks for supporting an independent tool.";
+    head.textContent = PRO_UNLOCKED ? t("proHeadLifetime") : t("proHeadUnlocked");
+    status.innerHTML = t("proStatusUnlocked");
     btn.style.display = "none";
     if(lbox) lbox.style.display = "none";
   }else{
-    head.textContent = "Pro";
-    status.innerHTML = `All 16 themes with style variants, clock &amp; stopwatch modes, voice alert, custom colors &amp; logo, beautiful fonts &amp; your own uploads, 5 end sounds. One-time <b>${PRICE}</b>, yours forever, no subscription.`;
-    btn.textContent = "Get Pro for Life " + PRICE;
+    head.textContent = t("proHeadFree");
+    status.innerHTML = `${t("proStatusLockedPrefix")} <b>${PRICE}</b>${t("proStatusLockedSuffix")}`;
+    btn.textContent = t("getProBtn") + " " + PRICE;
     btn.style.display="block";
     btn.onclick = ()=>window.open(BUY_URL,"_blank");
     if(lbox) lbox.style.display = "block";
@@ -3092,21 +3929,50 @@ function refreshSettings(){
 $("tickToggle").addEventListener("change", e=>{
   st.tick = e.target.checked; save();
 });
+$("tickAlwaysToggle").addEventListener("change", e=>{
+  st.tickAlways = e.target.checked; save();
+});
 $("clockToggle").addEventListener("change", e=>{
   if(!isPro()){ e.target.checked=false; return openModal(); }
-  st.clock = e.target.checked; save(); render();
+  st.clock = e.target.checked;
+  if(st.clock) st.pomodoro = false;
+  save(); render(); refreshSettings();
 });
 $("swToggle").addEventListener("change", e=>{
   pause();
   st.stopwatch = e.target.checked;
+  if(st.stopwatch) st.pomodoro = false;
   swAccum = 0;
   remaining = swOn() ? 0 : st.duration;
-  save(); render();
+  save(); render(); refreshSettings();
+});
+$("pomodoroToggle").addEventListener("change", e=>{
+  if(!isPro()){ e.target.checked=false; return openModal(); }
+  pause();
+  st.pomodoro = e.target.checked;
+  if(st.pomodoro){
+    // pomodoro takes over the main countdown, so the other two modes step aside
+    st.stopwatch = false; st.clock = false;
+    st.pomoPhase = "focus";
+    st.duration = POMO_FOCUS_SEC;
+    remaining = st.duration;
+  }
+  save(); render(); refreshSettings();
 });
 $("voiceToggle").addEventListener("change", e=>{
   if(!isPro()){ e.target.checked=false; return openModal(); }
   st.voice = e.target.checked; save();
   if(st.voice && !st.muted) announce("Voice alerts enabled.");
+});
+$("voice2minToggle").addEventListener("change", e=>{
+  if(!isPro()){ e.target.checked=false; return openModal(); }
+  st.voice2min = e.target.checked; save();
+  if(st.voice2min && !st.muted) announce("Voice alerts enabled.");
+});
+$("voiceHalfToggle").addEventListener("change", e=>{
+  if(!isPro()){ e.target.checked=false; return openModal(); }
+  st.voiceHalf = e.target.checked; save();
+  if(st.voiceHalf && !st.muted) announce("Voice alerts enabled.");
 });
 $("brandUnlock").addEventListener("click", openModal);
 
@@ -3249,16 +4115,16 @@ $("overlay").addEventListener("click", e=>{ if(e.target.id==="overlay") closeMod
   $("lcDate").textContent = now.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}).toUpperCase();
   const doy = Math.floor((now - new Date(now.getFullYear(),0,0)) / 86400000);
   $("lcStar").textContent = "STARDATE " + ((now.getFullYear()-1946)*1000 + doy*2.74).toFixed(1);
-  if(!THEMES.find(t=>t.id===st.theme)) st.theme = "midnight"; // saved theme no longer exists
+  if(!THEMES.find(t=>t.id===st.theme)) st.theme = "disc"; // saved theme no longer exists
   if(!isPro()){
-    if((THEMES.find(t=>t.id===st.theme)||{}).pro) st.theme = "midnight";
+    if((THEMES.find(t=>t.id===st.theme)||{}).pro) st.theme = "disc";
     if(SOUNDS.find(s=>s.id===st.sound)?.pro) st.sound = "chime";
     if(FONTS.find(f=>f.id===st.font)?.pro) st.font = "helvetica";
     st.clock = false; // clock mode is Pro
     /* stopwatch stays — it's free for everyone */
   }
   if(isPro()) document.querySelectorAll(".pro-tag").forEach(el=>el.remove());
-  applyBranding(); render(); refreshSettings();
+  applyBranding(); applyLang(); render(); refreshSettings();
   setInterval(()=>{ if(clockOn()) render(); }, 1000); // clock-mode ticker
   document.addEventListener("visibilitychange", async ()=>{
     if(document.visibilityState==="visible" && running){
