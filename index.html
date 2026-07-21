@@ -27,9 +27,9 @@
   }
   body.theme-paper   { --bg:#fbfaf7; --bg2:#f0efe9; --fg:#1a1a18; --muted:#9a978e; --panel:#ffffff; --border:#e2e0d8; }
   /* dark/light mode: offered on themes with a flat, single-mood background — Bold, Typography,
-     Time Disc, T-Minus, Squiggle, Flip Clock, Kitchen, Egg Timer. Skipped on themes that are
+     Time Disc, T-Minus, Squiggle, Flip Clock, Egg Timer. Skipped on themes that are
      inherently one specific colorful look (Nixie, Matrix, LCARS, Nature, Sunset Lamp — the glow/hue
-     *is* the theme). The three "physical object" themes (Flip Clock, Kitchen, Egg Timer) keep their
+     *is* the theme). The "physical object" themes (Flip Clock, Egg Timer) keep their
      own card/body/screen colors fixed either way — only the page around the object follows the mode. */
   body.theme-midnight.mode-light{ --bg:#fbfaf9; --bg2:#f0efee; --fg:#151513; --muted:#8a8a86; --panel:#ffffff; --border:#e3e2df; }
   body.theme-midnight.mode-light #label{ color:var(--muted); }
@@ -38,12 +38,10 @@
   body.theme-disc.mode-dark #discLabel{ color:#c8c8ce; }
   body.theme-disc.mode-dark #discTime{ color:#f0f0f2; }
   body.theme-nasa.mode-dark{ --bg:#141412; --bg2:#1c1c19; --fg:#f0efe9; --muted:#8a8a86; --panel:#1e1e1b; --border:#333330; }
-  body.theme-nasa.mode-dark #label{ color:#8a8a86; }
   body.theme-nasa.mode-dark #nasaWrap svg .nt{ stroke:#3a3a36; }
   body.theme-squiggle.mode-light{ --bg:#fbfaf9; --bg2:#f0efee; --fg:#151513; --muted:#8a8a86; --panel:#ffffff; --border:#e3e2df; }
   body.theme-flip.mode-light{ --bg:#f3f2f0; --bg2:#e8e7e4; --fg:#333338; --muted:#8a8a86; --panel:#ffffff; --border:#dedcd9; }
-  body.theme-kitchen.mode-dark{ --bg:#1c1e21; --bg2:#242628; --fg:#e6e7e9; --muted:#8b9097; --panel:#242628; --border:#38383e; }
-  body.theme-egg.mode-dark{ --bg:#181c22; --bg2:#20242a; --fg:#dbe3ea; --muted:#7f8f9e; --panel:#20242a; --border:#333a42; }
+  body.theme-egg.mode-dark{ --bg:#181c22; --bg2:#20242a; --fg:#f2f2f2; --muted:#8a8a8a; --panel:#1a1a1a; --border:#2c2c2c; }
   /* the rest of the themes below are strong single-look "objects" (a CRT,
      a console, a photo) rather than a neutral page — a full light/dark
      redesign doesn't really apply. Per-request, they still get a toggle:
@@ -69,7 +67,7 @@
      look — a near-black night sky with a scattering of stars — rather than
      the flat Windows-95 teal desktop; light mode keeps the teal webpage feel */
   body.theme-web1    { --bg:#02020a; --bg2:#0a0a1c; --fg:#ffffff; --muted:#a8b4d8; --panel:#d4d0c8; --border:#808080; --danger:#ffdd57; }
-  body.theme-egg     { --bg:#f4f5f7; --bg2:#e9ebee; --fg:#33475a; --muted:#9aa2a9; --panel:#ffffff; --border:#dde1e5; }
+  body.theme-egg     { --bg:#e8eaed; --bg2:#dde0e3; --fg:#2a2a2a; --muted:#8b9095; --panel:#ffffff; --border:#d8dbde; }
   body.theme-flip    { --bg:#000000; --bg2:#0e0e10; --fg:#c6c6c9; --muted:#5a5a5e; --panel:#141416; --border:#26262a; }
   body.theme-nixie   { --bg:#161009; --bg2:#1e1710; --fg:#ffab40; --muted:#8a6a45; --panel:#211a12; --border:#3a2d1e; }
   body.theme-squiggle{ --bg:#000000; --bg2:#111113; --fg:#ffffff; --muted:#8f8f96; --panel:#17171a; --border:#2c2c31; }
@@ -79,8 +77,12 @@
   body.theme-aurora[data-flavor="ice"]{ --aurora-glow:#5ad0ff; }
   body.theme-strands{ --bg:#070707; --bg2:#0d0d0d; --fg:#000000; --muted:#7a7a7a; --panel:#111; --border:#232323; --strands-accent:#5227FF; --strands-text:#fff; }
   body.theme-strands.mode-light{ --bg:#f2f1ee; --bg2:#e8e7e2; --fg:#0a0a0a; --muted:#8a8a86; --panel:#fff; --border:#e0dfda; }
-  body.theme-kitchen { --bg:#dfe2e6; --bg2:#d3d7dc; --fg:#26282b; --muted:#8b9097; --panel:#f4f5f6; --border:#c6cbd1; }
   body.theme-photo   { --bg:#0d120d; --bg2:rgba(255,255,255,.08); --fg:#ffffff; --muted:rgba(255,255,255,.65); --panel:#141a14; --border:#2c352c; }
+  body.theme-sky     { --bg:#4d84c9; --bg2:#7fb0e0; --fg:#ffffff; --muted:rgba(255,255,255,.78); --panel:#3f74b8; --border:rgba(255,255,255,.3); }
+  /* same cloud shader, just re-tinted grey/slate for an overcast rainy day
+     (see SKY_PALETTES in the JS below) — fallback vars here match before the
+     canvas paints over them */
+  body.theme-sky.mode-dark{ --bg:#3a4048; --bg2:#4a515a; --fg:#eef0f2; --muted:rgba(238,240,242,.75); --panel:#454c54; --border:rgba(238,240,242,.25); }
   body.theme-nasa    { --bg:#f1f0ec; --bg2:#e7e5e0; --fg:#1e2124; --muted:#9a9c9e; --accent:#ff5c1f; --danger:#ff5c1f; --panel:#ffffff; --border:#d8d6d0; }
   body.theme-lcars   { --bg:#000000; --bg2:#0e0e0e; --fg:#ff9c00; --muted:#cc9c66; --accent:#ff9c00; --panel:#141414; --border:#3a2e1a; }
   /* LED color variants recolor the whole theme, not just the segments */
@@ -202,6 +204,14 @@
   body.theme-photo #time{font-weight:var(--fontw,300); letter-spacing:.01em;}
   body.theme-photo #label{font-weight:500; letter-spacing:.22em; font-size:clamp(1.1rem,2.9vh,1.7rem); color:var(--muted);}
   body.theme-photo #subline{text-transform:uppercase; letter-spacing:.18em; font-size:clamp(.7rem,1.7vh,.95rem);}
+  /* sky: plain white digits directly on the animated cloud canvas — a soft
+     dark shadow is enough contrast since the sky brightness varies with the
+     clouds drifting behind, no glass card needed like aurora's */
+  body.theme-sky #time{font-weight:var(--fontw,400); letter-spacing:.01em; text-shadow:0 3px 18px rgba(20,40,70,.35);}
+  body.theme-sky #label{font-weight:500; letter-spacing:.16em; text-transform:uppercase; font-size:clamp(1rem,2.6vh,1.5rem); color:var(--fg); text-shadow:0 2px 12px rgba(20,40,70,.3);}
+  body.theme-sky #subline{text-transform:uppercase; letter-spacing:.14em; font-size:clamp(.75rem,1.8vh,1rem); text-shadow:0 2px 10px rgba(20,40,70,.3);}
+  body.theme-sky #btnStart{background:#ffffff; border-color:#ffffff; color:#2b5f9e;}
+  body.theme-sky.mode-dark #btnStart{background:#eef0f2; border-color:#eef0f2; color:#3a4048;}
   body.theme-terminal, body.theme-lcd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
   body.theme-web1{font-family:Tahoma,'MS Sans Serif',Verdana,sans-serif;}
 
@@ -222,6 +232,7 @@
   #auroraBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
   #strandsBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%; opacity:.7; transition:opacity .4s;}
   body.theme-strands.mode-light #strandsBg{opacity:.55;}
+  #skyBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
   #toasters{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; display:none;}
   .toaster{position:absolute; will-change:transform; animation:flyby linear infinite;}
   .toaster .wing{animation:flap .3s ease-in-out infinite alternate; transform-origin:28px 20px;}
@@ -281,7 +292,6 @@
      big digits below it — Bold's numbers are large enough that the normal
      gap reads as too much empty space between title and time */
   body.theme-midnight #label{margin-bottom:-.6rem;}
-  body.theme-sunset #label{font-family:'Arial Rounded MT Bold','Trebuchet MS',sans-serif; letter-spacing:.28em; font-weight:700;}
 
   #display{cursor:pointer; user-select:none; display:flex; flex-direction:column; align-items:center; gap:1rem;}
 
@@ -600,27 +610,58 @@
     font-family:inherit;
   }
 
-  /* ---------- egg timer (slick & minimal, iOS-style) ---------- */
-  body.theme-egg #label{font-size:clamp(.85rem,2.2vh,1.3rem); letter-spacing:.1em; text-transform:none; color:var(--muted);}
+  /* ---------- egg timer (mechanical kitchen-timer dial, matching a real
+     wind-up egg timer's one-piece body + engraved dial ring) ----------
+     a fixed pointer marks the current minute; the number strip scrolls
+     behind it like the physical dial rotating as the timer counts to 0. */
+  body.theme-egg #label{display:none;}   /* the egg shows its own editable title, like Time Disc */
   #eggWrap{display:none; flex-direction:column; align-items:center;}
-  /* flat, minimal fill (matches Time Disc's few-flat-colors treatment)
-     instead of the old radial-gradient "fade" — the shape itself already
-     reads as an egg from its silhouette, it doesn't need the shading too */
   #eggShape{
-    position:relative; width:min(42vh,66vw); aspect-ratio:0.78;
+    position:relative; width:min(46vh,72vw); aspect-ratio:0.78;
     border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
-    background:var(--panel); border:1px solid var(--border);
-    box-shadow:0 20px 44px rgba(70,80,90,.14);
-    display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
-    font-variant-numeric:tabular-nums; padding-bottom:14%;
+    background:var(--panel); border:1px solid var(--border); overflow:hidden;
+    box-shadow:0 8px 18px rgba(30,35,40,.08);   /* tight contact shadow, like resting on a table */
   }
-  /* the countdown digits are removed per request — the ruler + pointer
-     alone communicate progress, closer to the reference's dial-only design */
-  #eggDigits{display:none;}
-  #eggRuler{width:84%;}
-  #eggRuler svg{width:100%; height:auto; display:block; overflow:visible;}
-  #eggRulerSvg .ruler-mark{stroke:var(--muted);}
-  #eggRulerSvg .ruler-num{fill:var(--muted); font-weight:500;}
+  #eggLabel{
+    position:absolute; top:45%; left:8%; right:8%; transform:translateY(-50%);
+    z-index:2; text-align:center;
+    font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-weight:400; letter-spacing:.01em;
+    font-size:clamp(1rem,4.4vw,1.9rem); line-height:1.05; color:var(--fg);
+    outline:none; cursor:text;
+  }
+  #eggLabel:focus{opacity:.75;}
+  #eggDialLine{position:absolute; left:0; right:0; bottom:32%; height:1px; background:var(--muted); opacity:.5;}
+  #eggDial{
+    position:absolute; left:0; right:0; bottom:32%; height:13%;
+    overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent);
+  }
+  #eggDialTrack{position:absolute; top:0; left:50%; height:100%;}
+  .egg-dial-num{
+    position:absolute; top:0; height:100%; width:78px; margin-left:-39px;
+    display:flex; justify-content:center; align-items:center;
+    font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-size:1.8rem; font-weight:700; color:var(--fg); font-variant-numeric:tabular-nums;
+  }
+  /* minute hash marks just above the dial line -- lit up from 0 through the
+     currently set duration, so the scale itself shows what the timer is set to */
+  #eggTicks{
+    position:absolute; left:0; right:0; bottom:calc(32% + 1px); height:5%;
+    overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent);
+  }
+  #eggTicksTrack{position:absolute; bottom:0; left:50%; height:100%;}
+  /* all hashes share one low height so they never reach into the numbers above;
+     the ones within the current duration are simply darker, not taller */
+  .egg-tick-mark{position:absolute; bottom:0; width:1.5px; height:45%; background:var(--muted); opacity:.45;}
+  .egg-tick-mark.major{width:3px; opacity:.6;}   /* thicker hash under every 5-minute number */
+  .egg-tick-mark.on{opacity:1; background:var(--fg);}
+  #eggPointer{
+    position:absolute; left:50%; bottom:26%; transform:translateX(-50%);
+    width:0; height:0; border-left:15px solid transparent; border-right:15px solid transparent;
+    border-bottom:20px solid #e0392e;               /* red pointer, both modes */
+  }
 
   /* ---------- squiggle ring ---------- */
   #squigWrap{display:none; position:relative; width:min(66vh,86vw); height:min(66vh,86vw);}
@@ -635,57 +676,13 @@
     font-family:var(--font);
     font-size:clamp(2.4rem,10vh,5.5rem); font-weight:500; font-variant-numeric:tabular-nums; letter-spacing:0;
   }
-  #squigSub{
-    font-family:var(--font);
-    color:var(--muted); font-size:clamp(.8rem,2.2vh,1.1rem); letter-spacing:.04em; text-transform:none; font-weight:400;
-  }
-  body.theme-squiggle #label{
-    font-family:var(--font);
+  body.theme-squiggle #label{display:none;}   /* the ring shows its own editable title, like Egg Timer */
+  #squigLabel{
+    font-family:var(--font); color:var(--fg);
     text-transform:none; letter-spacing:.02em; font-weight:500;
-    font-size:clamp(1rem,2.6vh,1.5rem);
+    font-size:clamp(1rem,2.6vh,1.5rem); text-align:center; outline:none; cursor:text;
   }
-
-  /* ---------- kitchen timer (Muji-minimal) ---------- */
-  #kitchenWrap{display:none; flex-direction:column; align-items:center;}
-  #ktBody{
-    position:relative; width:min(58vh,84vw);
-    border-radius:9%;
-    background:#f7f7f5;
-    border:1px solid #e3e3df;
-    box-shadow:0 18px 44px rgba(60,63,68,.16), inset 0 1px 0 #fff;
-    padding:8% 9%;
-  }
-  #ktScreen{
-    background:#d8dcd4;
-    border:2px solid #bfc4bb; border-radius:10px;
-    padding:5% 6%;
-    box-shadow:inset 0 3px 8px rgba(0,0,0,.12);
-  }
-  #ktScreen svg{width:100%; height:auto; display:block;}
-  #ktScreen svg .on{fill:#232b33; filter:none;}
-  #ktScreen svg .off{fill:#232b33; opacity:.07;}
-  #ktScreen svg .lbl{fill:#232b33; font-weight:800;}
-  #ktScreen svg .colon{animation:colonblink 1s steps(1) infinite;}
-  body.paused #ktScreen svg .colon{animation:none;}
-  body.theme-kitchen #label{display:none;}
-  #ktLabel{
-    text-align:center; margin:6% 0 4%; outline:none;
-    font-size:clamp(.6rem,1.6vh,.9rem); color:#a9aeb2; font-weight:600;
-    letter-spacing:.18em; text-transform:uppercase; cursor:text;
-  }
-  #ktButtons{display:flex; justify-content:space-between; align-items:flex-end; padding:0 3%;}
-  .ktCol{
-    display:flex; flex-direction:column; align-items:center; gap:1em;
-    font-size:clamp(.6rem,1.6vh,.9rem); color:#8f9498; font-weight:600;
-    letter-spacing:.08em; text-align:center; line-height:1.25;
-  }
-  .ktCol span{height:2.6em; display:flex; align-items:flex-end;} /* equal caption height keeps circles level */
-  .ktBtn{
-    width:clamp(2.6rem,9vh,4.4rem); aspect-ratio:1; border-radius:50%;
-    background:#fcfcfb; border:1px solid #dcdcd7; cursor:pointer; padding:0;
-    box-shadow:0 3px 8px rgba(0,0,0,.12), inset 0 -2px 4px rgba(0,0,0,.04);
-  }
-  .ktBtn:active{transform:translateY(1px); box-shadow:0 1px 4px rgba(0,0,0,.14);}
+  #squigLabel:focus{opacity:.75;}
 
   /* ---------- nixie tubes: bare glowing digits on black, dim ghost 8s ---------- */
   body.theme-nixie #label{display:none;}
@@ -754,7 +751,7 @@
   #nasaWrap svg{width:100%; height:100%; display:block;}
   #nasaWrap svg .nt{stroke:#c9c7c1; stroke-width:.28; transition:stroke .3s;}
   #nasaWrap svg .nt.hot{stroke:#ff5c1f; stroke-width:.42;}
-  body.theme-nasa #label{display:none;}
+  body.theme-nasa #label{display:none;}   /* the dial shows its own editable title, like Egg Timer */
   /* fixed-width character cells so the ms churn never shakes the layout */
   #nasaTime .d{display:inline-block; width:.98em; text-align:center;}
   #nasaTime .sep{width:.45em;}
@@ -762,11 +759,6 @@
     position:absolute; inset:0; display:flex; flex-direction:column;
     align-items:center; justify-content:center; gap:.6rem;
   }
-  #nasaLabel{
-    text-transform:uppercase; letter-spacing:.3em; color:var(--muted);
-    font-size:clamp(.7rem,1.9vh,1rem); font-weight:400;
-  }
-  #nasaLabel.hot{color:#ff5c1f;}
   /* Helvetica Medium (numeric 500) instead of a bold display weight —
      reads more like real NASA mission-clock typography (Helvetica
      Medium/Regular) than a heavy poster font */
@@ -776,11 +768,12 @@
     letter-spacing:.02em; white-space:nowrap;
   }
   #nasaTime .ms{color:#ff5c1f;}
-  /* matches #nasaLabel's ("REMAINING") own typography — Helvetica Regular,
-     the same .3em tracking — instead of inheriting the generic #label's
-     bold weight; sized up from that sublabel so it still reads as the title,
-     not a second copy of the same caption */
-  body.theme-nasa #label{color:#6a6c6e; letter-spacing:.3em; font-weight:400; font-size:clamp(1rem,2.6vh,1.6rem);}
+  #nasaTitle{
+    color:#6a6c6e; letter-spacing:.3em; font-weight:400; font-size:clamp(1rem,2.6vh,1.6rem);
+    text-transform:uppercase; text-align:center; outline:none; cursor:text;
+  }
+  #nasaTitle:focus{opacity:.75;}
+  body.theme-nasa.mode-dark #nasaTitle{color:#8a8a86;}
 
   /* ---------- sunset: soft light digits + ruler meter ---------- */
   #dotsWrap{display:none; flex-direction:column; align-items:center; gap:3rem;}
@@ -792,7 +785,7 @@
   body.theme-sunset.mode-dark #sunsetTime{color:#fff; text-shadow:0 2px 30px rgba(0,0,0,.45);}
   body.theme-sunset.mode-light #sunsetTime{color:#181018; text-shadow:0 2px 20px rgba(255,255,255,.35);}
   body.theme-sunset #label{
-    font-family:var(--font); font-weight:300; letter-spacing:.4em;
+    font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-weight:400; letter-spacing:.01em;
     text-transform:uppercase; color:var(--muted);
     font-size:clamp(.9rem,2.3vh,1.26rem);
   }
@@ -901,7 +894,7 @@
   }
   /* Start: a true pill, and tinted with each theme's own signature color rather
      than the generic accent — the same hue as that theme's numbers/ring/glow.
-     Themes with no strong color of their own (Bold, Typography, Kitchen, Egg,
+     Themes with no strong color of their own (Bold, Typography, Egg,
      Flip Clock...) simply keep the accent above. */
   #btnStart{border-radius:999px;}
   body.theme-disc #btnStart{background:var(--disc-accent); border-color:var(--disc-accent);}
@@ -1087,12 +1080,11 @@
 
   /* ---------- global overrides (title, TV centering, in-settings Pro) ---------- */
   /* The editable title is shown in Title Case exactly as typed, in every theme */
-  #label, #ktLabel, .lc-title{ text-transform:none !important; }
+  #label, .lc-title{ text-transform:none !important; }
   /* Show the single editable title in themes that previously hid it
-     (kitchen & starship keep their own on-screen title element) */
+     (starship, squiggle & T-Minus keep their own on-screen title element) */
   body.theme-nixie #label,
-  body.theme-days  #label,
-  body.theme-nasa  #label{ display:block; }
+  body.theme-days  #label{ display:block; }
   /* Gentle highlight when a locked feature nudges you to the Pro section
      (kept inside Settings — no pop-ups over the timer) */
   #settings section.flash{ animation:proFlash 1.5s ease; border-radius:10px; }
@@ -1107,6 +1099,7 @@
 <canvas id="gradientBg"></canvas>
 <canvas id="auroraBg"></canvas>
 <canvas id="strandsBg"></canvas>
+<canvas id="skyBg"></canvas>
 <div id="toasters"></div>
 <div id="previewBadge"></div>
 
@@ -1131,16 +1124,11 @@
     </div>
     <div id="eggWrap">
       <div id="eggShape">
-        <div id="eggDigits">
-          <div id="eggMin">10</div>
-          <div id="eggSec">00</div>
-        </div>
-        <div id="eggRuler">
-          <svg id="eggRulerSvg" viewBox="0 -6 120 22">
-            <g id="eggTicks"></g>
-            <path id="eggPtr" d="M-1.6 -5 L1.6 -5 L0 -1.8 Z" fill="#e0392e"/>
-          </svg>
-        </div>
+        <div id="eggLabel" contenteditable="true" spellcheck="false">Workshop Timer</div>
+        <div id="eggDialLine"></div>
+        <div id="eggDial"><div id="eggDialTrack"></div></div>
+        <div id="eggTicks"><div id="eggTicksTrack"></div></div>
+        <div id="eggPointer"></div>
       </div>
     </div>
     <div id="nixieWrap">
@@ -1153,8 +1141,8 @@
         <path id="squigProg" fill="none" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       <div id="squigCenter">
+        <div id="squigLabel" contenteditable="true" spellcheck="false">Workshop Timer</div>
         <div id="squigTime">10:00</div>
-        <div id="squigSub">remaining</div>
       </div>
     </div>
     <div id="dotsWrap">
@@ -1187,19 +1175,8 @@
     <div id="nasaWrap">
       <svg id="nasaTicks" viewBox="0 0 100 100"></svg>
       <div id="nasaCenter">
-        <div id="nasaLabel">remaining</div>
+        <div id="nasaTitle" contenteditable="true" spellcheck="false">Workshop Timer</div>
         <div id="nasaTime">10:00<span class="ms">.00</span></div>
-      </div>
-    </div>
-    <div id="kitchenWrap">
-      <div id="ktBody">
-        <div id="ktScreen"></div>
-        <div id="ktLabel" contenteditable="true" spellcheck="false">Workshop Timer</div>
-        <div id="ktButtons">
-          <div class="ktCol"><span>MIN</span><button class="ktBtn" id="ktM" title="+1 minute"></button></div>
-          <div class="ktCol"><span>SEC</span><button class="ktBtn" id="ktS" title="+10 seconds"></button></div>
-          <div class="ktCol"><span>START/<br>STOP</span><button class="ktBtn" id="ktSS" title="Start / Stop"></button></div>
-        </div>
       </div>
     </div>
     <div id="bounceWrap"><div id="bounceTime">10:00</div></div>
@@ -1293,6 +1270,7 @@
     <label class="switch" style="margin-top:.8rem">
       <input type="checkbox" id="tickAlwaysToggle"> <span data-i18n="tickAlwaysLabel">Tick throughout the whole timer</span>
     </label>
+    <div class="chip-row" id="tickSoundRow" style="margin-top:.6rem"></div>
     <label class="switch" style="margin-top:.8rem">
       <input type="checkbox" id="voiceToggle"> <span data-i18n="voiceLabel">Voice alert at 30 seconds left</span> <span class="pro-tag">PRO</span>
     </label>
@@ -1476,7 +1454,7 @@ const I18N = {
     modeHeading:"Mode", countdownLabel:"Countdown (the default timer)", stopwatchLabel:"Stopwatch (count up instead)", clockLabel:"Clock mode (show the time of day)",
     pomodoroLabel:"Pomodoro mode (25 min focus / 5 min break)", pomodoroFocusWord:"Focus", pomodoroBreakWord:"Break",
     themeHeading:"Theme", themeStyleHeading:"Theme style",
-    groupSimple:"Simple & Clean", groupAmbient:"Ambient & Backgrounds", groupCountdown:"Kitchen & Countdown", groupRetro:"Retro & Fun",
+    groupSimple:"Simple & Clean", groupAmbient:"Ambient & Backgrounds", groupRetro:"Retro & Fun",
     soundHeading:"Sound", muteNote:"All sound is off. Previews and alerts are silenced. Press M or the speaker icon to unmute.",
     tickLabel:"Tick during final 10 seconds", tickAlwaysLabel:"Tick throughout the whole timer", voiceLabel:"Voice alert at 30 seconds left",
     voice2minLabel:"Voice alert at 2 minutes left", voiceHalfLabel:"\"Time to switch\" alert halfway through",
@@ -1505,7 +1483,7 @@ const I18N = {
     modeHeading:"Modus", stopwatchLabel:"Stoppuhr (aufwärts zählen)", clockLabel:"Uhrzeit-Modus (Tageszeit anzeigen)",
     pomodoroLabel:"Pomodoro-Modus (25 Min. Fokus / 5 Min. Pause)", pomodoroFocusWord:"Fokus", pomodoroBreakWord:"Pause",
     themeHeading:"Design", themeStyleHeading:"Design-Stil",
-    groupSimple:"Einfach & Klar", groupAmbient:"Ambient & Hintergründe", groupCountdown:"Küche & Countdown", groupRetro:"Retro & Spaß",
+    groupSimple:"Einfach & Klar", groupAmbient:"Ambient & Hintergründe", groupRetro:"Retro & Spaß",
     soundHeading:"Ton", muteNote:"Der Ton ist aus. Vorschauen und Signale sind stumm. M oder das Lautsprecher-Symbol schaltet den Ton wieder ein.",
     tickLabel:"Ticken in den letzten 10 Sekunden", tickAlwaysLabel:"Während des gesamten Timers ticken", voiceLabel:"Sprachansage bei 30 Sekunden",
     voice2minLabel:"Sprachansage bei 2 Minuten", voiceHalfLabel:"„Zeit zum Wechseln“-Ansage zur Halbzeit",
@@ -1533,7 +1511,7 @@ const I18N = {
     settingsTitle:"Réglages", languageHeading:"Langue",
     modeHeading:"Mode", stopwatchLabel:"Chronomètre (compte à rebours inversé)", clockLabel:"Mode horloge (afficher l'heure)",
     themeHeading:"Thème", themeStyleHeading:"Style du thème",
-    groupSimple:"Simple & épuré", groupAmbient:"Ambiance & fonds", groupCountdown:"Cuisine & compte à rebours", groupRetro:"Rétro & fun",
+    groupSimple:"Simple & épuré", groupAmbient:"Ambiance & fonds", groupRetro:"Rétro & fun",
     soundHeading:"Son", muteNote:"Le son est coupé. Aperçus et alertes sont silencieux. Appuyez sur M ou l'icône haut-parleur pour réactiver.",
     tickLabel:"Tic-tac pendant les 10 dernières secondes", tickAlwaysLabel:"Tic-tac pendant tout le minuteur", voiceLabel:"Alerte vocale à 30 secondes",
     voice2minLabel:"Alerte vocale à 2 minutes", voiceHalfLabel:"Alerte « changez d'atelier » à mi-parcours",
@@ -1561,7 +1539,7 @@ const I18N = {
     settingsTitle:"Ajustes", languageHeading:"Idioma",
     modeHeading:"Modo", stopwatchLabel:"Cronómetro (contar hacia arriba)", clockLabel:"Modo reloj (mostrar la hora del día)",
     themeHeading:"Tema", themeStyleHeading:"Estilo del tema",
-    groupSimple:"Simple y claro", groupAmbient:"Ambiente y fondos", groupCountdown:"Cocina y cuenta atrás", groupRetro:"Retro y diversión",
+    groupSimple:"Simple y claro", groupAmbient:"Ambiente y fondos", groupRetro:"Retro y diversión",
     soundHeading:"Sonido", muteNote:"El sonido está desactivado. Vistas previas y alertas están silenciadas. Pulsa M o el icono del altavoz para reactivar.",
     tickLabel:"Tictac en los últimos 10 segundos", tickAlwaysLabel:"Tictac durante todo el temporizador", voiceLabel:"Alerta de voz a los 30 segundos",
     voice2minLabel:"Alerta de voz a los 2 minutos", voiceHalfLabel:"Alerta de \"cambio de turno\" a mitad de tiempo",
@@ -1589,7 +1567,7 @@ const I18N = {
     settingsTitle:"设置", languageHeading:"语言",
     modeHeading:"模式", stopwatchLabel:"秒表（正计时）", clockLabel:"时钟模式（显示当前时间）",
     themeHeading:"主题", themeStyleHeading:"主题风格",
-    groupSimple:"简约清爽", groupAmbient:"氛围与背景", groupCountdown:"厨房与倒计时", groupRetro:"复古趣味",
+    groupSimple:"简约清爽", groupAmbient:"氛围与背景", groupRetro:"复古趣味",
     soundHeading:"声音", muteNote:"声音已关闭。预览和提醒均已静音。按 M 或喇叭图标可取消静音。",
     tickLabel:"最后10秒滴答声", tickAlwaysLabel:"全程滴答声", voiceLabel:"剩余30秒语音提醒",
     voice2minLabel:"剩余2分钟语音提醒", voiceHalfLabel:"中场“该换人了”语音提醒",
@@ -1617,7 +1595,7 @@ const I18N = {
     settingsTitle:"Configurações", languageHeading:"Idioma",
     modeHeading:"Modo", stopwatchLabel:"Cronômetro (contagem crescente)", clockLabel:"Modo relógio (mostrar hora do dia)",
     themeHeading:"Tema", themeStyleHeading:"Estilo do tema",
-    groupSimple:"Simples e limpo", groupAmbient:"Ambiente e fundos", groupCountdown:"Cozinha e contagem regressiva", groupRetro:"Retrô e diversão",
+    groupSimple:"Simples e limpo", groupAmbient:"Ambiente e fundos", groupRetro:"Retrô e diversão",
     soundHeading:"Som", muteNote:"O som está desativado. Prévias e alertas estão silenciados. Pressione M ou o ícone do alto-falante para reativar.",
     tickLabel:"Tique-taque nos últimos 10 segundos", tickAlwaysLabel:"Tique-taque durante todo o cronômetro", voiceLabel:"Alerta de voz aos 30 segundos",
     voice2minLabel:"Alerta de voz aos 2 minutos", voiceHalfLabel:"Alerta de \"hora de trocar\" na metade do tempo",
@@ -1645,7 +1623,7 @@ const I18N = {
     settingsTitle:"設定", languageHeading:"言語",
     modeHeading:"モード", stopwatchLabel:"ストップウォッチ（カウントアップ）", clockLabel:"時計モード（現在時刻を表示）",
     themeHeading:"テーマ", themeStyleHeading:"テーマスタイル",
-    groupSimple:"シンプル", groupAmbient:"雰囲気と背景", groupCountdown:"キッチン & カウントダウン", groupRetro:"レトロ & 遊び心",
+    groupSimple:"シンプル", groupAmbient:"雰囲気と背景", groupRetro:"レトロ & 遊び心",
     soundHeading:"サウンド", muteNote:"サウンドはオフです。プレビューとアラートも無音になります。Mキーまたはスピーカーアイコンでミュート解除できます。",
     tickLabel:"最後の10秒間だけ秒針音を鳴らす", tickAlwaysLabel:"タイマー中ずっと秒針音を鳴らす", voiceLabel:"残り30秒で音声アラート",
     voice2minLabel:"残り2分で音声アラート", voiceHalfLabel:"折り返し地点で「交代の時間です」音声アラート",
@@ -1673,7 +1651,7 @@ const I18N = {
     settingsTitle:"Impostazioni", languageHeading:"Lingua",
     modeHeading:"Modalità", stopwatchLabel:"Cronometro (conteggio crescente)", clockLabel:"Modalità orologio (mostra l'ora)",
     themeHeading:"Tema", themeStyleHeading:"Stile del tema",
-    groupSimple:"Semplice e pulito", groupAmbient:"Atmosfera e sfondi", groupCountdown:"Cucina e conto alla rovescia", groupRetro:"Retrò e divertimento",
+    groupSimple:"Semplice e pulito", groupAmbient:"Atmosfera e sfondi", groupRetro:"Retrò e divertimento",
     soundHeading:"Suono", muteNote:"L'audio è disattivato. Anteprime e avvisi sono silenziati. Premi M o l'icona dell'altoparlante per riattivare.",
     tickLabel:"Ticchettio negli ultimi 10 secondi", tickAlwaysLabel:"Ticchettio per tutto il timer", voiceLabel:"Avviso vocale a 30 secondi",
     voice2minLabel:"Avviso vocale a 2 minuti", voiceHalfLabel:"Avviso \"cambio turno\" a metà tempo",
@@ -1701,7 +1679,7 @@ const I18N = {
     settingsTitle:"الإعدادات", languageHeading:"اللغة",
     modeHeading:"الوضع", stopwatchLabel:"ساعة إيقاف (عد تصاعدي)", clockLabel:"وضع الساعة (عرض الوقت الحالي)",
     themeHeading:"السمة", themeStyleHeading:"نمط السمة",
-    groupSimple:"بسيط وواضح", groupAmbient:"أجواء وخلفيات", groupCountdown:"المطبخ والعد التنازلي", groupRetro:"كلاسيكي وممتع",
+    groupSimple:"بسيط وواضح", groupAmbient:"أجواء وخلفيات", groupRetro:"كلاسيكي وممتع",
     soundHeading:"الصوت", muteNote:"الصوت متوقف. المعاينات والتنبيهات صامتة أيضًا. اضغط M أو أيقونة مكبر الصوت لإعادة تفعيل الصوت.",
     tickLabel:"صوت تكة خلال آخر 10 ثوانٍ", tickAlwaysLabel:"صوت تكة طوال المؤقت", voiceLabel:"تنبيه صوتي عند 30 ثانية",
     voice2minLabel:"تنبيه صوتي عند دقيقتين", voiceHalfLabel:"تنبيه \"حان وقت التبديل\" في منتصف الوقت",
@@ -1729,7 +1707,7 @@ const I18N = {
     settingsTitle:"Настройки", languageHeading:"Язык",
     modeHeading:"Режим", stopwatchLabel:"Секундомер (счёт вперёд)", clockLabel:"Режим часов (показывать текущее время)",
     themeHeading:"Тема", themeStyleHeading:"Стиль темы",
-    groupSimple:"Просто и чисто", groupAmbient:"Атмосфера и фоны", groupCountdown:"Кухня и обратный отсчёт", groupRetro:"Ретро и веселье",
+    groupSimple:"Просто и чисто", groupAmbient:"Атмосфера и фоны", groupRetro:"Ретро и веселье",
     soundHeading:"Звук", muteNote:"Звук выключен. Предпросмотр и оповещения также беззвучны. Нажмите M или значок динамика, чтобы включить звук.",
     tickLabel:"Тиканье в последние 10 секунд", tickAlwaysLabel:"Тиканье на протяжении всего таймера", voiceLabel:"Голосовое оповещение за 30 секунд",
     voice2minLabel:"Голосовое оповещение за 2 минуты", voiceHalfLabel:"Оповещение «время сменить группу» на середине",
@@ -1757,7 +1735,7 @@ const I18N = {
     settingsTitle:"सेटिंग्स", languageHeading:"भाषा",
     modeHeading:"मोड", stopwatchLabel:"स्टॉपवॉच (आगे गिनती)", clockLabel:"घड़ी मोड (दिन का समय दिखाएं)",
     themeHeading:"थीम", themeStyleHeading:"थीम शैली",
-    groupSimple:"सरल और स्वच्छ", groupAmbient:"माहौल और पृष्ठभूमि", groupCountdown:"किचन और उलटी गिनती", groupRetro:"रेट्रो और मज़ा",
+    groupSimple:"सरल और स्वच्छ", groupAmbient:"माहौल और पृष्ठभूमि", groupRetro:"रेट्रो और मज़ा",
     soundHeading:"ध्वनि", muteNote:"ध्वनि बंद है। पूर्वावलोकन और अलर्ट भी शांत हैं। ध्वनि फिर से चालू करने के लिए M दबाएं या स्पीकर आइकन पर क्लिक करें।",
     tickLabel:"आख़िरी 10 सेकंड में टिक ध्वनि", tickAlwaysLabel:"पूरे टाइमर के दौरान टिक ध्वनि", voiceLabel:"30 सेकंड शेष पर आवाज़ अलर्ट",
     voice2minLabel:"2 मिनट शेष पर आवाज़ अलर्ट", voiceHalfLabel:"आधे समय पर \"बदलने का समय\" अलर्ट",
@@ -1785,7 +1763,7 @@ const I18N = {
     settingsTitle:"설정", languageHeading:"언어",
     modeHeading:"모드", stopwatchLabel:"스톱워치 (시간 증가)", clockLabel:"시계 모드 (현재 시각 표시)",
     themeHeading:"테마", themeStyleHeading:"테마 스타일",
-    groupSimple:"심플 & 클린", groupAmbient:"분위기 & 배경", groupCountdown:"주방 & 카운트다운", groupRetro:"레트로 & 재미",
+    groupSimple:"심플 & 클린", groupAmbient:"분위기 & 배경", groupRetro:"레트로 & 재미",
     soundHeading:"사운드", muteNote:"소리가 꺼져 있습니다. 미리듣기와 알림도 음소거됩니다. M 키나 스피커 아이콘을 눌러 다시 켤 수 있습니다.",
     tickLabel:"마지막 10초 동안 똑딱 소리", tickAlwaysLabel:"타이머 내내 똑딱 소리", voiceLabel:"30초 남았을 때 음성 알림",
     voice2minLabel:"2분 남았을 때 음성 알림", voiceHalfLabel:"절반 지점에서 \"교대 시간\" 음성 알림",
@@ -1847,7 +1825,7 @@ function numWordsDE(n){
   return (o ? W_ONES_DE_COMPOUND[o]+"und" : "") + W_TENS_DE[tt];
 }
 
-/* Themes — ordered by typical use: everyday timers first, then kitchen &
+/* Themes — ordered by typical use: everyday timers first, then countdown &
    ambient, then the retro/fun set. First three are free.
    mode: how the time renders · prog: progress · font: default font id */
 const THEMES = [
@@ -1859,7 +1837,6 @@ const THEMES = [
   {id:"flip",     name:"Flip Clock",  pro:true,  mode:"flip",     prog:"none", font:"helvetica"},
   {id:"days",     name:"Waves",       pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"lcd",      name:"LED Clock",   pro:true,  mode:"seg",      prog:"none", font:"mono"},
-  {id:"kitchen",  name:"Kitchen",     pro:true,  mode:"kitchen",  prog:"none", font:"helvetica"},
   {id:"egg",      name:"Egg Timer",   pro:true,  mode:"egg",      prog:"none", font:"helvetica"},
   {id:"photo",    name:"Nature",      pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"sunset",   name:"Gradient",    pro:true,  mode:"dots",     prog:"none", font:"helvetica"},
@@ -1870,6 +1847,7 @@ const THEMES = [
   {id:"bounce",   name:"Bounce",      pro:true,  mode:"bounce",   prog:"none", font:"helvetica"},
   {id:"aurora",   name:"Aurora",      pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"strands",  name:"Strands",     pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
+  {id:"sky",      name:"Clouds",      pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
 ];
 // per-theme default accent color — shown until a Pro user actually touches
 // the accent picker (st.accentCustom), at which point their pick applies
@@ -1879,16 +1857,16 @@ const THEME_DEFAULT_ACCENT = { disc:"#d5442f", terminal:"#4ade80" };
 // how the Theme picker in Settings is grouped — purely a display grouping,
 // doesn't affect THEMES itself or anything that reads it directly
 const THEME_GROUPS = [
-  {labelKey:"groupSimple",    ids:["disc","midnight","paper","flip","squiggle"]},
-  {labelKey:"groupAmbient",   ids:["days","sunset","aurora","strands","photo"]},
-  {labelKey:"groupCountdown", ids:["nasa","kitchen","egg"]},
-  {labelKey:"groupRetro",     ids:["nixie","terminal","lcars","bounce","lcd","web1"]}
+  {labelKey:"groupSimple",    ids:["disc","midnight","paper","flip","squiggle","egg"]},
+  {labelKey:"groupAmbient",   ids:["days","sunset","aurora","strands","photo","sky"]},
+  {labelKey:"groupRetro",     ids:["nixie","terminal","lcars","bounce","lcd","web1","nasa"]}
 ];
 // themes flat/simple enough to offer both a dark and a light look; each theme's
 // own hue (accent, glow, etc.) stays untouched — only bg/fg/panel/border shift.
 const APPEARANCE_THEMES = {
-  midnight:"dark", paper:"light", disc:"light", nasa:"light", squiggle:"dark", flip:"dark", kitchen:"light", egg:"light", days:"dark",
-  lcd:"dark", terminal:"dark", web1:"dark", nixie:"dark", photo:"dark", sunset:"light", lcars:"dark", bounce:"dark", aurora:"dark", strands:"dark"
+  midnight:"dark", paper:"light", disc:"light", nasa:"light", squiggle:"dark", flip:"dark", egg:"light", days:"dark",
+  lcd:"dark", terminal:"dark", web1:"dark", nixie:"dark", photo:"dark", sunset:"light", lcars:"dark", bounce:"dark", aurora:"dark", strands:"dark",
+  sky:"light"
 };
 const SOUNDS = [
   {id:"chime",   name:"Chime",   pro:false},
@@ -1896,6 +1874,10 @@ const SOUNDS = [
   {id:"bell",    name:"Bell",    pro:true},
   {id:"gong",    name:"Gong",    pro:true},
   {id:"fanfare", name:"Fanfare", pro:true},
+];
+const TICK_SOUNDS = [
+  {id:"chrono",  name:"Chronograph", pro:false},
+  {id:"classic", name:"Classic",     pro:false},
 ];
 /* per-theme style variants (Pro) — applied via body[data-flavor] */
 const VARIANTS = {
@@ -1939,7 +1921,7 @@ function detectLang(){
 }
 const POMO_FOCUS_SEC = 25*60, POMO_BREAK_SEC = 5*60;
 let st = Object.assign({
-  duration: 600, theme:"disc", sound:"chime", tick:false, tickAlways:false, muted:false, clock:false, voice:false, voice2min:false, voiceHalf:false, stopwatch:false,
+  duration: 600, theme:"disc", sound:"chime", tick:false, tickAlways:false, tickSound:"chrono", muted:false, clock:false, voice:false, voice2min:false, voiceHalf:false, stopwatch:false,
   pomodoro:false, pomoPhase:"focus",
   accent:"#d5442f", accentCustom:false, bg:"#101014", useBg:false, font:"helvetica", label:LABEL_DEFAULTS[detectLang()] || "Workshop Timer", labelCustom:false, appearance:null, lang:detectLang(),
   lc1:"SET PHASERS TO FUN", lc2:"SHIELDS: 98%", lc3:"WARP 9.9"
@@ -2039,15 +2021,39 @@ function tone(freq, start, dur, type="sine", gain=0.22){
   o.connect(g).connect(ctx.destination);
   o.start(ctx.currentTime + start); o.stop(ctx.currentTime + start + dur + 0.1);
 }
+// a short burst of band-passed noise reads as a mechanical click (escapement/
+// pallet-fork contact) rather than an electronic beep — used to build the
+// chronograph-style double-tick below
+function click(start, freq, dur, gain){
+  const ctx = audio();
+  const n = Math.max(1, Math.floor(ctx.sampleRate*dur));
+  const buf = ctx.createBuffer(1, n, ctx.sampleRate);
+  const data = buf.getChannelData(0);
+  for(let i=0;i<n;i++) data[i] = Math.random()*2-1;
+  const src = ctx.createBufferSource(); src.buffer = buf;
+  const bp = ctx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = freq; bp.Q.value = 5;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.0001, ctx.currentTime + start);
+  g.gain.exponentialRampToValueAtTime(gain, ctx.currentTime + start + 0.002);
+  g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + dur);
+  src.connect(bp).connect(g).connect(ctx.destination);
+  src.start(ctx.currentTime + start); src.stop(ctx.currentTime + start + dur + 0.02);
+}
 const PLAYERS = {
   chime(){ tone(880,0,.9); tone(1174.7,.18,1.2); },
   bell(){ [1,2.76,5.4].forEach((m,i)=>tone(520*m,0,2.2-(i*0.5),"sine",0.18/(i+1))); },
   gong(){ [1,1.5,2.1,2.9].forEach((m,i)=>tone(98*m,0,3.5,"sine",0.22/(i+1))); tone(66,0,4,"sine",0.18); },
   digital(){ [0,.25,.5,1,1.25,1.5].forEach(t=>tone(1320,t,.12,"square",0.12)); },
   fanfare(){ [[523,0],[659,.16],[784,.32],[1046,.5]].forEach(([f,t])=>tone(f,t,.5,"triangle",0.2)); tone(1046,.85,1.1,"triangle",0.22); },
-  tick(){ tone(2200,0,.03,"square",0.06); }
+  // chronograph-style double tick: a crisp mechanical click immediately
+  // followed by a softer, slightly lower second click — the "tick-tick"
+  // escapement sound of a wind-up stopwatch
+  chrono(){ click(0,3800,.02,.55); click(.05,2900,.018,.4); },
+  // the original single electronic blip, kept as an option
+  classic(){ tone(2200,0,.03,"square",0.06); }
 };
 function playEnd(){ if(!st.muted) (PLAYERS[st.sound]||PLAYERS.chime)(); }
+function playTick(){ if(!st.muted) (PLAYERS[st.tickSound]||PLAYERS.chrono)(); }
 
 /* airport-announcement style voice: pick the most natural voice available */
 function announce(text){
@@ -2074,9 +2080,8 @@ const elTime=$("time"), elLabel=$("label"), elSub=$("subline"), elProgress=$("pr
       elEggWrap=$("eggWrap"),
       elNixieWrap=$("nixieWrap"), elNixieRow=$("nixieRow"),
       elWords=$("wordsWrap"),
-      elSquigWrap=$("squigWrap"), elSquigTime=$("squigTime"), elSquigSub=$("squigSub"),
-      elKitchenWrap=$("kitchenWrap"), elKtScreen=$("ktScreen"),
-      elNasaWrap=$("nasaWrap"), elNasaTime=$("nasaTime"), elNasaLabel=$("nasaLabel"),
+      elSquigWrap=$("squigWrap"), elSquigTime=$("squigTime"),
+      elNasaWrap=$("nasaWrap"), elNasaTime=$("nasaTime"),
       elBounceWrap=$("bounceWrap"), elBounceTime=$("bounceTime");
 
 function fmt(s){
@@ -2102,7 +2107,7 @@ function fmtHM(s){
   return String(h).padStart(2,"0") + ":" + String(m).padStart(2,"0") + ":" + String(sec).padStart(2,"0");
 }
 
-/* ----- generic seven-segment SVG renderer (LED + kitchen) ----- */
+/* ----- generic seven-segment SVG renderer (LED Clock) ----- */
 const SEG_MAP = { // a b c d e f g
   "0":[1,1,1,1,1,1,0], "1":[0,1,1,0,0,0,0], "2":[1,1,0,1,1,0,1], "3":[1,1,1,1,0,0,1],
   "4":[0,1,1,0,0,1,1], "5":[1,0,1,1,0,1,1], "6":[1,0,1,1,1,1,1], "7":[1,1,1,0,0,0,0],
@@ -2207,29 +2212,47 @@ function renderDisc(frac, text){
 }
 
 /* ----- egg timer: rotating dial band ----- */
-let eggRulerMax = -1;
-function initEggRuler(totalMin){
-  if(totalMin === eggRulerMax) return;
-  eggRulerMax = totalMin;
-  const g = $("eggTicks"); let s = "";
-  s += `<line x1="0" y1="0" x2="120" y2="0" class="ruler-mark" stroke-width=".5"/>`;
-  const labelStep = totalMin > 30 ? 10 : 5;
-  for(let m=0;m<=totalMin;m++){
-    const x = m/totalMin*120, big = m%labelStep===0;
-    s += `<line x1="${x.toFixed(2)}" y1="0" x2="${x.toFixed(2)}" y2="${big?5:3}" class="ruler-mark" stroke-width="${big?.7:.35}"/>`;
-    if(big && m>0) s += `<text x="${x.toFixed(2)}" y="11" font-size="4.2" class="ruler-num" text-anchor="middle" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif">${m}</text>`;
+// mechanical dial: a strip of 5-minute ticks scrolls continuously so the
+// value under the fixed pointer always equals the current remaining minutes.
+// Labels wrap mod 60 (…50 55 0 5 10…) like a real wind-up dial rotating past
+// zero, matching the reference; only rebuilt when the visible window nears
+// the edge of what's already in the DOM, not on every tick.
+let eggDialRange = null, eggDialLastDur = null;
+function renderEggDial(rmMinutes){
+  const stepPx = 78, minutePx = stepPx/5;
+  const centerUnit = rmMinutes/5;
+  const track = $("eggDialTrack"), tickTrack = $("eggTicksTrack");
+  const durMin = Math.round(st.duration/60);
+  const rangeStale = !eggDialRange || centerUnit < eggDialRange[0]+3 || centerUnit > eggDialRange[1]-3;
+  if(rangeStale || durMin !== eggDialLastDur){
+    const first = Math.floor(centerUnit) - 10, last = Math.ceil(centerUnit) + 10;
+    eggDialRange = [first, last];
+    eggDialLastDur = durMin;
+    let s = "";
+    for(let i=first;i<=last;i++){
+      const dispVal = ((i*5)%60+60)%60;
+      s += `<span class="egg-dial-num" style="left:${(i*stepPx).toFixed(0)}px">${dispVal}</span>`;
+    }
+    track.innerHTML = s;
+    // hash marks per whole minute, lit up from 0 through the set duration --
+    // e.g. a 3-minute timer lights the marks between 0 and 3
+    let ts = "";
+    for(let m=first*5;m<=last*5;m++){
+      if(m<0) continue;   // no hashes left of true zero (the "0" label at rest)
+      const modM = ((m%60)+60)%60;
+      const on = modM>0 && modM<=durMin;
+      const major = modM%5===0;
+      ts += `<span class="egg-tick-mark${on?" on":""}${major?" major":""}" style="left:${(m*minutePx).toFixed(1)}px"></span>`;
+    }
+    tickTrack.innerHTML = ts;
   }
-  g.innerHTML = s;
+  const shift = (-centerUnit*stepPx).toFixed(2);
+  track.style.transform = `translateX(${shift}px)`;
+  tickTrack.style.transform = `translateX(${shift}px)`;
 }
-function renderEgg(rmMinutes, text){
-  const totalMin = Math.max(5, Math.ceil(st.duration/60/5)*5);
-  initEggRuler(totalMin);
-  const x = Math.max(0, Math.min(1, rmMinutes/totalMin))*120;
-  $("eggPtr").setAttribute("transform", `translate(${x.toFixed(2)} 0)`);
-  const p = text.split(":");
-  const mm = p.length===3 ? p[0]+":"+p[1] : p[0];
-  $("eggMin").textContent = mm.padStart(2,"0");
-  $("eggSec").textContent = (p[p.length-1]||"00").padStart(2,"0");
+function renderEgg(rmMinutes){
+  renderEggDial(rmMinutes);
+  syncEditable($("eggLabel"), st.label);
 }
 
 /* ----- words renderer (paper theme: no numerals, just language) ----- */
@@ -2454,7 +2477,7 @@ function squigArc(from, to, wavy, phase, amp){
   }
   return d;
 }
-function initSquiggle(){ renderSquiggle(1, "10:00", t("remaining")); }
+function initSquiggle(){ renderSquiggle(1, "10:00"); }
 /* the squiggle's wobble is animated independently of the 250ms core render
    loop, via requestAnimationFrame, for the same reason the T-Minus milliseconds
    are: it's a pure function of wall-clock time plus the last-known frac, not
@@ -2463,10 +2486,10 @@ function initSquiggle(){ renderSquiggle(1, "10:00", t("remaining")); }
    look jumpy/chaotic rather than a smooth continuous wobble. */
 let squigState = { frac:1 };
 let squigRaf = null;
-function renderSquiggle(frac, text, sub){
+function renderSquiggle(frac, text){
   squigState.frac = Math.max(0, Math.min(1, frac));
   elSquigTime.textContent = text;
-  elSquigSub.textContent = sub;
+  syncEditable($("squigLabel"), st.label);
   if(!squigRaf) squigRaf = requestAnimationFrame(squiggleFrame);
 }
 function squiggleFrame(){
@@ -2564,6 +2587,7 @@ function initNasa(){
   nasaHot = -1;
 }
 function renderNasa(frac, rem, isClock){
+  syncEditable($("nasaTitle"), st.label);
   // elapsed ticks turn hot orange, clockwise from 12
   const hot = isClock ? Math.round(frac*NASA_N) : Math.round((1-Math.max(0,Math.min(1,frac)))*NASA_N);
   if(hot !== nasaHot){
@@ -2579,16 +2603,11 @@ function renderNasa(frac, rem, isClock){
     const h12 = n.getHours()%12 || 12;
     elNasaTime.innerHTML = cells(`${h12}:${String(n.getMinutes()).padStart(2,"0")}`) +
       `<span class="ms">${cells(":"+String(n.getSeconds()).padStart(2,"0"))}</span>`;
-    elNasaLabel.textContent = "local time";
-    elNasaLabel.classList.remove("hot");
   } else {
     const r = Math.max(0, rem);
     const mm = Math.floor(r/60), ss = Math.floor(r%60), cc = Math.floor((r%1)*100);
     elNasaTime.innerHTML = cells(`${String(mm).padStart(2,"0")}:${String(ss).padStart(2,"0")}`) +
       `<span class="ms">${cells("."+String(cc).padStart(2,"0"))}</span>`;
-    if(finished){ elNasaLabel.textContent = "liftoff"; elNasaLabel.classList.add("hot"); }
-    else if(swOn()){ elNasaLabel.textContent = running ? "elapsed" : t("stopwatchWord"); elNasaLabel.classList.remove("hot"); }
-    else { elNasaLabel.textContent = running ? "t-minus" : t("remaining"); elNasaLabel.classList.toggle("hot", running && r<=10); }
   }
 }
 
@@ -2615,14 +2634,6 @@ function nasaMsFrame(){
 }
 function startNasaMs(){ if(!nasaMsRaf) nasaMsRaf = requestAnimationFrame(nasaMsFrame); }
 function stopNasaMs(){ if(nasaMsRaf){ cancelAnimationFrame(nasaMsRaf); nasaMsRaf = null; } }
-
-/* ----- kitchen timer renderer ----- */
-function renderKitchen(text){
-  const p = text.split(":");
-  const l = p[0].padStart(2,"0"), r = p[1].padStart(2,"0");
-  renderSegInto(elKtScreen, l+":"+r, true);
-  syncEditable($("ktLabel"), st.label);
-}
 
 /* ----- master render ----- */
 function render(){
@@ -2679,7 +2690,6 @@ function render(){
   elNixieWrap.style.display = mode==="nixie"    ? "flex":"none";
   elWords.style.display     = mode==="words"    ? "block":"none";
   elSquigWrap.style.display = mode==="squiggle" ? "block":"none";
-  elKitchenWrap.style.display = mode==="kitchen"? "flex":"none";
   elNasaWrap.style.display  = mode==="nasa"     ? "block":"none";
   $("dotsWrap").style.display  = mode==="dots"  ? "flex":"none";
   $("lcarsWrap").style.display = mode==="lcars" ? "flex":"none";
@@ -2702,8 +2712,7 @@ function render(){
     renderWords(elWords, wordsHtml);
     elWords.className = justFinished ? "over" : danger ? "danger" : "";
   }
-  else if(mode==="squiggle") renderSquiggle(frac, text, clock ? t("oclock") : finished ? "" : t("remaining"));
-  else if(mode==="kitchen") renderKitchen(text);
+  else if(mode==="squiggle") renderSquiggle(frac, text);
   else if(mode==="nasa"){
     renderNasa(frac, remaining, clock);
     if(!clock && (running || swOn())) startNasaMs(); else stopNasaMs();
@@ -2823,6 +2832,7 @@ function updateFX(){
   if(tid==="sunset") startGradient(); else stopGradient();
   if(tid==="aurora") startAurora(); else stopAurora();
   if(tid==="strands") startStrands(); else stopStrands();
+  if(tid==="sky") startSky(); else stopSky();
 }
 
 /* ----- Lava background (Lava/"days" theme): a vanilla-JS/canvas2d port of
@@ -3578,6 +3588,144 @@ function stopStrands(){
   $("strandsBg").style.display = "none";
 }
 
+/* ----- Sky (Clouds theme): same vanilla-WebGL2 fullscreen-triangle pattern
+   as Aurora/Strands above. Rather than a true per-pixel volumetric raymarch
+   (60-100+ steps through a 3D noise field, the expensive way a Shadertoy
+   cloud demo usually does it), this paints the clouds as two layered 2D fbm
+   fields directly in screen space — one for shape, one offset copy for a
+   cheap fake self-shadow — which reads as convincingly fluffy/volumetric at
+   a fraction of the cost. Combined with the backing canvas rendering at a
+   fraction of device pixels (see skyResize), it's light enough to run
+   continuously on a screen that's often left on for a whole workshop. */
+const SKY_FRAG = `#version 300 es
+precision mediump float;
+out vec4 fragColor;
+uniform float uTime;
+uniform vec2 uResolution;
+uniform vec3 uSkyHorizon;
+uniform vec3 uSkyZenith;
+uniform vec3 uCloudLit;
+uniform vec3 uCloudShadow;
+float hash(vec2 p){
+  p = fract(p*vec2(123.34,456.21));
+  p += dot(p, p+45.32);
+  return fract(p.x*p.y);
+}
+float vnoise(vec2 p){
+  vec2 i=floor(p), f=fract(p);
+  float a=hash(i), b=hash(i+vec2(1.0,0.0)), c=hash(i+vec2(0.0,1.0)), d=hash(i+vec2(1.0,1.0));
+  vec2 u=f*f*(3.0-2.0*f);
+  return mix(mix(a,b,u.x), mix(c,d,u.x), u.y);
+}
+float fbm(vec2 p){
+  float v=0.0, a=0.52;
+  for(int i=0;i<4;i++){ v+=a*vnoise(p); p*=2.05; a*=0.5; }
+  return v;
+}
+void main(){
+  vec2 uv = gl_FragCoord.xy / uResolution.xy;
+  vec3 sky = mix(uSkyHorizon, uSkyZenith, pow(uv.y, 0.8));
+  vec2 p = vec2(uv.x * uResolution.x/uResolution.y, uv.y) * 2.2;
+  vec2 wind = vec2(uTime*0.015, -uTime*0.004);
+  float n = fbm(p*1.3 + wind)*0.7 + fbm(p*3.1 + wind*1.6 + 5.2)*0.3;
+  // more/thicker cloud low in the frame, thin wisps near the top — like a real sky
+  float coverage = mix(0.62, 0.18, uv.y);
+  float cloud = smoothstep(coverage, coverage+0.3, n);
+  float shadeN = fbm(p*1.3 + wind - vec2(0.05,0.035));
+  float shade = smoothstep(coverage-0.05, coverage+0.22, shadeN);
+  vec3 cloudCol = mix(uCloudShadow, uCloudLit, shade);
+  fragColor = vec4(mix(sky, cloudCol, cloud), 1.0);
+}
+`;
+// horizon/zenith sky and lit/shadow cloud colors, all in 0-1 RGB — light is
+// a clear blue-sky day, dark is the same cloud shapes re-tinted grey/slate
+// for an overcast rainy day (picked per-frame in skyDraw via mode-dark)
+const SKY_PALETTES = {
+  light:{ horizon:[0.62,0.78,0.93], zenith:[0.16,0.42,0.74], cloudLit:[1.0,1.0,1.0],   cloudShadow:[0.62,0.7,0.8] },
+  dark: { horizon:[0.5,0.53,0.57],  zenith:[0.22,0.24,0.28], cloudLit:[0.66,0.68,0.71], cloudShadow:[0.26,0.28,0.32] }
+};
+let SKY = null; // {gl, program, buf, posLoc, u, canvas} once initialized
+function initSky(){
+  const canvas = $("skyBg");
+  const gl = canvas.getContext("webgl2");
+  if(!gl) return null;
+  function compile(type, src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){ gl.deleteShader(s); return null; }
+    return s;
+  }
+  const vs = compile(gl.VERTEX_SHADER, AURORA_VERT);
+  const fs = compile(gl.FRAGMENT_SHADER, SKY_FRAG);
+  if(!vs || !fs) return null;
+  const program = gl.createProgram();
+  gl.attachShader(program, vs);
+  gl.attachShader(program, fs);
+  gl.linkProgram(program);
+  if(!gl.getProgramParameter(program, gl.LINK_STATUS)) return null;
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  const posLoc = gl.getAttribLocation(program, "position");
+  const u = {
+    uTime: gl.getUniformLocation(program, "uTime"),
+    uResolution: gl.getUniformLocation(program, "uResolution"),
+    uSkyHorizon: gl.getUniformLocation(program, "uSkyHorizon"),
+    uSkyZenith: gl.getUniformLocation(program, "uSkyZenith"),
+    uCloudLit: gl.getUniformLocation(program, "uCloudLit"),
+    uCloudShadow: gl.getUniformLocation(program, "uCloudShadow")
+  };
+  return { gl, program, buf, posLoc, u, canvas };
+}
+// render at a fraction of device pixels (cheap to raymarch) then let the
+// canvas's own CSS size upscale it — soft clouds hide the extra blur
+function skyResize(){
+  if(!SKY) return;
+  const { gl, canvas, u, program } = SKY;
+  const dpr = Math.min(window.devicePixelRatio || 1, 1);
+  const scale = 0.6;
+  const w = Math.max(1, Math.round(canvas.clientWidth * dpr * scale)),
+        h = Math.max(1, Math.round(canvas.clientHeight * dpr * scale));
+  if(canvas.width !== w || canvas.height !== h){ canvas.width = w; canvas.height = h; }
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  gl.useProgram(program);
+  gl.uniform2f(u.uResolution, canvas.width, canvas.height);
+}
+function skyDraw(time){
+  if(!SKY) return;
+  const { gl, program, buf, posLoc, u } = SKY;
+  gl.useProgram(program);
+  const palette = document.body.classList.contains("mode-dark") ? SKY_PALETTES.dark : SKY_PALETTES.light;
+  gl.uniform1f(u.uTime, time*0.001);
+  gl.uniform3fv(u.uSkyHorizon, palette.horizon);
+  gl.uniform3fv(u.uSkyZenith, palette.zenith);
+  gl.uniform3fv(u.uCloudLit, palette.cloudLit);
+  gl.uniform3fv(u.uCloudShadow, palette.cloudShadow);
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.enableVertexAttribArray(posLoc);
+  gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+let skyRaf = null;
+function skyFrame(time){
+  skyDraw(time);
+  skyRaf = requestAnimationFrame(skyFrame);
+}
+function startSky(){
+  if(!SKY) SKY = initSky();
+  if(!SKY) return; // WebGL2 unavailable — theme just keeps its plain sky-blue background
+  $("skyBg").style.display = "block";
+  skyResize();
+  addEventListener("resize", skyResize);
+  if(!skyRaf) skyRaf = requestAnimationFrame(skyFrame);
+}
+function stopSky(){
+  if(skyRaf){ cancelAnimationFrame(skyRaf); skyRaf = null; }
+  removeEventListener("resize", skyResize);
+  $("skyBg").style.display = "none";
+}
+
 /* ----- bounce: DVD-screensaver-style roaming, color-changing time.
    Position runs on setInterval rather than requestAnimationFrame, for the
    same reason the core timer engine does (see note above startTicking):
@@ -3685,7 +3833,7 @@ function loop(){
   if(whole !== lastWholeSec){
     lastWholeSec = whole;
     const shouldTick = (st.tick && whole<=10 && whole>0) || (st.tickAlways && whole>0);
-    if(shouldTick && !st.muted) PLAYERS.tick();
+    if(shouldTick) playTick();
     if(st.voice && isPro() && !st.muted && whole===30){
       announce("Attention please. Thirty seconds remaining.");
     }
@@ -3829,9 +3977,11 @@ elLabel.addEventListener("keydown", e=>{
 });
 /* theme-surface text is editable too, and everything stays in sync */
 bindEditable($("lcTitle"), v=>{ st.label = v; st.labelCustom = true; syncEditable(elLabel, v); });
-bindEditable($("ktLabel"), v=>{ st.label = v; st.labelCustom = true; syncEditable(elLabel, v); });
 bindEditable($("discLabel"), v=>{ st.label = v; st.labelCustom = true; syncEditable(elLabel, v); });
 bindEditable($("w1Title"), v=>{ st.label = v; st.labelCustom = true; syncEditable(elLabel, v); });
+bindEditable($("eggLabel"), v=>{ st.label = v; st.labelCustom = true; syncEditable(elLabel, v); });
+bindEditable($("squigLabel"), v=>{ st.label = v; st.labelCustom = true; syncEditable(elLabel, v); });
+bindEditable($("nasaTitle"), v=>{ st.label = v; st.labelCustom = true; syncEditable(elLabel, v); });
 bindEditable($("lcP1"), v=>{ st.lc1 = v; });
 bindEditable($("lcP2"), v=>{ st.lc2 = v; });
 bindEditable($("lcP3"), v=>{ st.lc3 = v; });
@@ -3905,11 +4055,6 @@ document.addEventListener("click", e=>{
   s.classList.remove("open");
   $("btnSettings").classList.remove("open");
 });
-
-/* kitchen timer physical buttons */
-$("ktM").addEventListener("click", e=>{ e.stopPropagation(); adjust(60); });
-$("ktS").addEventListener("click", e=>{ e.stopPropagation(); adjust(10); });
-$("ktSS").addEventListener("click", e=>{ e.stopPropagation(); start(); });
 
 function toggleFullscreen(){
   if(document.fullscreenElement) document.exitFullscreen();
@@ -3994,7 +4139,7 @@ function chip(list, row, current, onPick, onLocked){
 }
 
 /* the flat THEMES list rendered as labeled groups (Simple & Clean, Ambient
-   & Backgrounds, Kitchen & Countdown, Retro & Fun) instead of one long chip
+   & Backgrounds, Retro & Fun) instead of one long chip
    wall — purely a Settings-panel display grouping, see THEME_GROUPS */
 function renderThemeGroups(wrap, current, onPick, onLocked){
   wrap.innerHTML = "";
@@ -4125,14 +4270,14 @@ function applyTheme(){
     if(f.weight) document.documentElement.style.setProperty("--fontw", f.weight);
     else document.documentElement.style.removeProperty("--fontw");
   }
-  elSeg.dataset.seg = ""; elKtScreen.dataset.seg = ""; // force seg re-render
+  elSeg.dataset.seg = ""; // force seg re-render
   syncSublineFont();
   updateFX();
   render();
   // Settings no longer borrows each theme's Start-button color (see #settings
   // CSS below) — it used to read the button's *computed* color back into an
   // inline --accent on body, which for themes with no signature color of
-  // their own (Bold, Kitchen, T-Minus, Starship, Web 1.0 — they fall back to
+  // their own (Bold, T-Minus, Starship, Web 1.0 — they fall back to
   // the plain var(--accent) button style) shadowed the fresh accent this
   // function sets a few lines up, on every subsequent theme switch, since an
   // inline custom property on body always wins over one on documentElement.
@@ -4150,7 +4295,7 @@ function applyTheme(){
 // themes that hide #label and show their own title element instead — read
 // typography from that visible title, not the hidden generic #label (whose
 // wide default tracking otherwise leaked into "paused" for these themes)
-const SUBLINE_TITLE_SRC = { disc:"discLabel", kitchen:"ktLabel", lcars:"lcTitle", web1:"w1Title" };
+const SUBLINE_TITLE_SRC = { disc:"discLabel", lcars:"lcTitle", web1:"w1Title", egg:"eggLabel", squiggle:"squigLabel", nasa:"nasaTitle" };
 function syncSublineFont(){
   const srcId = SUBLINE_TITLE_SRC[curThemeId()];
   const src = srcId ? $(srcId) : elLabel;
@@ -4184,9 +4329,11 @@ function refreshSettings(){
       st.label = LABEL_DEFAULTS[id] || LABEL_DEFAULTS.en;
       syncEditable(elLabel, st.label);
       syncEditable($("lcTitle"), st.label);
-      syncEditable($("ktLabel"), st.label);
       syncEditable($("discLabel"), st.label);
       syncEditable($("w1Title"), st.label);
+      syncEditable($("eggLabel"), st.label);
+      syncEditable($("squigLabel"), st.label);
+      syncEditable($("nasaTitle"), st.label);
     }
     save(); applyLang(); render();
   }, ()=>{});
@@ -4197,6 +4344,7 @@ function refreshSettings(){
     save(); applyTheme();
   }, previewTheme);
   chip(SOUNDS, $("soundRow"), st.sound, id=>{ st.sound=id; save(); if(!st.muted)(PLAYERS[id]||PLAYERS.chime)(); }, previewSound);
+  chip(TICK_SOUNDS, $("tickSoundRow"), st.tickSound, id=>{ st.tickSound=id; save(); if(!st.muted)(PLAYERS[id]||PLAYERS.chrono)(); }, previewSound);
   renderFontSelect();
   const tid = curThemeId(), vs = VARIANTS[tid];
   // an animated grid-rows toggle (0fr/1fr) instead of instant display:none/
