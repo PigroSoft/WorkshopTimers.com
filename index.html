@@ -79,11 +79,6 @@
   body.theme-aurora[data-flavor="ice"]{ --aurora-glow:#5ad0ff; }
   body.theme-strands{ --bg:#070707; --bg2:#0d0d0d; --fg:#000000; --muted:#7a7a7a; --panel:#111; --border:#232323; --strands-accent:#5227FF; --strands-text:#fff; }
   body.theme-strands.mode-light{ --bg:#f2f1ee; --bg2:#e8e7e2; --fg:#0a0a0a; --muted:#8a8a86; --panel:#fff; --border:#e0dfda; }
-  /* the theme intentionally keeps --fg black even in dark mode so the digits
-     read as a silhouette over the strands, but that would also blacken the
-     settings-panel text on its dark panel background — restore legible text
-     there without touching the digit color */
-  body.theme-strands:not(.mode-light) #settings{ --fg:#eee; }
   body.theme-kitchen { --bg:#dfe2e6; --bg2:#d3d7dc; --fg:#26282b; --muted:#8b9097; --panel:#f4f5f6; --border:#c6cbd1; }
   body.theme-photo   { --bg:#0d120d; --bg2:rgba(255,255,255,.08); --fg:#ffffff; --muted:rgba(255,255,255,.65); --panel:#141a14; --border:#2c352c; }
   body.theme-nasa    { --bg:#f1f0ec; --bg2:#e7e5e0; --fg:#1e2124; --muted:#9a9c9e; --accent:#ff5c1f; --danger:#ff5c1f; --panel:#ffffff; --border:#d8d6d0; }
@@ -92,10 +87,9 @@
   body.theme-lcd[data-flavor="green"]{--fg:#3bff5c; --muted:#2a7a38;}
   body.theme-lcd[data-flavor="blue"]{--fg:#4da6ff; --muted:#2a557a;}
   body.theme-lcd[data-flavor="white"]{--fg:#f0f0f2; --muted:#6f6f76;}
-  /* matrix rain color variants */
-  body.theme-terminal[data-flavor="amber"]{--fg:#ffb52e; --muted:#8a6a2e; --bg2:#140f06;}
-  body.theme-terminal[data-flavor="ice"]{--fg:#7adbff; --muted:#3a7a8a; --bg2:#061014;}
-  body.theme-terminal[data-flavor="crimson"]{--fg:#ff5c5c; --muted:#8a3a3a; --bg2:#140606;}
+  /* Code theme's color now comes from the Pro accent picker (see applyTheme),
+     which sets --fg directly on body — --muted below tracks it automatically */
+  body.theme-terminal{ --muted:color-mix(in srgb, var(--fg) 55%, black); }
 
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%;}
@@ -127,17 +121,40 @@
       radial-gradient(1.5px 1.5px at 40% 55%, #fff, transparent);
     background-repeat:no-repeat;
   }
-  /* light mode: a tiled, grainy blue-and-white cloud texture (classic Win95
-     "Clouds" wallpaper vibe) instead of the toaster night sky. This is a
-     procedurally-generated SVG noise pattern (feTurbulence fractal noise,
-     recolored to blue/white via feColorMatrix) baked into a data URI — an
-     original, self-contained texture rather than a traced or sourced photo,
-     so it also tiles seamlessly and needs no network request to load. */
+  /* light mode: a puffy-cloud sky instead of the tiled noise texture (which
+     read as a flat, repetitive grid up close) or the toaster night sky.
+     Built entirely from CSS radial-gradients — soft cloud puffs with a
+     brighter core, a dim underside, and a subtle blue-sky gradient behind —
+     so it stays offline-safe (no image request) and doesn't visibly tile. */
   body.theme-web1.mode-light{
-    background-color:#4f8fca;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.018' numOctaves='4' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 3 -1'/%3E%3C/filter%3E%3Crect width='180' height='180' fill='%234f8fca'/%3E%3Crect width='180' height='180' filter='url(%23n)' fill='%23fff'/%3E%3C/svg%3E");
-    background-repeat:repeat;
-    background-size:180px 180px;
+    background-repeat:no-repeat;
+    background-size:100% 100%;
+    background-image:
+      radial-gradient(170px 60px at 15% 16%, rgba(255,255,255,.32) 0%, rgba(255,255,255,.16) 50%, transparent 82%),
+      radial-gradient(110px 42px at 14% 15%, rgba(255,255,255,.85) 0%, rgba(255,255,255,.6) 45%, transparent 88%),
+      radial-gradient(72px 26px at 13% 13%, rgba(255,255,255,1) 0%, rgba(255,255,255,.92) 42%, rgba(255,255,255,.4) 75%, transparent 95%),
+      radial-gradient(66px 15px at 17% 24%, rgba(120,150,182,.32) 0%, rgba(120,150,182,.12) 55%, transparent 85%),
+      radial-gradient(210px 72px at 68% 8%, rgba(255,255,255,.3) 0%, rgba(255,255,255,.14) 50%, transparent 82%),
+      radial-gradient(140px 50px at 67% 6%, rgba(255,255,255,.85) 0%, rgba(255,255,255,.58) 42%, transparent 88%),
+      radial-gradient(92px 30px at 65% 5%, rgba(255,255,255,1) 0%, rgba(255,255,255,.92) 40%, rgba(255,255,255,.4) 75%, transparent 95%),
+      radial-gradient(84px 17px at 70% 18%, rgba(120,150,182,.3) 0%, rgba(120,150,182,.1) 55%, transparent 85%),
+      radial-gradient(120px 44px at 88% 33%, rgba(255,255,255,.28) 0%, rgba(255,255,255,.13) 50%, transparent 82%),
+      radial-gradient(78px 30px at 87% 31%, rgba(255,255,255,.82) 0%, rgba(255,255,255,.55) 42%, transparent 88%),
+      radial-gradient(52px 18px at 85% 30%, rgba(255,255,255,.98) 0%, rgba(255,255,255,.85) 42%, transparent 92%),
+      radial-gradient(48px 11px at 89% 40%, rgba(120,150,182,.26) 0%, transparent 82%),
+      radial-gradient(175px 62px at 32% 52%, rgba(255,255,255,.3) 0%, rgba(255,255,255,.14) 50%, transparent 82%),
+      radial-gradient(118px 44px at 30% 50%, rgba(255,255,255,.84) 0%, rgba(255,255,255,.58) 42%, transparent 88%),
+      radial-gradient(76px 26px at 28% 48%, rgba(255,255,255,1) 0%, rgba(255,255,255,.92) 40%, rgba(255,255,255,.4) 75%, transparent 95%),
+      radial-gradient(70px 15px at 34% 60%, rgba(120,150,182,.3) 0%, rgba(120,150,182,.1) 55%, transparent 85%),
+      radial-gradient(140px 50px at 10% 75%, rgba(255,255,255,.28) 0%, rgba(255,255,255,.13) 50%, transparent 82%),
+      radial-gradient(90px 32px at 8% 73%, rgba(255,255,255,.82) 0%, rgba(255,255,255,.55) 42%, transparent 88%),
+      radial-gradient(58px 20px at 6% 72%, rgba(255,255,255,.98) 0%, rgba(255,255,255,.85) 42%, transparent 92%),
+      radial-gradient(54px 12px at 11% 81%, rgba(120,150,182,.26) 0%, transparent 82%),
+      radial-gradient(155px 55px at 58% 87%, rgba(255,255,255,.26) 0%, rgba(255,255,255,.12) 50%, transparent 82%),
+      radial-gradient(96px 34px at 57% 85%, rgba(255,255,255,.8) 0%, rgba(255,255,255,.52) 42%, transparent 88%),
+      radial-gradient(62px 20px at 55% 84%, rgba(255,255,255,.96) 0%, rgba(255,255,255,.82) 42%, transparent 92%),
+      radial-gradient(58px 13px at 60% 92%, rgba(120,150,182,.24) 0%, transparent 82%),
+      linear-gradient(to bottom, #1f6bc4 0%, #3f8fd8 26%, #6fb2e6 52%, #a7d4f2 78%, #cfe9fa 100%);
   }
   /* Forest theme photos (Unsplash license: free for commercial use).
      The image lives on a fixed layer with a slow Ken Burns drift — a subtle cinemagraph feel.
@@ -427,15 +444,6 @@
     text-shadow:
       .015em .015em 0 #7a2b05, .03em .03em 0 #7a2b05, .045em .045em .04em rgba(0,0,0,.4);
   }
-  /* web 1.0's beige panel needs dark, readable settings text */
-  body.theme-web1 #settings .chip, body.theme-web1 #settings button{color:#000; background:#c9c5bc; border-color:#8a867c; opacity:1;}
-  body.theme-web1 #settings .chip.active{color:#000080; border-color:#000080;}
-  body.theme-web1 #settings .switch{color:#000;}
-  body.theme-web1 #settings .unlock-link{color:#000080;}
-  body.theme-web1 #trialStatus{color:#333;}
-  body.theme-web1 #trialStatus b{color:#000080;}
-  body.theme-web1 #settings .help{color:#444;}
-  body.theme-web1 #settings .field label{color:#444;}
   body.theme-web1 #time.warn{
     background-image:linear-gradient(180deg,#fff2a3 0%,#ffcf3f 42%,#e08a00 100%), linear-gradient(#fff,#fff);
     -webkit-text-stroke:.01em #6b4400;
@@ -455,6 +463,7 @@
   body.theme-lcd #label{
     color:#e9e9eb; font-weight:600; text-transform:uppercase;
     letter-spacing:.28em; font-size:clamp(.75rem,2vh,1.1rem);
+    margin-bottom:1.4vh;
   }
   body.theme-lcd[data-flavor="green"] #segWrap svg .on{fill:#3bff5c; filter:drop-shadow(0 0 7px rgba(59,255,92,.6));}
   body.theme-lcd[data-flavor="green"] #segWrap svg .off{fill:#3bff5c;}
@@ -672,10 +681,13 @@
 
   /* ---------- bounce: a plain time that roams the screen and changes
      color whenever it hits an edge, screensaver-style ---------- */
+  /* fills the whole stage (edge to edge) rather than a smaller bordered
+     box, so the roaming time actually uses the full screen — inset:0 is
+     measured from #stage's own padding edge, so it still naturally avoids
+     the bottom controls strip that padding-bottom reserves */
   #bounceWrap{
-    display:none; position:relative;
-    width:min(94vw,1400px); height:min(58vh,640px);
-    border-radius:16px; border:1px solid var(--border); overflow:hidden;
+    display:none; position:absolute; inset:0;
+    overflow:hidden;
   }
   #bounceTime{
     position:absolute; top:0; left:0;
@@ -746,7 +758,7 @@
 
   /* ---------- LCARS starship console ---------- */
   body.theme-lcars #label{display:none;}
-  body.theme-lcars, body.theme-lcars #controls button, body.theme-lcars #settings, body.theme-lcars #modal{
+  body.theme-lcars, body.theme-lcars #controls button, body.theme-lcars #modal{
     font-family:'Arial Narrow','Avenir Next Condensed','Helvetica Neue',Arial,sans-serif;
   }
   #lcarsWrap{display:none; flex-direction:column; width:min(92vw,150vh); gap:1.2rem;}
@@ -914,6 +926,20 @@
   body.theme-web1 #btnPlus30 svg{stroke:#000080;}
 
   /* ---------- settings drawer ---------- */
+  /* Settings always looks like the Time Disc theme, regardless of which
+     timer theme is active — only the page's light/dark switch changes it.
+     Each active theme used to bleed its own --fg/--panel/--border/--accent
+     into the panel, which meant a pile of one-off overrides below to keep
+     it readable (Web 1.0's beige panel, LCARS' condensed font, Strands'
+     forced-white text, ...) and, worse, a color that visibly drifted the
+     longer you clicked through themes (see applyTheme's --accent comment).
+     Fixing the palette here removes both problems at once. */
+  #settings{
+    --bg:#eeeef1; --bg2:#e4e4e8; --fg:#333; --muted:#9a9aa2; --panel:#c4c4cb; --border:#d4d4da; --accent:#e8c15a;
+  }
+  body.mode-dark #settings{
+    --bg:#1c1c20; --bg2:#242428; --fg:#e8e8ea; --muted:#8b8b90; --panel:#2a2a2f; --border:#38383e;
+  }
   #settings{
     position:fixed; top:0; right:0; bottom:0; width:min(380px,92vw); z-index:5;
     background:var(--panel); border-left:1px solid var(--border);
@@ -921,11 +947,9 @@
     padding:1.4rem; display:flex; flex-direction:column; gap:1.4rem;
     font-family:var(--font-ui); color:var(--fg);
   }
-  body.theme-web1 #settings{color:#000; font-family:Tahoma,Verdana,sans-serif;}
   #settings.open{transform:none; box-shadow:-12px 0 40px rgba(0,0,0,.35);}
   #settings h2{font-size:1.05rem;}
   #settings h3{font-size:.8rem; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:.6rem;}
-  body.theme-web1 #settings h3{color:#555;}
   /* the brand wordmark up top is a title, not a section label — bigger,
      normal case, full-strength foreground color, so it actually reads as
      branding instead of just another muted section heading */
@@ -959,9 +983,9 @@
     vertical-align:middle; margin-left:.4rem;
   }
   .eu-badge{
-    display:inline-flex; align-items:center; gap:.7rem; font-size:1.4rem; font-weight:700;
+    display:inline-flex; align-items:center; gap:.35rem; font-size:.7rem; font-weight:700;
     letter-spacing:.02em; background:transparent; color:var(--fg); border:1px solid var(--border);
-    border-radius:40px; padding:.56rem 1.4rem; margin:.5rem 0 .8rem; opacity:.7;
+    border-radius:20px; padding:.28rem .7rem; margin:.25rem 0 .4rem; opacity:.7;
   }
   .field{display:flex; flex-direction:column; gap:.35rem; margin-bottom:.8rem;}
   .field label{font-size:.8rem; color:var(--muted);}
@@ -1193,9 +1217,11 @@
   <section>
     <h3 data-i18n="themeHeading">Theme</h3>
     <div id="themeRow"></div>
-    <div id="lampSec" style="display:none; margin-top:.9rem">
-      <h3 id="lampHead"><span data-i18n="themeStyleHeading">Theme style</span> <span class="pro-tag">PRO</span></h3>
-      <div class="chip-row" id="lampRow"></div>
+    <div id="lampSec" style="display:grid; grid-template-rows:0fr; transition:grid-template-rows .22s ease; overflow:hidden">
+      <div style="overflow:hidden; min-height:0">
+        <h3 id="lampHead" style="margin-top:.9rem"><span data-i18n="themeStyleHeading">Theme style</span> <span class="pro-tag">PRO</span></h3>
+        <div class="chip-row" id="lampRow"></div>
+      </div>
     </div>
   </section>
 
@@ -1308,7 +1334,7 @@
 
   <div style="margin-top:.8rem">
     <span class="eu-badge">
-      <svg viewBox="0 0 20 20" width="24" height="24" aria-hidden="true"><circle cx="10" cy="10" r="9.3" fill="none" stroke="currentColor" stroke-width="1"/><g fill="currentColor"><circle cx="10" cy="3.2" r=".9"/><circle cx="10" cy="16.8" r=".9"/><circle cx="3.2" cy="10" r=".9"/><circle cx="16.8" cy="10" r=".9"/><circle cx="5.1" cy="5.1" r=".9"/><circle cx="14.9" cy="5.1" r=".9"/><circle cx="5.1" cy="14.9" r=".9"/><circle cx="14.9" cy="14.9" r=".9"/><circle cx="6.6" cy="14.1" r=".9"/><circle cx="13.4" cy="5.9" r=".9"/><circle cx="6.6" cy="5.9" r=".9"/><circle cx="13.4" cy="14.1" r=".9"/></g></svg>
+      <svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><defs><polygon id="s" points="0.000,-0.900 0.202,-0.278 0.856,-0.278 0.327,0.106 0.529,0.728 0.000,0.344 -0.529,0.728 -0.327,0.106 -0.856,-0.278 -0.202,-0.278"/></defs><circle cx="10" cy="10" r="9.3" fill="#003399"/><g fill="#ffcc00"><use href="#s" transform="translate(10,2.8) scale(1.05)"/><use href="#s" transform="translate(13.6,3.76) scale(1.05)"/><use href="#s" transform="translate(16.24,6.4) scale(1.05)"/><use href="#s" transform="translate(17.2,10) scale(1.05)"/><use href="#s" transform="translate(16.24,13.6) scale(1.05)"/><use href="#s" transform="translate(13.6,16.24) scale(1.05)"/><use href="#s" transform="translate(10,17.2) scale(1.05)"/><use href="#s" transform="translate(6.4,16.24) scale(1.05)"/><use href="#s" transform="translate(3.76,13.6) scale(1.05)"/><use href="#s" transform="translate(2.8,10) scale(1.05)"/><use href="#s" transform="translate(3.76,6.4) scale(1.05)"/><use href="#s" transform="translate(6.4,3.76) scale(1.05)"/></g></svg>
       Made in the EU
     </span>
   </div>
@@ -1779,7 +1805,7 @@ const THEMES = [
   {id:"photo",    name:"Nature",      pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"sunset",   name:"Gradient",    pro:true,  mode:"dots",     prog:"none", font:"helvetica"},
   {id:"nixie",    name:"Nixie Tubes", pro:true,  mode:"nixie",    prog:"none", font:"thin"},
-  {id:"terminal", name:"Matrix",      pro:true,  mode:"digits",   prog:"none", font:"mono"},
+  {id:"terminal", name:"Code",        pro:true,  mode:"digits",   prog:"none", font:"mono"},
   {id:"web1",     name:"Web 1.0",     pro:true,  mode:"digits",   prog:"none", font:"mono"},
   {id:"lcars",    name:"Starship",    pro:true,  mode:"lcars",    prog:"none", font:"narrow"},
   {id:"bounce",   name:"Bounce",      pro:true,  mode:"bounce",   prog:"none", font:"helvetica"},
@@ -1790,7 +1816,7 @@ const THEMES = [
 // the accent picker (st.accentCustom), at which point their pick applies
 // everywhere as before. Themes not listed here keep the app-wide gold
 // default. Time Disc's is red, its original signature color.
-const THEME_DEFAULT_ACCENT = { disc:"#d5442f" };
+const THEME_DEFAULT_ACCENT = { disc:"#d5442f", terminal:"#4ade80" };
 // how the Theme picker in Settings is grouped — purely a display grouping,
 // doesn't affect THEMES itself or anything that reads it directly
 const THEME_GROUPS = [
@@ -1816,7 +1842,6 @@ const SOUNDS = [
 const VARIANTS = {
   sunset:  [{id:"classic",name:"Classic",pro:true},{id:"magma",name:"Magma",pro:true},{id:"violet",name:"Violet",pro:true},{id:"ocean",name:"Ocean",pro:true}],
   days:    [{id:"white",name:"White",pro:true},{id:"orange",name:"Orange",pro:true},{id:"volt",name:"Volt",pro:true},{id:"red",name:"Red",pro:true},{id:"blue",name:"Blue",pro:true}],
-  terminal:[{id:"green",name:"Green",pro:true},{id:"amber",name:"Amber",pro:true},{id:"ice",name:"Ice",pro:true},{id:"crimson",name:"Crimson",pro:true}],
   lcd:     [{id:"red",name:"Red",pro:true},{id:"green",name:"Green",pro:true},{id:"blue",name:"Blue",pro:true},{id:"white",name:"White",pro:true}],
   photo:   [{id:"forest",name:"Forest",pro:true},{id:"mountain",name:"Mountain",pro:true},{id:"ocean",name:"Ocean",pro:true},{id:"fog",name:"Fog",pro:true}],
   aurora:  [{id:"green",name:"Green",pro:true},{id:"violet",name:"Violet",pro:true},{id:"sunset",name:"Sunset",pro:true},{id:"ice",name:"Ice",pro:true}],
@@ -2621,13 +2646,18 @@ function startMatrix(){
   const step = (ts)=>{
     if(ts - fxLast > 66){
       fxLast = ts;
+      // read the accent-picker color live each frame so the rain recolors
+      // instantly when the user picks a new accent, no restart needed
+      const fg = getComputedStyle(document.body).getPropertyValue("--fg").trim() || "#4ade80";
       ctx.fillStyle = "rgba(5,8,5,0.14)";
       ctx.fillRect(0,0,fxCanvas.width,fxCanvas.height);
       ctx.font = "15px monospace";
       fxCols.forEach((y,i)=>{
         const ch = MATRIX_CHARS[Math.floor(Math.random()*MATRIX_CHARS.length)];
-        ctx.fillStyle = Math.random()<.08 ? "#c8ffdd" : "rgba(60,190,110,0.55)";
+        ctx.globalAlpha = Math.random()<.08 ? 1 : .55;
+        ctx.fillStyle = fg;
         ctx.fillText(ch, i*18, y*18);
+        ctx.globalAlpha = 1;
         fxCols[i] = (y*18 > fxCanvas.height && Math.random() > 0.975) ? 0 : y+1;
       });
     }
@@ -3776,7 +3806,10 @@ document.addEventListener("click", e=>{
   // captured at dispatch time, before any handler mutates the DOM, so it
   // still lists the original (now-detached) ancestors correctly.
   const path = e.composedPath ? e.composedPath() : [e.target];
-  if(path.includes(s) || path.includes($("btnSettings"))) return;
+  // corner buttons (sound, appearance, fullscreen) toggle their own state
+  // without needing the settings panel to close — leave it open so the
+  // user can keep adjusting other settings right after
+  if(path.includes(s) || path.includes($("btnSettings")) || path.includes($("btnMute")) || path.includes($("btnAppearance")) || path.includes($("btnFull"))) return;
   s.classList.remove("open");
   $("btnSettings").classList.remove("open");
 });
@@ -3958,6 +3991,14 @@ function applyTheme(){
   // Time Disc's own pie color (see renderDisc) — kept as a var so the Start
   // button can match it: red for free users, the picked accent for Pro.
   document.documentElement.style.setProperty("--disc-accent", !isPro() ? "#d5442f" : (st.accentCustom ? st.accent : (THEME_DEFAULT_ACCENT.disc || st.accent)));
+  // Code theme (formerly Matrix): color now comes from the same Pro accent
+  // picker as everything else instead of its own Green/Amber/Ice/Crimson
+  // swatches — set directly on body so it wins over the class's own --fg
+  if(tid === "terminal"){
+    document.body.style.setProperty("--fg", !isPro() ? THEME_DEFAULT_ACCENT.terminal : (st.accentCustom ? st.accent : THEME_DEFAULT_ACCENT.terminal));
+  } else {
+    document.body.style.removeProperty("--fg");
+  }
   // Strands: the woven light-beams take their hue from the same Pro accent
   // picker as everything else (no separate per-theme swatch needed), and the
   // Start button + label glow follow the same base color for cohesion.
@@ -3996,15 +4037,15 @@ function applyTheme(){
   syncSublineFont();
   updateFX();
   render();
-  // keep Settings' active-chip/link accent in sync with whatever color the
-  // Start button actually ended up with (theme-disc's disc-accent, aurora's
-  // glow, strands' picked hue, ...) — otherwise a theme with its own signature
-  // button color still shows a mismatched generic gold accent throughout Settings.
-  // Clear any previous override FIRST: leaving it in place would make the button's
-  // computed color read back its own stale value on a theme with no special color
-  // of its own, permanently locking in whatever hue the last special theme used.
-  document.body.style.removeProperty("--accent");
-  document.body.style.setProperty("--accent", getComputedStyle(elStart).backgroundColor);
+  // Settings no longer borrows each theme's Start-button color (see #settings
+  // CSS below) — it used to read the button's *computed* color back into an
+  // inline --accent on body, which for themes with no signature color of
+  // their own (Bold, Kitchen, T-Minus, Starship, Web 1.0 — they fall back to
+  // the plain var(--accent) button style) shadowed the fresh accent this
+  // function sets a few lines up, on every subsequent theme switch, since an
+  // inline custom property on body always wins over one on documentElement.
+  // That's what made the picked accent color drift/"get stuck" the more you
+  // clicked around themes. Settings now has its own fixed palette instead.
   // the waves canvas only repaints on its own rAF loop while running; when
   // paused, a flavor-picker color change needs an explicit repaint to show
   if(tid === "days" && LAVA && !lavaActive) lavaDraw(performance.now());
@@ -4060,7 +4101,11 @@ function refreshSettings(){
   chip(SOUNDS, $("soundRow"), st.sound, id=>{ st.sound=id; save(); if(!st.muted)(PLAYERS[id]||PLAYERS.chime)(); }, previewSound);
   renderFontSelect();
   const tid = curThemeId(), vs = VARIANTS[tid];
-  $("lampSec").style.display = vs ? "block" : "none";
+  // an animated grid-rows toggle (0fr/1fr) instead of instant display:none/
+  // block — swapping to a theme without color variants (like Nixie, right
+  // next to ones that have them) used to make everything below Theme Style
+  // snap up instantly, which read as the whole panel "jumping"
+  $("lampSec").style.gridTemplateRows = vs ? "1fr" : "0fr";
   // while actively previewing this theme, its variants should be pickable
   // too (like Nature's forest/mountain/ocean/fog) — otherwise every swatch
   // still reads as locked and clicking one just yanks you into the Buy modal
