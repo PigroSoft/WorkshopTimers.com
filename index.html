@@ -332,6 +332,21 @@
     font-size:clamp(2.7rem,17.3vw,21.3vh);
     font-weight:var(--fontw,200); letter-spacing:.02em; color:var(--fg);
   }
+  /* each digit change blurs in rather than snapping, inspired by a
+     scroll-reveal "BlurText" component — reimplemented here as a plain CSS
+     keyframe (no JS animation library) retriggered per character whenever
+     render() rebuilds the markup for a changed second. */
+  @keyframes aurora-char-in{
+    from{ filter:blur(8px); opacity:0; transform:translateY(-.12em); }
+    to{ filter:blur(0); opacity:1; transform:translateY(0); }
+  }
+  body.theme-aurora #time .achar{
+    display:inline-block; will-change:filter,opacity,transform;
+    animation:aurora-char-in .45s cubic-bezier(.25,.1,.25,1) both;
+  }
+  @media (prefers-reduced-motion:reduce){
+    body.theme-aurora #time .achar{ animation:none; }
+  }
   /* #label is a sibling that sits *before* #display in the DOM (#stage is
      the flex column: logo, label, display) — pulling it down with a negative
      margin overlaps it into the card's top padding so it reads as if it
@@ -357,21 +372,25 @@
     border-radius:30px; padding:3.2rem 2.5rem 1.65rem;
   }
   /* always-on border-glow ring around the card, inspired by a hover-driven
-     "BorderGlow" component: a slow-rotating conic-gradient ring traced around
-     the card edge. Kept subtle (thin, low opacity) so it reads as ambient
-     light rather than a decoration competing with the digits themselves. */
-  @property --aurora-ring-angle{ syntax:'<angle>'; inherits:false; initial-value:0deg; }
+     "BorderGlow" component. Green stays anchored on the left edge and purple
+     on the right, mirroring which side of the aurora canvas each color washes
+     from -- a gentle angle wobble (rather than a full rotation) keeps it
+     alive without swapping the colors to the opposite side. */
+  @property --aurora-ring-angle{ syntax:'<angle>'; inherits:false; initial-value:-12deg; }
   body.theme-aurora #display::before{
     content:""; position:absolute; inset:0; border-radius:inherit;
-    pointer-events:none; animation:aurora-ring-spin 18s linear infinite;
+    pointer-events:none; animation:aurora-ring-spin 14s ease-in-out infinite alternate;
     background:conic-gradient(from var(--aurora-ring-angle),
-      transparent 0deg, var(--aurora-glow) 70deg, transparent 150deg,
-      transparent 210deg, var(--aurora-glow) 290deg, transparent 360deg);
+      transparent 0deg, transparent 20deg,
+      #a685ff 90deg,
+      transparent 160deg, transparent 200deg,
+      var(--aurora-glow) 270deg,
+      transparent 340deg, transparent 360deg);
     padding:1.5px; opacity:.35;
     -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite:xor; mask-composite:exclude;
   }
-  @keyframes aurora-ring-spin{ to{ --aurora-ring-angle:360deg; } }
+  @keyframes aurora-ring-spin{ to{ --aurora-ring-angle:12deg; } }
   @media (prefers-reduced-motion:reduce){
     body.theme-aurora #display::before{ animation:none; }
   }
@@ -901,7 +920,7 @@
   body.theme-photo #btnStart{background:#7f8f4a; border-color:#7f8f4a;}    /* mossy olive green */
   body.theme-sunset #btnStart{background:var(--sunset-accent); border-color:var(--sunset-accent);}
   body.theme-bounce #btnStart{background:#39ff14; border-color:#39ff14;}   /* fallback before JS syncs it to the bouncing digit's own color */
-  body.theme-aurora #btnStart{background:var(--aurora-glow); border-color:var(--aurora-glow);}
+  body.theme-aurora #btnStart{background:#2f8f5a; border-color:#2f8f5a; color:#eafff1;}
   body.theme-strands #btnStart{background:var(--strands-accent); border-color:var(--strands-accent); color:var(--strands-text);}
   /* quiet icon buttons */
   button.icon, a.icon{
@@ -2268,8 +2287,40 @@ function autofitTime(el){
 /* ----- ticker renderer (bold theme): rolls only the digits that changed,
    like an odometer/speedometer wheel ----- */
 let tickerPrev = "";
+/* aurora digits: wrap each character in its own span so the CSS
+   aurora-char-in keyframe (blur+fade+rise) can replay on just the characters
+   that actually changed between ticks -- a colon or an unmoving leading digit
+   just sits still instead of re-blurring every second. */
+function renderAuroraBlur(el, text){
+  const chars = [...text];
+  const structureOk = el.children.length === chars.length && el.firstChild?.classList?.contains("achar");
+  const makeSpan = (ch, delay)=>{
+    const span = document.createElement("span");
+    span.className = "achar";
+    span.style.animationDelay = delay + "ms";
+    span.textContent = ch === " " ? "\u00a0" : ch;
+    return span;
+  };
+  if(!structureOk){
+    // full rebuild (theme just switched in, or the digit count changed) --
+    // every character blurs in together
+    el.innerHTML = "";
+    const frag = document.createDocumentFragment();
+    chars.forEach((ch, i)=> frag.appendChild(makeSpan(ch, i*28)));
+    el.appendChild(frag);
+  } else if(el._auroraLast !== text){
+    // steady-state tick: only replay the animation on digits that changed
+    const prev = [...(el._auroraLast || "")];
+    chars.forEach((ch, i)=>{
+      if(ch !== prev[i]) el.children[i].replaceWith(makeSpan(ch, 0));
+    });
+  }
+  el._auroraLast = text;
+}
 function renderTicker(el, text){
-  if(el.children.length !== text.length){
+  // guard against reusing markup left behind by another theme (e.g. aurora's
+  // .achar spans) that happens to match text.length but isn't a tick-cell structure
+  if(el.children.length !== text.length || !el.children[0]?.classList.contains("tick-cell")){
     el.innerHTML = "";
     for(const ch of text){
       const cell = document.createElement("span");
@@ -2637,6 +2688,7 @@ function render(){
   if(mode==="digits"){
     if(def.id === "midnight") renderTicker(elTime, text);
     else if(def.id === "days") elTime.textContent = hmsText;
+    else if(def.id === "aurora") renderAuroraBlur(elTime, text);
     else elTime.textContent = text;
     elTime.className = justFinished ? "over" : finished ? "" : danger ? "danger" : warn ? "warn" : "";
     if(def.id === "days") lavaSetActive(running || swOn());
