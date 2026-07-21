@@ -959,9 +959,9 @@
     vertical-align:middle; margin-left:.4rem;
   }
   .eu-badge{
-    display:inline-flex; align-items:center; gap:.35rem; font-size:.7rem; font-weight:700;
+    display:inline-flex; align-items:center; gap:.7rem; font-size:1.4rem; font-weight:700;
     letter-spacing:.02em; background:transparent; color:var(--fg); border:1px solid var(--border);
-    border-radius:20px; padding:.28rem .7rem; margin:.5rem 0 .8rem; opacity:.7;
+    border-radius:40px; padding:.56rem 1.4rem; margin:.5rem 0 .8rem; opacity:.7;
   }
   .field{display:flex; flex-direction:column; gap:.35rem; margin-bottom:.8rem;}
   .field label{font-size:.8rem; color:var(--muted);}
@@ -1170,12 +1170,7 @@
     <h3 class="brand-head">WorkshopTimers.com</h3>
     <div class="help" data-i18n="aboutBody">
       A big, calm timer for workshops, meetings, and classrooms.<br>
-      No ads · no account · works offline.<br><br>
-      <h3 class="legal-head">Legal</h3>
-      <a href="impressum.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Impressum</a> ·
-      <a href="datenschutz.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Datenschutz&nbsp;(Privacy)</a> ·
-      <a href="agb.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">AGB&nbsp;(Terms)</a> ·
-      <a href="widerruf.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Widerrufsrecht&nbsp;(Refunds)</a>
+      No ads · no account · works offline.
     </div>
   </section>
 
@@ -1297,13 +1292,23 @@
     </div>
   </section>
 
+  <section>
+    <div class="help" data-i18n="legalBody">
+      <h3 class="legal-head">Legal</h3>
+      <a href="impressum.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Legal&nbsp;Notice&nbsp;(Impressum)</a> ·
+      <a href="datenschutz.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Privacy&nbsp;(Datenschutz)</a> ·
+      <a href="agb.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Terms&nbsp;(AGB)</a> ·
+      <a href="widerruf.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Refunds&nbsp;(Widerrufsrecht)</a>
+    </div>
+  </section>
+
   <div id="removeLicenseWrap" style="display:none; text-align:center; margin:.4rem 0 .2rem">
     <a href="#" id="removeLicense" style="font-size:.68rem; color:var(--muted); opacity:.5; text-decoration:underline; cursor:pointer">Remove license from this device</a>
   </div>
 
   <div style="margin-top:.8rem">
     <span class="eu-badge">
-      <svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><circle cx="10" cy="10" r="9.3" fill="none" stroke="currentColor" stroke-width="1"/><g fill="currentColor"><circle cx="10" cy="3.2" r=".9"/><circle cx="10" cy="16.8" r=".9"/><circle cx="3.2" cy="10" r=".9"/><circle cx="16.8" cy="10" r=".9"/><circle cx="5.1" cy="5.1" r=".9"/><circle cx="14.9" cy="5.1" r=".9"/><circle cx="5.1" cy="14.9" r=".9"/><circle cx="14.9" cy="14.9" r=".9"/><circle cx="6.6" cy="14.1" r=".9"/><circle cx="13.4" cy="5.9" r=".9"/><circle cx="6.6" cy="5.9" r=".9"/><circle cx="13.4" cy="14.1" r=".9"/></g></svg>
+      <svg viewBox="0 0 20 20" width="24" height="24" aria-hidden="true"><circle cx="10" cy="10" r="9.3" fill="none" stroke="currentColor" stroke-width="1"/><g fill="currentColor"><circle cx="10" cy="3.2" r=".9"/><circle cx="10" cy="16.8" r=".9"/><circle cx="3.2" cy="10" r=".9"/><circle cx="16.8" cy="10" r=".9"/><circle cx="5.1" cy="5.1" r=".9"/><circle cx="14.9" cy="5.1" r=".9"/><circle cx="5.1" cy="14.9" r=".9"/><circle cx="14.9" cy="14.9" r=".9"/><circle cx="6.6" cy="14.1" r=".9"/><circle cx="13.4" cy="5.9" r=".9"/><circle cx="6.6" cy="5.9" r=".9"/><circle cx="13.4" cy="14.1" r=".9"/></g></svg>
       Made in the EU
     </span>
   </div>
@@ -1403,7 +1408,7 @@ const I18N = {
     installHeading:"Use it as an app (Mac & PC)",
     installBody:"Install Workshop Timer so it opens in its own window, with no tabs or address bar, and launches like any native app.<br><br><b>Save as a Mac app (Safari):</b> File menu → <b>Add to Dock</b> → Add. Launch it from your Dock.<br><b>Save as a PC app (Chrome):</b> ⋮ menu → <b>Cast, Save &amp; Share → Install page as app</b>.<br><br>Once it's open, the timer runs entirely on your device, with no internet needed to keep time. Perfect for a projector or TV.",
     aboutHeading:"About",
-    aboutBody:"A big, calm timer for workshops, meetings, and classrooms.<br>No ads · no account · works offline.<br><br><h3 class=\"legal-head\">Legal</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Datenschutz&nbsp;(Privacy)</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">AGB&nbsp;(Terms)</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Widerrufsrecht&nbsp;(Refunds)</a>",
+    aboutBody:"A big, calm timer for workshops, meetings, and classrooms.<br>No ads · no account · works offline.", legalBody:"<h3 class=\"legal-head\">Legal</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Legal&nbsp;Notice&nbsp;(Impressum)</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Privacy&nbsp;(Datenschutz)</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Terms&nbsp;(AGB)</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Refunds&nbsp;(Widerrufsrecht)</a>",
     hint:"Space start · R reset · F fullscreen · T theme · ↑↓ ±1 min · ←→ ±10 sec · Click the Time or Any Label to Type",
     titleAppearance:"Light / dark", titleSettings:"Settings", titleMute:"Sound on/off (M)", titleFull:"Fullscreen (F)",
     titleReset:"Reset (R)", titlePlus30:"Add 30 seconds", titleShuffle:"Shuffle theme", shortcut:"Shortcut:",
@@ -1432,7 +1437,7 @@ const I18N = {
     installHeading:"Als App nutzen (Mac & PC)",
     installBody:"Installiere Workshop Timer, damit es in einem eigenen Fenster ohne Tabs oder Adressleiste öffnet und wie eine native App startet.<br><br><b>Als Mac-App sichern (Safari):</b> Ablage-Menü → <b>Zum Dock hinzufügen</b> → Hinzufügen. Danach aus dem Dock starten.<br><b>Als PC-App sichern (Chrome):</b> ⋮-Menü → <b>Cast, Speichern &amp; Teilen → Seite als App installieren</b>.<br><br>Einmal geöffnet läuft der Timer komplett auf deinem Gerät, ganz ohne Internet. Perfekt für Beamer oder TV.",
     aboutHeading:"Über",
-    aboutBody:"Ein großer, ruhiger Timer für Workshops, Meetings und Unterricht.<br>Keine Werbung · kein Konto · funktioniert offline.<br><br><h3 class=\"legal-head\">Rechtliches</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Datenschutz</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">AGB</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Widerrufsrecht</a>",
+    aboutBody:"Ein großer, ruhiger Timer für Workshops, Meetings und Unterricht.<br>Keine Werbung · kein Konto · funktioniert offline.", legalBody:"<h3 class=\"legal-head\">Rechtliches</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Datenschutz</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">AGB</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Widerrufsrecht</a>",
     hint:"Leertaste Start · R Reset · F Vollbild · T Design · ↑↓ ±1 Min · ←→ ±10 Sek · Zeit oder Bezeichnung anklicken zum Tippen",
     titleAppearance:"Hell / Dunkel", titleSettings:"Einstellungen", titleMute:"Ton an/aus (M)", titleFull:"Vollbild (F)",
     titleReset:"Reset (R)", titlePlus30:"30 Sekunden hinzufügen", titleShuffle:"Design mischen", shortcut:"Kürzel:",
@@ -1460,7 +1465,7 @@ const I18N = {
     installHeading:"Utiliser comme application (Mac & PC)",
     installBody:"Installez Workshop Timer pour qu'il s'ouvre dans sa propre fenêtre, sans onglets ni barre d'adresse, comme une application native.<br><br><b>Enregistrer comme app Mac (Safari) :</b> menu Fichier → <b>Ajouter au Dock</b> → Ajouter. Lancez-le ensuite depuis le Dock.<br><b>Enregistrer comme app PC (Chrome) :</b> menu ⋮ → <b>Caster, enregistrer &amp; partager → Installer la page comme application</b>.<br><br>Une fois ouvert, le minuteur fonctionne entièrement sur votre appareil, sans connexion Internet nécessaire. Parfait pour un projecteur ou une TV.",
     aboutHeading:"À propos",
-    aboutBody:"Un grand minuteur apaisant pour ateliers, réunions et salles de classe.<br>Sans publicité · sans compte · fonctionne hors ligne.<br><br><h3 class=\"legal-head\">Mentions légales</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Confidentialité</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Conditions</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Droit de rétractation</a>",
+    aboutBody:"Un grand minuteur apaisant pour ateliers, réunions et salles de classe.<br>Sans publicité · sans compte · fonctionne hors ligne.", legalBody:"<h3 class=\"legal-head\">Mentions légales</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Confidentialité</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Conditions</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Droit de rétractation</a>",
     hint:"Espace démarrer · R réinitialiser · F plein écran · T thème · ↑↓ ±1 min · ←→ ±10 sec · Cliquez l'heure ou une étiquette pour taper",
     titleAppearance:"Clair / sombre", titleSettings:"Réglages", titleMute:"Son on/off (M)", titleFull:"Plein écran (F)",
     titleReset:"Réinitialiser (R)", titlePlus30:"Ajouter 30 secondes", titleShuffle:"Thème aléatoire", shortcut:"Raccourci :",
@@ -1488,7 +1493,7 @@ const I18N = {
     installHeading:"Úsalo como app (Mac y PC)",
     installBody:"Instala Workshop Timer para que se abra en su propia ventana, sin pestañas ni barra de direcciones, como una app nativa.<br><br><b>Guardar como app de Mac (Safari):</b> menú Archivo → <b>Añadir al Dock</b> → Añadir. Luego ábrelo desde el Dock.<br><b>Guardar como app de PC (Chrome):</b> menú ⋮ → <b>Convertir, guardar y compartir → Instalar página como app</b>.<br><br>Una vez abierto, el temporizador funciona totalmente en tu dispositivo, sin necesitar internet. Perfecto para un proyector o TV.",
     aboutHeading:"Acerca de",
-    aboutBody:"Un temporizador grande y tranquilo para talleres, reuniones y clases.<br>Sin anuncios · sin cuenta · funciona sin conexión.<br><br><h3 class=\"legal-head\">Legal</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Privacidad</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Términos</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Derecho de desistimiento</a>",
+    aboutBody:"Un temporizador grande y tranquilo para talleres, reuniones y clases.<br>Sin anuncios · sin cuenta · funciona sin conexión.", legalBody:"<h3 class=\"legal-head\">Legal</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Privacidad</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Términos</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Derecho de desistimiento</a>",
     hint:"Espacio iniciar · R reiniciar · F pantalla completa · T tema · ↑↓ ±1 min · ←→ ±10 seg · Haz clic en la hora o una etiqueta para escribir",
     titleAppearance:"Claro / oscuro", titleSettings:"Ajustes", titleMute:"Sonido on/off (M)", titleFull:"Pantalla completa (F)",
     titleReset:"Reiniciar (R)", titlePlus30:"Añadir 30 segundos", titleShuffle:"Tema aleatorio", shortcut:"Atajo:",
@@ -1516,7 +1521,7 @@ const I18N = {
     installHeading:"作为应用使用（Mac 与 PC）",
     installBody:"安装 Workshop Timer，使其在独立窗口中打开，没有标签页或地址栏，如同原生应用一样启动。<br><br><b>存为 Mac 应用（Safari）：</b>「文件」菜单 → <b>添加到程序坞</b> → 添加。之后从程序坞启动。<br><b>存为 PC 应用（Chrome）：</b>点击 ⋮ 菜单 → <b>投射、保存和分享 → 将网页安装为应用</b>。<br><br>打开后，计时器完全在你的设备上运行，无需联网即可计时。非常适合投影仪或电视。",
     aboutHeading:"关于",
-    aboutBody:"一款专为工作坊、会议和课堂设计的大字号沉稳计时器。<br>无广告 · 无需账户 · 支持离线使用。<br><br><h3 class=\"legal-head\">法律信息</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">隐私政策</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">条款</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">撤回权</a>",
+    aboutBody:"一款专为工作坊、会议和课堂设计的大字号沉稳计时器。<br>无广告 · 无需账户 · 支持离线使用。", legalBody:"<h3 class=\"legal-head\">法律信息</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">隐私政策</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">条款</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">撤回权</a>",
     hint:"空格 开始 · R 重置 · F 全屏 · T 切换主题 · ↑↓ ±1分钟 · ←→ ±10秒 · 点击时间或标签可输入文字",
     titleAppearance:"浅色 / 深色", titleSettings:"设置", titleMute:"声音开关 (M)", titleFull:"全屏 (F)",
     titleReset:"重置 (R)", titlePlus30:"增加30秒", titleShuffle:"随机主题", shortcut:"快捷键：",
@@ -1544,7 +1549,7 @@ const I18N = {
     installHeading:"Usar como app (Mac e PC)",
     installBody:"Instale o Workshop Timer para que ele abra em sua própria janela, sem abas ou barra de endereço, como um app nativo.<br><br><b>Salvar como app de Mac (Safari):</b> menu Arquivo → <b>Adicionar ao Dock</b> → Adicionar. Depois abra pelo Dock.<br><b>Salvar como app de PC (Chrome):</b> menu ⋮ → <b>Transmitir, salvar e compartilhar → Instalar página como app</b>.<br><br>Depois de aberto, o cronômetro roda totalmente no seu dispositivo, sem precisar de internet. Perfeito para um projetor ou TV.",
     aboutHeading:"Sobre",
-    aboutBody:"Um cronômetro grande e tranquilo para workshops, reuniões e salas de aula.<br>Sem anúncios · sem conta · funciona offline.<br><br><h3 class=\"legal-head\">Legal</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Privacidade</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Termos</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Direito de arrependimento</a>",
+    aboutBody:"Um cronômetro grande e tranquilo para workshops, reuniões e salas de aula.<br>Sem anúncios · sem conta · funciona offline.", legalBody:"<h3 class=\"legal-head\">Legal</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Privacidade</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Termos</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Direito de arrependimento</a>",
     hint:"Espaço iniciar · R reiniciar · F tela cheia · T tema · ↑↓ ±1 min · ←→ ±10 seg · Clique na hora ou em um rótulo para digitar",
     titleAppearance:"Claro / escuro", titleSettings:"Configurações", titleMute:"Som on/off (M)", titleFull:"Tela cheia (F)",
     titleReset:"Reiniciar (R)", titlePlus30:"Adicionar 30 segundos", titleShuffle:"Tema aleatório", shortcut:"Atalho:",
@@ -1572,7 +1577,7 @@ const I18N = {
     installHeading:"アプリとして使う（Mac & PC）",
     installBody:"Workshop Timerをインストールすると、タブやアドレスバーのない独自のウィンドウで開き、ネイティブアプリのように起動します。<br><br><b>Macアプリとして保存（Safari）：</b>「ファイル」メニュー→<b>Dockに追加</b>→追加。その後Dockから起動してください。<br><b>PCアプリとして保存（Chrome）：</b>⋮メニュー→<b>キャスト、保存、共有→ページをアプリとしてインストール</b>。<br><br>開いた後は、タイマーはインターネット接続なしでデバイス上で完全に動作します。プロジェクターやテレビに最適です。",
     aboutHeading:"このアプリについて",
-    aboutBody:"ワークショップ、会議、教室のための大きく落ち着いたタイマー。<br>広告なし・アカウント不要・オフライン対応。<br><br><h3 class=\"legal-head\">法的情報</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">プライバシー</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">利用規約</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">解約権</a>",
+    aboutBody:"ワークショップ、会議、教室のための大きく落ち着いたタイマー。<br>広告なし・アカウント不要・オフライン対応。", legalBody:"<h3 class=\"legal-head\">法的情報</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">プライバシー</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">利用規約</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">解約権</a>",
     hint:"スペース 開始 · R リセット · F 全画面 · T テーマ切替 · ↑↓ ±1分 · ←→ ±10秒 · 時刻またはラベルをクリックして入力",
     titleAppearance:"ライト / ダーク", titleSettings:"設定", titleMute:"サウンド オン/オフ (M)", titleFull:"全画面 (F)",
     titleReset:"リセット (R)", titlePlus30:"30秒追加", titleShuffle:"テーマをシャッフル", shortcut:"ショートカット：",
@@ -1600,7 +1605,7 @@ const I18N = {
     installHeading:"Usalo come app (Mac e PC)",
     installBody:"Installa Workshop Timer così si apre nella propria finestra, senza schede o barra degli indirizzi, come un'app nativa.<br><br><b>Salva come app Mac (Safari):</b> menu File → <b>Aggiungi al Dock</b> → Aggiungi. Poi avvialo dal Dock.<br><b>Salva come app PC (Chrome):</b> menu ⋮ → <b>Trasmetti, salva e condividi → Installa pagina come app</b>.<br><br>Una volta aperto, il timer funziona interamente sul tuo dispositivo, senza bisogno di internet. Perfetto per un proiettore o una TV.",
     aboutHeading:"Informazioni",
-    aboutBody:"Un timer grande e tranquillo per workshop, riunioni e aule.<br>Senza pubblicità · senza account · funziona offline.<br><br><h3 class=\"legal-head\">Note legali</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Privacy</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Termini</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Diritto di recesso</a>",
+    aboutBody:"Un timer grande e tranquillo per workshop, riunioni e aule.<br>Senza pubblicità · senza account · funziona offline.", legalBody:"<h3 class=\"legal-head\">Note legali</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Privacy</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Termini</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Diritto di recesso</a>",
     hint:"Spazio avvia · R reimposta · F schermo intero · T tema · ↑↓ ±1 min · ←→ ±10 sec · Clicca l'ora o un'etichetta per digitare",
     titleAppearance:"Chiaro / scuro", titleSettings:"Impostazioni", titleMute:"Audio on/off (M)", titleFull:"Schermo intero (F)",
     titleReset:"Reimposta (R)", titlePlus30:"Aggiungi 30 secondi", titleShuffle:"Tema casuale", shortcut:"Scorciatoia:",
@@ -1628,7 +1633,7 @@ const I18N = {
     installHeading:"استخدمه كتطبيق (Mac و PC)",
     installBody:"ثبّت Workshop Timer ليفتح في نافذته الخاصة، بدون تبويبات أو شريط عنوان، مثل تطبيق أصلي.<br><br><b>الحفظ كتطبيق Mac (Safari):</b> قائمة الملف → <b>إضافة إلى Dock</b> → إضافة. ثم شغّله من الـ Dock.<br><b>الحفظ كتطبيق كمبيوتر (Chrome):</b> قائمة ⋮ → <b>البث والحفظ والمشاركة → تثبيت الصفحة كتطبيق</b>.<br><br>بمجرد فتحه، يعمل المؤقت بالكامل على جهازك، دون الحاجة إلى إنترنت. مثالي لجهاز عرض أو تلفاز.",
     aboutHeading:"حول",
-    aboutBody:"مؤقت كبير وهادئ لورش العمل والاجتماعات والفصول الدراسية.<br>بدون إعلانات · بدون حساب · يعمل دون اتصال.<br><br><h3 class=\"legal-head\">معلومات قانونية</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">الخصوصية</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">الشروط</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">حق الانسحاب</a>",
+    aboutBody:"مؤقت كبير وهادئ لورش العمل والاجتماعات والفصول الدراسية.<br>بدون إعلانات · بدون حساب · يعمل دون اتصال.", legalBody:"<h3 class=\"legal-head\">معلومات قانونية</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">الخصوصية</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">الشروط</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">حق الانسحاب</a>",
     hint:"مسافة بدء · R إعادة تعيين · F ملء الشاشة · T تبديل السمة · ↑↓ ±1 دقيقة · ←→ ±10 ثوانٍ · انقر على الوقت أو أي تسمية للكتابة",
     titleAppearance:"فاتح / داكن", titleSettings:"الإعدادات", titleMute:"الصوت تشغيل/إيقاف (M)", titleFull:"ملء الشاشة (F)",
     titleReset:"إعادة تعيين (R)", titlePlus30:"إضافة 30 ثانية", titleShuffle:"سمة عشوائية", shortcut:"اختصار:",
@@ -1656,7 +1661,7 @@ const I18N = {
     installHeading:"Использовать как приложение (Mac и PC)",
     installBody:"Установите Workshop Timer, чтобы он открывался в отдельном окне, без вкладок и адресной строки, как настоящее приложение.<br><br><b>Сохранить как приложение Mac (Safari):</b> меню «Файл» → <b>Добавить в Dock</b> → Добавить. Затем запускайте из Dock.<br><b>Сохранить как приложение ПК (Chrome):</b> меню ⋮ → <b>Трансляция, сохранение и общий доступ → Установить страницу как приложение</b>.<br><br>После открытия таймер полностью работает на вашем устройстве, интернет не нужен. Отлично подходит для проектора или ТВ.",
     aboutHeading:"О приложении",
-    aboutBody:"Большой спокойный таймер для мастер-классов, встреч и занятий.<br>Без рекламы · без аккаунта · работает офлайн.<br><br><h3 class=\"legal-head\">Правовая информация</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Конфиденциальность</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Условия</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Право на отказ</a>",
+    aboutBody:"Большой спокойный таймер для мастер-классов, встреч и занятий.<br>Без рекламы · без аккаунта · работает офлайн.", legalBody:"<h3 class=\"legal-head\">Правовая информация</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Конфиденциальность</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Условия</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Право на отказ</a>",
     hint:"Пробел старт · R сброс · F во весь экран · T смена темы · ↑↓ ±1 мин · ←→ ±10 сек · Нажмите на время или подпись, чтобы ввести текст",
     titleAppearance:"Светлая / тёмная", titleSettings:"Настройки", titleMute:"Звук вкл/выкл (M)", titleFull:"Во весь экран (F)",
     titleReset:"Сброс (R)", titlePlus30:"Добавить 30 секунд", titleShuffle:"Случайная тема", shortcut:"Клавиша:",
@@ -1684,7 +1689,7 @@ const I18N = {
     installHeading:"ऐप के रूप में उपयोग करें (Mac और PC)",
     installBody:"Workshop Timer इंस्टॉल करें ताकि यह बिना टैब या एड्रेस बार के अपनी खुद की विंडो में खुले, एक नेटिव ऐप की तरह।<br><br><b>Mac ऐप के रूप में सेव करें (Safari):</b> फ़ाइल मेनू → <b>Dock में जोड़ें</b> → जोड़ें। फिर इसे Dock से खोलें।<br><b>PC ऐप के रूप में सेव करें (Chrome):</b> ⋮ मेनू → <b>कास्ट, सेव और शेयर → पेज को ऐप के रूप में इंस्टॉल करें</b>।<br><br>एक बार खुलने पर, टाइमर पूरी तरह आपके डिवाइस पर चलता है, इंटरनेट की ज़रूरत नहीं। प्रोजेक्टर या टीवी के लिए एकदम सही।",
     aboutHeading:"परिचय",
-    aboutBody:"वर्कशॉप, मीटिंग और कक्षाओं के लिए एक बड़ा, शांत टाइमर।<br>कोई विज्ञापन नहीं · कोई अकाउंट नहीं · ऑफ़लाइन काम करता है।<br><br><h3 class=\"legal-head\">कानूनी जानकारी</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">गोपनीयता</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">शर्तें</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">वापसी का अधिकार</a>",
+    aboutBody:"वर्कशॉप, मीटिंग और कक्षाओं के लिए एक बड़ा, शांत टाइमर।<br>कोई विज्ञापन नहीं · कोई अकाउंट नहीं · ऑफ़लाइन काम करता है।", legalBody:"<h3 class=\"legal-head\">कानूनी जानकारी</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">गोपनीयता</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">शर्तें</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">वापसी का अधिकार</a>",
     hint:"स्पेस शुरू करें · R रीसेट · F फ़ुलस्क्रीन · T थीम बदलें · ↑↓ ±1 मिनट · ←→ ±10 सेकंड · टाइप करने के लिए समय या किसी लेबल पर क्लिक करें",
     titleAppearance:"हल्का / गहरा", titleSettings:"सेटिंग्स", titleMute:"ध्वनि चालू/बंद (M)", titleFull:"फ़ुलस्क्रीन (F)",
     titleReset:"रीसेट (R)", titlePlus30:"30 सेकंड जोड़ें", titleShuffle:"थीम बदलें", shortcut:"शॉर्टकट:",
@@ -1712,7 +1717,7 @@ const I18N = {
     installHeading:"앱으로 사용하기 (Mac & PC)",
     installBody:"Workshop Timer를 설치하면 탭이나 주소 표시줄 없이 독립된 창에서 열리며, 네이티브 앱처럼 실행됩니다.<br><br><b>Mac 앱으로 저장 (Safari):</b> 파일 메뉴 → <b>Dock에 추가</b> → 추가. 이후 Dock에서 실행하세요.<br><b>PC 앱으로 저장 (Chrome):</b> ⋮ 메뉴 → <b>캐스트, 저장 및 공유 → 페이지를 앱으로 설치</b>.<br><br>열리고 나면 타이머는 인터넷 없이 기기에서 완전히 작동합니다. 프로젝터나 TV에 완벽합니다.",
     aboutHeading:"소개",
-    aboutBody:"워크숍, 회의, 수업을 위한 크고 차분한 타이머.<br>광고 없음 · 계정 불필요 · 오프라인 작동.<br><br><h3 class=\"legal-head\">법적 정보</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">개인정보처리방침</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">이용약관</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">철회권</a>",
+    aboutBody:"워크숍, 회의, 수업을 위한 크고 차분한 타이머.<br>광고 없음 · 계정 불필요 · 오프라인 작동.", legalBody:"<h3 class=\"legal-head\">법적 정보</h3><a href=\"impressum.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">Impressum</a> · <a href=\"datenschutz.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">개인정보처리방침</a> · <a href=\"agb.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">이용약관</a> · <a href=\"widerruf.html\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; text-decoration:underline\">철회권</a>",
     hint:"스페이스 시작 · R 초기화 · F 전체화면 · T 테마 전환 · ↑↓ ±1분 · ←→ ±10초 · 시간이나 라벨을 클릭해 입력",
     titleAppearance:"라이트 / 다크", titleSettings:"설정", titleMute:"사운드 켜기/끄기 (M)", titleFull:"전체화면 (F)",
     titleReset:"초기화 (R)", titlePlus30:"30초 추가", titleShuffle:"테마 무작위", shortcut:"단축키:",
