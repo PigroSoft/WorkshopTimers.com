@@ -76,6 +76,7 @@
   body.theme-aurora[data-flavor="sunset"]{ --aurora-glow:#ff9e7d; }
   body.theme-aurora[data-flavor="ice"]{ --aurora-glow:#5ad0ff; }
   body.theme-strands{ --bg:#070707; --bg2:#0d0d0d; --fg:#000000; --muted:#7a7a7a; --panel:#111; --border:#232323; --strands-accent:#5227FF; --strands-text:#fff; }
+  body.theme-rings{ --bg:#000; --bg2:#050505; --fg:#ffffff; --muted:rgba(255,255,255,.55); --panel:#111; --border:#232323; --cdc:#fff; --cdc-text:#111; }
   body.theme-strands.mode-light{ --bg:#f2f1ee; --bg2:#e8e7e2; --fg:#0a0a0a; --muted:#8a8a86; --panel:#fff; --border:#e0dfda; }
   body.theme-photo   { --bg:#0d120d; --bg2:rgba(255,255,255,.08); --fg:#ffffff; --muted:rgba(255,255,255,.65); --panel:#141a14; --border:#2c352c; }
   body.theme-sky     { --bg:#4d84c9; --bg2:#7fb0e0; --fg:#ffffff; --muted:rgba(255,255,255,.78); --panel:#3f74b8; --border:rgba(255,255,255,.3); }
@@ -244,6 +245,7 @@
   body.theme-strands.mode-light #strandsBg{opacity:.55;}
   #skyBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
   #oceanBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
+  #ringsBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
   #toasters{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; display:none;}
   .toaster{position:absolute; will-change:transform; animation:flyby linear infinite;}
   .toaster .wing{animation:flap .3s ease-in-out infinite alternate; transform-origin:28px 20px;}
@@ -427,6 +429,18 @@
      bottom padding (reserved elsewhere so content clears the fixed controls)
      biases everything upward — pull it back down to sit on the glow */
   body.theme-strands #stage{padding-bottom:4vh;}
+
+  /* Pulse Rings: a small, thin (light-weight) timer floating over the rings,
+     with just a small caption above it — the rings themselves carry the
+     visual weight, so the type stays out of the way. */
+  body.theme-rings #time{
+    font-weight:var(--fontw,200); letter-spacing:.01em; color:#fff;
+    font-size:clamp(2.75rem,17vw,24vh); text-shadow:0 2px 30px rgba(0,0,0,.5);
+  }
+  body.theme-rings #label{
+    color:rgba(255,255,255,.6); font-weight:500; letter-spacing:.16em;
+    font-size:clamp(.9rem,2.2vh,1.3rem); margin-bottom:.2rem;
+  }
   /* matrix: glow + cursor (currentColor so rain-color variants recolor it) */
   body.theme-terminal #time{
     font-weight:var(--fontw,400);
@@ -926,6 +940,7 @@
   body.theme-bounce #btnStart{background:#39ff14; border-color:#39ff14;}   /* fallback before JS syncs it to the bouncing digit's own color */
   body.theme-aurora #btnStart{background:#2f8f5a; border-color:#2f8f5a; color:#eafff1;}
   body.theme-strands #btnStart{background:var(--strands-accent); border-color:var(--strands-accent); color:var(--strands-text);}
+  body.theme-rings #btnStart{background:var(--cdc); border-color:var(--cdc); color:var(--cdc-text);}
   /* quiet icon buttons */
   button.icon, a.icon{
     width:2.8rem; height:2.8rem; padding:.62rem; border-radius:12px;
@@ -1112,6 +1127,7 @@
 <canvas id="strandsBg"></canvas>
 <canvas id="skyBg"></canvas>
 <canvas id="oceanBg"></canvas>
+<canvas id="ringsBg"></canvas>
 <div id="toasters"></div>
 <div id="previewBadge"></div>
 
@@ -1863,6 +1879,7 @@ const THEMES = [
   {id:"strands",  name:"Strands",     pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"sky",      name:"Clouds",      pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"ocean",    name:"Ocean",       pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
+  {id:"rings",    name:"Rings",       pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
 ];
 // per-theme default accent color — shown until a Pro user actually touches
 // the accent picker (st.accentCustom), at which point their pick applies
@@ -1873,7 +1890,7 @@ const THEME_DEFAULT_ACCENT = { disc:"#d5442f", terminal:"#4ade80" };
 // doesn't affect THEMES itself or anything that reads it directly
 const THEME_GROUPS = [
   {labelKey:"groupSimple",    ids:["disc","midnight","paper","flip","squiggle","egg"]},
-  {labelKey:"groupAmbient",   ids:["days","sunset","aurora","strands","photo","sky","ocean"]},
+  {labelKey:"groupAmbient",   ids:["days","sunset","aurora","strands","photo","sky","ocean","rings"]},
   {labelKey:"groupRetro",     ids:["nixie","terminal","lcars","bounce","lcd","web1","nasa"]}
 ];
 // themes flat/simple enough to offer both a dark and a light look; each theme's
@@ -2909,6 +2926,7 @@ function updateFX(){
   if(tid==="strands") startStrands(); else stopStrands();
   if(tid==="sky") startSky(); else stopSky();
   if(tid==="ocean") startOcean(); else stopOcean();
+  if(tid==="rings") startRings(); else stopRings();
 }
 
 /* ----- Lava background (Lava/"days" theme): a vanilla-JS/canvas2d port of
@@ -4088,6 +4106,190 @@ function stopOcean(){
   if(oceanRaf){ cancelAnimationFrame(oceanRaf); oceanRaf = null; }
   removeEventListener("resize", oceanResize);
   $("oceanBg").style.display = "none";
+}
+
+/* ----- Pulse Rings background (Pulse Rings theme): a vanilla-WebGL2 port
+   of the open-source "Magic Rings" shader (React Bits) — mouse-follow,
+   hover-scale, parallax and click-burst are all dropped since this is a
+   static full-screen backdrop behind a timer, not an interactive card. Only
+   a single editable color is used (the reference's two-color gradient
+   collapses to one). The ring-expansion cycle (uCycle) is pinned to exactly
+   one real second — the same real-time second the countdown itself ticks
+   on — so the rings visibly expand in time with the timer instead of
+   drifting on their own independent loop; no separate per-tick trigger is
+   needed since both clocks are just real elapsed time. */
+const RINGS_VERT = `#version 300 es
+in vec2 position;
+void main(){ gl_Position = vec4(position, 0.0, 1.0); }
+`;
+const RINGS_FRAG = `#version 300 es
+precision highp float;
+out vec4 fragColor;
+
+uniform float uTime, uAttenuation, uLineThickness;
+uniform float uBaseRadius, uRadiusStep, uScaleRate;
+uniform float uOpacity, uNoiseAmount, uRingGap;
+uniform float uFadeIn, uFadeOut, uCycle;
+uniform float uMaskInner, uMaskOuter;
+uniform vec2 uResolution;
+uniform vec3 uColor;
+uniform int uRingCount;
+
+const float HP = 1.5707963;
+
+float fade(float t) {
+  return t < uFadeIn ? smoothstep(0.0, uFadeIn, t) : 1.0 - smoothstep(uFadeOut, uCycle - 0.05, t);
+}
+
+float ring(vec2 p, float ri, float cut, float t0, float px) {
+  float t = mod(uTime + t0, uCycle);
+  float r = ri + t / uCycle * uScaleRate;
+  float d = abs(length(p) - r);
+  float a = atan(abs(p.y), abs(p.x)) / HP;
+  float th = max(1.0 - a, 0.5) * px * uLineThickness;
+  float h = (1.0 - smoothstep(th, th * 1.5, d)) + 1.0;
+  d += pow(cut * a, 3.0) * r;
+  return h * exp(-uAttenuation * d) * fade(t);
+}
+
+void main() {
+  float px = 1.0 / min(uResolution.x, uResolution.y);
+  vec2 p = (gl_FragCoord.xy - 0.5 * uResolution.xy) * px;
+  vec3 c = vec3(0.0);
+  for (int i = 0; i < 10; i++) {
+    if (i >= uRingCount) break;
+    float fi = float(i);
+    c = mix(c, uColor, vec3(ring(p, uBaseRadius + fi * uRadiusStep, pow(uRingGap, fi), i == 0 ? 0.0 : (uCycle / float(uRingCount)) * fi, px)));
+  }
+  // keep the pulse confined to the timer's neighborhood — a radial mask
+  // that's fully visible near center and fades to nothing well before the
+  // edges of the screen, so only the rings close to the clock ever show
+  float mask = 1.0 - smoothstep(uMaskInner, uMaskOuter, length(p));
+  c *= mask;
+  float n = fract(sin(dot(gl_FragCoord.xy + uTime * 100.0, vec2(12.9898, 78.233))) * 43758.5453);
+  c += (n - 0.5) * uNoiseAmount * mask;
+  fragColor = vec4(c, max(c.r, max(c.g, c.b)) * uOpacity);
+}
+`;
+// slowed way down and thinned out from the reference's snappy 1s pulse —
+// a long, gentle cycle with a soft glow reads as ambient sci-fi radar rather
+// than an urgent countdown blink, while still staying real-time-based (so it
+// never looks like it's fighting the timer, just breathing with it). The
+// mask radii keep the pulse close around the clock instead of washing the
+// whole screen — maskOuter sits just past the label/digits.
+const RINGS_CFG = {
+  speed:1, cycle:6.5, ringCount:6, attenuation:16, lineThickness:1.3,
+  baseRadius:0.3, radiusStep:0.1, scaleRate:0.22, opacity:0.85,
+  noiseAmount:0.04, ringGap:1.5, fadeIn:0.55, fadeOut:0.35,
+  maskInner:0.35, maskOuter:0.95
+};
+function ringsHexToRgb(hex){
+  const h = hex.replace("#","");
+  return [parseInt(h.slice(0,2),16)/255, parseInt(h.slice(2,4),16)/255, parseInt(h.slice(4,6),16)/255];
+}
+let RINGS = null; // {gl, program, buf, posLoc, u, canvas} once initialized
+function initRings(){
+  const canvas = $("ringsBg");
+  const gl = canvas.getContext("webgl2");
+  if(!gl) return null;
+  gl.clearColor(0,0,0,0);
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  function compile(type, src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){ gl.deleteShader(s); return null; }
+    return s;
+  }
+  const vs = compile(gl.VERTEX_SHADER, RINGS_VERT);
+  const fs = compile(gl.FRAGMENT_SHADER, RINGS_FRAG);
+  if(!vs || !fs) return null;
+  const program = gl.createProgram();
+  gl.attachShader(program, vs);
+  gl.attachShader(program, fs);
+  gl.linkProgram(program);
+  if(!gl.getProgramParameter(program, gl.LINK_STATUS)) return null;
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  const posLoc = gl.getAttribLocation(program, "position");
+  const u = {
+    uTime: gl.getUniformLocation(program, "uTime"),
+    uAttenuation: gl.getUniformLocation(program, "uAttenuation"),
+    uResolution: gl.getUniformLocation(program, "uResolution"),
+    uColor: gl.getUniformLocation(program, "uColor"),
+    uLineThickness: gl.getUniformLocation(program, "uLineThickness"),
+    uBaseRadius: gl.getUniformLocation(program, "uBaseRadius"),
+    uRadiusStep: gl.getUniformLocation(program, "uRadiusStep"),
+    uScaleRate: gl.getUniformLocation(program, "uScaleRate"),
+    uRingCount: gl.getUniformLocation(program, "uRingCount"),
+    uOpacity: gl.getUniformLocation(program, "uOpacity"),
+    uNoiseAmount: gl.getUniformLocation(program, "uNoiseAmount"),
+    uRingGap: gl.getUniformLocation(program, "uRingGap"),
+    uFadeIn: gl.getUniformLocation(program, "uFadeIn"),
+    uFadeOut: gl.getUniformLocation(program, "uFadeOut"),
+    uCycle: gl.getUniformLocation(program, "uCycle"),
+    uMaskInner: gl.getUniformLocation(program, "uMaskInner"),
+    uMaskOuter: gl.getUniformLocation(program, "uMaskOuter")
+  };
+  return { gl, program, buf, posLoc, u, canvas };
+}
+function ringsResize(){
+  if(!RINGS) return;
+  const { gl, canvas, u, program } = RINGS;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
+  if(canvas.width !== w || canvas.height !== h){ canvas.width = w; canvas.height = h; }
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  gl.useProgram(program);
+  gl.uniform2f(u.uResolution, canvas.width, canvas.height);
+}
+function ringsDraw(time){
+  if(!RINGS) return;
+  const { gl, program, buf, posLoc, u } = RINGS;
+  gl.useProgram(program);
+  gl.uniform1f(u.uTime, time*0.001*RINGS_CFG.speed);
+  gl.uniform1f(u.uAttenuation, RINGS_CFG.attenuation);
+  gl.uniform1f(u.uLineThickness, RINGS_CFG.lineThickness);
+  gl.uniform1f(u.uBaseRadius, RINGS_CFG.baseRadius);
+  gl.uniform1f(u.uRadiusStep, RINGS_CFG.radiusStep);
+  gl.uniform1f(u.uScaleRate, RINGS_CFG.scaleRate);
+  gl.uniform1i(u.uRingCount, RINGS_CFG.ringCount);
+  gl.uniform1f(u.uOpacity, RINGS_CFG.opacity);
+  gl.uniform1f(u.uNoiseAmount, RINGS_CFG.noiseAmount);
+  gl.uniform1f(u.uRingGap, RINGS_CFG.ringGap);
+  gl.uniform1f(u.uFadeIn, RINGS_CFG.fadeIn);
+  gl.uniform1f(u.uFadeOut, RINGS_CFG.fadeOut);
+  gl.uniform1f(u.uCycle, RINGS_CFG.cycle);
+  gl.uniform1f(u.uMaskInner, RINGS_CFG.maskInner);
+  gl.uniform1f(u.uMaskOuter, RINGS_CFG.maskOuter);
+  const hex = (isPro() && st.accentCustom) ? st.accent : "#ffffff";
+  const [r,g,b] = ringsHexToRgb(hex);
+  gl.uniform3f(u.uColor, r, g, b);
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.enableVertexAttribArray(posLoc);
+  gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+let ringsRaf = null;
+function ringsFrame(time){
+  ringsDraw(time);
+  ringsRaf = requestAnimationFrame(ringsFrame);
+}
+function startRings(){
+  if(!RINGS) RINGS = initRings();
+  if(!RINGS) return; // WebGL2 unavailable — theme just keeps its plain dark background
+  $("ringsBg").style.display = "block";
+  ringsResize();
+  addEventListener("resize", ringsResize);
+  if(!ringsRaf) ringsRaf = requestAnimationFrame(ringsFrame);
+}
+function stopRings(){
+  if(ringsRaf){ cancelAnimationFrame(ringsRaf); ringsRaf = null; }
+  removeEventListener("resize", ringsResize);
+  $("ringsBg").style.display = "none";
 }
 
 /* ----- bounce: DVD-screensaver-style roaming, color-changing time.
