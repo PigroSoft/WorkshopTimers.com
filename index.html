@@ -1886,13 +1886,17 @@ const APPEARANCE_THEMES = {
 const SOUNDS = [
   {id:"chime",   name:"Chime",   pro:false},
   {id:"digital", name:"Digital", pro:false},
-  {id:"bell",    name:"Bell",    pro:true},
-  {id:"gong",    name:"Gong",    pro:true},
-  {id:"fanfare", name:"Fanfare", pro:true},
+  {id:"bell",    name:"Bell",    pro:false},
+  {id:"gong",    name:"Gong",    pro:false},
+  {id:"fanfare", name:"Fanfare", pro:false},
+  {id:"alarm",   name:"Alarm Bell", pro:false},
+  {id:"dalarm",  name:"Digital Alarm", pro:false},
+  {id:"ringer",  name:"Ring Tone", pro:false},
 ];
 const TICK_SOUNDS = [
-  {id:"chrono",  name:"Chronograph", pro:false},
-  {id:"classic", name:"Classic",     pro:false},
+  {id:"chrono",  name:"Analog", pro:false},
+  {id:"stopwatch", name:"Stopwatch", pro:false},
+  {id:"classic", name:"Digital",     pro:false},
 ];
 /* per-theme style variants (Pro) — applied via body[data-flavor] */
 const VARIANTS = {
@@ -2055,15 +2059,71 @@ function click(start, freq, dur, gain){
   src.start(ctx.currentTime + start); src.stop(ctx.currentTime + start + dur + 0.02);
 }
 const PLAYERS = {
-  chime(){ tone(880,0,.9); tone(1174.7,.18,1.2); },
+  // default end sound: louder than the original single two-note chime, and
+  // rings three times (spaced out) instead of once, so it actually cuts
+  // through a noisy workshop room instead of getting missed
+  chime(){
+    for(let i=0;i<3;i++){
+      const t = i*1.15;
+      tone(880,t,.9,"sine",0.34);
+      tone(1174.7,t+.18,1.05,"sine",0.34);
+    }
+  },
   bell(){ [1,2.76,5.4].forEach((m,i)=>tone(520*m,0,2.2-(i*0.5),"sine",0.18/(i+1))); },
   gong(){ [1,1.5,2.1,2.9].forEach((m,i)=>tone(98*m,0,3.5,"sine",0.22/(i+1))); tone(66,0,4,"sine",0.18); },
   digital(){ [0,.25,.5,1,1.25,1.5].forEach(t=>tone(1320,t,.12,"square",0.12)); },
   fanfare(){ [[523,0],[659,.16],[784,.32],[1046,.5]].forEach(([f,t])=>tone(f,t,.5,"triangle",0.2)); tone(1046,.85,1.1,"triangle",0.22); },
+  // old-school wind-up alarm clock: a clapper rattling rapidly between two
+  // bell tones, in bursts — deliberately the most jarring/annoying option,
+  // for anyone who actually needs to be startled out of a task
+  alarm(){
+    function burst(startAt, len){
+      const strikes = Math.floor(len/0.09);
+      for(let i=0;i<strikes;i++){
+        const t = startAt + i*0.09;
+        tone(1600, t, .05, "triangle", 0.42);
+        tone(2350, t+.045, .04, "triangle", 0.24);
+      }
+    }
+    burst(0,1.05); burst(1.35,1.05); burst(2.7,1.05);
+  },
+  // modeled on a reference "digital alarm clock" recording: a gated
+  // ~4.1kHz square-wave beep pulsing at ~8/sec, four pulses per burst,
+  // three bursts a second apart, then a longer continuous trill — same
+  // timing the reference clip actually used, measured off its envelope
+  dalarm(){
+    function pulse(t){ tone(4100,t,.1,"square",0.3); }
+    [0,.123,.246,.369].forEach(pulse);
+    [1,1.123,1.246,1.369].forEach(pulse);
+    [2,2.123,2.246,2.369].forEach(pulse);
+    for(let i=0;i<16;i++) pulse(3+i*.123);
+  },
+  // modeled on a reference "ring tone" alarm recording: two buzzy
+  // square-wave tones (~2.1kHz/2.9kHz) layered and pulsed almost back to
+  // back for a continuous ~2.5s electronic "brrring" rather than a
+  // single clean note
+  ringer(){
+    const dur = 2.5;
+    for(let t=0; t<dur; t+=.09){ tone(2100,t,.085,"square",0.22); tone(2900,t,.085,"square",0.16); }
+  },
   // chronograph-style double tick: a crisp mechanical click immediately
   // followed by a softer, slightly lower second click — the "tick-tick"
   // escapement sound of a wind-up stopwatch
   chrono(){ click(0,3800,.02,.55); click(.05,2900,.018,.4); },
+  // modeled on an actual mechanical-stopwatch recording (FFT'd against a
+  // reference clip): each click's spectrum is almost all energy at
+  // 9-13kHz with lesser shimmer at 6-9kHz/13-18kHz and essentially
+  // nothing below 3kHz — thin, glassy, very high, not a low mechanical
+  // clack. The reference also ticks continuously at ~4/sec rather than
+  // once — since playTick() only fires once per real second, this
+  // schedules 4 evenly-spaced clicks across that second so consecutive
+  // calls chain into the same continuous ~4Hz ticking as the reference.
+  stopwatch(){
+    for(let i=0;i<4;i++){
+      const t = i*0.25;
+      click(t,7500,.02,.16); click(t,10500,.022,.5); click(t,15000,.016,.15);
+    }
+  },
   // the original single electronic blip, kept as an option
   classic(){ tone(2200,0,.03,"square",0.06); }
 };
