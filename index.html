@@ -51,7 +51,6 @@
   body.theme-terminal.mode-light{ --bg:#eef2ee; --bg2:#e2e8e2; --fg:#1f7a3f; --muted:#7a9884; --panel:#e2e8e2; --border:#c7d2c7; }
   body.theme-web1.mode-light{ --bg:#c8dede; --bg2:#b8d0d0; --fg:#004040; --muted:#3a6060; --panel:#e8e4d8; --border:#909890; }
   body.theme-nixie.mode-light{ --bg:#f0e6d4; --bg2:#e6d8c0; --fg:#b5691a; --muted:#a8875a; --panel:#f6efe0; --border:#d8c6a0; }
-  body.theme-photo.mode-light{ --bg:#e8e6e0; --bg2:#dcdad2; --fg:#181818; --muted:rgba(20,20,20,.68); --panel:#ffffff; --border:#dedcd6; }
   body.theme-lcars.mode-light{ --bg:#e8e4dc; --bg2:#dcd6ca; --fg:#c05a00; --muted:#a08560; --panel:#f0ece2; --border:#c9c0ac; }
   body.theme-bounce.mode-light{ --bg:#f3f2f0; --bg2:#e8e7e4; --fg:#333338; --muted:#8a8a86; --panel:#ffffff; --border:#dedcd9; }
   body.theme-sunset.mode-light{ --fg:#181018; --muted:rgba(24,16,24,.72); }
@@ -77,8 +76,8 @@
   body.theme-aurora[data-flavor="ice"]{ --aurora-glow:#5ad0ff; }
   body.theme-strands{ --bg:#070707; --bg2:#0d0d0d; --fg:#000000; --muted:#7a7a7a; --panel:#111; --border:#232323; --strands-accent:#5227FF; --strands-text:#fff; }
   body.theme-rings{ --bg:#000; --bg2:#050505; --fg:#ffffff; --muted:rgba(255,255,255,.55); --panel:#111; --border:#232323; --cdc:#fff; --cdc-text:#111; }
+  body.theme-warp{ --bg:#000; --bg2:#050505; --fg:#ffffff; --muted:rgba(255,255,255,.55); --panel:#111; --border:#232323; --cdc:#fff; --cdc-text:#111; }
   body.theme-strands.mode-light{ --bg:#f2f1ee; --bg2:#e8e7e2; --fg:#0a0a0a; --muted:#8a8a86; --panel:#fff; --border:#e0dfda; }
-  body.theme-photo   { --bg:#0d120d; --bg2:rgba(255,255,255,.08); --fg:#ffffff; --muted:rgba(255,255,255,.65); --panel:#141a14; --border:#2c352c; }
   body.theme-sky     { --bg:#4d84c9; --bg2:#7fb0e0; --fg:#ffffff; --muted:rgba(255,255,255,.78); --panel:#3f74b8; --border:rgba(255,255,255,.3); }
   /* same cloud shader, just re-tinted grey/slate for an overcast rainy day
      (see SKY_PALETTES in the JS below) — fallback vars here match before the
@@ -163,52 +162,6 @@
       radial-gradient(58px 13px at 60% 92%, rgba(120,150,182,.24) 0%, transparent 82%),
       linear-gradient(to bottom, #1f6bc4 0%, #3f8fd8 26%, #6fb2e6 52%, #a7d4f2 78%, #cfe9fa 100%);
   }
-  /* Forest theme photos (Unsplash license: free for commercial use).
-     The image lives on a fixed layer with a slow Ken Burns drift — a subtle cinemagraph feel.
-     The dark gradient keeps white text readable; the tinted bg is the offline fallback. */
-  body.theme-photo{background:#0d120d;}
-  body.theme-photo.mode-light{background:#e8e6e0;}
-  body.theme-photo::before{
-    content:""; position:fixed; inset:-6%; z-index:0; pointer-events:none;
-    background:linear-gradient(rgba(0,0,0,.42), rgba(0,0,0,.55)),
-      url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1920&auto=format&fit=crop") center/cover no-repeat;
-    animation:kenburns 55s ease-in-out infinite alternate;
-  }
-  body.theme-photo[data-flavor="mountain"]::before{
-    background:linear-gradient(rgba(0,0,0,.42), rgba(0,0,0,.55)),
-      url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1920&auto=format&fit=crop") center/cover no-repeat;
-  }
-  body.theme-photo[data-flavor="ocean"]::before{
-    background:linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.55)),
-      url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1920&auto=format&fit=crop") center/cover no-repeat;
-  }
-  body.theme-photo[data-flavor="fog"]::before{
-    background:linear-gradient(rgba(0,0,0,.38), rgba(0,0,0,.52)),
-      url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1920&auto=format&fit=crop") center/cover no-repeat;
-  }
-  /* day mode: a light wash instead of the dark tint, same idea as Gradient
-     lightening its shader colors — the photo itself stays, only the
-     dimming layer over it flips from darkening to brightening */
-  body.theme-photo.mode-light::before{
-    background:linear-gradient(rgba(255,255,255,.35), rgba(255,255,255,.5)),
-      url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1920&auto=format&fit=crop") center/cover no-repeat;
-  }
-  body.theme-photo.mode-light[data-flavor="mountain"]::before{
-    background:linear-gradient(rgba(255,255,255,.35), rgba(255,255,255,.5)),
-      url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1920&auto=format&fit=crop") center/cover no-repeat;
-  }
-  body.theme-photo.mode-light[data-flavor="ocean"]::before{
-    background:linear-gradient(rgba(255,255,255,.3), rgba(255,255,255,.48)),
-      url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1920&auto=format&fit=crop") center/cover no-repeat;
-  }
-  body.theme-photo.mode-light[data-flavor="fog"]::before{
-    background:linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.55)),
-      url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1920&auto=format&fit=crop") center/cover no-repeat;
-  }
-  @keyframes kenburns{from{transform:scale(1) translate(0,0);} to{transform:scale(1.07) translate(1.2%,-1%);}}
-  body.theme-photo #time{font-weight:var(--fontw,300); letter-spacing:.01em;}
-  body.theme-photo #label{font-weight:500; letter-spacing:.22em; font-size:clamp(1.1rem,2.9vh,1.7rem); color:var(--muted);}
-  body.theme-photo #subline{text-transform:uppercase; letter-spacing:.18em; font-size:clamp(.7rem,1.7vh,.95rem);}
   /* sky: plain white digits directly on the animated cloud canvas — a soft
      dark shadow is enough contrast since the sky brightness varies with the
      clouds drifting behind, no glass card needed like aurora's */
@@ -245,7 +198,8 @@
   body.theme-strands.mode-light #strandsBg{opacity:.55;}
   #skyBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
   #oceanBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
-  #ringsBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
+  #ringsBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%; filter:blur(.5px);}
+  #warpBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
   #toasters{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; display:none;}
   .toaster{position:absolute; will-change:transform; animation:flyby linear infinite;}
   .toaster .wing{animation:flap .3s ease-in-out infinite alternate; transform-origin:28px 20px;}
@@ -439,6 +393,18 @@
   }
   body.theme-rings #label{
     color:rgba(255,255,255,.6); font-weight:500; letter-spacing:.16em;
+    font-size:clamp(.9rem,2.2vh,1.3rem); margin-bottom:.2rem;
+  }
+
+  /* Stars: a plain, thin-weight timer floating over the starfield — kept
+     modest in size (unlike Rings) since this backdrop is mostly empty space
+     except in the last 10 seconds, when the warp streaks carry the drama. */
+  body.theme-warp #time{
+    font-weight:var(--fontw,300); letter-spacing:0; color:#fff;
+    font-size:clamp(3.5rem,22vw,30vh); text-shadow:0 2px 24px rgba(0,0,0,.6);
+  }
+  body.theme-warp #label{
+    color:rgba(255,255,255,.55); font-weight:500; letter-spacing:.14em;
     font-size:clamp(.9rem,2.2vh,1.3rem); margin-bottom:.2rem;
   }
   /* matrix: glow + cursor (currentColor so rain-color variants recolor it) */
@@ -935,12 +901,12 @@
      or it goes dark-on-dark (or light-on-light) and disappears. */
   body.theme-flip.mode-light #btnStart{color:#f2f1ec;}
   body.theme-egg #btnStart{background:#e0392e; border-color:#e0392e;}       /* same red as the ruler pointer */
-  body.theme-photo #btnStart{background:#7f8f4a; border-color:#7f8f4a;}    /* mossy olive green */
   body.theme-sunset #btnStart{background:var(--sunset-accent); border-color:var(--sunset-accent);}
   body.theme-bounce #btnStart{background:#39ff14; border-color:#39ff14;}   /* fallback before JS syncs it to the bouncing digit's own color */
   body.theme-aurora #btnStart{background:#2f8f5a; border-color:#2f8f5a; color:#eafff1;}
   body.theme-strands #btnStart{background:var(--strands-accent); border-color:var(--strands-accent); color:var(--strands-text);}
   body.theme-rings #btnStart{background:var(--cdc); border-color:var(--cdc); color:var(--cdc-text);}
+  body.theme-warp #btnStart{background:var(--cdc); border-color:var(--cdc); color:var(--cdc-text);}
   /* quiet icon buttons */
   button.icon, a.icon{
     width:2.8rem; height:2.8rem; padding:.62rem; border-radius:12px;
@@ -1128,6 +1094,7 @@
 <canvas id="skyBg"></canvas>
 <canvas id="oceanBg"></canvas>
 <canvas id="ringsBg"></canvas>
+<canvas id="warpBg"></canvas>
 <div id="toasters"></div>
 <div id="previewBadge"></div>
 
@@ -1484,7 +1451,7 @@ const I18N = {
     modeHeading:"Mode", countdownLabel:"Countdown (the default timer)", stopwatchLabel:"Stopwatch (count up instead)", clockLabel:"Clock mode (show the time of day)",
     pomodoroLabel:"Pomodoro mode (25 min focus / 5 min break)", pomodoroFocusWord:"Focus", pomodoroBreakWord:"Break",
     themeHeading:"Theme", themeStyleHeading:"Theme style",
-    groupSimple:"Simple & Clean", groupAmbient:"Ambient & Backgrounds", groupRetro:"Retro & Fun",
+    groupSimple:"Simple & Clean", groupAmbient:"Ambient & Backgrounds", groupNature:"Nature", groupRetro:"Retro & Fun",
     soundHeading:"Sound", muteNote:"All sound is off. Previews and alerts are silenced. Press M or the speaker icon to unmute.",
     tickLabel:"Tick during final 10 seconds", tickAlwaysLabel:"Tick throughout the whole timer", voiceLabel:"Voice alert at 30 seconds left",
     voice2minLabel:"Voice alert at 2 minutes left", voiceHalfLabel:"\"Time to switch\" alert halfway through",
@@ -1513,7 +1480,7 @@ const I18N = {
     modeHeading:"Modus", stopwatchLabel:"Stoppuhr (aufwärts zählen)", clockLabel:"Uhrzeit-Modus (Tageszeit anzeigen)",
     pomodoroLabel:"Pomodoro-Modus (25 Min. Fokus / 5 Min. Pause)", pomodoroFocusWord:"Fokus", pomodoroBreakWord:"Pause",
     themeHeading:"Design", themeStyleHeading:"Design-Stil",
-    groupSimple:"Einfach & Klar", groupAmbient:"Ambient & Hintergründe", groupRetro:"Retro & Spaß",
+    groupSimple:"Einfach & Klar", groupAmbient:"Ambient & Hintergründe", groupNature:"Natur", groupRetro:"Retro & Spaß",
     soundHeading:"Ton", muteNote:"Der Ton ist aus. Vorschauen und Signale sind stumm. M oder das Lautsprecher-Symbol schaltet den Ton wieder ein.",
     tickLabel:"Ticken in den letzten 10 Sekunden", tickAlwaysLabel:"Während des gesamten Timers ticken", voiceLabel:"Sprachansage bei 30 Sekunden",
     voice2minLabel:"Sprachansage bei 2 Minuten", voiceHalfLabel:"„Zeit zum Wechseln“-Ansage zur Halbzeit",
@@ -1541,7 +1508,7 @@ const I18N = {
     settingsTitle:"Réglages", languageHeading:"Langue",
     modeHeading:"Mode", stopwatchLabel:"Chronomètre (compte à rebours inversé)", clockLabel:"Mode horloge (afficher l'heure)",
     themeHeading:"Thème", themeStyleHeading:"Style du thème",
-    groupSimple:"Simple & épuré", groupAmbient:"Ambiance & fonds", groupRetro:"Rétro & fun",
+    groupSimple:"Simple & épuré", groupAmbient:"Ambiance & fonds", groupNature:"Nature", groupRetro:"Rétro & fun",
     soundHeading:"Son", muteNote:"Le son est coupé. Aperçus et alertes sont silencieux. Appuyez sur M ou l'icône haut-parleur pour réactiver.",
     tickLabel:"Tic-tac pendant les 10 dernières secondes", tickAlwaysLabel:"Tic-tac pendant tout le minuteur", voiceLabel:"Alerte vocale à 30 secondes",
     voice2minLabel:"Alerte vocale à 2 minutes", voiceHalfLabel:"Alerte « changez d'atelier » à mi-parcours",
@@ -1569,7 +1536,7 @@ const I18N = {
     settingsTitle:"Ajustes", languageHeading:"Idioma",
     modeHeading:"Modo", stopwatchLabel:"Cronómetro (contar hacia arriba)", clockLabel:"Modo reloj (mostrar la hora del día)",
     themeHeading:"Tema", themeStyleHeading:"Estilo del tema",
-    groupSimple:"Simple y claro", groupAmbient:"Ambiente y fondos", groupRetro:"Retro y diversión",
+    groupSimple:"Simple y claro", groupAmbient:"Ambiente y fondos", groupNature:"Naturaleza", groupRetro:"Retro y diversión",
     soundHeading:"Sonido", muteNote:"El sonido está desactivado. Vistas previas y alertas están silenciadas. Pulsa M o el icono del altavoz para reactivar.",
     tickLabel:"Tictac en los últimos 10 segundos", tickAlwaysLabel:"Tictac durante todo el temporizador", voiceLabel:"Alerta de voz a los 30 segundos",
     voice2minLabel:"Alerta de voz a los 2 minutos", voiceHalfLabel:"Alerta de \"cambio de turno\" a mitad de tiempo",
@@ -1597,7 +1564,7 @@ const I18N = {
     settingsTitle:"设置", languageHeading:"语言",
     modeHeading:"模式", stopwatchLabel:"秒表（正计时）", clockLabel:"时钟模式（显示当前时间）",
     themeHeading:"主题", themeStyleHeading:"主题风格",
-    groupSimple:"简约清爽", groupAmbient:"氛围与背景", groupRetro:"复古趣味",
+    groupSimple:"简约清爽", groupAmbient:"氛围与背景", groupNature:"自然", groupRetro:"复古趣味",
     soundHeading:"声音", muteNote:"声音已关闭。预览和提醒均已静音。按 M 或喇叭图标可取消静音。",
     tickLabel:"最后10秒滴答声", tickAlwaysLabel:"全程滴答声", voiceLabel:"剩余30秒语音提醒",
     voice2minLabel:"剩余2分钟语音提醒", voiceHalfLabel:"中场“该换人了”语音提醒",
@@ -1625,7 +1592,7 @@ const I18N = {
     settingsTitle:"Configurações", languageHeading:"Idioma",
     modeHeading:"Modo", stopwatchLabel:"Cronômetro (contagem crescente)", clockLabel:"Modo relógio (mostrar hora do dia)",
     themeHeading:"Tema", themeStyleHeading:"Estilo do tema",
-    groupSimple:"Simples e limpo", groupAmbient:"Ambiente e fundos", groupRetro:"Retrô e diversão",
+    groupSimple:"Simples e limpo", groupAmbient:"Ambiente e fundos", groupNature:"Natureza", groupRetro:"Retrô e diversão",
     soundHeading:"Som", muteNote:"O som está desativado. Prévias e alertas estão silenciados. Pressione M ou o ícone do alto-falante para reativar.",
     tickLabel:"Tique-taque nos últimos 10 segundos", tickAlwaysLabel:"Tique-taque durante todo o cronômetro", voiceLabel:"Alerta de voz aos 30 segundos",
     voice2minLabel:"Alerta de voz aos 2 minutos", voiceHalfLabel:"Alerta de \"hora de trocar\" na metade do tempo",
@@ -1653,7 +1620,7 @@ const I18N = {
     settingsTitle:"設定", languageHeading:"言語",
     modeHeading:"モード", stopwatchLabel:"ストップウォッチ（カウントアップ）", clockLabel:"時計モード（現在時刻を表示）",
     themeHeading:"テーマ", themeStyleHeading:"テーマスタイル",
-    groupSimple:"シンプル", groupAmbient:"雰囲気と背景", groupRetro:"レトロ & 遊び心",
+    groupSimple:"シンプル", groupAmbient:"雰囲気と背景", groupNature:"自然", groupRetro:"レトロ & 遊び心",
     soundHeading:"サウンド", muteNote:"サウンドはオフです。プレビューとアラートも無音になります。Mキーまたはスピーカーアイコンでミュート解除できます。",
     tickLabel:"最後の10秒間だけ秒針音を鳴らす", tickAlwaysLabel:"タイマー中ずっと秒針音を鳴らす", voiceLabel:"残り30秒で音声アラート",
     voice2minLabel:"残り2分で音声アラート", voiceHalfLabel:"折り返し地点で「交代の時間です」音声アラート",
@@ -1681,7 +1648,7 @@ const I18N = {
     settingsTitle:"Impostazioni", languageHeading:"Lingua",
     modeHeading:"Modalità", stopwatchLabel:"Cronometro (conteggio crescente)", clockLabel:"Modalità orologio (mostra l'ora)",
     themeHeading:"Tema", themeStyleHeading:"Stile del tema",
-    groupSimple:"Semplice e pulito", groupAmbient:"Atmosfera e sfondi", groupRetro:"Retrò e divertimento",
+    groupSimple:"Semplice e pulito", groupAmbient:"Atmosfera e sfondi", groupNature:"Natura", groupRetro:"Retrò e divertimento",
     soundHeading:"Suono", muteNote:"L'audio è disattivato. Anteprime e avvisi sono silenziati. Premi M o l'icona dell'altoparlante per riattivare.",
     tickLabel:"Ticchettio negli ultimi 10 secondi", tickAlwaysLabel:"Ticchettio per tutto il timer", voiceLabel:"Avviso vocale a 30 secondi",
     voice2minLabel:"Avviso vocale a 2 minuti", voiceHalfLabel:"Avviso \"cambio turno\" a metà tempo",
@@ -1709,7 +1676,7 @@ const I18N = {
     settingsTitle:"الإعدادات", languageHeading:"اللغة",
     modeHeading:"الوضع", stopwatchLabel:"ساعة إيقاف (عد تصاعدي)", clockLabel:"وضع الساعة (عرض الوقت الحالي)",
     themeHeading:"السمة", themeStyleHeading:"نمط السمة",
-    groupSimple:"بسيط وواضح", groupAmbient:"أجواء وخلفيات", groupRetro:"كلاسيكي وممتع",
+    groupSimple:"بسيط وواضح", groupAmbient:"أجواء وخلفيات", groupNature:"الطبيعة", groupRetro:"كلاسيكي وممتع",
     soundHeading:"الصوت", muteNote:"الصوت متوقف. المعاينات والتنبيهات صامتة أيضًا. اضغط M أو أيقونة مكبر الصوت لإعادة تفعيل الصوت.",
     tickLabel:"صوت تكة خلال آخر 10 ثوانٍ", tickAlwaysLabel:"صوت تكة طوال المؤقت", voiceLabel:"تنبيه صوتي عند 30 ثانية",
     voice2minLabel:"تنبيه صوتي عند دقيقتين", voiceHalfLabel:"تنبيه \"حان وقت التبديل\" في منتصف الوقت",
@@ -1737,7 +1704,7 @@ const I18N = {
     settingsTitle:"Настройки", languageHeading:"Язык",
     modeHeading:"Режим", stopwatchLabel:"Секундомер (счёт вперёд)", clockLabel:"Режим часов (показывать текущее время)",
     themeHeading:"Тема", themeStyleHeading:"Стиль темы",
-    groupSimple:"Просто и чисто", groupAmbient:"Атмосфера и фоны", groupRetro:"Ретро и веселье",
+    groupSimple:"Просто и чисто", groupAmbient:"Атмосфера и фоны", groupNature:"Природа", groupRetro:"Ретро и веселье",
     soundHeading:"Звук", muteNote:"Звук выключен. Предпросмотр и оповещения также беззвучны. Нажмите M или значок динамика, чтобы включить звук.",
     tickLabel:"Тиканье в последние 10 секунд", tickAlwaysLabel:"Тиканье на протяжении всего таймера", voiceLabel:"Голосовое оповещение за 30 секунд",
     voice2minLabel:"Голосовое оповещение за 2 минуты", voiceHalfLabel:"Оповещение «время сменить группу» на середине",
@@ -1765,7 +1732,7 @@ const I18N = {
     settingsTitle:"सेटिंग्स", languageHeading:"भाषा",
     modeHeading:"मोड", stopwatchLabel:"स्टॉपवॉच (आगे गिनती)", clockLabel:"घड़ी मोड (दिन का समय दिखाएं)",
     themeHeading:"थीम", themeStyleHeading:"थीम शैली",
-    groupSimple:"सरल और स्वच्छ", groupAmbient:"माहौल और पृष्ठभूमि", groupRetro:"रेट्रो और मज़ा",
+    groupSimple:"सरल और स्वच्छ", groupAmbient:"माहौल और पृष्ठभूमि", groupNature:"प्रकृति", groupRetro:"रेट्रो और मज़ा",
     soundHeading:"ध्वनि", muteNote:"ध्वनि बंद है। पूर्वावलोकन और अलर्ट भी शांत हैं। ध्वनि फिर से चालू करने के लिए M दबाएं या स्पीकर आइकन पर क्लिक करें।",
     tickLabel:"आख़िरी 10 सेकंड में टिक ध्वनि", tickAlwaysLabel:"पूरे टाइमर के दौरान टिक ध्वनि", voiceLabel:"30 सेकंड शेष पर आवाज़ अलर्ट",
     voice2minLabel:"2 मिनट शेष पर आवाज़ अलर्ट", voiceHalfLabel:"आधे समय पर \"बदलने का समय\" अलर्ट",
@@ -1793,7 +1760,7 @@ const I18N = {
     settingsTitle:"설정", languageHeading:"언어",
     modeHeading:"모드", stopwatchLabel:"스톱워치 (시간 증가)", clockLabel:"시계 모드 (현재 시각 표시)",
     themeHeading:"테마", themeStyleHeading:"테마 스타일",
-    groupSimple:"심플 & 클린", groupAmbient:"분위기 & 배경", groupRetro:"레트로 & 재미",
+    groupSimple:"심플 & 클린", groupAmbient:"분위기 & 배경", groupNature:"자연", groupRetro:"레트로 & 재미",
     soundHeading:"사운드", muteNote:"소리가 꺼져 있습니다. 미리듣기와 알림도 음소거됩니다. M 키나 스피커 아이콘을 눌러 다시 켤 수 있습니다.",
     tickLabel:"마지막 10초 동안 똑딱 소리", tickAlwaysLabel:"타이머 내내 똑딱 소리", voiceLabel:"30초 남았을 때 음성 알림",
     voice2minLabel:"2분 남았을 때 음성 알림", voiceHalfLabel:"절반 지점에서 \"교대 시간\" 음성 알림",
@@ -1868,7 +1835,6 @@ const THEMES = [
   {id:"days",     name:"Waves",       pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"lcd",      name:"LED Clock",   pro:true,  mode:"seg",      prog:"none", font:"mono"},
   {id:"egg",      name:"Egg Timer",   pro:true,  mode:"egg",      prog:"none", font:"helvetica"},
-  {id:"photo",    name:"Nature",      pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"sunset",   name:"Gradient",    pro:true,  mode:"dots",     prog:"none", font:"helvetica"},
   {id:"nixie",    name:"Nixie Tubes", pro:true,  mode:"nixie",    prog:"none", font:"thin"},
   {id:"terminal", name:"Code",        pro:true,  mode:"digits",   prog:"none", font:"mono"},
@@ -1880,6 +1846,7 @@ const THEMES = [
   {id:"sky",      name:"Clouds",      pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"ocean",    name:"Ocean",       pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"rings",    name:"Rings",       pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
+  {id:"warp",     name:"Stars",       pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
 ];
 // per-theme default accent color — shown until a Pro user actually touches
 // the accent picker (st.accentCustom), at which point their pick applies
@@ -1890,14 +1857,15 @@ const THEME_DEFAULT_ACCENT = { disc:"#d5442f", terminal:"#4ade80" };
 // doesn't affect THEMES itself or anything that reads it directly
 const THEME_GROUPS = [
   {labelKey:"groupSimple",    ids:["disc","midnight","paper","flip","squiggle","egg"]},
-  {labelKey:"groupAmbient",   ids:["days","sunset","aurora","strands","photo","sky","ocean","rings"]},
+  {labelKey:"groupAmbient",   ids:["days","sunset","strands","rings"]},
+  {labelKey:"groupNature",    ids:["aurora","sky","ocean","warp"]},
   {labelKey:"groupRetro",     ids:["nixie","terminal","lcars","bounce","lcd","web1","nasa"]}
 ];
 // themes flat/simple enough to offer both a dark and a light look; each theme's
 // own hue (accent, glow, etc.) stays untouched — only bg/fg/panel/border shift.
 const APPEARANCE_THEMES = {
   midnight:"dark", paper:"light", disc:"light", nasa:"light", squiggle:"dark", flip:"dark", egg:"light", days:"dark",
-  lcd:"dark", terminal:"dark", web1:"dark", nixie:"dark", photo:"dark", sunset:"light", lcars:"dark", bounce:"dark", aurora:"dark", strands:"dark",
+  lcd:"dark", terminal:"dark", web1:"dark", nixie:"dark", sunset:"light", lcars:"dark", bounce:"dark", aurora:"dark", strands:"dark",
   sky:"light", ocean:"light"
 };
 const SOUNDS = [
@@ -1920,8 +1888,8 @@ const VARIANTS = {
   sunset:  [{id:"classic",name:"Classic",pro:true},{id:"magma",name:"Magma",pro:true},{id:"violet",name:"Violet",pro:true},{id:"ocean",name:"Ocean",pro:true}],
   days:    [{id:"white",name:"White",pro:true},{id:"orange",name:"Orange",pro:true},{id:"volt",name:"Volt",pro:true},{id:"red",name:"Red",pro:true},{id:"blue",name:"Blue",pro:true}],
   lcd:     [{id:"red",name:"Red",pro:true},{id:"green",name:"Green",pro:true},{id:"blue",name:"Blue",pro:true},{id:"white",name:"White",pro:true}],
-  photo:   [{id:"forest",name:"Forest",pro:true},{id:"mountain",name:"Mountain",pro:true},{id:"ocean",name:"Ocean",pro:true},{id:"fog",name:"Fog",pro:true}],
   aurora:  [{id:"green",name:"Green",pro:true},{id:"violet",name:"Violet",pro:true},{id:"sunset",name:"Sunset",pro:true},{id:"ice",name:"Ice",pro:true}],
+  strands: [{id:"violet",name:"Violet",pro:true},{id:"sunset",name:"Sunset",pro:true},{id:"ocean",name:"Ocean",pro:true},{id:"emerald",name:"Emerald",pro:true}],
 };
 const FONTS = [
   {id:"helvetica", name:"Helvetica Neue", pro:false, stack:"'Helvetica Neue',Helvetica,Arial,sans-serif"},
@@ -1962,7 +1930,7 @@ let st = Object.assign({
   accent:"#d5442f", accentCustom:false, bg:"#101014", useBg:false, font:"helvetica", label:LABEL_DEFAULTS[detectLang()] || "Workshop Timer", labelCustom:false, appearance:null, lang:detectLang(),
   lc1:"SET PHASERS TO FUN", lc2:"SHIELDS: 98%", lc3:"WARP 9.9"
 }, load(LS.state));
-st.flavors = Object.assign({sunset:"classic", terminal:"green", lcd:"red", photo:"forest", aurora:"green"}, st.flavors||{});
+st.flavors = Object.assign({sunset:"classic", terminal:"green", lcd:"red", aurora:"green", strands:"violet"}, st.flavors||{});
 
 let remaining = st.duration, running = false, deadline = 0, finished = false, finishedAt = 0;
 let tickTimer = null, lastWholeSec = null, wakeLock = null;
@@ -2927,6 +2895,7 @@ function updateFX(){
   if(tid==="sky") startSky(); else stopSky();
   if(tid==="ocean") startOcean(); else stopOcean();
   if(tid==="rings") startRings(); else stopRings();
+  if(tid==="warp") startStars(); else stopStars();
 }
 
 /* ----- Lava background (Lava/"days" theme): a vanilla-JS/canvas2d port of
@@ -3546,45 +3515,23 @@ const STRANDS_CFG = {
   taper:3.2, spread:1.1, hueShift:0, intensity:0.55, saturation:0.9, opacity:0.9, scale:1.6,
   colors:["#5227FF","#FF9FFC","#B19EEF"]
 };
+// the four flavor picker options — each a distinct 3-color combo rather than
+// tints derived off one accent, since three genuinely different hues (per
+// the reactbits.dev/animations/strands reference) reads much better woven
+// together than a single-hue gradient. "violet" is that reference's own
+// default palette; the rest follow its one-vivid/two-softer-support shape.
+// each combo spaces its 3 hues roughly like a triad (~100-120° apart on the
+// color wheel) rather than 2 close analogous shades + 1 accent — so all
+// three strands read as genuinely different colors, not near-duplicates
+const STRANDS_PALETTES = {
+  violet:  ["#5227FF","#FFD166","#FF3B7A"],
+  sunset:  ["#FF7A45","#7C5CFF","#4DE8C2"],
+  ocean:   ["#00C2FF","#FF7A59","#7C5CFF"],
+  emerald: ["#22C55E","#FF4FA3","#FFD166"]
+};
 function strandsHexToRgb(hex){
   const h = hex.replace("#","");
   return [parseInt(h.slice(0,2),16)/255, parseInt(h.slice(2,4),16)/255, parseInt(h.slice(4,6),16)/255];
-}
-function strandsHexToHsl(hex){
-  let [r,g,b] = strandsHexToRgb(hex);
-  const max = Math.max(r,g,b), min = Math.min(r,g,b);
-  let h, s, l = (max+min)/2;
-  if(max === min){ h = s = 0; }
-  else{
-    const d = max - min;
-    s = l > 0.5 ? d/(2-max-min) : d/(max+min);
-    switch(max){
-      case r: h = (g-b)/d + (g<b?6:0); break;
-      case g: h = (b-r)/d + 2; break;
-      default: h = (r-g)/d + 4;
-    }
-    h *= 60;
-  }
-  return [h,s,l];
-}
-function strandsHslToHex(h,s,l){
-  h = ((h%360)+360)%360; s = Math.max(0,Math.min(1,s)); l = Math.max(0,Math.min(1,l));
-  const c = (1-Math.abs(2*l-1))*s, x = c*(1-Math.abs((h/60)%2-1)), m = l-c/2;
-  let r,g,b;
-  if(h<60){ [r,g,b]=[c,x,0]; } else if(h<120){ [r,g,b]=[x,c,0]; } else if(h<180){ [r,g,b]=[0,c,x]; }
-  else if(h<240){ [r,g,b]=[0,x,c]; } else if(h<300){ [r,g,b]=[x,0,c]; } else { [r,g,b]=[c,0,x]; }
-  const to255 = v => Math.round((v+m)*255).toString(16).padStart(2,"0");
-  return `#${to255(r)}${to255(g)}${to255(b)}`;
-}
-// derives the strand weave's 3-color palette from a single user-picked accent:
-// the base color plus two lighter, hue-shifted tints, echoing the spread of
-// React Bits' own reference palette (one vivid + two soft pastels)
-function strandsPaletteFromAccent(hex){
-  const [h,s,l] = strandsHexToHsl(hex);
-  const c1 = hex;
-  const c2 = strandsHslToHex(h+28, Math.max(s*0.85,0.55), Math.min(l+0.14,0.72));
-  const c3 = strandsHslToHex(h-32, Math.max(s*0.75,0.5), Math.min(l+0.2,0.78));
-  return [c1,c2,c3];
 }
 function strandsReadableText(hex){
   const [r,g,b] = strandsHexToRgb(hex);
@@ -4177,10 +4124,13 @@ void main() {
 // never looks like it's fighting the timer, just breathing with it). The
 // mask radii keep the pulse close around the clock instead of washing the
 // whole screen — maskOuter sits just past the label/digits.
+// matches the reference React Bits <MagicRings> component's own prop
+// defaults exactly, with just the cycle length changed so it pulses on a
+// clean 3-second beat instead of the component's default ~3.45s
 const RINGS_CFG = {
-  speed:1, cycle:6.5, ringCount:6, attenuation:16, lineThickness:1.3,
-  baseRadius:0.3, radiusStep:0.1, scaleRate:0.22, opacity:0.85,
-  noiseAmount:0.04, ringGap:1.5, fadeIn:0.55, fadeOut:0.35,
+  speed:1, cycle:3.0, ringCount:3, attenuation:10, lineThickness:1,
+  baseRadius:0.35, radiusStep:0.1, scaleRate:0.2, opacity:1,
+  noiseAmount:0.1, ringGap:1.5, fadeIn:0.85, fadeOut:0.5,
   maskInner:0.35, maskOuter:0.95
 };
 function ringsHexToRgb(hex){
@@ -4249,7 +4199,13 @@ function ringsDraw(time){
   if(!RINGS) return;
   const { gl, program, buf, posLoc, u } = RINGS;
   gl.useProgram(program);
-  gl.uniform1f(u.uTime, time*0.001*RINGS_CFG.speed);
+  // driven by the timer's own elapsed time (duration minus what's left, or
+  // the stopwatch's own count-up) rather than wall-clock time since page
+  // load — sits perfectly still at t=0 until Start is pressed, freezes in
+  // place if paused, and resets with the timer, so the 3-second pulse cycle
+  // is always phase-locked to the moment the countdown actually began
+  const elapsed = swOn() ? remaining : Math.max(0, st.duration - remaining);
+  gl.uniform1f(u.uTime, elapsed*RINGS_CFG.speed);
   gl.uniform1f(u.uAttenuation, RINGS_CFG.attenuation);
   gl.uniform1f(u.uLineThickness, RINGS_CFG.lineThickness);
   gl.uniform1f(u.uBaseRadius, RINGS_CFG.baseRadius);
@@ -4264,7 +4220,7 @@ function ringsDraw(time){
   gl.uniform1f(u.uCycle, RINGS_CFG.cycle);
   gl.uniform1f(u.uMaskInner, RINGS_CFG.maskInner);
   gl.uniform1f(u.uMaskOuter, RINGS_CFG.maskOuter);
-  const hex = (isPro() && st.accentCustom) ? st.accent : "#ffffff";
+  const hex = (isPro() && st.accentCustom) ? st.accent : "#f8f8f8";
   const [r,g,b] = ringsHexToRgb(hex);
   gl.uniform3f(u.uColor, r, g, b);
   gl.bindBuffer(gl.ARRAY_BUFFER, buf);
@@ -4290,6 +4246,108 @@ function stopRings(){
   if(ringsRaf){ cancelAnimationFrame(ringsRaf); ringsRaf = null; }
   removeEventListener("resize", ringsResize);
   $("ringsBg").style.display = "none";
+}
+
+/* ----- Stars background (Stars theme): a plain canvas2d starfield —
+   points drift outward from the vanishing point at the screen's center,
+   the classic "flying through space" look (inspired by Shadertoy's
+   "Star Nest"/hyperspace-style starfields, reimplemented from scratch in
+   2D canvas rather than a raymarched fragment shader, since a simple point
+   field is all a calm ambient backdrop needs). For the last 10 real seconds
+   of the countdown, speed eases up hard into a hyperspace warp (points
+   stretch into streaks) — same idea as those shaders' warp-speed intros,
+   but driven by the timer's own remaining time instead of a fixed loop. */
+const STARS_CFG = { count:260, baseSpeed:0.16, maxSpeed:5.2, size:1.8, warpThreshold:30 };
+function starsHexToRgb(hex){
+  const h = hex.replace("#","");
+  return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+}
+function starsColor(){
+  const hex = (isPro() && st.accentCustom) ? st.accent : "#ffffff";
+  const [r,g,b] = starsHexToRgb(hex);
+  return `${r},${g},${b}`;
+}
+function starsResetPoint(s){
+  s.x = Math.random()*2 - 1;
+  s.y = Math.random()*2 - 1;
+  s.z = 1;
+}
+let STARS = null; // {ctx, canvas, points, lastTime} once initialized
+function initStars(){
+  const canvas = $("warpBg");
+  const ctx = canvas.getContext("2d");
+  if(!ctx) return null;
+  const points = [];
+  for(let i=0;i<STARS_CFG.count;i++){
+    const s = {x:0,y:0,z:1};
+    starsResetPoint(s);
+    s.z = Math.random(); // stagger initial depths so they don't all reset in sync
+    points.push(s);
+  }
+  return { ctx, canvas, points, lastTime: performance.now() };
+}
+function starsResize(){
+  if(!STARS) return;
+  const { canvas, ctx } = STARS;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(canvas.clientWidth * dpr);
+  canvas.height = Math.round(canvas.clientHeight * dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+// eases hard into warp speed only during an actual running countdown's
+// final 10 seconds — paused/stopwatch/idle states all stay at a calm drift
+function starsSpeed(){
+  if(running && !swOn() && remaining>0 && remaining<=STARS_CFG.warpThreshold){
+    const t = 1 - (remaining/STARS_CFG.warpThreshold);
+    return STARS_CFG.baseSpeed + (t*t) * (STARS_CFG.maxSpeed - STARS_CFG.baseSpeed);
+  }
+  return STARS_CFG.baseSpeed;
+}
+function starsDraw(now){
+  if(!STARS) return;
+  const { ctx, canvas, points } = STARS;
+  const dt = Math.min((now - STARS.lastTime)/1000, 0.05);
+  STARS.lastTime = now;
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  const cx = w/2, cy = h/2;
+  ctx.clearRect(0,0,w,h);
+  const speed = starsSpeed();
+  const streaking = speed > STARS_CFG.baseSpeed * 1.5;
+  const rgb = starsColor();
+  for(const s of points){
+    const prevZ = s.z;
+    s.z -= speed*dt;
+    if(s.z <= 0.02){ starsResetPoint(s); continue; }
+    const px = cx + (s.x/prevZ)*cx, py = cy + (s.y/prevZ)*cy;
+    const x2 = cx + (s.x/s.z)*cx, y2 = cy + (s.y/s.z)*cy;
+    if(x2 < 0 || x2 > w || y2 < 0 || y2 > h){ starsResetPoint(s); continue; }
+    const depth = 1 - s.z; // 0 far/dim -> 1 near/bright
+    const alpha = Math.min(1, depth*1.2 + 0.12);
+    const size = Math.max(0.6, depth*STARS_CFG.size);
+    ctx.strokeStyle = ctx.fillStyle = `rgba(${rgb},${alpha})`;
+    if(streaking){
+      ctx.lineWidth = size;
+      ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(x2,y2); ctx.stroke();
+    } else {
+      ctx.beginPath(); ctx.arc(x2,y2,size/2,0,Math.PI*2); ctx.fill();
+    }
+  }
+  starsRaf = requestAnimationFrame(starsDraw);
+}
+let starsRaf = null;
+function startStars(){
+  if(!STARS) STARS = initStars();
+  if(!STARS) return; // canvas2d unavailable — theme just keeps its plain dark background
+  $("warpBg").style.display = "block";
+  starsResize();
+  STARS.lastTime = performance.now();
+  addEventListener("resize", starsResize);
+  if(!starsRaf) starsRaf = requestAnimationFrame(starsDraw);
+}
+function stopStars(){
+  if(starsRaf){ cancelAnimationFrame(starsRaf); starsRaf = null; }
+  removeEventListener("resize", starsResize);
+  $("warpBg").style.display = "none";
 }
 
 /* ----- bounce: DVD-screensaver-style roaming, color-changing time.
@@ -4802,12 +4860,15 @@ function applyTheme(){
   } else {
     document.body.style.removeProperty("--fg");
   }
-  // Strands: the woven light-beams take their hue from the same Pro accent
-  // picker as everything else (no separate per-theme swatch needed), and the
-  // Start button + label glow follow the same base color for cohesion.
+  // Strands: a flavor picker (like Gradient's) swaps in one of a few
+  // distinct 3-color combos instead of tinting off a single accent — the
+  // Start button + label glow follow that combo's most vivid color for
+  // cohesion. Free/previewing users are pinned to the first (Violet).
   if(tid === "strands"){
-    const base = (isPro() && st.accent) ? st.accent : "#5227FF";
-    STRANDS_CFG.colors = strandsPaletteFromAccent(base);
+    const flavorId = (isPro() || PV.id) ? (st.flavors.strands || "violet") : "violet";
+    const palette = STRANDS_PALETTES[flavorId] || STRANDS_PALETTES.violet;
+    STRANDS_CFG.colors = palette;
+    const base = palette[0];
     // set directly on body (not documentElement) — body.theme-strands already
     // declares a fallback for this var in the stylesheet, and a same-element
     // declaration always wins over an inherited one regardless of ancestor specificity
