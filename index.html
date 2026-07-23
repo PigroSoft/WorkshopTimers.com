@@ -76,6 +76,7 @@
   body.theme-aurora[data-flavor="ice"]{ --aurora-glow:#5ad0ff; }
   body.theme-strands{ --bg:#070707; --bg2:#0d0d0d; --fg:#000000; --muted:#7a7a7a; --panel:#111; --border:#232323; --strands-accent:#5227FF; --strands-text:#fff; }
   body.theme-rings{ --bg:#000; --bg2:#050505; --fg:#ffffff; --muted:rgba(255,255,255,.55); --panel:#111; --border:#232323; --cdc:#fff; --cdc-text:#111; }
+  body.theme-rings.mode-light{ --bg:#f5f5f4; --bg2:#ebebe8; --fg:#151513; --muted:rgba(0,0,0,.55); --panel:#fff; --border:#e3e2df; --cdc:#151513; --cdc-text:#fff; }
   body.theme-warp{ --bg:#000; --bg2:#050505; --fg:#ffffff; --muted:rgba(255,255,255,.55); --panel:#111; --border:#232323; --cdc:#fff; --cdc-text:#111; }
   body.theme-strands.mode-light{ --bg:#f2f1ee; --bg2:#e8e7e2; --fg:#0a0a0a; --muted:#8a8a86; --panel:#fff; --border:#e0dfda; }
   body.theme-sky     { --bg:#4d84c9; --bg2:#7fb0e0; --fg:#ffffff; --muted:rgba(255,255,255,.78); --panel:#3f74b8; --border:rgba(255,255,255,.3); }
@@ -198,7 +199,7 @@
   body.theme-strands.mode-light #strandsBg{opacity:.55;}
   #skyBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
   #oceanBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
-  #ringsBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%; filter:blur(.5px);}
+  #ringsBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
   #warpBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
   #toasters{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; display:none;}
   .toaster{position:absolute; will-change:transform; animation:flyby linear infinite;}
@@ -384,17 +385,37 @@
      biases everything upward — pull it back down to sit on the glow */
   body.theme-strands #stage{padding-bottom:4vh;}
 
-  /* Pulse Rings: a small, thin (light-weight) timer floating over the rings,
-     with just a small caption above it — the rings themselves carry the
-     visual weight, so the type stays out of the way. */
+  /* Pulse: a small, thin (light-weight) timer floating over the rings, with
+     a small caption above it and the paused/status note below — the rings
+     themselves carry the visual weight, so the type stays out of the way.
+     Label, digits and the status line are all centered as one lockup
+     (#stage is already a centered flex column; #subline is normally
+     position:fixed for other themes, so it's pulled into that same flow
+     here to sit right under the digits). */
+  /* stacked mm/ss (and hh once it appears) instead of one inline "0:45"
+     line — each segment always zero-padded (see pulseSegments), one row
+     per unit, centered as a tight vertical lockup */
   body.theme-rings #time{
-    font-weight:var(--fontw,200); letter-spacing:.01em; color:#fff;
-    font-size:clamp(2.75rem,17vw,24vh); text-shadow:0 2px 30px rgba(0,0,0,.5);
+    font-weight:var(--fontw,200); letter-spacing:.01em; color:var(--fg); text-align:center;
+    font-size:clamp(2rem,12vw,17vh); text-shadow:0 2px 30px rgba(0,0,0,.5);
+    display:flex; flex-direction:column; align-items:center; gap:0;
   }
+  body.mode-light.theme-rings #time{ text-shadow:0 2px 20px rgba(255,255,255,.4); }
+  body.theme-rings #time .pline{line-height:1.05;}
   body.theme-rings #label{
-    color:rgba(255,255,255,.6); font-weight:500; letter-spacing:.16em;
-    font-size:clamp(.9rem,2.2vh,1.3rem); margin-bottom:.2rem;
+    color:var(--muted); font-weight:300; letter-spacing:.16em; text-align:center;
+    font-size:clamp(.9rem,2.2vh,1.3rem); margin-bottom:.3rem;
   }
+  body.theme-rings #subline{
+    position:static; transform:none; left:auto; bottom:auto;
+    margin-top:.5rem;
+  }
+  /* only the digit(s) that actually changed get a brief, subtle scale pulse
+     (see renderRingsPulse) — the rest of the number stays perfectly still,
+     so it reads as a quiet heartbeat rather than the whole clock flickering */
+  body.theme-rings #time .pchar{display:inline-block; transform-origin:50% 55%;}
+  body.theme-rings #time .pchar.pulse{animation:ringsDigitPulse .5s ease-out;}
+  @keyframes ringsDigitPulse{0%{transform:scale(1);} 35%{transform:scale(1.06);} 100%{transform:scale(1);}}
 
   /* Stars: a plain, thin-weight timer floating over the starfield — kept
      modest in size (unlike Rings) since this backdrop is mostly empty space
@@ -1013,6 +1034,18 @@
      near-white light-mode panel was often close to unreadable */
   .chip.active{border-color:var(--accent); color:var(--fg); background:color-mix(in srgb, var(--accent) 20%, transparent); font-weight:600;}
   .chip .lock{margin-left:.35rem; width:.95em; height:.95em; vertical-align:-.14em; opacity:.65;}
+  /* the color-variant picker (Theme style/Color) sits right under the Theme
+     grid but used to look identical to it — same size chips, same spacing —
+     so it read as a second, unrelated picker rather than "pick a color for
+     the theme above". A tinted well pulls it visually into the theme it
+     belongs to, and smaller pill-shaped chips (vs. the theme grid's boxy
+     ones) signal "this is a sub-choice", not another top-level list. */
+  #lampWell{
+    background:var(--bg2); border:1px solid var(--border); border-radius:12px;
+    padding:.7rem .75rem .75rem; margin-top:.6rem;
+  }
+  #lampHead{margin-top:0 !important; margin-bottom:.5rem;}
+  .flavor-row .chip{border-radius:999px; padding:.4rem .9rem; font-size:.78rem;}
   .pro-tag{
     display:inline-block; font-size:.62rem; font-weight:800; letter-spacing:.08em;
     background:var(--accent); color:#111; border-radius:4px; padding:.1rem .35rem;
@@ -1251,8 +1284,10 @@
     <div id="themeRow"></div>
     <div id="lampSec" style="display:grid; grid-template-rows:0fr; transition:grid-template-rows .22s ease; overflow:hidden">
       <div style="overflow:hidden; min-height:0">
-        <h3 id="lampHead" style="margin-top:.9rem"><span data-i18n="themeStyleHeading">Theme style</span> <span class="pro-tag">PRO</span></h3>
-        <div class="chip-row" id="lampRow"></div>
+        <div id="lampWell">
+          <h3 id="lampHead"><span data-i18n="themeStyleHeading">Color</span> <span class="pro-tag">PRO</span></h3>
+          <div class="chip-row flavor-row" id="lampRow"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -1450,8 +1485,8 @@ const I18N = {
     settingsTitle:"Settings", languageHeading:"Language",
     modeHeading:"Mode", countdownLabel:"Countdown (the default timer)", stopwatchLabel:"Stopwatch (count up instead)", clockLabel:"Clock mode (show the time of day)",
     pomodoroLabel:"Pomodoro mode (25 min focus / 5 min break)", pomodoroFocusWord:"Focus", pomodoroBreakWord:"Break",
-    themeHeading:"Theme", themeStyleHeading:"Theme style",
-    groupSimple:"Simple & Clean", groupAmbient:"Ambient & Backgrounds", groupNature:"Nature", groupRetro:"Retro & Fun",
+    themeHeading:"Theme", themeStyleHeading:"Color",
+    groupSimple:"Simple & Clean", groupAmbient:"Ambient", groupRetro:"Retro & Fun",
     soundHeading:"Sound", muteNote:"All sound is off. Previews and alerts are silenced. Press M or the speaker icon to unmute.",
     tickLabel:"Tick during final 10 seconds", tickAlwaysLabel:"Tick throughout the whole timer", voiceLabel:"Voice alert at 30 seconds left",
     voice2minLabel:"Voice alert at 2 minutes left", voiceHalfLabel:"\"Time to switch\" alert halfway through",
@@ -1479,8 +1514,8 @@ const I18N = {
     settingsTitle:"Einstellungen", languageHeading:"Sprache",
     modeHeading:"Modus", stopwatchLabel:"Stoppuhr (aufwärts zählen)", clockLabel:"Uhrzeit-Modus (Tageszeit anzeigen)",
     pomodoroLabel:"Pomodoro-Modus (25 Min. Fokus / 5 Min. Pause)", pomodoroFocusWord:"Fokus", pomodoroBreakWord:"Pause",
-    themeHeading:"Design", themeStyleHeading:"Design-Stil",
-    groupSimple:"Einfach & Klar", groupAmbient:"Ambient & Hintergründe", groupNature:"Natur", groupRetro:"Retro & Spaß",
+    themeHeading:"Design", themeStyleHeading:"Farbe",
+    groupSimple:"Einfach & Klar", groupAmbient:"Ambient", groupRetro:"Retro & Spaß",
     soundHeading:"Ton", muteNote:"Der Ton ist aus. Vorschauen und Signale sind stumm. M oder das Lautsprecher-Symbol schaltet den Ton wieder ein.",
     tickLabel:"Ticken in den letzten 10 Sekunden", tickAlwaysLabel:"Während des gesamten Timers ticken", voiceLabel:"Sprachansage bei 30 Sekunden",
     voice2minLabel:"Sprachansage bei 2 Minuten", voiceHalfLabel:"„Zeit zum Wechseln“-Ansage zur Halbzeit",
@@ -1507,8 +1542,8 @@ const I18N = {
   fr: {
     settingsTitle:"Réglages", languageHeading:"Langue",
     modeHeading:"Mode", stopwatchLabel:"Chronomètre (compte à rebours inversé)", clockLabel:"Mode horloge (afficher l'heure)",
-    themeHeading:"Thème", themeStyleHeading:"Style du thème",
-    groupSimple:"Simple & épuré", groupAmbient:"Ambiance & fonds", groupNature:"Nature", groupRetro:"Rétro & fun",
+    themeHeading:"Thème", themeStyleHeading:"Couleur",
+    groupSimple:"Simple & épuré", groupAmbient:"Ambiance", groupRetro:"Rétro & fun",
     soundHeading:"Son", muteNote:"Le son est coupé. Aperçus et alertes sont silencieux. Appuyez sur M ou l'icône haut-parleur pour réactiver.",
     tickLabel:"Tic-tac pendant les 10 dernières secondes", tickAlwaysLabel:"Tic-tac pendant tout le minuteur", voiceLabel:"Alerte vocale à 30 secondes",
     voice2minLabel:"Alerte vocale à 2 minutes", voiceHalfLabel:"Alerte « changez d'atelier » à mi-parcours",
@@ -1535,8 +1570,8 @@ const I18N = {
   es: {
     settingsTitle:"Ajustes", languageHeading:"Idioma",
     modeHeading:"Modo", stopwatchLabel:"Cronómetro (contar hacia arriba)", clockLabel:"Modo reloj (mostrar la hora del día)",
-    themeHeading:"Tema", themeStyleHeading:"Estilo del tema",
-    groupSimple:"Simple y claro", groupAmbient:"Ambiente y fondos", groupNature:"Naturaleza", groupRetro:"Retro y diversión",
+    themeHeading:"Tema", themeStyleHeading:"Color",
+    groupSimple:"Simple y claro", groupAmbient:"Ambiente", groupRetro:"Retro y diversión",
     soundHeading:"Sonido", muteNote:"El sonido está desactivado. Vistas previas y alertas están silenciadas. Pulsa M o el icono del altavoz para reactivar.",
     tickLabel:"Tictac en los últimos 10 segundos", tickAlwaysLabel:"Tictac durante todo el temporizador", voiceLabel:"Alerta de voz a los 30 segundos",
     voice2minLabel:"Alerta de voz a los 2 minutos", voiceHalfLabel:"Alerta de \"cambio de turno\" a mitad de tiempo",
@@ -1563,8 +1598,8 @@ const I18N = {
   zh: {
     settingsTitle:"设置", languageHeading:"语言",
     modeHeading:"模式", stopwatchLabel:"秒表（正计时）", clockLabel:"时钟模式（显示当前时间）",
-    themeHeading:"主题", themeStyleHeading:"主题风格",
-    groupSimple:"简约清爽", groupAmbient:"氛围与背景", groupNature:"自然", groupRetro:"复古趣味",
+    themeHeading:"主题", themeStyleHeading:"颜色",
+    groupSimple:"简约清爽", groupAmbient:"氛围", groupRetro:"复古趣味",
     soundHeading:"声音", muteNote:"声音已关闭。预览和提醒均已静音。按 M 或喇叭图标可取消静音。",
     tickLabel:"最后10秒滴答声", tickAlwaysLabel:"全程滴答声", voiceLabel:"剩余30秒语音提醒",
     voice2minLabel:"剩余2分钟语音提醒", voiceHalfLabel:"中场“该换人了”语音提醒",
@@ -1591,8 +1626,8 @@ const I18N = {
   pt: {
     settingsTitle:"Configurações", languageHeading:"Idioma",
     modeHeading:"Modo", stopwatchLabel:"Cronômetro (contagem crescente)", clockLabel:"Modo relógio (mostrar hora do dia)",
-    themeHeading:"Tema", themeStyleHeading:"Estilo do tema",
-    groupSimple:"Simples e limpo", groupAmbient:"Ambiente e fundos", groupNature:"Natureza", groupRetro:"Retrô e diversão",
+    themeHeading:"Tema", themeStyleHeading:"Cor",
+    groupSimple:"Simples e limpo", groupAmbient:"Ambiente", groupRetro:"Retrô e diversão",
     soundHeading:"Som", muteNote:"O som está desativado. Prévias e alertas estão silenciados. Pressione M ou o ícone do alto-falante para reativar.",
     tickLabel:"Tique-taque nos últimos 10 segundos", tickAlwaysLabel:"Tique-taque durante todo o cronômetro", voiceLabel:"Alerta de voz aos 30 segundos",
     voice2minLabel:"Alerta de voz aos 2 minutos", voiceHalfLabel:"Alerta de \"hora de trocar\" na metade do tempo",
@@ -1619,8 +1654,8 @@ const I18N = {
   ja: {
     settingsTitle:"設定", languageHeading:"言語",
     modeHeading:"モード", stopwatchLabel:"ストップウォッチ（カウントアップ）", clockLabel:"時計モード（現在時刻を表示）",
-    themeHeading:"テーマ", themeStyleHeading:"テーマスタイル",
-    groupSimple:"シンプル", groupAmbient:"雰囲気と背景", groupNature:"自然", groupRetro:"レトロ & 遊び心",
+    themeHeading:"テーマ", themeStyleHeading:"カラー",
+    groupSimple:"シンプル", groupAmbient:"雰囲気", groupRetro:"レトロ & 遊び心",
     soundHeading:"サウンド", muteNote:"サウンドはオフです。プレビューとアラートも無音になります。Mキーまたはスピーカーアイコンでミュート解除できます。",
     tickLabel:"最後の10秒間だけ秒針音を鳴らす", tickAlwaysLabel:"タイマー中ずっと秒針音を鳴らす", voiceLabel:"残り30秒で音声アラート",
     voice2minLabel:"残り2分で音声アラート", voiceHalfLabel:"折り返し地点で「交代の時間です」音声アラート",
@@ -1647,8 +1682,8 @@ const I18N = {
   it: {
     settingsTitle:"Impostazioni", languageHeading:"Lingua",
     modeHeading:"Modalità", stopwatchLabel:"Cronometro (conteggio crescente)", clockLabel:"Modalità orologio (mostra l'ora)",
-    themeHeading:"Tema", themeStyleHeading:"Stile del tema",
-    groupSimple:"Semplice e pulito", groupAmbient:"Atmosfera e sfondi", groupNature:"Natura", groupRetro:"Retrò e divertimento",
+    themeHeading:"Tema", themeStyleHeading:"Colore",
+    groupSimple:"Semplice e pulito", groupAmbient:"Atmosfera", groupRetro:"Retrò e divertimento",
     soundHeading:"Suono", muteNote:"L'audio è disattivato. Anteprime e avvisi sono silenziati. Premi M o l'icona dell'altoparlante per riattivare.",
     tickLabel:"Ticchettio negli ultimi 10 secondi", tickAlwaysLabel:"Ticchettio per tutto il timer", voiceLabel:"Avviso vocale a 30 secondi",
     voice2minLabel:"Avviso vocale a 2 minuti", voiceHalfLabel:"Avviso \"cambio turno\" a metà tempo",
@@ -1675,8 +1710,8 @@ const I18N = {
   ar: {
     settingsTitle:"الإعدادات", languageHeading:"اللغة",
     modeHeading:"الوضع", stopwatchLabel:"ساعة إيقاف (عد تصاعدي)", clockLabel:"وضع الساعة (عرض الوقت الحالي)",
-    themeHeading:"السمة", themeStyleHeading:"نمط السمة",
-    groupSimple:"بسيط وواضح", groupAmbient:"أجواء وخلفيات", groupNature:"الطبيعة", groupRetro:"كلاسيكي وممتع",
+    themeHeading:"السمة", themeStyleHeading:"اللون",
+    groupSimple:"بسيط وواضح", groupAmbient:"أجواء", groupRetro:"كلاسيكي وممتع",
     soundHeading:"الصوت", muteNote:"الصوت متوقف. المعاينات والتنبيهات صامتة أيضًا. اضغط M أو أيقونة مكبر الصوت لإعادة تفعيل الصوت.",
     tickLabel:"صوت تكة خلال آخر 10 ثوانٍ", tickAlwaysLabel:"صوت تكة طوال المؤقت", voiceLabel:"تنبيه صوتي عند 30 ثانية",
     voice2minLabel:"تنبيه صوتي عند دقيقتين", voiceHalfLabel:"تنبيه \"حان وقت التبديل\" في منتصف الوقت",
@@ -1703,8 +1738,8 @@ const I18N = {
   ru: {
     settingsTitle:"Настройки", languageHeading:"Язык",
     modeHeading:"Режим", stopwatchLabel:"Секундомер (счёт вперёд)", clockLabel:"Режим часов (показывать текущее время)",
-    themeHeading:"Тема", themeStyleHeading:"Стиль темы",
-    groupSimple:"Просто и чисто", groupAmbient:"Атмосфера и фоны", groupNature:"Природа", groupRetro:"Ретро и веселье",
+    themeHeading:"Тема", themeStyleHeading:"Цвет",
+    groupSimple:"Просто и чисто", groupAmbient:"Атмосфера", groupRetro:"Ретро и веселье",
     soundHeading:"Звук", muteNote:"Звук выключен. Предпросмотр и оповещения также беззвучны. Нажмите M или значок динамика, чтобы включить звук.",
     tickLabel:"Тиканье в последние 10 секунд", tickAlwaysLabel:"Тиканье на протяжении всего таймера", voiceLabel:"Голосовое оповещение за 30 секунд",
     voice2minLabel:"Голосовое оповещение за 2 минуты", voiceHalfLabel:"Оповещение «время сменить группу» на середине",
@@ -1731,8 +1766,8 @@ const I18N = {
   hi: {
     settingsTitle:"सेटिंग्स", languageHeading:"भाषा",
     modeHeading:"मोड", stopwatchLabel:"स्टॉपवॉच (आगे गिनती)", clockLabel:"घड़ी मोड (दिन का समय दिखाएं)",
-    themeHeading:"थीम", themeStyleHeading:"थीम शैली",
-    groupSimple:"सरल और स्वच्छ", groupAmbient:"माहौल और पृष्ठभूमि", groupNature:"प्रकृति", groupRetro:"रेट्रो और मज़ा",
+    themeHeading:"थीम", themeStyleHeading:"रंग",
+    groupSimple:"सरल और स्वच्छ", groupAmbient:"माहौल", groupRetro:"रेट्रो और मज़ा",
     soundHeading:"ध्वनि", muteNote:"ध्वनि बंद है। पूर्वावलोकन और अलर्ट भी शांत हैं। ध्वनि फिर से चालू करने के लिए M दबाएं या स्पीकर आइकन पर क्लिक करें।",
     tickLabel:"आख़िरी 10 सेकंड में टिक ध्वनि", tickAlwaysLabel:"पूरे टाइमर के दौरान टिक ध्वनि", voiceLabel:"30 सेकंड शेष पर आवाज़ अलर्ट",
     voice2minLabel:"2 मिनट शेष पर आवाज़ अलर्ट", voiceHalfLabel:"आधे समय पर \"बदलने का समय\" अलर्ट",
@@ -1759,8 +1794,8 @@ const I18N = {
   ko: {
     settingsTitle:"설정", languageHeading:"언어",
     modeHeading:"모드", stopwatchLabel:"스톱워치 (시간 증가)", clockLabel:"시계 모드 (현재 시각 표시)",
-    themeHeading:"테마", themeStyleHeading:"테마 스타일",
-    groupSimple:"심플 & 클린", groupAmbient:"분위기 & 배경", groupNature:"자연", groupRetro:"레트로 & 재미",
+    themeHeading:"테마", themeStyleHeading:"색상",
+    groupSimple:"심플 & 클린", groupAmbient:"분위기", groupRetro:"레트로 & 재미",
     soundHeading:"사운드", muteNote:"소리가 꺼져 있습니다. 미리듣기와 알림도 음소거됩니다. M 키나 스피커 아이콘을 눌러 다시 켤 수 있습니다.",
     tickLabel:"마지막 10초 동안 똑딱 소리", tickAlwaysLabel:"타이머 내내 똑딱 소리", voiceLabel:"30초 남았을 때 음성 알림",
     voice2minLabel:"2분 남았을 때 음성 알림", voiceHalfLabel:"절반 지점에서 \"교대 시간\" 음성 알림",
@@ -1845,7 +1880,7 @@ const THEMES = [
   {id:"strands",  name:"Strands",     pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"sky",      name:"Clouds",      pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"ocean",    name:"Ocean",       pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
-  {id:"rings",    name:"Rings",       pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
+  {id:"rings",    name:"Pulse",       pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"warp",     name:"Stars",       pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
 ];
 // per-theme default accent color — shown until a Pro user actually touches
@@ -1857,8 +1892,7 @@ const THEME_DEFAULT_ACCENT = { disc:"#d5442f", terminal:"#4ade80" };
 // doesn't affect THEMES itself or anything that reads it directly
 const THEME_GROUPS = [
   {labelKey:"groupSimple",    ids:["disc","midnight","paper","flip","squiggle","egg"]},
-  {labelKey:"groupAmbient",   ids:["days","sunset","strands","rings"]},
-  {labelKey:"groupNature",    ids:["aurora","sky","ocean","warp"]},
+  {labelKey:"groupAmbient",   ids:["days","sunset","strands","rings","aurora","sky","ocean","warp"]},
   {labelKey:"groupRetro",     ids:["nixie","terminal","lcars","bounce","lcd","web1","nasa"]}
 ];
 // themes flat/simple enough to offer both a dark and a light look; each theme's
@@ -1866,7 +1900,7 @@ const THEME_GROUPS = [
 const APPEARANCE_THEMES = {
   midnight:"dark", paper:"light", disc:"light", nasa:"light", squiggle:"dark", flip:"dark", egg:"light", days:"dark",
   lcd:"dark", terminal:"dark", web1:"dark", nixie:"dark", sunset:"light", lcars:"dark", bounce:"dark", aurora:"dark", strands:"dark",
-  sky:"light", ocean:"light"
+  sky:"light", ocean:"light", rings:"dark"
 };
 const SOUNDS = [
   {id:"chime",   name:"Chime",   pro:false},
@@ -2400,6 +2434,63 @@ function renderAuroraBlur(el, text){
   }
   el._auroraLast = text;
 }
+// Rings: a very subtle scale pulse on just the digit(s) that changed, not
+// the whole number — same changed-character diffing as renderAuroraBlur
+// above, just a quiet pulse instead of a blur-in, since Rings' whole design
+// is calm/ambient rather than an attention-grabbing tick.
+// Pulse always shows zero-padded mm/ss (and an hh row too once the
+// remaining time actually reaches an hour) rather than fmt()'s normal
+// unpadded-minutes single line -- reuses the already-computed, always-
+// zero-padded hmText ("hh:mm:ss") and just drops the hour row when it's
+// "00" and this isn't clock mode (where a real "00" hour is meaningful).
+function pulseSegments(hmText, clock){
+  const parts = hmText.split(":");
+  return (!clock && parts[0]==="00") ? parts.slice(1) : parts;
+}
+function renderRingsPulse(el, segs){
+  const shape = segs.map(s=>s.length).join(",");
+  // dataset.shape alone isn't enough -- switching to another theme (which
+  // just does elTime.textContent = text) wipes the .pline children but
+  // leaves the stale dataset attribute behind, so also confirm the actual
+  // DOM still looks like our stacked structure before trusting it
+  const structureOk = el.dataset.shape === shape
+    && el.children.length === segs.length
+    && el.firstElementChild?.classList?.contains("pline");
+  const makeChar = (ch)=>{
+    const span = document.createElement("span");
+    span.className = "pchar";
+    span.textContent = ch;
+    return span;
+  };
+  const makeLine = (seg)=>{
+    const line = document.createElement("div");
+    line.className = "pline";
+    [...seg].forEach(ch=> line.appendChild(makeChar(ch)));
+    return line;
+  };
+  const key = segs.join(":");
+  if(!structureOk){
+    el.innerHTML = "";
+    el.dataset.shape = shape;
+    const frag = document.createDocumentFragment();
+    segs.forEach(seg=> frag.appendChild(makeLine(seg)));
+    el.appendChild(frag);
+  } else if(el._ringsLast !== key){
+    const prevSegs = (el._ringsLast || "").split(":");
+    segs.forEach((seg, li)=>{
+      const prevSeg = prevSegs[li] || "";
+      const lineEl = el.children[li];
+      [...seg].forEach((ch, ci)=>{
+        if(ch !== prevSeg[ci]){
+          const span = makeChar(ch);
+          span.classList.add("pulse");
+          lineEl.children[ci].replaceWith(span);
+        }
+      });
+    });
+  }
+  el._ringsLast = key;
+}
 function renderTicker(el, text){
   // guard against reusing markup left behind by another theme (e.g. aurora's
   // .achar spans) that happens to match text.length but isn't a tick-cell structure
@@ -2759,6 +2850,7 @@ function render(){
     if(def.id === "midnight") renderTicker(elTime, text);
     else if(def.id === "days") elTime.textContent = hmsText;
     else if(def.id === "aurora") renderAuroraBlur(elTime, text);
+    else if(def.id === "rings") renderRingsPulse(elTime, pulseSegments(hmText, clock));
     else elTime.textContent = text;
     elTime.className = justFinished ? "over" : finished ? "" : danger ? "danger" : warn ? "warn" : "";
     if(def.id === "days") lavaSetActive(running || swOn());
@@ -4188,7 +4280,10 @@ function initRings(){
 function ringsResize(){
   if(!RINGS) return;
   const { gl, canvas, u, program } = RINGS;
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  // capped at 1x (not 2x like the lighter ambient shaders) -- the per-pixel
+  // ring loop plus mask/noise math was visibly laggy at full retina
+  // resolution; same tradeoff already made for Ocean/Clouds below
+  const dpr = Math.min(window.devicePixelRatio || 1, 1);
   const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
   if(canvas.width !== w || canvas.height !== h){ canvas.width = w; canvas.height = h; }
   gl.viewport(0, 0, canvas.width, canvas.height);
@@ -4220,7 +4315,10 @@ function ringsDraw(time){
   gl.uniform1f(u.uCycle, RINGS_CFG.cycle);
   gl.uniform1f(u.uMaskInner, RINGS_CFG.maskInner);
   gl.uniform1f(u.uMaskOuter, RINGS_CFG.maskOuter);
-  const hex = (isPro() && st.accentCustom) ? st.accent : "#f8f8f8";
+  // default ring color flips for light mode -- near-white rings would be
+  // invisible against the light background, so fall back to a dark charcoal
+  const lightMode = document.body.classList.contains("mode-light");
+  const hex = (isPro() && st.accentCustom) ? st.accent : (lightMode ? "#1a1a1a" : "#f8f8f8");
   const [r,g,b] = ringsHexToRgb(hex);
   gl.uniform3f(u.uColor, r, g, b);
   gl.bindBuffer(gl.ARRAY_BUFFER, buf);
