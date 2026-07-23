@@ -2349,7 +2349,12 @@ function renderEgg(rmMinutes){
   syncEditable($("eggLabel"), st.label);
 }
 
-/* ----- words renderer (paper theme: no numerals, just language) ----- */
+/* ----- words renderer (paper theme: no numerals, just language) -----
+   one numWords<LANG> function per supported language (0-59 is all this
+   theme ever needs -- hours never exceed h12, minutes/seconds never exceed
+   59), dispatched via NUM_WORD_FNS. Compositional languages (most of them)
+   build tens+ones; Hindi has no clean composition rule so it's a flat
+   lookup table instead. */
 const W_ONES = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
   "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
 const W_TENS = ["","","twenty","thirty","forty","fifty"];
@@ -2358,17 +2363,181 @@ function numWordsEN(n){
   const tt = Math.floor(n/10), o = n%10;
   return W_TENS[tt] + (o ? "-"+W_ONES[o] : "");
 }
-function numWords(n){ return st.lang === "de" ? numWordsDE(n) : numWordsEN(n); }
+
+const W_ES_0_29 = ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez",
+  "once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve",
+  "veinte","veintiuno","veintidós","veintitrés","veinticuatro","veinticinco","veintiséis","veintisiete","veintiocho","veintinueve"];
+const W_ES_TENS = ["","","","treinta","cuarenta","cincuenta"];
+const W_ES_ONES = ["","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve"];
+function numWordsES(n){
+  if(n < 30) return W_ES_0_29[n];
+  const tt = Math.floor(n/10), o = n%10;
+  return W_ES_TENS[tt] + (o ? " y "+W_ES_ONES[o] : "");
+}
+
+const W_FR_0_10 = ["zéro","un","deux","trois","quatre","cinq","six","sept","huit","neuf","dix"];
+const W_FR_TEENS = ["onze","douze","treize","quatorze","quinze","seize","dix-sept","dix-huit","dix-neuf"];
+const W_FR_TENS = ["vingt","trente","quarante","cinquante"];
+const W_FR_ONES = ["","un","deux","trois","quatre","cinq","six","sept","huit","neuf"];
+function numWordsFR(n){
+  if(n <= 10) return W_FR_0_10[n];
+  if(n < 20) return W_FR_TEENS[n-11];
+  const tt = Math.floor(n/10), o = n%10;
+  const tens = W_FR_TENS[tt-2];
+  if(o === 0) return tens;
+  if(o === 1) return tens+" et un";
+  return tens+"-"+W_FR_ONES[o];
+}
+
+const W_IT_0_19 = ["zero","uno","due","tre","quattro","cinque","sei","sette","otto","nove","dieci",
+  "undici","dodici","tredici","quattordici","quindici","sedici","diciassette","diciotto","diciannove"];
+const W_IT_TENS = ["venti","trenta","quaranta","cinquanta"];
+const W_IT_ONES = ["","uno","due","tre","quattro","cinque","sei","sette","otto","nove"];
+function numWordsIT(n){
+  if(n < 20) return W_IT_0_19[n];
+  const tt = Math.floor(n/10), o = n%10;
+  let tens = W_IT_TENS[tt-2];
+  if(o === 1 || o === 8) tens = tens.slice(0,-1); // elision: ventuno, ventotto
+  if(o === 3) return tens+"tré"; // ventitré, trentatré...
+  return tens + (o ? W_IT_ONES[o] : "");
+}
+
+const W_PT_0_19 = ["zero","um","dois","três","quatro","cinco","seis","sete","oito","nove","dez",
+  "onze","doze","treze","catorze","quinze","dezesseis","dezessete","dezoito","dezenove"];
+const W_PT_TENS = ["vinte","trinta","quarenta","cinquenta"];
+const W_PT_ONES = ["","um","dois","três","quatro","cinco","seis","sete","oito","nove"];
+function numWordsPT(n){
+  if(n < 20) return W_PT_0_19[n];
+  const tt = Math.floor(n/10), o = n%10;
+  return W_PT_TENS[tt-2] + (o ? " e "+W_PT_ONES[o] : "");
+}
+
+const W_RU_0_19 = ["ноль","один","два","три","четыре","пять","шесть","семь","восемь","девять","десять",
+  "одиннадцать","двенадцать","тринадцать","четырнадцать","пятнадцать","шестнадцать","семнадцать","восемнадцать","девятнадцать"];
+const W_RU_TENS = ["двадцать","тридцать","сорок","пятьдесят"];
+const W_RU_ONES = ["","один","два","три","четыре","пять","шесть","семь","восемь","девять"];
+function numWordsRU(n){
+  if(n < 20) return W_RU_0_19[n];
+  const tt = Math.floor(n/10), o = n%10;
+  return W_RU_TENS[tt-2] + (o ? " "+W_RU_ONES[o] : "");
+}
+function ruPluralForm(n, forms){
+  const a = Math.abs(n) % 100, n1 = a % 10;
+  if(a > 10 && a < 20) return forms[2];
+  if(n1 > 1 && n1 < 5) return forms[1];
+  if(n1 === 1) return forms[0];
+  return forms[2];
+}
+
+// simplified Modern Standard Arabic cardinals -- skips the full noun-gender
+// agreement/case system in favor of one consistent, understandable form
+const W_AR_0_19 = ["صفر","واحد","اثنان","ثلاثة","أربعة","خمسة","ستة","سبعة","ثمانية","تسعة","عشرة",
+  "أحد عشر","اثنا عشر","ثلاثة عشر","أربعة عشر","خمسة عشر","ستة عشر","سبعة عشر","ثمانية عشر","تسعة عشر"];
+const W_AR_TENS = ["عشرون","ثلاثون","أربعون","خمسون"];
+const W_AR_ONES = ["","واحد","اثنان","ثلاثة","أربعة","خمسة","ستة","سبعة","ثمانية","تسعة"];
+function numWordsAR(n){
+  if(n < 20) return W_AR_0_19[n];
+  const tt = Math.floor(n/10), o = n%10;
+  const tens = W_AR_TENS[tt-2];
+  return o ? W_AR_ONES[o]+" و"+tens : tens;
+}
+
+// Hindi 0-59 aren't built from a tens+ones rule (each has its own word), so
+// this is a flat lookup rather than a compose function
+const W_HI_0_59 = ["शून्य","एक","दो","तीन","चार","पांच","छह","सात","आठ","नौ","दस",
+  "ग्यारह","बारह","तेरह","चौदह","पंद्रह","सोलह","सत्रह","अठारह","उन्नीस","बीस",
+  "इक्कीस","बाईस","तेईस","चौबीस","पच्चीस","छब्बीस","सत्ताईस","अट्ठाईस","उनतीस","तीस",
+  "इकतीस","बत्तीस","तैंतीस","चौंतीस","पैंतीस","छत्तीस","सैंतीस","अड़तीस","उनतालीस","चालीस",
+  "इकतालीस","बयालीस","तैंतालीस","चौंतालीस","पैंतालीस","छियालीस","सैंतालीस","अड़तालीस","उनचास","पचास",
+  "इक्यावन","बावन","तिरेपन","चौवन","पचपन","छप्पन","सत्तावन","अट्ठावन","उनसठ"];
+function numWordsHI(n){ return W_HI_0_59[n] ?? String(n); }
+
+// Chinese/Japanese: Sino compositional (tens digit + 十 + ones digit), no
+// separators -- the two only differ in the character used for zero/"one" etc.
+const W_ZH_ONES = ["零","一","二","三","四","五","六","七","八","九"];
+function numWordsZH(n){
+  if(n < 10) return W_ZH_ONES[n];
+  if(n < 20){ const o = n%10; return "十"+(o?W_ZH_ONES[o]:""); }
+  const tt = Math.floor(n/10), o = n%10;
+  return W_ZH_ONES[tt]+"十"+(o?W_ZH_ONES[o]:"");
+}
+const W_JA_ONES = ["ゼロ","一","二","三","四","五","六","七","八","九"];
+function numWordsJA(n){
+  if(n < 10) return W_JA_ONES[n];
+  if(n < 20){ const o = n%10; return "十"+(o?W_JA_ONES[o]:""); }
+  const tt = Math.floor(n/10), o = n%10;
+  return W_JA_ONES[tt]+"十"+(o?W_JA_ONES[o]:"");
+}
+
+// Korean: Sino-Korean for minutes/seconds (below), but the hour is spoken
+// with native Korean numerals in their contracted pre-counter form -- see
+// numWordsHour/KO_HOUR_NATIVE further down, not this function.
+const W_KO_ONES = ["영","일","이","삼","사","오","육","칠","팔","구"];
+function numWordsKO(n){
+  if(n < 10) return W_KO_ONES[n];
+  if(n < 20){ const o = n%10; return "십"+(o?W_KO_ONES[o]:""); }
+  const tt = Math.floor(n/10), o = n%10;
+  return W_KO_ONES[tt]+"십"+(o?W_KO_ONES[o]:"");
+}
+const KO_HOUR_NATIVE = ["","한","두","세","네","다섯","여섯","일곱","여덟","아홉","열","열한","열두"];
+
+const NUM_WORD_FNS = {
+  en: numWordsEN, de: numWordsDE, es: numWordsES, fr: numWordsFR, it: numWordsIT,
+  pt: numWordsPT, ru: numWordsRU, ar: numWordsAR, hi: numWordsHI, zh: numWordsZH,
+  ja: numWordsJA, ko: numWordsKO
+};
+function numWords(n){ return (NUM_WORD_FNS[st.lang] || numWordsEN)(n); }
+
 const UNIT_WORDS = {
   en: { hour:["hour","hours"], minute:["minute","minutes"], second:["second","seconds"] },
-  de: { hour:["Stunde","Stunden"], minute:["Minute","Minuten"], second:["Sekunde","Sekunden"] }
+  de: { hour:["Stunde","Stunden"], minute:["Minute","Minuten"], second:["Sekunde","Sekunden"] },
+  es: { hour:["hora","horas"], minute:["minuto","minutos"], second:["segundo","segundos"] },
+  fr: { hour:["heure","heures"], minute:["minute","minutes"], second:["seconde","secondes"] },
+  it: { hour:["ora","ore"], minute:["minuto","minuti"], second:["secondo","secondi"] },
+  pt: { hour:["hora","horas"], minute:["minuto","minutos"], second:["segundo","segundos"] },
+  ar: { hour:["ساعة","ساعات"], minute:["دقيقة","دقائق"], second:["ثانية","ثواني"] },
+  hi: { hour:["घंटा","घंटे"], minute:["मिनट","मिनट"], second:["सेकंड","सेकंड"] },
+  zh: { hour:["小时","小时"], minute:["分钟","分钟"], second:["秒","秒"] },
+  ja: { hour:["時間","時間"], minute:["分","分"], second:["秒","秒"] },
+  ko: { hour:["시간","시간"], minute:["분","분"], second:["초","초"] },
 };
-function unitWord(kind, n){ const w = UNIT_WORDS[st.lang] || UNIT_WORDS.en; return w[kind][n===1?0:1]; }
-// German's Stunde/Minute/Sekunde are all feminine — "eine Stunde", not the
-// cardinal "eins Stunde" — so the count word needs its own agreement here
-function numWordsCount(n){
-  if(st.lang === "de" && n === 1) return "eine";
+// Russian plurals are 3-way (1 / 2-4 / 5+, with a teens exception) rather
+// than the simple singular/plural every other language above uses
+const RU_UNIT_FORMS = { hour:["час","часа","часов"], minute:["минута","минуты","минут"], second:["секунда","секунды","секунд"] };
+function unitWord(kind, n){
+  if(st.lang === "ru") return ruPluralForm(n, RU_UNIT_FORMS[kind]);
+  const w = UNIT_WORDS[st.lang] || UNIT_WORDS.en;
+  return w[kind][n===1?0:1];
+}
+// Chinese/Japanese butt the number straight against its counter ("五分",
+// no space) -- every other language here reads better with one
+function numUnitPhrase(numStr, unitStr){
+  return (st.lang === "zh" || st.lang === "ja") ? numStr+unitStr : numStr+" "+unitStr;
+}
+// grammatical gender of "one" doesn't always match the plain cardinal -- the
+// German/Spanish/French/Italian/Portuguese/Russian/Arabic nouns for hour,
+// minute and second aren't all the same gender, so "one" needs to agree
+// per unit rather than reusing a single cardinal word everywhere
+const COUNT_ONE_OVERRIDES = {
+  de: { hour:"eine", minute:"eine", second:"eine" },
+  es: { hour:"una", minute:"un", second:"un" },
+  fr: { hour:"une", minute:"une", second:"une" },
+  it: { hour:"una", minute:"un", second:"un" },
+  pt: { hour:"uma", minute:"um", second:"um" },
+  ru: { hour:"один", minute:"одна", second:"одна" },
+  ar: { hour:"واحدة", minute:"واحدة", second:"واحدة" },
+};
+function numWordsCount(n, kind){
+  if(n === 1 && COUNT_ONE_OVERRIDES[st.lang] && COUNT_ONE_OVERRIDES[st.lang][kind]) return COUNT_ONE_OVERRIDES[st.lang][kind];
+  if(st.lang === "zh" && n === 2) return "两"; // "两个小时/两分钟" reads far more natural than "二..."
   return numWords(n);
+}
+// the hour is spoken with native Korean numerals in a contracted pre-counter
+// form ("한 시", not the Sino-Korean "일 시") -- every other language just
+// reuses numWordsCount since their hour word takes the plain cardinal
+function numWordsHour(n){
+  if(st.lang === "ko" && n >= 1 && n <= 12) return KO_HOUR_NATIVE[n];
+  return numWordsCount(n, "hour");
 }
 function timeWords(s){
   // two lines under an hour, three once hours are involved, so minutes
@@ -2376,13 +2545,13 @@ function timeWords(s){
   s = Math.max(0, Math.round(s));
   if(s === 0) return `<span class="wline">${t("timesUp")}</span>`;
   const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
-  const secLine = numWordsCount(sec) + " " + unitWord("second", sec);
+  const secLine = numUnitPhrase(numWordsCount(sec, "second"), unitWord("second", sec));
   if(h){
-    const hourLine = numWordsCount(h) + " " + unitWord("hour", h);
-    const minLine = numWordsCount(m) + " " + unitWord("minute", m);
+    const hourLine = numUnitPhrase(numWordsHour(h), unitWord("hour", h));
+    const minLine = numUnitPhrase(numWordsCount(m, "minute"), unitWord("minute", m));
     return `<span class="wline">${hourLine}</span><span class="wline">${minLine}</span><span class="wline">${secLine}</span>`;
   }
-  const minLine = numWordsCount(m) + " " + unitWord("minute", m);
+  const minLine = numUnitPhrase(numWordsCount(m, "minute"), unitWord("minute", m));
   return `<span class="wline">${minLine}</span><span class="wline">${secLine}</span>`;
 }
 
@@ -2799,7 +2968,7 @@ function render(){
     hmText = String(n.getHours()).padStart(2,"0") + ":" + String(m).padStart(2,"0") + ":" + String(n.getSeconds()).padStart(2,"0");
     frac = (m*60 + n.getSeconds())/3600;
     secAngle = (n.getSeconds()/60)*360;
-    wordsHtml = `<span class="wline">${numWords(h12)}</span><span class="wline">${m===0 ? t("oclock") : (m<10 ? numWords(0)+" "+numWords(m) : numWords(m))}</span>`;
+    wordsHtml = `<span class="wline">${numWordsHour(h12)}</span><span class="wline">${m===0 ? t("oclock") : (m<10 ? numWords(0)+" "+numWords(m) : numWords(m))}</span>`;
     elSub.textContent = "";
   } else if(finished){
     text = fmt(0); hmsText = fmtHMS(0); hmText = fmtHM(0); frac = 0; secAngle = 0;
@@ -2810,7 +2979,7 @@ function render(){
     text = fmt(remaining); hmsText = fmtHMS(remaining); hmText = fmtHM(remaining);
     frac = (remaining%60)/60;
     secAngle = ((remaining%60)/60)*360;
-    wordsHtml = remaining < 1 ? `<span class="wline">${numWords(0)} ${unitWord("second",0)}</span>` : timeWords(remaining);
+    wordsHtml = remaining < 1 ? `<span class="wline">${numUnitPhrase(numWordsCount(0,"second"), unitWord("second",0))}</span>` : timeWords(remaining);
     elSub.textContent = running ? "" : (remaining > 0.5 ? t("paused") : t("stopwatchWord"));
   } else {
     text = fmt(remaining); hmsText = fmtHMS(remaining); hmText = fmtHM(remaining);
