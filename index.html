@@ -61,7 +61,7 @@
   body.theme-disc.mode-dark #discLabel{ color:#c8c8ce; }
   body.theme-disc.mode-dark #discTime{ color:#f0f0f2; }
   body.theme-nasa.mode-dark{ --bg:#141412; --bg2:#1c1c19; --fg:#f0efe9; --muted:#8a8a86; --panel:#1e1e1b; --border:#333330; }
-  body.theme-nasa.mode-dark #nasaWrap svg .nt{ stroke:#3a3a36; }
+  body.theme-nasa.mode-dark #nasaWrap svg .nt:not(.hot){ stroke:#3a3a36; }
   body.theme-squiggle.mode-light{ --bg:#fbfaf9; --bg2:#f0efee; --fg:#151513; --muted:#8a8a86; --panel:#ffffff; --border:#e3e2df; }
   body.theme-flip.mode-light{ --bg:#f3f2f0; --bg2:#e8e7e4; --fg:#333338; --muted:#8a8a86; --panel:#ffffff; --border:#dedcd9; }
   body.theme-egg.mode-dark{ --bg:#181c22; --bg2:#20242a; --fg:#f2f2f2; --muted:#8a8a8a; --panel:#1a1a1a; --border:#2c2c2c; }
@@ -433,12 +433,10 @@
     position:static; transform:none; left:auto; bottom:auto;
     margin-top:.5rem;
   }
-  /* only the digit(s) that actually changed get a brief, subtle scale pulse
-     (see renderRingsPulse) — the rest of the number stays perfectly still,
-     so it reads as a quiet heartbeat rather than the whole clock flickering */
-  body.theme-rings #time .pchar{display:inline-block; transform-origin:50% 55%;}
-  body.theme-rings #time .pchar.pulse{animation:ringsDigitPulse .5s ease-out;}
-  @keyframes ringsDigitPulse{0%{transform:scale(1);} 35%{transform:scale(1.06);} 100%{transform:scale(1);}}
+  /* the timer text itself stays perfectly static -- only the ring backdrop
+     animates -- so .pchar is still used structurally (see renderRingsPulse)
+     but carries no animation of its own */
+  body.theme-rings #time .pchar{display:inline-block;}
 
   /* Stars: a plain, thin-weight timer floating over the starfield — kept
      modest in size (unlike Rings) since this backdrop is mostly empty space
@@ -707,17 +705,30 @@
     position:absolute; inset:0; display:flex; flex-direction:column;
     align-items:center; justify-content:center; gap:.5rem;
   }
+  /* stacked, always-zero-padded mm/ss (and hh) lockup -- same treatment as
+     the Pulse theme's typography (renderRingsPulse/pulseSegments), reused
+     here per direct reference: bold label above, bold stacked digits, a
+     quiet italic status line below */
   #squigTime{
-    font-family:var(--font);
-    font-size:clamp(2.4rem,10vh,5.5rem); font-weight:500; font-variant-numeric:tabular-nums; letter-spacing:0;
+    font-family:var(--font); color:var(--fg);
+    font-size:clamp(2.4rem,10vh,5.5rem); font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:0;
+    display:flex; flex-direction:column; align-items:center; gap:0;
   }
+  #squigTime .pline{line-height:1.05;}
   body.theme-squiggle #label{display:none;}   /* the ring shows its own editable title, like Egg Timer */
   #squigLabel{
     font-family:var(--font); color:var(--fg);
-    text-transform:none; letter-spacing:.02em; font-weight:500;
+    text-transform:none; letter-spacing:.02em; font-weight:700;
     font-size:clamp(1rem,2.6vh,1.5rem); text-align:center; outline:none; cursor:text;
   }
   #squigLabel:focus{opacity:.75;}
+  /* the ring already reserves generous space below itself, so pull the
+     paused/status line up into that gap instead of leaving it pinned to
+     the screen's fixed bottom position like other themes */
+  body.theme-squiggle #subline{
+    position:static; transform:none; left:auto; bottom:auto;
+    margin-top:1rem; font-style:italic;
+  }
 
   /* ---------- nixie tubes: bare glowing digits on black, dim ghost 8s ---------- */
   body.theme-nixie #label{display:none;}
@@ -813,7 +824,7 @@
   /* ---------- sunset: soft light digits + ruler meter ---------- */
   #dotsWrap{display:none; flex-direction:column; align-items:center; gap:3rem;}
   #sunsetTime{
-    font-weight:300; font-size:clamp(2.6rem,13vw,16vh); color:#fdf3e0;
+    font-weight:300; font-size:clamp(5.2rem,26vw,32vh); color:#fdf3e0;
     letter-spacing:.12em; font-variant-numeric:tabular-nums; line-height:1;
     text-shadow:0 2px 30px rgba(120,40,90,.28); padding:0 .06em;
   }
@@ -915,6 +926,26 @@
   button.icon.hamburger.open span:nth-child(1){transform:translateY(.44rem) rotate(45deg);}
   button.icon.hamburger.open span:nth-child(2){opacity:0;}
   button.icon.hamburger.open span:nth-child(3){transform:translateY(-.44rem) rotate(-45deg);}
+  /* first-visit nudge toward the settings panel -- a small curved arrow
+     sitting just below/left of the hamburger, curling up to point at it.
+     Shown once per browser (see LS.onboarded), dismissed on any interaction
+     with the settings button or by clicking the hint itself. */
+  #onboardHint{
+    position:fixed; top:3.6rem; right:.6rem; z-index:6; display:none;
+    flex-direction:column; align-items:flex-end; gap:.2rem;
+    color:var(--fg); font-family:var(--font-ui); cursor:pointer;
+    animation:onboardBob 2s ease-in-out infinite;
+  }
+  #onboardHint svg{width:2.4rem; height:1.8rem; opacity:.85; transform:scaleX(-1);}
+  #onboardHint span{
+    font-size:.82rem; font-weight:500; white-space:nowrap;
+    background:var(--panel); border:1px solid var(--border);
+    padding:.4rem .75rem; border-radius:999px; box-shadow:0 4px 18px rgba(0,0,0,.18);
+  }
+  body.show-onboard #onboardHint{display:flex;}
+  body.hide-ui #onboardHint{display:none;}
+  @keyframes onboardBob{0%,100%{transform:translateY(0);}50%{transform:translateY(4px);}}
+  @media (prefers-reduced-motion:reduce){ #onboardHint{animation:none;} }
   .row{display:flex; gap:.5rem; flex-wrap:wrap; justify-content:center; align-items:center;}
   button{
     background:var(--panel); color:var(--fg); border:1px solid var(--border);
@@ -1249,6 +1280,10 @@
 <button class="icon hamburger" id="btnSettings" title="Settings" aria-label="Settings">
   <span></span><span></span><span></span>
 </button>
+<div id="onboardHint">
+  <svg viewBox="0 0 40 30"><path d="M2 28C16 4 28 2 38 2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M30 2h8v8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <span id="onboardHintText" data-i18n="onboardHint">Customize your timer here</span>
+</div>
 
 <button class="icon corner-bl" id="btnMute" title="Sound on/off (M)">
   <svg class="snd-on" viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L13 19V5L7.5 9.5H4z"/><path d="M16 9a4.5 4.5 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg>
@@ -1486,7 +1521,7 @@ function localPrice(){
 }
 const PRICE = localPrice();
 const PREVIEW_SECONDS = 15;
-const LS = { state:"wt_state_v3", logo:"wt_logo_v1", license:"wt_license_v1", customFont:"wt_font_v1" };
+const LS = { state:"wt_state_v3", logo:"wt_logo_v1", license:"wt_license_v1", customFont:"wt_font_v1", onboarded:"wt_onboarded_v1" };
 
 /* =========================================================
    LANGUAGE (free, EN + DE) — covers the Settings menu chrome and
@@ -1508,7 +1543,7 @@ const I18N = {
     settingsTitle:"Settings", languageHeading:"Language",
     modeHeading:"Mode", countdownLabel:"Countdown (the default timer)", stopwatchLabel:"Stopwatch (count up instead)", clockLabel:"Clock mode (show the time of day)",
     pomodoroLabel:"Pomodoro mode (25 min focus / 5 min break)", pomodoroFocusWord:"Focus", pomodoroBreakWord:"Break",
-    themeHeading:"Theme", themeStyleHeading:"Color",
+    themeHeading:"Theme", themeStyleHeading:"Color", onboardHint:"Customize your timer here",
     groupSimple:"Simple & Clean", groupAmbient:"Ambient", groupRetro:"Retro & Fun",
     soundHeading:"Sound", muteNote:"All sound is off. Previews and alerts are silenced. Press M or the speaker icon to unmute.",
     tickLabel:"Tick during final 10 seconds", tickAlwaysLabel:"Tick throughout the whole timer", voiceLabel:"Voice alert at 30 seconds left",
@@ -1537,7 +1572,7 @@ const I18N = {
     settingsTitle:"Einstellungen", languageHeading:"Sprache",
     modeHeading:"Modus", stopwatchLabel:"Stoppuhr (aufwärts zählen)", clockLabel:"Uhrzeit-Modus (Tageszeit anzeigen)",
     pomodoroLabel:"Pomodoro-Modus (25 Min. Fokus / 5 Min. Pause)", pomodoroFocusWord:"Fokus", pomodoroBreakWord:"Pause",
-    themeHeading:"Design", themeStyleHeading:"Farbe",
+    themeHeading:"Design", themeStyleHeading:"Farbe", onboardHint:"Hier kannst du deinen Timer anpassen",
     groupSimple:"Einfach & Klar", groupAmbient:"Ambient", groupRetro:"Retro & Spaß",
     soundHeading:"Ton", muteNote:"Der Ton ist aus. Vorschauen und Signale sind stumm. M oder das Lautsprecher-Symbol schaltet den Ton wieder ein.",
     tickLabel:"Ticken in den letzten 10 Sekunden", tickAlwaysLabel:"Während des gesamten Timers ticken", voiceLabel:"Sprachansage bei 30 Sekunden",
@@ -1565,7 +1600,7 @@ const I18N = {
   fr: {
     settingsTitle:"Réglages", languageHeading:"Langue",
     modeHeading:"Mode", stopwatchLabel:"Chronomètre (compte à rebours inversé)", clockLabel:"Mode horloge (afficher l'heure)",
-    themeHeading:"Thème", themeStyleHeading:"Couleur",
+    themeHeading:"Thème", themeStyleHeading:"Couleur", onboardHint:"Personnalisez votre minuteur ici",
     groupSimple:"Simple & épuré", groupAmbient:"Ambiance", groupRetro:"Rétro & fun",
     soundHeading:"Son", muteNote:"Le son est coupé. Aperçus et alertes sont silencieux. Appuyez sur M ou l'icône haut-parleur pour réactiver.",
     tickLabel:"Tic-tac pendant les 10 dernières secondes", tickAlwaysLabel:"Tic-tac pendant tout le minuteur", voiceLabel:"Alerte vocale à 30 secondes",
@@ -1593,7 +1628,7 @@ const I18N = {
   es: {
     settingsTitle:"Ajustes", languageHeading:"Idioma",
     modeHeading:"Modo", stopwatchLabel:"Cronómetro (contar hacia arriba)", clockLabel:"Modo reloj (mostrar la hora del día)",
-    themeHeading:"Tema", themeStyleHeading:"Color",
+    themeHeading:"Tema", themeStyleHeading:"Color", onboardHint:"Personaliza tu temporizador aquí",
     groupSimple:"Simple y claro", groupAmbient:"Ambiente", groupRetro:"Retro y diversión",
     soundHeading:"Sonido", muteNote:"El sonido está desactivado. Vistas previas y alertas están silenciadas. Pulsa M o el icono del altavoz para reactivar.",
     tickLabel:"Tictac en los últimos 10 segundos", tickAlwaysLabel:"Tictac durante todo el temporizador", voiceLabel:"Alerta de voz a los 30 segundos",
@@ -1621,7 +1656,7 @@ const I18N = {
   zh: {
     settingsTitle:"设置", languageHeading:"语言",
     modeHeading:"模式", stopwatchLabel:"秒表（正计时）", clockLabel:"时钟模式（显示当前时间）",
-    themeHeading:"主题", themeStyleHeading:"颜色",
+    themeHeading:"主题", themeStyleHeading:"颜色", onboardHint:"在这里自定义你的计时器",
     groupSimple:"简约清爽", groupAmbient:"氛围", groupRetro:"复古趣味",
     soundHeading:"声音", muteNote:"声音已关闭。预览和提醒均已静音。按 M 或喇叭图标可取消静音。",
     tickLabel:"最后10秒滴答声", tickAlwaysLabel:"全程滴答声", voiceLabel:"剩余30秒语音提醒",
@@ -1649,7 +1684,7 @@ const I18N = {
   pt: {
     settingsTitle:"Configurações", languageHeading:"Idioma",
     modeHeading:"Modo", stopwatchLabel:"Cronômetro (contagem crescente)", clockLabel:"Modo relógio (mostrar hora do dia)",
-    themeHeading:"Tema", themeStyleHeading:"Cor",
+    themeHeading:"Tema", themeStyleHeading:"Cor", onboardHint:"Personalize seu cronômetro aqui",
     groupSimple:"Simples e limpo", groupAmbient:"Ambiente", groupRetro:"Retrô e diversão",
     soundHeading:"Som", muteNote:"O som está desativado. Prévias e alertas estão silenciados. Pressione M ou o ícone do alto-falante para reativar.",
     tickLabel:"Tique-taque nos últimos 10 segundos", tickAlwaysLabel:"Tique-taque durante todo o cronômetro", voiceLabel:"Alerta de voz aos 30 segundos",
@@ -1677,7 +1712,7 @@ const I18N = {
   ja: {
     settingsTitle:"設定", languageHeading:"言語",
     modeHeading:"モード", stopwatchLabel:"ストップウォッチ（カウントアップ）", clockLabel:"時計モード（現在時刻を表示）",
-    themeHeading:"テーマ", themeStyleHeading:"カラー",
+    themeHeading:"テーマ", themeStyleHeading:"カラー", onboardHint:"ここでタイマーをカスタマイズできます",
     groupSimple:"シンプル", groupAmbient:"雰囲気", groupRetro:"レトロ & 遊び心",
     soundHeading:"サウンド", muteNote:"サウンドはオフです。プレビューとアラートも無音になります。Mキーまたはスピーカーアイコンでミュート解除できます。",
     tickLabel:"最後の10秒間だけ秒針音を鳴らす", tickAlwaysLabel:"タイマー中ずっと秒針音を鳴らす", voiceLabel:"残り30秒で音声アラート",
@@ -1705,7 +1740,7 @@ const I18N = {
   it: {
     settingsTitle:"Impostazioni", languageHeading:"Lingua",
     modeHeading:"Modalità", stopwatchLabel:"Cronometro (conteggio crescente)", clockLabel:"Modalità orologio (mostra l'ora)",
-    themeHeading:"Tema", themeStyleHeading:"Colore",
+    themeHeading:"Tema", themeStyleHeading:"Colore", onboardHint:"Personalizza il tuo timer qui",
     groupSimple:"Semplice e pulito", groupAmbient:"Atmosfera", groupRetro:"Retrò e divertimento",
     soundHeading:"Suono", muteNote:"L'audio è disattivato. Anteprime e avvisi sono silenziati. Premi M o l'icona dell'altoparlante per riattivare.",
     tickLabel:"Ticchettio negli ultimi 10 secondi", tickAlwaysLabel:"Ticchettio per tutto il timer", voiceLabel:"Avviso vocale a 30 secondi",
@@ -1733,7 +1768,7 @@ const I18N = {
   ar: {
     settingsTitle:"الإعدادات", languageHeading:"اللغة",
     modeHeading:"الوضع", stopwatchLabel:"ساعة إيقاف (عد تصاعدي)", clockLabel:"وضع الساعة (عرض الوقت الحالي)",
-    themeHeading:"السمة", themeStyleHeading:"اللون",
+    themeHeading:"السمة", themeStyleHeading:"اللون", onboardHint:"خصص المؤقت من هنا",
     groupSimple:"بسيط وواضح", groupAmbient:"أجواء", groupRetro:"كلاسيكي وممتع",
     soundHeading:"الصوت", muteNote:"الصوت متوقف. المعاينات والتنبيهات صامتة أيضًا. اضغط M أو أيقونة مكبر الصوت لإعادة تفعيل الصوت.",
     tickLabel:"صوت تكة خلال آخر 10 ثوانٍ", tickAlwaysLabel:"صوت تكة طوال المؤقت", voiceLabel:"تنبيه صوتي عند 30 ثانية",
@@ -1761,7 +1796,7 @@ const I18N = {
   ru: {
     settingsTitle:"Настройки", languageHeading:"Язык",
     modeHeading:"Режим", stopwatchLabel:"Секундомер (счёт вперёд)", clockLabel:"Режим часов (показывать текущее время)",
-    themeHeading:"Тема", themeStyleHeading:"Цвет",
+    themeHeading:"Тема", themeStyleHeading:"Цвет", onboardHint:"Настройте таймер здесь",
     groupSimple:"Просто и чисто", groupAmbient:"Атмосфера", groupRetro:"Ретро и веселье",
     soundHeading:"Звук", muteNote:"Звук выключен. Предпросмотр и оповещения также беззвучны. Нажмите M или значок динамика, чтобы включить звук.",
     tickLabel:"Тиканье в последние 10 секунд", tickAlwaysLabel:"Тиканье на протяжении всего таймера", voiceLabel:"Голосовое оповещение за 30 секунд",
@@ -1789,7 +1824,7 @@ const I18N = {
   hi: {
     settingsTitle:"सेटिंग्स", languageHeading:"भाषा",
     modeHeading:"मोड", stopwatchLabel:"स्टॉपवॉच (आगे गिनती)", clockLabel:"घड़ी मोड (दिन का समय दिखाएं)",
-    themeHeading:"थीम", themeStyleHeading:"रंग",
+    themeHeading:"थीम", themeStyleHeading:"रंग", onboardHint:"यहां अपना टाइमर कस्टमाइज़ करें",
     groupSimple:"सरल और स्वच्छ", groupAmbient:"माहौल", groupRetro:"रेट्रो और मज़ा",
     soundHeading:"ध्वनि", muteNote:"ध्वनि बंद है। पूर्वावलोकन और अलर्ट भी शांत हैं। ध्वनि फिर से चालू करने के लिए M दबाएं या स्पीकर आइकन पर क्लिक करें।",
     tickLabel:"आख़िरी 10 सेकंड में टिक ध्वनि", tickAlwaysLabel:"पूरे टाइमर के दौरान टिक ध्वनि", voiceLabel:"30 सेकंड शेष पर आवाज़ अलर्ट",
@@ -1817,7 +1852,7 @@ const I18N = {
   ko: {
     settingsTitle:"설정", languageHeading:"언어",
     modeHeading:"모드", stopwatchLabel:"스톱워치 (시간 증가)", clockLabel:"시계 모드 (현재 시각 표시)",
-    themeHeading:"테마", themeStyleHeading:"색상",
+    themeHeading:"테마", themeStyleHeading:"색상", onboardHint:"여기서 타이머를 사용자 지정하세요",
     groupSimple:"심플 & 클린", groupAmbient:"분위기", groupRetro:"레트로 & 재미",
     soundHeading:"사운드", muteNote:"소리가 꺼져 있습니다. 미리듣기와 알림도 음소거됩니다. M 키나 스피커 아이콘을 눌러 다시 켤 수 있습니다.",
     tickLabel:"마지막 10초 동안 똑딱 소리", tickAlwaysLabel:"타이머 내내 똑딱 소리", voiceLabel:"30초 남았을 때 음성 알림",
@@ -1884,8 +1919,8 @@ function numWordsDE(n){
    ambient, then the retro/fun set. First three are free.
    mode: how the time renders · prog: progress · font: default font id */
 const THEMES = [
-  {id:"disc",     name:"Time Disc",   pro:false, mode:"disc",     prog:"none", font:"helvetica"},
   {id:"midnight", name:"Bold",        pro:false, mode:"digits",   prog:"x",    font:"helvetica"},
+  {id:"disc",     name:"Time Disc",   pro:false, mode:"disc",     prog:"none", font:"helvetica"},
   {id:"paper",    name:"Typography",  pro:false, mode:"words",    prog:"none", font:"helvetica"},
   {id:"nasa",     name:"T-Minus",     pro:true,  mode:"nasa",     prog:"none", font:"helvetica"},
   {id:"squiggle", name:"Squiggle",    pro:true,  mode:"squiggle", prog:"none", font:"roboto"},
@@ -1914,7 +1949,7 @@ const THEME_DEFAULT_ACCENT = { disc:"#d5442f", terminal:"#4ade80" };
 // how the Theme picker in Settings is grouped — purely a display grouping,
 // doesn't affect THEMES itself or anything that reads it directly
 const THEME_GROUPS = [
-  {labelKey:"groupSimple",    ids:["disc","midnight","paper","flip","squiggle","egg"]},
+  {labelKey:"groupSimple",    ids:["midnight","disc","paper","flip","squiggle","egg"]},
   {labelKey:"groupAmbient",   ids:["days","sunset","strands","rings","aurora","sky","ocean","warp"]},
   {labelKey:"groupRetro",     ids:["nixie","terminal","lcars","bounce","lcd","web1","nasa"]}
 ];
@@ -1984,7 +2019,7 @@ function detectLang(){
 }
 const POMO_FOCUS_SEC = 25*60, POMO_BREAK_SEC = 5*60;
 let st = Object.assign({
-  duration: 600, theme:"disc", sound:"chime", tick:false, tickAlways:false, tickSound:"chrono", muted:false, clock:false, voice:false, voice2min:false, voiceHalf:false, stopwatch:false,
+  duration: 600, theme:"midnight", sound:"chime", tick:false, tickAlways:false, tickSound:"chrono", muted:false, clock:false, voice:false, voice2min:false, voiceHalf:false, stopwatch:false,
   pomodoro:false, pomoPhase:"focus",
   accent:"#d5442f", accentCustom:false, bg:"#101014", useBg:false, font:"helvetica", label:LABEL_DEFAULTS[detectLang()] || "Workshop Timer", labelCustom:false, appearance:null, lang:detectLang(),
   lc1:"SET PHASERS TO FUN", lc2:"SHIELDS: 98%", lc3:"WARP 9.9"
@@ -2822,7 +2857,7 @@ function squigArc(from, to, wavy, phase, amp){
   }
   return d;
 }
-function initSquiggle(){ renderSquiggle(1, "10:00"); }
+function initSquiggle(){ renderSquiggle(1, ["10","00"]); }
 /* the squiggle's wobble is animated independently of the 250ms core render
    loop, via requestAnimationFrame, for the same reason the T-Minus milliseconds
    are: it's a pure function of wall-clock time plus the last-known frac, not
@@ -2831,9 +2866,9 @@ function initSquiggle(){ renderSquiggle(1, "10:00"); }
    look jumpy/chaotic rather than a smooth continuous wobble. */
 let squigState = { frac:1 };
 let squigRaf = null;
-function renderSquiggle(frac, text){
+function renderSquiggle(frac, segs){
   squigState.frac = Math.max(0, Math.min(1, frac));
-  elSquigTime.textContent = text;
+  renderRingsPulse(elSquigTime, segs);
   syncEditable($("squigLabel"), st.label);
   if(!squigRaf) squigRaf = requestAnimationFrame(squiggleFrame);
 }
@@ -3058,7 +3093,7 @@ function render(){
     renderWords(elWords, wordsHtml);
     elWords.className = justFinished ? "over" : danger ? "danger" : "";
   }
-  else if(mode==="squiggle") renderSquiggle(frac, text);
+  else if(mode==="squiggle") renderSquiggle(frac, pulseSegments(hmText, clock));
   else if(mode==="nasa"){
     renderNasa(frac, remaining, clock);
     if(!clock && (running || swOn())) startNasaMs(); else stopNasaMs();
@@ -4365,7 +4400,7 @@ uniform float uOpacity, uNoiseAmount, uRingGap;
 uniform float uFadeIn, uFadeOut, uCycle;
 uniform float uMaskInner, uMaskOuter;
 uniform vec2 uResolution;
-uniform vec3 uColor;
+uniform vec3 uColor, uBg;
 uniform int uRingCount;
 
 const float HP = 1.5707963;
@@ -4388,20 +4423,31 @@ float ring(vec2 p, float ri, float cut, float t0, float px) {
 void main() {
   float px = 1.0 / min(uResolution.x, uResolution.y);
   vec2 p = (gl_FragCoord.xy - 0.5 * uResolution.xy) * px;
-  vec3 c = vec3(0.0);
+  // tracked as a plain scalar rather than a color -- mixing straight toward
+  // uColor (as this used to) silently collapses to zero whenever uColor is
+  // black, since mix(0, black, t) is always zero regardless of t. Intensity
+  // has to be independent of what color it will eventually paint.
+  float a = 0.0;
   for (int i = 0; i < 10; i++) {
     if (i >= uRingCount) break;
     float fi = float(i);
-    c = mix(c, uColor, vec3(ring(p, uBaseRadius + fi * uRadiusStep, pow(uRingGap, fi), i == 0 ? 0.0 : (uCycle / float(uRingCount)) * fi, px)));
+    a = mix(a, 1.0, ring(p, uBaseRadius + fi * uRadiusStep, pow(uRingGap, fi), i == 0 ? 0.0 : (uCycle / float(uRingCount)) * fi, px));
   }
   // keep the pulse confined to the timer's neighborhood — a radial mask
   // that's fully visible near center and fades to nothing well before the
   // edges of the screen, so only the rings close to the clock ever show
   float mask = 1.0 - smoothstep(uMaskInner, uMaskOuter, length(p));
-  c *= mask;
+  a *= mask;
   float n = fract(sin(dot(gl_FragCoord.xy + uTime * 100.0, vec2(12.9898, 78.233))) * 43758.5453);
-  c += (n - 0.5) * uNoiseAmount * mask;
-  fragColor = vec4(c, max(c.r, max(c.g, c.b)) * uOpacity);
+  a += (n - 0.5) * uNoiseAmount * mask;
+  // opaque output instead of real alpha -- lets the browser treat this
+  // canvas as a solid layer instead of recompositing a full-viewport
+  // transparent one every frame (the actual performance cost here, not the
+  // shader math). Manually replicates the old "over" alpha-compositing
+  // against the page (result = src*alpha + dst*(1-alpha)).
+  float alpha = clamp(a * uOpacity, 0.0, 1.0);
+  vec3 outColor = mix(uBg, uColor, alpha);
+  fragColor = vec4(outColor, 1.0);
 }
 `;
 // slowed way down and thinned out from the reference's snappy 1s pulse —
@@ -4412,9 +4458,9 @@ void main() {
 // whole screen — maskOuter sits just past the label/digits.
 // matches the reference React Bits <MagicRings> component's own prop
 // defaults exactly, with just the cycle length changed so it pulses on a
-// clean 3-second beat instead of the component's default ~3.45s
+// clean 5-second beat instead of the component's default ~3.45s
 const RINGS_CFG = {
-  speed:1, cycle:3.0, ringCount:3, attenuation:10, lineThickness:1,
+  speed:1, cycle:5.0, ringCount:3, attenuation:10, lineThickness:1,
   baseRadius:0.35, radiusStep:0.1, scaleRate:0.2, opacity:1,
   noiseAmount:0.1, ringGap:1.5, fadeIn:0.85, fadeOut:0.5,
   maskInner:0.35, maskOuter:0.95
@@ -4428,9 +4474,8 @@ function initRings(){
   const canvas = $("ringsBg");
   const gl = canvas.getContext("webgl2");
   if(!gl) return null;
-  gl.clearColor(0,0,0,0);
-  gl.enable(gl.BLEND);
-  gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  // no blending needed -- the shader now writes an opaque bg+glow color
+  // directly (see RINGS_FRAG), so this canvas composites as a solid layer
   function compile(type, src){
     const s = gl.createShader(type);
     gl.shaderSource(s, src);
@@ -4455,6 +4500,7 @@ function initRings(){
     uAttenuation: gl.getUniformLocation(program, "uAttenuation"),
     uResolution: gl.getUniformLocation(program, "uResolution"),
     uColor: gl.getUniformLocation(program, "uColor"),
+    uBg: gl.getUniformLocation(program, "uBg"),
     uLineThickness: gl.getUniformLocation(program, "uLineThickness"),
     uBaseRadius: gl.getUniformLocation(program, "uBaseRadius"),
     uRadiusStep: gl.getUniformLocation(program, "uRadiusStep"),
@@ -4491,7 +4537,7 @@ function ringsDraw(time){
   // driven by the timer's own elapsed time (duration minus what's left, or
   // the stopwatch's own count-up) rather than wall-clock time since page
   // load — sits perfectly still at t=0 until Start is pressed, freezes in
-  // place if paused, and resets with the timer, so the 3-second pulse cycle
+  // place if paused, and resets with the timer, so the 5-second pulse cycle
   // is always phase-locked to the moment the countdown actually began
   const elapsed = swOn() ? remaining : Math.max(0, st.duration - remaining);
   gl.uniform1f(u.uTime, elapsed*RINGS_CFG.speed);
@@ -4512,18 +4558,28 @@ function ringsDraw(time){
   // default ring color flips for light mode -- near-white rings would be
   // invisible against the light background, so fall back to a dark charcoal
   const lightMode = document.body.classList.contains("mode-light");
-  const hex = (isPro() && st.accentCustom) ? st.accent : (lightMode ? "#1a1a1a" : "#f8f8f8");
+  const hex = (isPro() && st.accentCustom) ? st.accent : (lightMode ? "#000000" : "#f8f8f8");
   const [r,g,b] = ringsHexToRgb(hex);
   gl.uniform3f(u.uColor, r, g, b);
+  // matches body.theme-rings/--bg and body.theme-rings.mode-light/--bg
+  // exactly, so the opaque shader output seams invisibly into the page
+  const [br,bg,bb] = lightMode ? [0.961,0.961,0.957] : [0,0,0];
+  gl.uniform3f(u.uBg, br, bg, bb);
   gl.bindBuffer(gl.ARRAY_BUFFER, buf);
   gl.enableVertexAttribArray(posLoc);
   gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 }
-let ringsRaf = null;
+let ringsRaf = null, ringsLastFrame = 0;
+// a slow ~5s breathing pulse reads just as smooth at 30fps as 60 -- capping
+// it here roughly halves the GPU/compositor cost for zero visible difference
+const RINGS_FRAME_INTERVAL = 1000/30;
 function ringsFrame(time){
-  ringsDraw(time);
+  if(time - ringsLastFrame >= RINGS_FRAME_INTERVAL){
+    ringsLastFrame = time;
+    ringsDraw(time);
+  }
   ringsRaf = requestAnimationFrame(ringsFrame);
 }
 function startRings(){
@@ -4532,6 +4588,7 @@ function startRings(){
   $("ringsBg").style.display = "block";
   ringsResize();
   addEventListener("resize", ringsResize);
+  ringsLastFrame = 0;
   if(!ringsRaf) ringsRaf = requestAnimationFrame(ringsFrame);
 }
 function stopRings(){
@@ -4946,12 +5003,20 @@ function shuffleTheme(){
   save(); applyTheme();
   if($("settings").classList.contains("open")) refreshSettings();
 }
+// first-visit nudge toward Settings -- shown once per browser (see init()),
+// dismissed the moment the user opens Settings, clicks the hint itself, or
+// after a while on its own so it never turns into a permanent nag
+function dismissOnboardHint(){
+  document.body.classList.remove("show-onboard");
+  try{ localStorage.setItem(LS.onboarded, "1"); }catch(e){}
+}
+$("onboardHint").addEventListener("click", ()=>{ dismissOnboardHint(); $("btnSettings").click(); });
 $("btnSettings").addEventListener("click", ()=>{
   const s = $("settings");
   const opening = !s.classList.contains("open");
   s.classList.toggle("open");
   $("btnSettings").classList.toggle("open", opening);
-  if(opening) refreshSettings();
+  if(opening){ refreshSettings(); dismissOnboardHint(); }
 });
 document.addEventListener("click", e=>{
   const s = $("settings");
@@ -4967,7 +5032,7 @@ document.addEventListener("click", e=>{
   // corner buttons (sound, appearance, fullscreen) toggle their own state
   // without needing the settings panel to close — leave it open so the
   // user can keep adjusting other settings right after
-  if(path.includes(s) || path.includes($("btnSettings")) || path.includes($("btnMute")) || path.includes($("btnAppearance")) || path.includes($("btnFull"))) return;
+  if(path.includes(s) || path.includes($("btnSettings")) || path.includes($("btnMute")) || path.includes($("btnAppearance")) || path.includes($("btnFull")) || path.includes($("onboardHint"))) return;
   s.classList.remove("open");
   $("btnSettings").classList.remove("open");
 });
@@ -5216,7 +5281,8 @@ function applyTheme(){
 // wide default tracking otherwise leaked into "paused" for these themes)
 const SUBLINE_TITLE_SRC = { disc:"discLabel", lcars:"lcTitle", web1:"w1Title", egg:"eggLabel", squiggle:"squigLabel", nasa:"nasaTitle" };
 function syncSublineFont(){
-  const srcId = SUBLINE_TITLE_SRC[curThemeId()];
+  const tid = curThemeId();
+  const srcId = SUBLINE_TITLE_SRC[tid];
   const src = srcId ? $(srcId) : elLabel;
   const cs = getComputedStyle(src);
   elSub.style.fontFamily = cs.fontFamily;
@@ -5225,6 +5291,15 @@ function syncSublineFont(){
   elSub.style.letterSpacing = cs.letterSpacing;
   elSub.style.textTransform = cs.textTransform;
   elSub.style.color = cs.color;
+  // Squiggle's own title is bold to match its reference lockup, but "paused"
+  // should stay a quiet italic aside rather than mirroring that same
+  // boldness -- keep family/tracking matched, revert weight/style/color to
+  // the stylesheet's own quieter defaults
+  if(tid === "squiggle"){
+    elSub.style.fontWeight = "400";
+    elSub.style.fontStyle = "italic";
+    elSub.style.color = "";
+  }
 }
 function applyBranding(){
   const logo = isPro() ? localStorage.getItem(LS.logo) : null;
@@ -5521,9 +5596,9 @@ $("overlay").addEventListener("click", e=>{ if(e.target.id==="overlay") closeMod
   $("lcDate").textContent = now.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}).toUpperCase();
   const doy = Math.floor((now - new Date(now.getFullYear(),0,0)) / 86400000);
   $("lcStar").textContent = "STARDATE " + ((now.getFullYear()-1946)*1000 + doy*2.74).toFixed(1);
-  if(!THEMES.find(t=>t.id===st.theme)) st.theme = "disc"; // saved theme no longer exists
+  if(!THEMES.find(t=>t.id===st.theme)) st.theme = "midnight"; // saved theme no longer exists
   if(!isPro()){
-    if((THEMES.find(t=>t.id===st.theme)||{}).pro) st.theme = "disc";
+    if((THEMES.find(t=>t.id===st.theme)||{}).pro) st.theme = "midnight";
     if(SOUNDS.find(s=>s.id===st.sound)?.pro) st.sound = "chime";
     if(FONTS.find(f=>f.id===st.font)?.pro) st.font = "helvetica";
     st.clock = false; // clock mode is Pro
@@ -5531,6 +5606,15 @@ $("overlay").addEventListener("click", e=>{ if(e.target.id==="overlay") closeMod
   }
   if(isPro()) document.querySelectorAll(".pro-tag").forEach(el=>el.remove());
   applyBranding(); applyLang(); render(); refreshSettings();
+  // first-visit-only nudge toward Settings -- a short delay so it doesn't
+  // flash in before the page has finished laying out, auto-dismissed after
+  // a while so it can't linger into a permanent nag if never clicked
+  try{
+    if(!localStorage.getItem(LS.onboarded)){
+      setTimeout(()=>{ document.body.classList.add("show-onboard"); }, 900);
+      setTimeout(dismissOnboardHint, 9000);
+    }
+  }catch(e){}
   setInterval(()=>{ if(clockOn()) render(); }, 1000); // clock-mode ticker
   document.addEventListener("visibilitychange", async ()=>{
     if(document.visibilityState==="visible" && running){
