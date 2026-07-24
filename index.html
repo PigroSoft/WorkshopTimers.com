@@ -117,6 +117,7 @@
   body.theme-rings{ --bg:#000; --bg2:#050505; --fg:#ffffff; --muted:rgba(255,255,255,.55); --panel:#111; --border:#232323; --cdc:#fff; --cdc-text:#111; }
   body.theme-rings.mode-light{ --bg:#f5f5f4; --bg2:#ebebe8; --fg:#151513; --muted:rgba(0,0,0,.55); --panel:#fff; --border:#e3e2df; --cdc:#151513; --cdc-text:#fff; }
   body.theme-warp{ --bg:#000; --bg2:#050505; --fg:#ffffff; --muted:rgba(255,255,255,.55); --panel:#111; --border:#232323; --cdc:#fff; --cdc-text:#111; }
+  body.theme-orb{ --bg:#07040d; --bg2:#0c0716; --fg:#f5f2fb; --muted:rgba(245,242,251,.6); --panel:#140c26; --border:rgba(245,242,251,.18); }
   body.theme-strands.mode-light{ --bg:#f2f1ee; --bg2:#e8e7e2; --fg:#0a0a0a; --muted:#8a8a86; --panel:#fff; --border:#e0dfda; }
   body.theme-sky     { --bg:#4d84c9; --bg2:#7fb0e0; --fg:#ffffff; --muted:rgba(255,255,255,.78); --panel:#3f74b8; --border:rgba(255,255,255,.3); }
   /* same cloud shader, just re-tinted grey/slate for an overcast rainy day
@@ -276,6 +277,7 @@
      slow */
   #ringsBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
   #warpBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
+  #orbBg{position:fixed; inset:0; z-index:0; pointer-events:none; display:none; width:100%; height:100%;}
   #toasters{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; display:none;}
   .toaster{position:absolute; will-change:transform; animation:flyby linear infinite;}
   .toaster .wing{animation:flap .3s ease-in-out infinite alternate; transform-origin:28px 20px;}
@@ -484,6 +486,38 @@
     color:rgba(255,255,255,.55); font-weight:500; letter-spacing:.14em;
     font-size:clamp(.9rem,2.2vh,1.3rem); margin-bottom:.2rem;
   }
+  /* Orb theme (Aliens-dark4 Figma frame): no card, single-line digits sit
+     dead center over the Orb background (same no-panel pattern as
+     Aurora-dark1/Clouds), while the label is pinned near the top of the
+     frame on its own -- unlike every other giant-digit theme here, the
+     label isn't part of the same lockup as the digits, so it's pulled out
+     of #stage's flex flow with position:absolute instead of sitting above
+     the digit block in document order. (dark5's stacked mm/ss variant read
+     too busy/cartoony for the countdown use case -- back to dark4's single
+     inline "05:00".) */
+  body.theme-orb #stage{ padding-top:0; padding-bottom:0; position:relative; }
+  body.theme-orb #time{
+    font-family:'Michroma','Arial Narrow',sans-serif;
+    font-weight:var(--fontw,400); letter-spacing:.05em; color:var(--fg);
+    font-size:clamp(2rem,min(9.26vh,20vw),9.26vh); text-shadow:0 3px 20px rgba(0,0,0,.5);
+  }
+  body.theme-orb #label{
+    position:absolute; top:7.41vh; left:50%; transform:translateX(-50%);
+    max-width:92vw; white-space:nowrap; overflow:hidden; text-overflow:clip;
+    font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-weight:700; letter-spacing:2em; text-transform:uppercase;
+    font-size:clamp(.55rem,2.7vh,1.7rem); color:var(--fg);
+    text-shadow:0 0 3px rgba(0,0,0,.9), 0 0 18px rgba(0,0,0,.75), 0 2px 12px rgba(0,0,0,.6);
+    margin:0;
+  }
+  body.theme-orb #subline{
+    font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+    text-transform:none; letter-spacing:0; font-weight:500; font-style:italic;
+    font-size:clamp(.85rem,2.78vh,1.6rem); opacity:.3; text-shadow:none;
+  }
+  /* a neon green reads as the complementary pop against the orb's
+     blue/purple palette, rather than the default gold/red accent */
+  body.theme-orb #btnStart{background:#39ff88; border-color:#39ff88; color:#04170c;}
   /* matrix: glow + cursor (currentColor so rain-color variants recolor it) */
   body.theme-terminal #time{
     font-weight:var(--fontw,400);
@@ -1217,6 +1251,7 @@
 <canvas id="oceanBg"></canvas>
 <canvas id="ringsBg"></canvas>
 <canvas id="warpBg"></canvas>
+<canvas id="orbBg"></canvas>
 <div id="toasters"></div>
 <div id="previewBadge"></div>
 
@@ -1493,6 +1528,13 @@
     <a href="#" id="removeLicense" style="font-size:.68rem; color:var(--muted); opacity:.5; text-decoration:underline; cursor:pointer">Remove license from this device</a>
   </div>
 
+  <section>
+    <h3>Support</h3>
+    <div class="help">
+      Found a bug or something looks wrong? Email <a href="mailto:support@workshoptimers.com" style="color:inherit; text-decoration:underline">support@workshoptimers.com</a> with what you were doing, which theme/browser you were using, and a screenshot if you can grab one — that's usually enough to track it down.
+    </div>
+  </section>
+
   <div style="margin-top:.8rem">
     <span class="eu-badge">
       <svg viewBox="0 0 20 20" width="36" height="36" aria-hidden="true"><defs><polygon id="s" points="0.000,-0.900 0.202,-0.278 0.856,-0.278 0.327,0.106 0.529,0.728 0.000,0.344 -0.529,0.728 -0.327,0.106 -0.856,-0.278 -0.202,-0.278"/></defs><circle cx="10" cy="10" r="9.3" fill="#003399"/><g fill="#ffcc00"><use href="#s" transform="translate(10,2.8) scale(1.05)"/><use href="#s" transform="translate(13.6,3.76) scale(1.05)"/><use href="#s" transform="translate(16.24,6.4) scale(1.05)"/><use href="#s" transform="translate(17.2,10) scale(1.05)"/><use href="#s" transform="translate(16.24,13.6) scale(1.05)"/><use href="#s" transform="translate(13.6,16.24) scale(1.05)"/><use href="#s" transform="translate(10,17.2) scale(1.05)"/><use href="#s" transform="translate(6.4,16.24) scale(1.05)"/><use href="#s" transform="translate(3.76,13.6) scale(1.05)"/><use href="#s" transform="translate(2.8,10) scale(1.05)"/><use href="#s" transform="translate(3.76,6.4) scale(1.05)"/><use href="#s" transform="translate(6.4,3.76) scale(1.05)"/></g></svg>
@@ -1508,7 +1550,7 @@
       <h2 id="modalTitle">Get Pro, yours forever</h2>
       <p id="modalBody">One payment. No subscription, no account, no email list. You unlock every theme, font, sound, and color with a license key that's yours forever.</p>
       <ul id="modalList">
-        <li>All 19 themes: countdown board, starship, LED clock &amp; more</li>
+        <li>All 22 themes: countdown board, starship, LED clock &amp; more</li>
         <li>Your logo + custom colors on the big screen</li>
         <li>11 fonts, 5 end sounds, voice alert, clock + stopwatch modes</li>
       </ul>
@@ -1579,7 +1621,7 @@ const I18N = {
     modeHeading:"Mode", countdownLabel:"Countdown (the default timer)", stopwatchLabel:"Stopwatch (count up instead)", clockLabel:"Clock mode (show the time of day)",
     pomodoroLabel:"Pomodoro mode (25 min focus / 5 min break)", pomodoroFocusWord:"Focus", pomodoroBreakWord:"Break",
     themeHeading:"Theme", themeStyleHeading:"Color", onboardHint:"Customize your timer here",
-    groupSimple:"Simple & Clean", groupAmbient:"Ambient", groupRetro:"Retro & Fun",
+    groupSimple:"Minimalism", groupAmbient:"Cinematic", groupRetro:"Retro",
     soundHeading:"Sound", muteNote:"All sound is off. Previews and alerts are silenced. Press M or the speaker icon to unmute.",
     tickLabel:"Tick during final 10 seconds", tickAlwaysLabel:"Tick throughout the whole timer", voiceLabel:"Voice alert at 30 seconds left",
     voice2minLabel:"Voice alert at 2 minutes left", voiceHalfLabel:"\"Time to switch\" alert halfway through",
@@ -1590,7 +1632,7 @@ const I18N = {
     bgLabel:"Background color (overrides theme)", useItLabel:"use it", resetColorsBtn:"Reset colors & logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (lifetime)", proHeadUnlocked:"Pro (unlocked)",
     proStatusUnlocked:"You have the full version: every theme, sound, font, and color. Thanks for supporting an independent tool.",
-    proStatusLockedPrefix:"All 19 themes with style variants, clock & stopwatch modes, voice alert, custom colors & logo, beautiful fonts & your own uploads, 5 end sounds. One-time",
+    proStatusLockedPrefix:"All 22 themes with style variants, clock & stopwatch modes, voice alert, custom colors & logo, beautiful fonts & your own uploads, 5 end sounds. One-time",
     proStatusLockedSuffix:", yours forever, no subscription.",
     getProBtn:"Get Pro for Life", haveKeyLabel:"Already bought? Paste your license key",
     installHeading:"Use it as an app (Mac & PC)",
@@ -1608,7 +1650,7 @@ const I18N = {
     modeHeading:"Modus", stopwatchLabel:"Stoppuhr (aufwärts zählen)", clockLabel:"Uhrzeit-Modus (Tageszeit anzeigen)",
     pomodoroLabel:"Pomodoro-Modus (25 Min. Fokus / 5 Min. Pause)", pomodoroFocusWord:"Fokus", pomodoroBreakWord:"Pause",
     themeHeading:"Design", themeStyleHeading:"Farbe", onboardHint:"Hier kannst du deinen Timer anpassen",
-    groupSimple:"Einfach & Klar", groupAmbient:"Ambient", groupRetro:"Retro & Spaß",
+    groupSimple:"Minimalismus", groupAmbient:"Filmisch", groupRetro:"Retro",
     soundHeading:"Ton", muteNote:"Der Ton ist aus. Vorschauen und Signale sind stumm. M oder das Lautsprecher-Symbol schaltet den Ton wieder ein.",
     tickLabel:"Ticken in den letzten 10 Sekunden", tickAlwaysLabel:"Während des gesamten Timers ticken", voiceLabel:"Sprachansage bei 30 Sekunden",
     voice2minLabel:"Sprachansage bei 2 Minuten", voiceHalfLabel:"„Zeit zum Wechseln“-Ansage zur Halbzeit",
@@ -1619,7 +1661,7 @@ const I18N = {
     bgLabel:"Hintergrundfarbe (überschreibt Design)", useItLabel:"verwenden", resetColorsBtn:"Farben & Logo zurücksetzen",
     proHeadFree:"Pro", proHeadLifetime:"Pro (lebenslang)", proHeadUnlocked:"Pro (freigeschaltet)",
     proStatusUnlocked:"Du hast die Vollversion: jedes Design, jeden Sound, jede Schrift und Farbe. Danke, dass du ein unabhängiges Tool unterstützt.",
-    proStatusLockedPrefix:"Alle 19 Designs mit Stilvarianten, Uhrzeit- & Stoppuhr-Modus, Sprachansage, eigene Farben & Logo, schöne Schriften & eigene Uploads, 5 Endsignale. Einmalig",
+    proStatusLockedPrefix:"Alle 22 Designs mit Stilvarianten, Uhrzeit- & Stoppuhr-Modus, Sprachansage, eigene Farben & Logo, schöne Schriften & eigene Uploads, 5 Endsignale. Einmalig",
     proStatusLockedSuffix:", für immer deins, kein Abo.",
     getProBtn:"Pro fürs Leben holen", haveKeyLabel:"Schon gekauft? Lizenzschlüssel einfügen",
     installHeading:"Als App nutzen (Mac & PC)",
@@ -1636,7 +1678,7 @@ const I18N = {
     settingsTitle:"Réglages", languageHeading:"Langue",
     modeHeading:"Mode", stopwatchLabel:"Chronomètre (compte à rebours inversé)", clockLabel:"Mode horloge (afficher l'heure)",
     themeHeading:"Thème", themeStyleHeading:"Couleur", onboardHint:"Personnalisez votre minuteur ici",
-    groupSimple:"Simple & épuré", groupAmbient:"Ambiance", groupRetro:"Rétro & fun",
+    groupSimple:"Minimalisme", groupAmbient:"Cinématique", groupRetro:"Rétro",
     soundHeading:"Son", muteNote:"Le son est coupé. Aperçus et alertes sont silencieux. Appuyez sur M ou l'icône haut-parleur pour réactiver.",
     tickLabel:"Tic-tac pendant les 10 dernières secondes", tickAlwaysLabel:"Tic-tac pendant tout le minuteur", voiceLabel:"Alerte vocale à 30 secondes",
     voice2minLabel:"Alerte vocale à 2 minutes", voiceHalfLabel:"Alerte « changez d'atelier » à mi-parcours",
@@ -1647,7 +1689,7 @@ const I18N = {
     bgLabel:"Couleur de fond (remplace le thème)", useItLabel:"utiliser", resetColorsBtn:"Réinitialiser couleurs & logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (à vie)", proHeadUnlocked:"Pro (débloqué)",
     proStatusUnlocked:"Vous avez la version complète : chaque thème, son, police et couleur. Merci de soutenir un outil indépendant.",
-    proStatusLockedPrefix:"Les 19 thèmes avec variantes de style, modes horloge & chronomètre, alerte vocale, couleurs & logo personnalisés, belles polices & vos propres imports, 5 sons de fin. Paiement unique",
+    proStatusLockedPrefix:"Les 22 thèmes avec variantes de style, modes horloge & chronomètre, alerte vocale, couleurs & logo personnalisés, belles polices & vos propres imports, 5 sons de fin. Paiement unique",
     proStatusLockedSuffix:", à vous pour toujours, sans abonnement.",
     getProBtn:"Obtenir Pro à vie", haveKeyLabel:"Déjà acheté ? Collez votre clé de licence",
     installHeading:"Utiliser comme application (Mac & PC)",
@@ -1664,7 +1706,7 @@ const I18N = {
     settingsTitle:"Ajustes", languageHeading:"Idioma",
     modeHeading:"Modo", stopwatchLabel:"Cronómetro (contar hacia arriba)", clockLabel:"Modo reloj (mostrar la hora del día)",
     themeHeading:"Tema", themeStyleHeading:"Color", onboardHint:"Personaliza tu temporizador aquí",
-    groupSimple:"Simple y claro", groupAmbient:"Ambiente", groupRetro:"Retro y diversión",
+    groupSimple:"Minimalismo", groupAmbient:"Cinemático", groupRetro:"Retro",
     soundHeading:"Sonido", muteNote:"El sonido está desactivado. Vistas previas y alertas están silenciadas. Pulsa M o el icono del altavoz para reactivar.",
     tickLabel:"Tictac en los últimos 10 segundos", tickAlwaysLabel:"Tictac durante todo el temporizador", voiceLabel:"Alerta de voz a los 30 segundos",
     voice2minLabel:"Alerta de voz a los 2 minutos", voiceHalfLabel:"Alerta de \"cambio de turno\" a mitad de tiempo",
@@ -1675,7 +1717,7 @@ const I18N = {
     bgLabel:"Color de fondo (anula el tema)", useItLabel:"usar", resetColorsBtn:"Restablecer colores y logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (de por vida)", proHeadUnlocked:"Pro (desbloqueado)",
     proStatusUnlocked:"Tienes la versión completa: todos los temas, sonidos, fuentes y colores. Gracias por apoyar una herramienta independiente.",
-    proStatusLockedPrefix:"Los 19 temas con variantes de estilo, modos reloj y cronómetro, alerta de voz, colores y logo personalizados, fuentes bonitas y tus propias subidas, 5 sonidos finales. Pago único",
+    proStatusLockedPrefix:"Los 22 temas con variantes de estilo, modos reloj y cronómetro, alerta de voz, colores y logo personalizados, fuentes bonitas y tus propias subidas, 5 sonidos finales. Pago único",
     proStatusLockedSuffix:", tuyo para siempre, sin suscripción.",
     getProBtn:"Consigue Pro de por vida", haveKeyLabel:"¿Ya lo compraste? Pega tu clave de licencia",
     installHeading:"Úsalo como app (Mac y PC)",
@@ -1692,7 +1734,7 @@ const I18N = {
     settingsTitle:"设置", languageHeading:"语言",
     modeHeading:"模式", stopwatchLabel:"秒表（正计时）", clockLabel:"时钟模式（显示当前时间）",
     themeHeading:"主题", themeStyleHeading:"颜色", onboardHint:"在这里自定义你的计时器",
-    groupSimple:"简约清爽", groupAmbient:"氛围", groupRetro:"复古趣味",
+    groupSimple:"极简", groupAmbient:"电影感", groupRetro:"复古",
     soundHeading:"声音", muteNote:"声音已关闭。预览和提醒均已静音。按 M 或喇叭图标可取消静音。",
     tickLabel:"最后10秒滴答声", tickAlwaysLabel:"全程滴答声", voiceLabel:"剩余30秒语音提醒",
     voice2minLabel:"剩余2分钟语音提醒", voiceHalfLabel:"中场“该换人了”语音提醒",
@@ -1703,7 +1745,7 @@ const I18N = {
     bgLabel:"背景色（覆盖主题）", useItLabel:"使用", resetColorsBtn:"重置颜色与logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro（终身）", proHeadUnlocked:"Pro（已解锁）",
     proStatusUnlocked:"你已拥有完整版：所有主题、声音、字体与颜色。感谢支持这款独立工具。",
-    proStatusLockedPrefix:"全部19款主题及风格变体、时钟与秒表模式、语音提醒、自定义颜色与logo、精美字体及自定义上传、5种结束提示音。一次性付费",
+    proStatusLockedPrefix:"全部22款主题及风格变体、时钟与秒表模式、语音提醒、自定义颜色与logo、精美字体及自定义上传、5种结束提示音。一次性付费",
     proStatusLockedSuffix:"，永久属于你，无需订阅。",
     getProBtn:"获取终身版Pro", haveKeyLabel:"已购买？粘贴你的授权密钥",
     installHeading:"作为应用使用（Mac 与 PC）",
@@ -1720,7 +1762,7 @@ const I18N = {
     settingsTitle:"Configurações", languageHeading:"Idioma",
     modeHeading:"Modo", stopwatchLabel:"Cronômetro (contagem crescente)", clockLabel:"Modo relógio (mostrar hora do dia)",
     themeHeading:"Tema", themeStyleHeading:"Cor", onboardHint:"Personalize seu cronômetro aqui",
-    groupSimple:"Simples e limpo", groupAmbient:"Ambiente", groupRetro:"Retrô e diversão",
+    groupSimple:"Minimalismo", groupAmbient:"Cinemático", groupRetro:"Retrô",
     soundHeading:"Som", muteNote:"O som está desativado. Prévias e alertas estão silenciados. Pressione M ou o ícone do alto-falante para reativar.",
     tickLabel:"Tique-taque nos últimos 10 segundos", tickAlwaysLabel:"Tique-taque durante todo o cronômetro", voiceLabel:"Alerta de voz aos 30 segundos",
     voice2minLabel:"Alerta de voz aos 2 minutos", voiceHalfLabel:"Alerta de \"hora de trocar\" na metade do tempo",
@@ -1731,7 +1773,7 @@ const I18N = {
     bgLabel:"Cor de fundo (substitui o tema)", useItLabel:"usar", resetColorsBtn:"Redefinir cores e logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (vitalício)", proHeadUnlocked:"Pro (desbloqueado)",
     proStatusUnlocked:"Você tem a versão completa: todos os temas, sons, fontes e cores. Obrigado por apoiar uma ferramenta independente.",
-    proStatusLockedPrefix:"Todos os 19 temas com variantes de estilo, modos relógio e cronômetro, alerta de voz, cores e logo personalizados, fontes bonitas e seus próprios envios, 5 sons de término. Pagamento único",
+    proStatusLockedPrefix:"Todos os 22 temas com variantes de estilo, modos relógio e cronômetro, alerta de voz, cores e logo personalizados, fontes bonitas e seus próprios envios, 5 sons de término. Pagamento único",
     proStatusLockedSuffix:", seu para sempre, sem assinatura.",
     getProBtn:"Obter Pro vitalício", haveKeyLabel:"Já comprou? Cole sua chave de licença",
     installHeading:"Usar como app (Mac e PC)",
@@ -1748,7 +1790,7 @@ const I18N = {
     settingsTitle:"設定", languageHeading:"言語",
     modeHeading:"モード", stopwatchLabel:"ストップウォッチ（カウントアップ）", clockLabel:"時計モード（現在時刻を表示）",
     themeHeading:"テーマ", themeStyleHeading:"カラー", onboardHint:"ここでタイマーをカスタマイズできます",
-    groupSimple:"シンプル", groupAmbient:"雰囲気", groupRetro:"レトロ & 遊び心",
+    groupSimple:"ミニマリズム", groupAmbient:"シネマティック", groupRetro:"レトロ",
     soundHeading:"サウンド", muteNote:"サウンドはオフです。プレビューとアラートも無音になります。Mキーまたはスピーカーアイコンでミュート解除できます。",
     tickLabel:"最後の10秒間だけ秒針音を鳴らす", tickAlwaysLabel:"タイマー中ずっと秒針音を鳴らす", voiceLabel:"残り30秒で音声アラート",
     voice2minLabel:"残り2分で音声アラート", voiceHalfLabel:"折り返し地点で「交代の時間です」音声アラート",
@@ -1759,7 +1801,7 @@ const I18N = {
     bgLabel:"背景色（テーマを上書き）", useItLabel:"使用する", resetColorsBtn:"カラーとロゴをリセット",
     proHeadFree:"Pro", proHeadLifetime:"Pro（永久）", proHeadUnlocked:"Pro（解除済み）",
     proStatusUnlocked:"フルバージョンをご利用中です：すべてのテーマ、サウンド、フォント、カラー。独立系ツールを応援いただきありがとうございます。",
-    proStatusLockedPrefix:"スタイルバリエーション付き全19テーマ、時計＆ストップウォッチモード、音声アラート、カラー＆ロゴのカスタマイズ、美しいフォント＆自分のフォントのアップロード、終了音5種。買い切り",
+    proStatusLockedPrefix:"スタイルバリエーション付き全22テーマ、時計＆ストップウォッチモード、音声アラート、カラー＆ロゴのカスタマイズ、美しいフォント＆自分のフォントのアップロード、終了音5種。買い切り",
     proStatusLockedSuffix:"で永久にあなたのもの、サブスクリプションなし。",
     getProBtn:"Proを永久に入手", haveKeyLabel:"購入済みですか？ライセンスキーを貼り付け",
     installHeading:"アプリとして使う（Mac & PC）",
@@ -1776,7 +1818,7 @@ const I18N = {
     settingsTitle:"Impostazioni", languageHeading:"Lingua",
     modeHeading:"Modalità", stopwatchLabel:"Cronometro (conteggio crescente)", clockLabel:"Modalità orologio (mostra l'ora)",
     themeHeading:"Tema", themeStyleHeading:"Colore", onboardHint:"Personalizza il tuo timer qui",
-    groupSimple:"Semplice e pulito", groupAmbient:"Atmosfera", groupRetro:"Retrò e divertimento",
+    groupSimple:"Minimalismo", groupAmbient:"Cinematico", groupRetro:"Retrò",
     soundHeading:"Suono", muteNote:"L'audio è disattivato. Anteprime e avvisi sono silenziati. Premi M o l'icona dell'altoparlante per riattivare.",
     tickLabel:"Ticchettio negli ultimi 10 secondi", tickAlwaysLabel:"Ticchettio per tutto il timer", voiceLabel:"Avviso vocale a 30 secondi",
     voice2minLabel:"Avviso vocale a 2 minuti", voiceHalfLabel:"Avviso \"cambio turno\" a metà tempo",
@@ -1787,7 +1829,7 @@ const I18N = {
     bgLabel:"Colore di sfondo (sostituisce il tema)", useItLabel:"usa", resetColorsBtn:"Reimposta colori e logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (a vita)", proHeadUnlocked:"Pro (sbloccato)",
     proStatusUnlocked:"Hai la versione completa: ogni tema, suono, carattere e colore. Grazie per il supporto a uno strumento indipendente.",
-    proStatusLockedPrefix:"Tutti i 19 temi con varianti di stile, modalità orologio e cronometro, avviso vocale, colori e logo personalizzati, caratteri eleganti e caricamenti propri, 5 suoni finali. Pagamento unico",
+    proStatusLockedPrefix:"Tutti i 22 temi con varianti di stile, modalità orologio e cronometro, avviso vocale, colori e logo personalizzati, caratteri eleganti e caricamenti propri, 5 suoni finali. Pagamento unico",
     proStatusLockedSuffix:", tuo per sempre, senza abbonamento.",
     getProBtn:"Ottieni Pro a vita", haveKeyLabel:"Già acquistato? Incolla la tua chiave di licenza",
     installHeading:"Usalo come app (Mac e PC)",
@@ -1804,7 +1846,7 @@ const I18N = {
     settingsTitle:"الإعدادات", languageHeading:"اللغة",
     modeHeading:"الوضع", stopwatchLabel:"ساعة إيقاف (عد تصاعدي)", clockLabel:"وضع الساعة (عرض الوقت الحالي)",
     themeHeading:"السمة", themeStyleHeading:"اللون", onboardHint:"خصص المؤقت من هنا",
-    groupSimple:"بسيط وواضح", groupAmbient:"أجواء", groupRetro:"كلاسيكي وممتع",
+    groupSimple:"البساطة", groupAmbient:"سينمائي", groupRetro:"كلاسيكي",
     soundHeading:"الصوت", muteNote:"الصوت متوقف. المعاينات والتنبيهات صامتة أيضًا. اضغط M أو أيقونة مكبر الصوت لإعادة تفعيل الصوت.",
     tickLabel:"صوت تكة خلال آخر 10 ثوانٍ", tickAlwaysLabel:"صوت تكة طوال المؤقت", voiceLabel:"تنبيه صوتي عند 30 ثانية",
     voice2minLabel:"تنبيه صوتي عند دقيقتين", voiceHalfLabel:"تنبيه \"حان وقت التبديل\" في منتصف الوقت",
@@ -1815,7 +1857,7 @@ const I18N = {
     bgLabel:"لون الخلفية (يتجاوز السمة)", useItLabel:"استخدام", resetColorsBtn:"إعادة تعيين الألوان والشعار",
     proHeadFree:"Pro", proHeadLifetime:"Pro (مدى الحياة)", proHeadUnlocked:"Pro (مفعّل)",
     proStatusUnlocked:"لديك النسخة الكاملة: كل سمة وصوت وخط ولون. شكرًا لدعمك أداة مستقلة.",
-    proStatusLockedPrefix:"جميع السمات الـ19 مع تنويعات النمط، وضعا الساعة وساعة الإيقاف، تنبيه صوتي، ألوان وشعار مخصصان، خطوط جميلة ورفع خطوطك الخاصة، 5 أصوات نهاية. دفعة واحدة",
+    proStatusLockedPrefix:"جميع السمات الـ22 مع تنويعات النمط، وضعا الساعة وساعة الإيقاف، تنبيه صوتي، ألوان وشعار مخصصان، خطوط جميلة ورفع خطوطك الخاصة، 5 أصوات نهاية. دفعة واحدة",
     proStatusLockedSuffix:"، ملكك للأبد، بدون اشتراك.",
     getProBtn:"احصل على Pro مدى الحياة", haveKeyLabel:"اشتريت بالفعل؟ الصق مفتاح الترخيص",
     installHeading:"استخدمه كتطبيق (Mac و PC)",
@@ -1832,7 +1874,7 @@ const I18N = {
     settingsTitle:"Настройки", languageHeading:"Язык",
     modeHeading:"Режим", stopwatchLabel:"Секундомер (счёт вперёд)", clockLabel:"Режим часов (показывать текущее время)",
     themeHeading:"Тема", themeStyleHeading:"Цвет", onboardHint:"Настройте таймер здесь",
-    groupSimple:"Просто и чисто", groupAmbient:"Атмосфера", groupRetro:"Ретро и веселье",
+    groupSimple:"Минимализм", groupAmbient:"Кинематографично", groupRetro:"Ретро",
     soundHeading:"Звук", muteNote:"Звук выключен. Предпросмотр и оповещения также беззвучны. Нажмите M или значок динамика, чтобы включить звук.",
     tickLabel:"Тиканье в последние 10 секунд", tickAlwaysLabel:"Тиканье на протяжении всего таймера", voiceLabel:"Голосовое оповещение за 30 секунд",
     voice2minLabel:"Голосовое оповещение за 2 минуты", voiceHalfLabel:"Оповещение «время сменить группу» на середине",
@@ -1843,7 +1885,7 @@ const I18N = {
     bgLabel:"Цвет фона (переопределяет тему)", useItLabel:"использовать", resetColorsBtn:"Сбросить цвета и логотип",
     proHeadFree:"Pro", proHeadLifetime:"Pro (навсегда)", proHeadUnlocked:"Pro (разблокировано)",
     proStatusUnlocked:"У вас полная версия: все темы, звуки, шрифты и цвета. Спасибо за поддержку независимого инструмента.",
-    proStatusLockedPrefix:"Все 19 тем со стилевыми вариантами, режимы часов и секундомера, голосовое оповещение, свои цвета и логотип, красивые шрифты и загрузка своих, 5 финальных звуков. Разовый платёж",
+    proStatusLockedPrefix:"Все 22 темы со стилевыми вариантами, режимы часов и секундомера, голосовое оповещение, свои цвета и логотип, красивые шрифты и загрузка своих, 5 финальных звуков. Разовый платёж",
     proStatusLockedSuffix:", навсегда ваш, без подписки.",
     getProBtn:"Получить Pro навсегда", haveKeyLabel:"Уже купили? Вставьте лицензионный ключ",
     installHeading:"Использовать как приложение (Mac и PC)",
@@ -1860,7 +1902,7 @@ const I18N = {
     settingsTitle:"सेटिंग्स", languageHeading:"भाषा",
     modeHeading:"मोड", stopwatchLabel:"स्टॉपवॉच (आगे गिनती)", clockLabel:"घड़ी मोड (दिन का समय दिखाएं)",
     themeHeading:"थीम", themeStyleHeading:"रंग", onboardHint:"यहां अपना टाइमर कस्टमाइज़ करें",
-    groupSimple:"सरल और स्वच्छ", groupAmbient:"माहौल", groupRetro:"रेट्रो और मज़ा",
+    groupSimple:"न्यूनतमवाद", groupAmbient:"सिनेमाई", groupRetro:"रेट्रो",
     soundHeading:"ध्वनि", muteNote:"ध्वनि बंद है। पूर्वावलोकन और अलर्ट भी शांत हैं। ध्वनि फिर से चालू करने के लिए M दबाएं या स्पीकर आइकन पर क्लिक करें।",
     tickLabel:"आख़िरी 10 सेकंड में टिक ध्वनि", tickAlwaysLabel:"पूरे टाइमर के दौरान टिक ध्वनि", voiceLabel:"30 सेकंड शेष पर आवाज़ अलर्ट",
     voice2minLabel:"2 मिनट शेष पर आवाज़ अलर्ट", voiceHalfLabel:"आधे समय पर \"बदलने का समय\" अलर्ट",
@@ -1871,7 +1913,7 @@ const I18N = {
     bgLabel:"पृष्ठभूमि रंग (थीम को ओवरराइड करता है)", useItLabel:"इस्तेमाल करें", resetColorsBtn:"रंग और लोगो रीसेट करें",
     proHeadFree:"Pro", proHeadLifetime:"Pro (आजीवन)", proHeadUnlocked:"Pro (अनलॉक)",
     proStatusUnlocked:"आपके पास पूरा संस्करण है: हर थीम, ध्वनि, फ़ॉन्ट और रंग। एक स्वतंत्र टूल का समर्थन करने के लिए धन्यवाद।",
-    proStatusLockedPrefix:"स्टाइल वेरिएंट के साथ सभी 19 थीम, घड़ी और स्टॉपवॉच मोड, आवाज़ अलर्ट, कस्टम रंग और लोगो, सुंदर फ़ॉन्ट और अपने खुद के अपलोड, 5 अंत ध्वनियाँ। एक बार भुगतान",
+    proStatusLockedPrefix:"स्टाइल वेरिएंट के साथ सभी 22 थीम, घड़ी और स्टॉपवॉच मोड, आवाज़ अलर्ट, कस्टम रंग और लोगो, सुंदर फ़ॉन्ट और अपने खुद के अपलोड, 5 अंत ध्वनियाँ। एक बार भुगतान",
     proStatusLockedSuffix:", हमेशा के लिए आपका, कोई सदस्यता नहीं।",
     getProBtn:"आजीवन Pro पाएं", haveKeyLabel:"पहले ही खरीद लिया? अपनी लाइसेंस कुंजी पेस्ट करें",
     installHeading:"ऐप के रूप में उपयोग करें (Mac और PC)",
@@ -1888,7 +1930,7 @@ const I18N = {
     settingsTitle:"설정", languageHeading:"언어",
     modeHeading:"모드", stopwatchLabel:"스톱워치 (시간 증가)", clockLabel:"시계 모드 (현재 시각 표시)",
     themeHeading:"테마", themeStyleHeading:"색상", onboardHint:"여기서 타이머를 사용자 지정하세요",
-    groupSimple:"심플 & 클린", groupAmbient:"분위기", groupRetro:"레트로 & 재미",
+    groupSimple:"미니멀리즘", groupAmbient:"시네마틱", groupRetro:"레트로",
     soundHeading:"사운드", muteNote:"소리가 꺼져 있습니다. 미리듣기와 알림도 음소거됩니다. M 키나 스피커 아이콘을 눌러 다시 켤 수 있습니다.",
     tickLabel:"마지막 10초 동안 똑딱 소리", tickAlwaysLabel:"타이머 내내 똑딱 소리", voiceLabel:"30초 남았을 때 음성 알림",
     voice2minLabel:"2분 남았을 때 음성 알림", voiceHalfLabel:"절반 지점에서 \"교대 시간\" 음성 알림",
@@ -1899,7 +1941,7 @@ const I18N = {
     bgLabel:"배경색 (테마를 덮어씀)", useItLabel:"사용", resetColorsBtn:"색상 & 로고 초기화",
     proHeadFree:"Pro", proHeadLifetime:"Pro (평생)", proHeadUnlocked:"Pro (잠금 해제됨)",
     proStatusUnlocked:"전체 버전을 사용 중입니다: 모든 테마, 사운드, 글꼴, 색상. 독립 도구를 지원해 주셔서 감사합니다.",
-    proStatusLockedPrefix:"스타일 변형이 있는 19가지 테마, 시계 & 스톱워치 모드, 음성 알림, 사용자 지정 색상 & 로고, 멋진 글꼴 & 직접 업로드, 5가지 종료음. 1회 결제",
+    proStatusLockedPrefix:"스타일 변형이 있는 22가지 테마, 시계 & 스톱워치 모드, 음성 알림, 사용자 지정 색상 & 로고, 멋진 글꼴 & 직접 업로드, 5가지 종료음. 1회 결제",
     proStatusLockedSuffix:"로 평생 소유, 구독 없음.",
     getProBtn:"평생 Pro 구매", haveKeyLabel:"이미 구매하셨나요? 라이선스 키 붙여넣기",
     installHeading:"앱으로 사용하기 (Mac & PC)",
@@ -1975,6 +2017,7 @@ const THEMES = [
   {id:"ocean",    name:"Ocean",       pro:true,  mode:"digits",   prog:"none", font:"windsor"},
   {id:"rings",    name:"Pulse",       pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"warp",     name:"Stars",       pro:true,  mode:"digits",   prog:"none", font:"michroma"},
+  {id:"orb",      name:"Orb",         pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
 ];
 // per-theme default accent color — shown until a Pro user actually touches
 // the accent picker (st.accentCustom), at which point their pick applies
@@ -1985,7 +2028,7 @@ const THEME_DEFAULT_ACCENT = { disc:"#d5442f", terminal:"#4ade80" };
 // doesn't affect THEMES itself or anything that reads it directly
 const THEME_GROUPS = [
   {labelKey:"groupSimple",    ids:["midnight","disc","paper","flip","squiggle","egg"]},
-  {labelKey:"groupAmbient",   ids:["days","sunset","strands","rings","aurora","sky","ocean","warp"]},
+  {labelKey:"groupAmbient",   ids:["days","sunset","strands","rings","aurora","orb","sky","ocean","warp"]},
   {labelKey:"groupRetro",     ids:["nixie","terminal","lcars","bounce","lcd","web1","nasa"]}
 ];
 // themes flat/simple enough to offer both a dark and a light look; each theme's
@@ -2281,6 +2324,13 @@ function fmt(s){
   // hours segment already was) rather than letting hours run past 23
   if(d) return d+":"+String(h).padStart(2,"0")+":"+String(m).padStart(2,"0")+":"+String(sec).padStart(2,"0");
   return (h? h+":"+String(m).padStart(2,"0") : m) + ":" + String(sec).padStart(2,"0");
+}
+// same as fmt() but the leading segment is always zero-padded too (Orb theme's
+// Figma reference always shows "05:00", never "5:00")
+function fmtPadded(s){
+  s = Math.max(0, Math.round(s));
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+  return (h? String(h).padStart(2,"0")+":"+String(m).padStart(2,"0") : String(m).padStart(2,"0")) + ":" + String(sec).padStart(2,"0");
 }
 // always dd:hh:mm:ss, every segment zero-padded to 2 digits (Waves theme) —
 // the days segment stays "00" until an actual day has elapsed, then grows
@@ -2676,6 +2726,23 @@ function autofitTime(el){
       const labelCs = parseFloat(getComputedStyle(elLabel).fontSize);
       elLabel.style.fontSize = Math.max(1, labelCs * scale) + "px";
     }
+  }
+}
+
+/* ----- shrink Orb's top-pinned label to fit the viewport width -- its 2em
+   letter-spacing (scaled off font-size, so shrinking one shrinks the other)
+   comfortably fits "BREAKOUT TIME" from the Figma reference, but the app's
+   own default "Workshop Timer" (and anything a user types in) can run wider
+   than the viewport and get clipped by #label's overflow:hidden safeguard.
+   Same reset-then-measure pattern as autofitTime(). ----- */
+function autofitOrbLabel(){
+  if(curThemeId() !== "orb") return;
+  elLabel.style.fontSize = "";
+  const maxW = window.innerWidth * 0.92;
+  const w = elLabel.scrollWidth;
+  if(w > maxW && w > 0){
+    const cs = parseFloat(getComputedStyle(elLabel).fontSize);
+    elLabel.style.fontSize = Math.max(1, cs * (maxW / w)) + "px";
   }
 }
 
@@ -3129,10 +3196,12 @@ function render(){
     else if(def.id === "days") elTime.textContent = hmsText;
     else if(def.id === "aurora") renderAuroraBlur(elTime, text);
     else if(def.id === "rings") renderRingsPulse(elTime, pulseSegments(hmText, clock));
+    else if(def.id === "orb" && !clock) elTime.textContent = fmtPadded(remaining);
     else elTime.textContent = text;
     elTime.className = justFinished ? "over" : finished ? "" : danger ? "danger" : warn ? "warn" : "";
     if(def.id === "days") lavaSetActive(running || swOn());
     autofitTime(elTime);
+    if(def.id === "orb") autofitOrbLabel();
   } else if(mode==="seg") renderSegInto(elSeg, text, false);
   else if(mode==="flip") renderFlip(text);
   else if(mode==="disc") renderDisc(clock ? frac : frac, text);
@@ -3266,6 +3335,7 @@ function updateFX(){
   if(tid==="ocean") startOcean(); else stopOcean();
   if(tid==="rings") startRings(); else stopRings();
   if(tid==="warp") startStars(); else stopStars();
+  if(tid==="orb") startOrb(); else stopOrb();
 }
 
 /* ----- Lava background (Lava/"days" theme): a vanilla-JS/canvas2d port of
@@ -4774,6 +4844,228 @@ function stopStars(){
   $("warpBg").style.display = "none";
 }
 
+/* ----- Orb background (Orb theme): a vanilla-WebGL2 port of the
+   open-source "Orb" shader (React Bits, GLSL by the original author) --
+   reimplemented with raw WebGL2 instead of React+ogl+Vec3 so it stays inside
+   this single dependency-free file, reusing AURORA_VERT's passthrough
+   triangle like every other ported background here. The reference component
+   drives its "hover" uniform from the mouse; a workshop timer has no cursor
+   worth tracking, so it's driven by the countdown instead -- the orb eases
+   into its hover-distortion/rotation state (same 0.1-per-frame lerp the
+   original used for mouse hover) once 30 seconds remain, as a calm "wrap up"
+   cue, and eases back out if the timer is reset past that mark. */
+const ORB_FRAG = `#version 300 es
+precision highp float;
+uniform float uTime;
+uniform vec3 uResolution;
+uniform float uHue;
+uniform float uHover;
+uniform float uRot;
+uniform float uHoverIntensity;
+uniform vec3 uBgColor;
+out vec4 fragColor;
+
+vec3 rgb2yiq(vec3 c){
+  float y = dot(c, vec3(0.299, 0.587, 0.114));
+  float i = dot(c, vec3(0.596, -0.274, -0.322));
+  float q = dot(c, vec3(0.211, -0.523, 0.312));
+  return vec3(y, i, q);
+}
+vec3 yiq2rgb(vec3 c){
+  float r = c.x + 0.956 * c.y + 0.621 * c.z;
+  float g = c.x - 0.272 * c.y - 0.647 * c.z;
+  float b = c.x - 1.106 * c.y + 1.703 * c.z;
+  return vec3(r, g, b);
+}
+vec3 adjustHue(vec3 color, float hueDeg){
+  float hueRad = hueDeg * 3.14159265 / 180.0;
+  vec3 yiq = rgb2yiq(color);
+  float cosA = cos(hueRad); float sinA = sin(hueRad);
+  float i = yiq.y * cosA - yiq.z * sinA;
+  float q = yiq.y * sinA + yiq.z * cosA;
+  yiq.y = i; yiq.z = q;
+  return yiq2rgb(yiq);
+}
+vec3 hash33(vec3 p3){
+  p3 = fract(p3 * vec3(0.1031, 0.11369, 0.13787));
+  p3 += dot(p3, p3.yxz + 19.19);
+  return -1.0 + 2.0 * fract(vec3(p3.x + p3.y, p3.x + p3.z, p3.y + p3.z) * p3.zyx);
+}
+float snoise3(vec3 p){
+  const float K1 = 0.333333333; const float K2 = 0.166666667;
+  vec3 i = floor(p + (p.x + p.y + p.z) * K1);
+  vec3 d0 = p - (i - (i.x + i.y + i.z) * K2);
+  vec3 e = step(vec3(0.0), d0 - d0.yzx);
+  vec3 i1 = e * (1.0 - e.zxy);
+  vec3 i2 = 1.0 - e.zxy * (1.0 - e);
+  vec3 d1 = d0 - (i1 - K2);
+  vec3 d2 = d0 - (i2 - K1);
+  vec3 d3 = d0 - 0.5;
+  vec4 h = max(0.6 - vec4(dot(d0,d0), dot(d1,d1), dot(d2,d2), dot(d3,d3)), 0.0);
+  vec4 n = h*h*h*h * vec4(dot(d0,hash33(i)), dot(d1,hash33(i+i1)), dot(d2,hash33(i+i2)), dot(d3,hash33(i+1.0)));
+  return dot(vec4(31.316), n);
+}
+vec4 extractAlpha(vec3 colorIn){
+  float a = max(max(colorIn.r, colorIn.g), colorIn.b);
+  return vec4(colorIn.rgb / (a + 1e-5), a);
+}
+const vec3 baseColor1 = vec3(0.611765, 0.262745, 0.996078);
+const vec3 baseColor2 = vec3(0.298039, 0.760784, 0.913725);
+const vec3 baseColor3 = vec3(0.062745, 0.078431, 0.600000);
+const float innerRadius = 0.6;
+const float noiseScale = 0.65;
+float light1(float intensity, float attenuation, float dist){ return intensity / (1.0 + dist * attenuation); }
+float light2(float intensity, float attenuation, float dist){ return intensity / (1.0 + dist * dist * attenuation); }
+vec4 orbDraw(vec2 uv){
+  vec3 color1 = adjustHue(baseColor1, uHue);
+  vec3 color2 = adjustHue(baseColor2, uHue);
+  vec3 color3 = adjustHue(baseColor3, uHue);
+  float ang = atan(uv.y, uv.x);
+  float len = length(uv);
+  float invLen = len > 0.0 ? 1.0 / len : 0.0;
+  float bgLuminance = dot(uBgColor, vec3(0.299, 0.587, 0.114));
+  float n0 = snoise3(vec3(uv * noiseScale, uTime * 0.5)) * 0.5 + 0.5;
+  float r0 = mix(mix(innerRadius, 1.0, 0.4), mix(innerRadius, 1.0, 0.6), n0);
+  float d0 = distance(uv, (r0 * invLen) * uv);
+  float v0 = light1(1.0, 10.0, d0);
+  v0 *= smoothstep(r0 * 1.05, r0, len);
+  float innerFade = smoothstep(r0 * 0.8, r0 * 0.95, len);
+  v0 *= mix(innerFade, 1.0, bgLuminance * 0.7);
+  float cl = cos(ang + uTime * 2.0) * 0.5 + 0.5;
+  float a = uTime * -1.0;
+  vec2 pos = vec2(cos(a), sin(a)) * r0;
+  float d = distance(uv, pos);
+  float v1 = light2(1.5, 5.0, d);
+  v1 *= light1(1.0, 50.0, d0);
+  float v2 = smoothstep(1.0, mix(innerRadius, 1.0, n0 * 0.5), len);
+  float v3 = smoothstep(innerRadius, mix(innerRadius, 1.0, 0.5), len);
+  vec3 colBase = mix(color1, color2, cl);
+  float fadeAmount = mix(1.0, 0.1, bgLuminance);
+  vec3 darkCol = mix(color3, colBase, v0);
+  darkCol = (darkCol + v1) * v2 * v3;
+  darkCol = clamp(darkCol, 0.0, 1.0);
+  vec3 lightCol = (colBase + v1) * mix(1.0, v2 * v3, fadeAmount);
+  lightCol = mix(uBgColor, lightCol, v0);
+  lightCol = clamp(lightCol, 0.0, 1.0);
+  vec3 finalCol = mix(darkCol, lightCol, bgLuminance);
+  return extractAlpha(finalCol);
+}
+void main(){
+  vec2 fragCoord = gl_FragCoord.xy;
+  vec2 center = uResolution.xy * 0.5;
+  float size = min(uResolution.x, uResolution.y);
+  vec2 uv = (fragCoord - center) / size * 2.0;
+  uv /= 0.8; // shrink the orb ~20% on screen (larger uv reaches the shape's edge sooner)
+  float s = sin(uRot); float c = cos(uRot);
+  uv = vec2(c * uv.x - s * uv.y, s * uv.x + c * uv.y);
+  uv.x += uHover * uHoverIntensity * 0.1 * sin(uv.y * 10.0 + uTime);
+  uv.y += uHover * uHoverIntensity * 0.1 * sin(uv.x * 10.0 + uTime);
+  vec4 col = orbDraw(uv);
+  fragColor = vec4(col.rgb * col.a, col.a);
+}
+`;
+const ORB_CFG = { hue:0, hoverIntensity:0.37, bgColor:[0,0,0] };
+let ORB = null;
+function initOrb(){
+  const canvas = $("orbBg");
+  const gl = canvas.getContext("webgl2");
+  if(!gl) return null;
+  gl.clearColor(0,0,0,0);
+  function compile(type, src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){ gl.deleteShader(s); return null; }
+    return s;
+  }
+  const vs = compile(gl.VERTEX_SHADER, AURORA_VERT);
+  const fs = compile(gl.FRAGMENT_SHADER, ORB_FRAG);
+  if(!vs || !fs) return null;
+  const program = gl.createProgram();
+  gl.attachShader(program, vs);
+  gl.attachShader(program, fs);
+  gl.linkProgram(program);
+  if(!gl.getProgramParameter(program, gl.LINK_STATUS)) return null;
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  const posLoc = gl.getAttribLocation(program, "position");
+  const u = {
+    uTime: gl.getUniformLocation(program, "uTime"),
+    uResolution: gl.getUniformLocation(program, "uResolution"),
+    uHue: gl.getUniformLocation(program, "uHue"),
+    uHover: gl.getUniformLocation(program, "uHover"),
+    uRot: gl.getUniformLocation(program, "uRot"),
+    uHoverIntensity: gl.getUniformLocation(program, "uHoverIntensity"),
+    uBgColor: gl.getUniformLocation(program, "uBgColor")
+  };
+  return { gl, program, buf, posLoc, u, canvas, hover:0, rot:0, urgency:0 };
+}
+function orbResize(){
+  if(!ORB) return;
+  const { gl, canvas, u, program } = ORB;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
+  if(canvas.width !== w || canvas.height !== h){ canvas.width = w; canvas.height = h; }
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  gl.useProgram(program);
+  gl.uniform3f(u.uResolution, canvas.width, canvas.height, canvas.width / canvas.height);
+}
+let orbLastTime = 0;
+function orbDrawFrame(time){
+  if(!ORB) return;
+  const { gl, program, buf, posLoc, u } = ORB;
+  const dt = orbLastTime ? (time - orbLastTime) * 0.001 : 0;
+  orbLastTime = time;
+  // the same countdown-driven "hover" trigger as the file-level comment above
+  // -- eases toward 1 in the last 15 seconds, back to 0 otherwise (including
+  // once the timer finishes -- it calms back down rather than staying wound
+  // up), exactly like the reference component eased toward a real
+  // mouse-hover target. "urgency" (0 at 15s, 1 at 0s) additionally ramps the
+  // rotation speed and warp strength on the same slow lerp as hover itself
+  // (rather than snapping straight to its target), so the shift from calm to
+  // urgent -- and back down again after finishing -- both read as a gradual
+  // wind-up/wind-down instead of a sudden mode switch.
+  const clock = clockOn();
+  const wantHover = !clock && !swOn() && !finished && remaining > 0 && remaining <= 15;
+  ORB.hover += ((wantHover ? 1 : 0) - ORB.hover) * 0.1;
+  const targetUrgency = wantHover ? Math.min(1, Math.max(0, 1 - remaining/15)) : 0;
+  ORB.urgency += (targetUrgency - ORB.urgency) * 0.05;
+  const rotSpeed = 0.3 + ORB.urgency * 0.6;
+  const hoverIntensity = ORB_CFG.hoverIntensity * (1 + ORB.urgency * 1.0);
+  if(ORB.hover > 0.5) ORB.rot += dt * rotSpeed;
+  gl.useProgram(program);
+  gl.uniform1f(u.uTime, time * 0.001);
+  gl.uniform1f(u.uHue, ORB_CFG.hue);
+  gl.uniform1f(u.uHover, ORB.hover);
+  gl.uniform1f(u.uRot, ORB.rot);
+  gl.uniform1f(u.uHoverIntensity, hoverIntensity);
+  gl.uniform3f(u.uBgColor, ORB_CFG.bgColor[0], ORB_CFG.bgColor[1], ORB_CFG.bgColor[2]);
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.enableVertexAttribArray(posLoc);
+  gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+let orbRaf = null;
+function orbFrame(time){
+  orbDrawFrame(time);
+  orbRaf = requestAnimationFrame(orbFrame);
+}
+function startOrb(){
+  if(!ORB) ORB = initOrb();
+  if(!ORB) return; // WebGL2 unavailable — theme just keeps its plain dark background
+  $("orbBg").style.display = "block";
+  orbResize();
+  addEventListener("resize", orbResize);
+  if(!orbRaf) orbRaf = requestAnimationFrame(orbFrame);
+}
+function stopOrb(){
+  if(orbRaf){ cancelAnimationFrame(orbRaf); orbRaf = null; }
+  removeEventListener("resize", orbResize);
+  $("orbBg").style.display = "none";
+}
+
 /* ----- bounce: DVD-screensaver-style roaming, color-changing time.
    Position runs on setInterval rather than requestAnimationFrame, for the
    same reason the core timer engine does (see note above startTicking):
@@ -5020,6 +5312,7 @@ elInput.addEventListener("blur", commitInput);
 // switch itself) go through st.label directly, not these listeners, so they're not affected
 elLabel.addEventListener("input", ()=>{
   st.label = elLabel.textContent.trim(); st.labelCustom = true; save();
+  autofitOrbLabel();
 });
 elLabel.addEventListener("keydown", e=>{
   e.stopPropagation();
@@ -5335,6 +5628,7 @@ function applyTheme(){
   syncSublineFont();
   updateFX();
   render();
+  autofitOrbLabel();
   // autofitTime (called from render(), above) measures elTime.scrollWidth to
   // decide whether to shrink it -- if the theme's own embedded font (Futura,
   // Windsor Pro, Michroma, Goldenbook...) hasn't finished loading yet, that
@@ -5393,7 +5687,8 @@ function syncSublineFont(){
   // every other theme -- revert to the stylesheet's own defaults
   // Aurora's title is a heavily-tracked Goldenbook serif to match its Figma
   // spec, but "paused" should stay the same quiet Helvetica italic aside
-  if(tid === "sky" || tid === "ocean" || tid === "aurora"){
+  // Orb's title is the same heavily-tracked treatment, same reason
+  if(tid === "sky" || tid === "ocean" || tid === "aurora" || tid === "orb"){
     elSub.style.fontFamily = "";
     elSub.style.fontWeight = "";
     elSub.style.fontStyle = "";
@@ -5707,13 +6002,18 @@ $("overlay").addEventListener("click", e=>{ if(e.target.id==="overlay") closeMod
   }
   if(isPro()) document.querySelectorAll(".pro-tag").forEach(el=>el.remove());
   applyBranding(); applyLang(); render(); refreshSettings();
-  // first-visit-only nudge toward Settings -- a short delay so it doesn't
-  // flash in before the page has finished laying out, auto-dismissed after
-  // a while so it can't linger into a permanent nag if never clicked
+  // first-visit-only: open Settings itself rather than just pointing at it --
+  // a short delay so it doesn't flash in before the page has finished laying
+  // out. dismissOnboardHint() sets the "seen it" flag so this never fires
+  // again on later visits, same one-time guarantee the old arrow hint used.
   try{
     if(!localStorage.getItem(LS.onboarded)){
-      setTimeout(()=>{ document.body.classList.add("show-onboard"); }, 900);
-      setTimeout(dismissOnboardHint, 9000);
+      setTimeout(()=>{
+        $("settings").classList.add("open");
+        $("btnSettings").classList.add("open");
+        refreshSettings();
+        dismissOnboardHint();
+      }, 900);
     }
   }catch(e){}
   setInterval(()=>{ if(clockOn()) render(); }, 1000); // clock-mode ticker
