@@ -128,6 +128,18 @@
   body.theme-orb{ --bg:#07040d; --bg2:#0c0716; --fg:#f5f2fb; --muted:rgba(245,242,251,.6); --panel:#140c26; --border:rgba(245,242,251,.18); }
   body.theme-searchlight{ --bg:#050505; --bg2:#0a0a0a; --fg:#ffffff; --muted:rgba(255,255,255,.55); --panel:#141414; --border:rgba(255,255,255,.16); }
   body.theme-strands.mode-light{ --bg:#f2f1ee; --bg2:#e8e7e2; --fg:#0a0a0a; --muted:#8a8a86; --panel:#fff; --border:#e0dfda; }
+  /* Stars/Orb/Searchlight are WebGL scenes built to read as night-sky /
+     glow-in-the-dark visuals -- rather than re-tint each shader, light mode
+     inverts the canvas itself (see the #XBg.mode-light filter rule below),
+     which turns the dark scene into its bright photo-negative twin (white
+     sky full of dark stars, a dark orb on a pale aura, bright rays on pale
+     sky) and flips the surrounding chrome to match. */
+  body.theme-warp.mode-light{ --bg:#f5f5f4; --bg2:#ebebe8; --fg:#151513; --muted:rgba(0,0,0,.55); --panel:#fff; --border:#e3e2df; --cdc:#151513; --cdc-text:#fff; }
+  body.theme-orb.mode-light{ --bg:#f7f4fb; --bg2:#efe9f6; --fg:#241a33; --muted:rgba(36,26,51,.6); --panel:#fff; --border:rgba(36,26,51,.18); }
+  body.theme-searchlight.mode-light{ --bg:#f5f5f5; --bg2:#ececec; --fg:#111111; --muted:rgba(0,0,0,.55); --panel:#fff; --border:rgba(0,0,0,.16); }
+  body.theme-warp.mode-light #warpBg, body.theme-orb.mode-light #orbBg, body.theme-searchlight.mode-light #searchlightBg{
+    filter:invert(1) hue-rotate(180deg);
+  }
   body.theme-sky     { --bg:#4d84c9; --bg2:#7fb0e0; --fg:#ffffff; --muted:rgba(255,255,255,.78); --panel:#3f74b8; --border:rgba(255,255,255,.3); }
   /* same cloud shader, just re-tinted grey/slate for an overcast rainy day
      (see SKY_PALETTES in the JS below) — fallback vars here match before the
@@ -496,6 +508,10 @@
     color:rgba(255,255,255,.55); font-weight:500; letter-spacing:.14em;
     font-size:clamp(.9rem,2.2vh,1.3rem); margin-bottom:.2rem;
   }
+  /* light mode: the inverted starfield reads as dark specks on a pale sky,
+     so the digits/label flip to dark ink instead of the dark-mode white */
+  body.theme-warp.mode-light #time{ color:var(--fg); text-shadow:0 2px 24px rgba(255,255,255,.7); }
+  body.theme-warp.mode-light #label{ color:var(--muted); }
   /* Orb theme (Aliens-dark4 Figma frame): no card, single-line digits sit
      dead center over the Orb background (same no-panel pattern as
      Aurora-dark1/Clouds), while the label is pinned near the top of the
@@ -540,6 +556,9 @@
      than relying on the usual true-center padding-strip pattern */
   /* lockup center sits 3.52vh above true center in this frame; label and
      digit overlap by 3.15vh (closer than the old Helvetica pairing) */
+  /* a cool spotlight-white button reads as "the beam itself", rather than
+     the default gold/red accent clashing with the premiere/red-carpet mood */
+  body.theme-searchlight #btnStart{background:#eef4ff; border-color:#eef4ff; color:#0c1220;}
   body.theme-searchlight #stage{ padding-top:0; padding-bottom:0; gap:0; transform:translateY(-3.52vh); }
   body.theme-searchlight #label{
     font-family:'Goldenbook',Georgia,'Times New Roman',serif;
@@ -552,7 +571,7 @@
     font-weight:var(--fontw,200); letter-spacing:0; color:var(--fg);
     font-size:clamp(1rem,13.89vh,9rem);
     text-shadow:0 0 12px rgba(255,255,255,.65), 0 0 32px rgba(255,255,255,.35), 0 2px 14px rgba(0,0,0,.5);
-    margin-top:1vh;
+    margin-top:2.2vh;
   }
   body.theme-searchlight #subline{
     font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
@@ -932,7 +951,7 @@
   body.theme-nasa.mode-dark #nasaTitle{color:#8a8a86;}
 
   /* ---------- sunset: soft light digits + ruler meter ---------- */
-  #dotsWrap{display:none; flex-direction:column; align-items:center; gap:3rem;}
+  #dotsWrap{display:none; flex-direction:column; align-items:center; gap:1.5rem;}
   #sunsetTime{
     font-weight:300; font-size:clamp(5.2rem,26vw,32vh); color:#fdf3e0;
     letter-spacing:.12em; font-variant-numeric:tabular-nums; line-height:1;
@@ -1022,6 +1041,25 @@
   body.hide-ui #topLeft{opacity:0; transform:translateY(-10px); pointer-events:none;}
   button.icon.corner-bl{position:fixed; bottom:1rem; left:1rem; z-index:4; transition:opacity .4s, transform .4s, background .15s, border-color .15s;}
   button.icon.corner-br{position:fixed; bottom:1rem; right:1rem; z-index:4; transition:opacity .4s, transform .4s, background .15s, border-color .15s;}
+  /* hover/focus tooltips on the 4 corner icons -- fixed dark chip regardless
+     of theme so it stays legible in bright rooms/on projectors even over a
+     light theme's near-white corner buttons. Hidden on touch (no real hover)
+     since :hover would otherwise stick after a tap. */
+  .icon[data-tip]{position:relative;}
+  .icon[data-tip]::after{
+    content:attr(data-tip); position:absolute;
+    background:#111318; color:#fff; font-size:.72rem; font-weight:600; letter-spacing:.01em;
+    padding:.4rem .65rem; border-radius:6px; white-space:nowrap;
+    border:1px solid rgba(255,255,255,.16); box-shadow:0 6px 20px rgba(0,0,0,.4);
+    opacity:0; transform:translateY(-3px); pointer-events:none;
+    transition:opacity .12s ease, transform .12s ease; z-index:10;
+  }
+  .icon[data-tip]:hover::after, .icon[data-tip]:focus-visible::after{ opacity:1; transform:translateY(0); }
+  #topLeft .icon[data-tip]::after, button.icon.hamburger[data-tip]::after{ top:100%; margin-top:.6rem; }
+  button.icon.corner-bl[data-tip]::after, button.icon.corner-br[data-tip]::after{ bottom:100%; margin-bottom:.6rem; }
+  #topLeft .icon[data-tip]::after, button.icon.corner-bl[data-tip]::after{ left:0; }
+  button.icon.hamburger[data-tip]::after, button.icon.corner-br[data-tip]::after{ right:0; }
+  @media (hover:none){ .icon[data-tip]::after{ display:none; } }
   body.hide-ui button.icon.corner-bl, body.hide-ui button.icon.corner-br{opacity:0; transform:translateY(10px); pointer-events:none;}
   /* hamburger settings toggle, fixed top-right, morphs into an X when open */
   button.icon.hamburger{
@@ -1036,26 +1074,6 @@
   button.icon.hamburger.open span:nth-child(1){transform:translateY(.44rem) rotate(45deg);}
   button.icon.hamburger.open span:nth-child(2){opacity:0;}
   button.icon.hamburger.open span:nth-child(3){transform:translateY(-.44rem) rotate(-45deg);}
-  /* first-visit nudge toward the settings panel -- a small curved arrow
-     sitting just below/left of the hamburger, curling up to point at it.
-     Shown once per browser (see LS.onboarded), dismissed on any interaction
-     with the settings button or by clicking the hint itself. */
-  #onboardHint{
-    position:fixed; top:3.6rem; right:.6rem; z-index:6; display:none;
-    flex-direction:column; align-items:flex-end; gap:.2rem;
-    color:var(--fg); font-family:var(--font-ui); cursor:pointer;
-    animation:onboardBob 2s ease-in-out infinite;
-  }
-  #onboardHint svg{width:2.4rem; height:1.8rem; opacity:.85;}
-  #onboardHint span{
-    font-size:.82rem; font-weight:500; white-space:nowrap;
-    background:var(--panel); border:1px solid var(--border);
-    padding:.4rem .75rem; border-radius:999px; box-shadow:0 4px 18px rgba(0,0,0,.18);
-  }
-  body.show-onboard #onboardHint{display:flex;}
-  body.hide-ui #onboardHint{display:none;}
-  @keyframes onboardBob{0%,100%{transform:translateY(0);}50%{transform:translateY(4px);}}
-  @media (prefers-reduced-motion:reduce){ #onboardHint{animation:none;} }
   .row{display:flex; gap:.5rem; flex-wrap:wrap; justify-content:center; align-items:center;}
   button{
     background:var(--panel); color:var(--fg); border:1px solid var(--border);
@@ -1155,11 +1173,15 @@
      forced-white text, ...) and, worse, a color that visibly drifted the
      longer you clicked through themes (see applyTheme's --accent comment).
      Fixing the palette here removes both problems at once. */
+  /* muted text here is deliberately darker/lighter than a typical "secondary
+     text" grey -- this panel is read in workshop rooms with house lights up
+     or a bright projector, not on a calibrated monitor, so it needs more
+     contrast against --panel than the rest of the app. */
   #settings{
-    --bg:#eeeef1; --bg2:#e4e4e8; --fg:#333; --muted:#9a9aa2; --panel:#c4c4cb; --border:#d4d4da; --accent:#d5442f;
+    --bg:#eeeef1; --bg2:#e4e4e8; --fg:#333; --muted:#55555c; --panel:#c4c4cb; --border:#d4d4da; --accent:#d5442f;
   }
   body.mode-dark #settings{
-    --bg:#1c1c20; --bg2:#242428; --fg:#e8e8ea; --muted:#8b8b90; --panel:#2a2a2f; --border:#38383e;
+    --bg:#1c1c20; --bg2:#242428; --fg:#e8e8ea; --muted:#b7b7bf; --panel:#2a2a2f; --border:#38383e;
   }
   #settings{
     position:fixed; top:0; right:0; bottom:0; width:min(440px,92vw); z-index:5;
@@ -1220,11 +1242,11 @@
     letter-spacing:.02em; background:transparent; color:var(--fg); border:none;
     padding:.25rem 0; margin:.25rem 0 .4rem; opacity:.7;
   }
-  /* slow idle spin on the flag icon, speeds up on hover/focus of the whole
-     badge — same feel as an animated logo mark, done in a few lines of CSS
-     instead of pulling in React + a motion library for one small icon */
-  .eu-badge svg{animation:eu-spin 14s linear infinite; transition:animation-duration .2s ease;}
-  .eu-badge:hover svg, .eu-badge:focus-within svg{animation-duration:1.4s;}
+  /* flag icon sits still until you hover/focus the badge, then spins up --
+     same feel as an animated logo mark, done in a few lines of CSS instead
+     of pulling in React + a motion library for one small icon */
+  .eu-badge svg{transition:animation-duration .2s ease;}
+  .eu-badge:hover svg, .eu-badge:focus-within svg{animation:eu-spin 1.4s linear infinite;}
   @keyframes eu-spin{to{transform:rotate(360deg);}}
   @media (prefers-reduced-motion:reduce){.eu-badge svg{animation:none;}}
   .field{display:flex; flex-direction:column; gap:.35rem; margin-bottom:.8rem;}
@@ -1237,7 +1259,7 @@
   .locked-section{opacity:.55; pointer-events:none;}
   .section-head{display:flex; align-items:center; justify-content:space-between;}
   .unlock-link{font-size:.75rem; color:var(--accent); cursor:pointer; pointer-events:auto; text-decoration:underline;}
-  .help{font-size:.8rem; color:var(--muted); line-height:1.7;}
+  .help{font-size:.85rem; color:var(--muted); line-height:1.7;}
   .help b{color:var(--fg);}
   body.theme-web1 .help b{color:#000;}
 
@@ -1395,10 +1417,6 @@
 <button class="icon hamburger" id="btnSettings" title="Settings" aria-label="Settings">
   <span></span><span></span><span></span>
 </button>
-<div id="onboardHint">
-  <svg viewBox="0 0 40 30"><path d="M2 28C16 4 28 2 38 2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M30 2h8v8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  <span id="onboardHintText" data-i18n="onboardHint">Customize your timer here</span>
-</div>
 
 <button class="icon corner-bl" id="btnMute" title="Sound on/off (M)">
   <svg class="snd-on" viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L13 19V5L7.5 9.5H4z"/><path d="M16 9a4.5 4.5 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg>
@@ -1665,7 +1683,7 @@ const I18N = {
     settingsTitle:"Settings", languageHeading:"Language",
     modeHeading:"Mode", countdownLabel:"Countdown (the default timer)", stopwatchLabel:"Stopwatch (count up instead)", clockLabel:"Clock mode (show the time of day)",
     pomodoroLabel:"Pomodoro mode (25 min focus / 5 min break)", pomodoroFocusWord:"Focus", pomodoroBreakWord:"Break",
-    themeHeading:"Theme", themeStyleHeading:"Color", onboardHint:"Customize your timer here",
+    themeHeading:"Theme", themeStyleHeading:"Color",
     groupSimple:"Minimal", groupAmbient:"Cinematic", groupRetro:"Retro",
     soundHeading:"Sound", muteNote:"All sound is off. Previews and alerts are silenced. Press M or the speaker icon to unmute.",
     tickLabel:"Tick during final 10 seconds", tickAlwaysLabel:"Tick throughout the whole timer", voiceLabel:"Voice alert at 30 seconds left",
@@ -1694,7 +1712,7 @@ const I18N = {
     settingsTitle:"Einstellungen", languageHeading:"Sprache",
     modeHeading:"Modus", stopwatchLabel:"Stoppuhr (aufwärts zählen)", clockLabel:"Uhrzeit-Modus (Tageszeit anzeigen)",
     pomodoroLabel:"Pomodoro-Modus (25 Min. Fokus / 5 Min. Pause)", pomodoroFocusWord:"Fokus", pomodoroBreakWord:"Pause",
-    themeHeading:"Design", themeStyleHeading:"Farbe", onboardHint:"Hier kannst du deinen Timer anpassen",
+    themeHeading:"Design", themeStyleHeading:"Farbe",
     groupSimple:"Minimalismus", groupAmbient:"Filmisch", groupRetro:"Retro",
     soundHeading:"Ton", muteNote:"Der Ton ist aus. Vorschauen und Signale sind stumm. M oder das Lautsprecher-Symbol schaltet den Ton wieder ein.",
     tickLabel:"Ticken in den letzten 10 Sekunden", tickAlwaysLabel:"Während des gesamten Timers ticken", voiceLabel:"Sprachansage bei 30 Sekunden",
@@ -1722,7 +1740,7 @@ const I18N = {
   fr: {
     settingsTitle:"Réglages", languageHeading:"Langue",
     modeHeading:"Mode", stopwatchLabel:"Chronomètre (compte à rebours inversé)", clockLabel:"Mode horloge (afficher l'heure)",
-    themeHeading:"Thème", themeStyleHeading:"Couleur", onboardHint:"Personnalisez votre minuteur ici",
+    themeHeading:"Thème", themeStyleHeading:"Couleur",
     groupSimple:"Minimalisme", groupAmbient:"Cinématique", groupRetro:"Rétro",
     soundHeading:"Son", muteNote:"Le son est coupé. Aperçus et alertes sont silencieux. Appuyez sur M ou l'icône haut-parleur pour réactiver.",
     tickLabel:"Tic-tac pendant les 10 dernières secondes", tickAlwaysLabel:"Tic-tac pendant tout le minuteur", voiceLabel:"Alerte vocale à 30 secondes",
@@ -1750,7 +1768,7 @@ const I18N = {
   es: {
     settingsTitle:"Ajustes", languageHeading:"Idioma",
     modeHeading:"Modo", stopwatchLabel:"Cronómetro (contar hacia arriba)", clockLabel:"Modo reloj (mostrar la hora del día)",
-    themeHeading:"Tema", themeStyleHeading:"Color", onboardHint:"Personaliza tu temporizador aquí",
+    themeHeading:"Tema", themeStyleHeading:"Color",
     groupSimple:"Minimalismo", groupAmbient:"Cinemático", groupRetro:"Retro",
     soundHeading:"Sonido", muteNote:"El sonido está desactivado. Vistas previas y alertas están silenciadas. Pulsa M o el icono del altavoz para reactivar.",
     tickLabel:"Tictac en los últimos 10 segundos", tickAlwaysLabel:"Tictac durante todo el temporizador", voiceLabel:"Alerta de voz a los 30 segundos",
@@ -1778,7 +1796,7 @@ const I18N = {
   zh: {
     settingsTitle:"设置", languageHeading:"语言",
     modeHeading:"模式", stopwatchLabel:"秒表（正计时）", clockLabel:"时钟模式（显示当前时间）",
-    themeHeading:"主题", themeStyleHeading:"颜色", onboardHint:"在这里自定义你的计时器",
+    themeHeading:"主题", themeStyleHeading:"颜色",
     groupSimple:"极简", groupAmbient:"电影感", groupRetro:"复古",
     soundHeading:"声音", muteNote:"声音已关闭。预览和提醒均已静音。按 M 或喇叭图标可取消静音。",
     tickLabel:"最后10秒滴答声", tickAlwaysLabel:"全程滴答声", voiceLabel:"剩余30秒语音提醒",
@@ -1806,7 +1824,7 @@ const I18N = {
   pt: {
     settingsTitle:"Configurações", languageHeading:"Idioma",
     modeHeading:"Modo", stopwatchLabel:"Cronômetro (contagem crescente)", clockLabel:"Modo relógio (mostrar hora do dia)",
-    themeHeading:"Tema", themeStyleHeading:"Cor", onboardHint:"Personalize seu cronômetro aqui",
+    themeHeading:"Tema", themeStyleHeading:"Cor",
     groupSimple:"Minimalismo", groupAmbient:"Cinemático", groupRetro:"Retrô",
     soundHeading:"Som", muteNote:"O som está desativado. Prévias e alertas estão silenciados. Pressione M ou o ícone do alto-falante para reativar.",
     tickLabel:"Tique-taque nos últimos 10 segundos", tickAlwaysLabel:"Tique-taque durante todo o cronômetro", voiceLabel:"Alerta de voz aos 30 segundos",
@@ -1834,7 +1852,7 @@ const I18N = {
   ja: {
     settingsTitle:"設定", languageHeading:"言語",
     modeHeading:"モード", stopwatchLabel:"ストップウォッチ（カウントアップ）", clockLabel:"時計モード（現在時刻を表示）",
-    themeHeading:"テーマ", themeStyleHeading:"カラー", onboardHint:"ここでタイマーをカスタマイズできます",
+    themeHeading:"テーマ", themeStyleHeading:"カラー",
     groupSimple:"ミニマリズム", groupAmbient:"シネマティック", groupRetro:"レトロ",
     soundHeading:"サウンド", muteNote:"サウンドはオフです。プレビューとアラートも無音になります。Mキーまたはスピーカーアイコンでミュート解除できます。",
     tickLabel:"最後の10秒間だけ秒針音を鳴らす", tickAlwaysLabel:"タイマー中ずっと秒針音を鳴らす", voiceLabel:"残り30秒で音声アラート",
@@ -1862,7 +1880,7 @@ const I18N = {
   it: {
     settingsTitle:"Impostazioni", languageHeading:"Lingua",
     modeHeading:"Modalità", stopwatchLabel:"Cronometro (conteggio crescente)", clockLabel:"Modalità orologio (mostra l'ora)",
-    themeHeading:"Tema", themeStyleHeading:"Colore", onboardHint:"Personalizza il tuo timer qui",
+    themeHeading:"Tema", themeStyleHeading:"Colore",
     groupSimple:"Minimalismo", groupAmbient:"Cinematico", groupRetro:"Retrò",
     soundHeading:"Suono", muteNote:"L'audio è disattivato. Anteprime e avvisi sono silenziati. Premi M o l'icona dell'altoparlante per riattivare.",
     tickLabel:"Ticchettio negli ultimi 10 secondi", tickAlwaysLabel:"Ticchettio per tutto il timer", voiceLabel:"Avviso vocale a 30 secondi",
@@ -1890,7 +1908,7 @@ const I18N = {
   ar: {
     settingsTitle:"الإعدادات", languageHeading:"اللغة",
     modeHeading:"الوضع", stopwatchLabel:"ساعة إيقاف (عد تصاعدي)", clockLabel:"وضع الساعة (عرض الوقت الحالي)",
-    themeHeading:"السمة", themeStyleHeading:"اللون", onboardHint:"خصص المؤقت من هنا",
+    themeHeading:"السمة", themeStyleHeading:"اللون",
     groupSimple:"البساطة", groupAmbient:"سينمائي", groupRetro:"كلاسيكي",
     soundHeading:"الصوت", muteNote:"الصوت متوقف. المعاينات والتنبيهات صامتة أيضًا. اضغط M أو أيقونة مكبر الصوت لإعادة تفعيل الصوت.",
     tickLabel:"صوت تكة خلال آخر 10 ثوانٍ", tickAlwaysLabel:"صوت تكة طوال المؤقت", voiceLabel:"تنبيه صوتي عند 30 ثانية",
@@ -1918,7 +1936,7 @@ const I18N = {
   ru: {
     settingsTitle:"Настройки", languageHeading:"Язык",
     modeHeading:"Режим", stopwatchLabel:"Секундомер (счёт вперёд)", clockLabel:"Режим часов (показывать текущее время)",
-    themeHeading:"Тема", themeStyleHeading:"Цвет", onboardHint:"Настройте таймер здесь",
+    themeHeading:"Тема", themeStyleHeading:"Цвет",
     groupSimple:"Минимализм", groupAmbient:"Кинематографично", groupRetro:"Ретро",
     soundHeading:"Звук", muteNote:"Звук выключен. Предпросмотр и оповещения также беззвучны. Нажмите M или значок динамика, чтобы включить звук.",
     tickLabel:"Тиканье в последние 10 секунд", tickAlwaysLabel:"Тиканье на протяжении всего таймера", voiceLabel:"Голосовое оповещение за 30 секунд",
@@ -1946,7 +1964,7 @@ const I18N = {
   hi: {
     settingsTitle:"सेटिंग्स", languageHeading:"भाषा",
     modeHeading:"मोड", stopwatchLabel:"स्टॉपवॉच (आगे गिनती)", clockLabel:"घड़ी मोड (दिन का समय दिखाएं)",
-    themeHeading:"थीम", themeStyleHeading:"रंग", onboardHint:"यहां अपना टाइमर कस्टमाइज़ करें",
+    themeHeading:"थीम", themeStyleHeading:"रंग",
     groupSimple:"न्यूनतमवाद", groupAmbient:"सिनेमाई", groupRetro:"रेट्रो",
     soundHeading:"ध्वनि", muteNote:"ध्वनि बंद है। पूर्वावलोकन और अलर्ट भी शांत हैं। ध्वनि फिर से चालू करने के लिए M दबाएं या स्पीकर आइकन पर क्लिक करें।",
     tickLabel:"आख़िरी 10 सेकंड में टिक ध्वनि", tickAlwaysLabel:"पूरे टाइमर के दौरान टिक ध्वनि", voiceLabel:"30 सेकंड शेष पर आवाज़ अलर्ट",
@@ -1974,7 +1992,7 @@ const I18N = {
   ko: {
     settingsTitle:"설정", languageHeading:"언어",
     modeHeading:"모드", stopwatchLabel:"스톱워치 (시간 증가)", clockLabel:"시계 모드 (현재 시각 표시)",
-    themeHeading:"테마", themeStyleHeading:"색상", onboardHint:"여기서 타이머를 사용자 지정하세요",
+    themeHeading:"테마", themeStyleHeading:"색상",
     groupSimple:"미니멀리즘", groupAmbient:"시네마틱", groupRetro:"레트로",
     soundHeading:"사운드", muteNote:"소리가 꺼져 있습니다. 미리듣기와 알림도 음소거됩니다. M 키나 스피커 아이콘을 눌러 다시 켤 수 있습니다.",
     tickLabel:"마지막 10초 동안 똑딱 소리", tickAlwaysLabel:"타이머 내내 똑딱 소리", voiceLabel:"30초 남았을 때 음성 알림",
@@ -2008,11 +2026,11 @@ function applyLang(){
     const key = el.dataset.i18n, val = t(key);
     if(/</.test(val)) el.innerHTML = val; else el.textContent = val;
   });
-  $("btnAppearance").title = t("titleAppearance");
-  $("btnSettings").title = t("titleSettings");
+  $("btnAppearance").title = $("btnAppearance").dataset.tip = t("titleAppearance");
+  $("btnSettings").title = $("btnSettings").dataset.tip = t("titleSettings");
   $("btnSettings").setAttribute("aria-label", t("titleSettings"));
-  $("btnMute").title = t("titleMute");
-  $("btnFull").title = t("titleFull");
+  $("btnMute").title = $("btnMute").dataset.tip = t("titleMute");
+  $("btnFull").title = $("btnFull").dataset.tip = t("titleFull");
   $("btnReset").title = t("titleReset");
   $("btnPlus30").title = t("titlePlus30");
   $("hint").textContent = t("hint");
@@ -2082,7 +2100,7 @@ const THEME_GROUPS = [
 const APPEARANCE_THEMES = {
   midnight:"dark", paper:"light", disc:"light", nasa:"light", squiggle:"dark", flip:"dark", egg:"light", days:"dark",
   lcd:"dark", terminal:"dark", web1:"dark", nixie:"dark", sunset:"light", lcars:"dark", bounce:"dark", aurora:"dark", strands:"dark",
-  sky:"light", ocean:"light", rings:"dark"
+  sky:"light", ocean:"light", rings:"dark", warp:"dark", orb:"dark", searchlight:"dark"
 };
 const SOUNDS = [
   {id:"chime",   name:"Chime",   pro:false},
@@ -5572,20 +5590,17 @@ function shuffleTheme(){
   save(); applyTheme();
   if($("settings").classList.contains("open")) refreshSettings();
 }
-// first-visit nudge toward Settings -- shown once per browser (see init()),
-// dismissed the moment the user opens Settings, clicks the hint itself, or
-// after a while on its own so it never turns into a permanent nag
-function dismissOnboardHint(){
-  document.body.classList.remove("show-onboard");
+// first visit: Settings is opened automatically (see init()) -- this just
+// records that it happened so it never auto-opens again
+function markOnboarded(){
   try{ localStorage.setItem(LS.onboarded, "1"); }catch(e){}
 }
-$("onboardHint").addEventListener("click", ()=>{ dismissOnboardHint(); $("btnSettings").click(); });
 $("btnSettings").addEventListener("click", ()=>{
   const s = $("settings");
   const opening = !s.classList.contains("open");
   s.classList.toggle("open");
   $("btnSettings").classList.toggle("open", opening);
-  if(opening){ refreshSettings(); dismissOnboardHint(); }
+  if(opening){ refreshSettings(); markOnboarded(); }
 });
 document.addEventListener("click", e=>{
   const s = $("settings");
@@ -5601,7 +5616,7 @@ document.addEventListener("click", e=>{
   // corner buttons (sound, appearance, fullscreen) toggle their own state
   // without needing the settings panel to close — leave it open so the
   // user can keep adjusting other settings right after
-  if(path.includes(s) || path.includes($("btnSettings")) || path.includes($("btnMute")) || path.includes($("btnAppearance")) || path.includes($("btnFull")) || path.includes($("onboardHint"))) return;
+  if(path.includes(s) || path.includes($("btnSettings")) || path.includes($("btnMute")) || path.includes($("btnAppearance")) || path.includes($("btnFull"))) return;
   s.classList.remove("open");
   $("btnSettings").classList.remove("open");
 });
@@ -6201,17 +6216,16 @@ $("overlay").addEventListener("click", e=>{ if(e.target.id==="overlay") closeMod
   }
   if(isPro()) document.querySelectorAll(".pro-tag").forEach(el=>el.remove());
   applyBranding(); applyLang(); render(); refreshSettings();
-  // first-visit-only: open Settings itself rather than just pointing at it --
-  // a short delay so it doesn't flash in before the page has finished laying
-  // out. dismissOnboardHint() sets the "seen it" flag so this never fires
-  // again on later visits, same one-time guarantee the old arrow hint used.
+  // first-visit-only: open Settings automatically -- a short delay so it
+  // doesn't flash in before the page has finished laying out. markOnboarded()
+  // sets the "seen it" flag so this never fires again on later visits.
   try{
     if(!localStorage.getItem(LS.onboarded)){
       setTimeout(()=>{
         $("settings").classList.add("open");
         $("btnSettings").classList.add("open");
         refreshSettings();
-        dismissOnboardHint();
+        markOnboarded();
       }, 900);
     }
   }catch(e){}
