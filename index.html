@@ -1553,10 +1553,10 @@
       <input type="radio" name="modeRadio" id="swToggle"> <span data-i18n="stopwatchLabel">Stopwatch (count up instead)</span>
     </label>
     <label class="switch" style="margin-top:.8rem">
-      <input type="radio" name="modeRadio" id="clockToggle"> <span data-i18n="clockLabel">Clock mode (show the time of day)</span> <span class="pro-tag">PRO</span>
+      <input type="radio" name="modeRadio" id="clockToggle"> <span data-i18n="clockLabel">Clock mode (show the time of day)</span>
     </label>
     <label class="switch" style="margin-top:.8rem">
-      <input type="radio" name="modeRadio" id="pomodoroToggle"> <span data-i18n="pomodoroLabel">Pomodoro mode (25 min focus / 5 min break, auto-repeats)</span> <span class="pro-tag">PRO</span>
+      <input type="radio" name="modeRadio" id="pomodoroToggle"> <span data-i18n="pomodoroLabel">Pomodoro mode (25 min focus / 5 min break, auto-repeats)</span>
     </label>
   </section>
 
@@ -1706,7 +1706,7 @@
       <ul id="modalList">
         <li>All 23 themes: countdown board, starship, LED clock &amp; more</li>
         <li>Your logo + custom colors on the big screen</li>
-        <li>11 fonts, 5 end sounds, voice alert, clock + stopwatch modes</li>
+        <li>11 fonts, 5 end sounds, voice alert</li>
       </ul>
       <a class="buy-btn" id="buyBtn" href="#" target="_blank">Buy the app</a>
       <p class="fine" id="modalFine">Instant download after checkout.</p>
@@ -1786,7 +1786,7 @@ const I18N = {
     bgLabel:"Background color (overrides theme)", useItLabel:"use it", resetColorsBtn:"Reset colors & logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (lifetime)", proHeadUnlocked:"Pro (unlocked)",
     proStatusUnlocked:"You have the full version: every theme, sound, font, and color. Thanks for supporting an independent tool.",
-    proStatusLockedPrefix:"All 23 themes with style variants, clock & stopwatch modes, voice alert, custom colors & logo, beautiful fonts & your own uploads, 5 end sounds. One-time",
+    proStatusLockedPrefix:"All 23 themes with style variants, voice alert, custom colors & logo, beautiful fonts & your own uploads, 5 end sounds. One-time",
     proStatusLockedSuffix:", yours forever, no subscription.",
     getProBtn:"Get Pro for Life", haveKeyLabel:"Already bought? Paste your license key",
     installHeading:"Use it as an app (Mac & PC)",
@@ -1815,7 +1815,7 @@ const I18N = {
     bgLabel:"Hintergrundfarbe (überschreibt Design)", useItLabel:"verwenden", resetColorsBtn:"Farben & Logo zurücksetzen",
     proHeadFree:"Pro", proHeadLifetime:"Pro (lebenslang)", proHeadUnlocked:"Pro (freigeschaltet)",
     proStatusUnlocked:"Du hast die Vollversion: jedes Design, jeden Sound, jede Schrift und Farbe. Danke, dass du ein unabhängiges Tool unterstützt.",
-    proStatusLockedPrefix:"Alle 23 Designs mit Stilvarianten, Uhrzeit- & Stoppuhr-Modus, Sprachansage, eigene Farben & Logo, schöne Schriften & eigene Uploads, 5 Endsignale. Einmalig",
+    proStatusLockedPrefix:"Alle 23 Designs mit Stilvarianten, Sprachansage, eigene Farben & Logo, schöne Schriften & eigene Uploads, 5 Endsignale. Einmalig",
     proStatusLockedSuffix:", für immer deins, kein Abo.",
     getProBtn:"Pro fürs Leben holen", haveKeyLabel:"Schon gekauft? Lizenzschlüssel einfügen",
     installHeading:"Als App nutzen (Mac & PC)",
@@ -1843,7 +1843,7 @@ const I18N = {
     bgLabel:"Couleur de fond (remplace le thème)", useItLabel:"utiliser", resetColorsBtn:"Réinitialiser couleurs & logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (à vie)", proHeadUnlocked:"Pro (débloqué)",
     proStatusUnlocked:"Vous avez la version complète : chaque thème, son, police et couleur. Merci de soutenir un outil indépendant.",
-    proStatusLockedPrefix:"Les 23 thèmes avec variantes de style, modes horloge & chronomètre, alerte vocale, couleurs & logo personnalisés, belles polices & vos propres imports, 5 sons de fin. Paiement unique",
+    proStatusLockedPrefix:"Les 23 thèmes avec variantes de style, alerte vocale, couleurs & logo personnalisés, belles polices & vos propres imports, 5 sons de fin. Paiement unique",
     proStatusLockedSuffix:", à vous pour toujours, sans abonnement.",
     getProBtn:"Obtenir Pro à vie", haveKeyLabel:"Déjà acheté ? Collez votre clé de licence",
     installHeading:"Utiliser comme application (Mac & PC)",
@@ -1871,7 +1871,7 @@ const I18N = {
     bgLabel:"Color de fondo (anula el tema)", useItLabel:"usar", resetColorsBtn:"Restablecer colores y logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (de por vida)", proHeadUnlocked:"Pro (desbloqueado)",
     proStatusUnlocked:"Tienes la versión completa: todos los temas, sonidos, fuentes y colores. Gracias por apoyar una herramienta independiente.",
-    proStatusLockedPrefix:"Los 23 temas con variantes de estilo, modos reloj y cronómetro, alerta de voz, colores y logo personalizados, fuentes bonitas y tus propias subidas, 5 sonidos finales. Pago único",
+    proStatusLockedPrefix:"Los 23 temas con variantes de estilo, alerta de voz, colores y logo personalizados, fuentes bonitas y tus propias subidas, 5 sonidos finales. Pago único",
     proStatusLockedSuffix:", tuyo para siempre, sin suscripción.",
     getProBtn:"Consigue Pro de por vida", haveKeyLabel:"¿Ya lo compraste? Pega tu clave de licencia",
     installHeading:"Úsalo como app (Mac y PC)",
@@ -1899,7 +1899,7 @@ const I18N = {
     bgLabel:"背景色（覆盖主题）", useItLabel:"使用", resetColorsBtn:"重置颜色与logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro（终身）", proHeadUnlocked:"Pro（已解锁）",
     proStatusUnlocked:"你已拥有完整版：所有主题、声音、字体与颜色。感谢支持这款独立工具。",
-    proStatusLockedPrefix:"全部23款主题及风格变体、时钟与秒表模式、语音提醒、自定义颜色与logo、精美字体及自定义上传、5种结束提示音。一次性付费",
+    proStatusLockedPrefix:"全部23款主题及风格变体、语音提醒、自定义颜色与logo、精美字体及自定义上传、5种结束提示音。一次性付费",
     proStatusLockedSuffix:"，永久属于你，无需订阅。",
     getProBtn:"获取终身版Pro", haveKeyLabel:"已购买？粘贴你的授权密钥",
     installHeading:"作为应用使用（Mac 与 PC）",
@@ -1927,7 +1927,7 @@ const I18N = {
     bgLabel:"Cor de fundo (substitui o tema)", useItLabel:"usar", resetColorsBtn:"Redefinir cores e logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (vitalício)", proHeadUnlocked:"Pro (desbloqueado)",
     proStatusUnlocked:"Você tem a versão completa: todos os temas, sons, fontes e cores. Obrigado por apoiar uma ferramenta independente.",
-    proStatusLockedPrefix:"Todos os 23 temas com variantes de estilo, modos relógio e cronômetro, alerta de voz, cores e logo personalizados, fontes bonitas e seus próprios envios, 5 sons de término. Pagamento único",
+    proStatusLockedPrefix:"Todos os 23 temas com variantes de estilo, alerta de voz, cores e logo personalizados, fontes bonitas e seus próprios envios, 5 sons de término. Pagamento único",
     proStatusLockedSuffix:", seu para sempre, sem assinatura.",
     getProBtn:"Obter Pro vitalício", haveKeyLabel:"Já comprou? Cole sua chave de licença",
     installHeading:"Usar como app (Mac e PC)",
@@ -1955,7 +1955,7 @@ const I18N = {
     bgLabel:"背景色（テーマを上書き）", useItLabel:"使用する", resetColorsBtn:"カラーとロゴをリセット",
     proHeadFree:"Pro", proHeadLifetime:"Pro（永久）", proHeadUnlocked:"Pro（解除済み）",
     proStatusUnlocked:"フルバージョンをご利用中です：すべてのテーマ、サウンド、フォント、カラー。独立系ツールを応援いただきありがとうございます。",
-    proStatusLockedPrefix:"スタイルバリエーション付き全23テーマ、時計＆ストップウォッチモード、音声アラート、カラー＆ロゴのカスタマイズ、美しいフォント＆自分のフォントのアップロード、終了音5種。買い切り",
+    proStatusLockedPrefix:"スタイルバリエーション付き全23テーマ、音声アラート、カラー＆ロゴのカスタマイズ、美しいフォント＆自分のフォントのアップロード、終了音5種。買い切り",
     proStatusLockedSuffix:"で永久にあなたのもの、サブスクリプションなし。",
     getProBtn:"Proを永久に入手", haveKeyLabel:"購入済みですか？ライセンスキーを貼り付け",
     installHeading:"アプリとして使う（Mac & PC）",
@@ -1983,7 +1983,7 @@ const I18N = {
     bgLabel:"Colore di sfondo (sostituisce il tema)", useItLabel:"usa", resetColorsBtn:"Reimposta colori e logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (a vita)", proHeadUnlocked:"Pro (sbloccato)",
     proStatusUnlocked:"Hai la versione completa: ogni tema, suono, carattere e colore. Grazie per il supporto a uno strumento indipendente.",
-    proStatusLockedPrefix:"Tutti i 23 temi con varianti di stile, modalità orologio e cronometro, avviso vocale, colori e logo personalizzati, caratteri eleganti e caricamenti propri, 5 suoni finali. Pagamento unico",
+    proStatusLockedPrefix:"Tutti i 23 temi con varianti di stile, avviso vocale, colori e logo personalizzati, caratteri eleganti e caricamenti propri, 5 suoni finali. Pagamento unico",
     proStatusLockedSuffix:", tuo per sempre, senza abbonamento.",
     getProBtn:"Ottieni Pro a vita", haveKeyLabel:"Già acquistato? Incolla la tua chiave di licenza",
     installHeading:"Usalo come app (Mac e PC)",
@@ -2011,7 +2011,7 @@ const I18N = {
     bgLabel:"لون الخلفية (يتجاوز السمة)", useItLabel:"استخدام", resetColorsBtn:"إعادة تعيين الألوان والشعار",
     proHeadFree:"Pro", proHeadLifetime:"Pro (مدى الحياة)", proHeadUnlocked:"Pro (مفعّل)",
     proStatusUnlocked:"لديك النسخة الكاملة: كل سمة وصوت وخط ولون. شكرًا لدعمك أداة مستقلة.",
-    proStatusLockedPrefix:"جميع السمات الـ23 مع تنويعات النمط، وضعا الساعة وساعة الإيقاف، تنبيه صوتي، ألوان وشعار مخصصان، خطوط جميلة ورفع خطوطك الخاصة، 5 أصوات نهاية. دفعة واحدة",
+    proStatusLockedPrefix:"جميع السمات الـ23 مع تنويعات النمط، تنبيه صوتي، ألوان وشعار مخصصان، خطوط جميلة ورفع خطوطك الخاصة، 5 أصوات نهاية. دفعة واحدة",
     proStatusLockedSuffix:"، ملكك للأبد، بدون اشتراك.",
     getProBtn:"احصل على Pro مدى الحياة", haveKeyLabel:"اشتريت بالفعل؟ الصق مفتاح الترخيص",
     installHeading:"استخدمه كتطبيق (Mac و PC)",
@@ -2039,7 +2039,7 @@ const I18N = {
     bgLabel:"Цвет фона (переопределяет тему)", useItLabel:"использовать", resetColorsBtn:"Сбросить цвета и логотип",
     proHeadFree:"Pro", proHeadLifetime:"Pro (навсегда)", proHeadUnlocked:"Pro (разблокировано)",
     proStatusUnlocked:"У вас полная версия: все темы, звуки, шрифты и цвета. Спасибо за поддержку независимого инструмента.",
-    proStatusLockedPrefix:"Все 23 темы со стилевыми вариантами, режимы часов и секундомера, голосовое оповещение, свои цвета и логотип, красивые шрифты и загрузка своих, 5 финальных звуков. Разовый платёж",
+    proStatusLockedPrefix:"Все 23 темы со стилевыми вариантами, голосовое оповещение, свои цвета и логотип, красивые шрифты и загрузка своих, 5 финальных звуков. Разовый платёж",
     proStatusLockedSuffix:", навсегда ваш, без подписки.",
     getProBtn:"Получить Pro навсегда", haveKeyLabel:"Уже купили? Вставьте лицензионный ключ",
     installHeading:"Использовать как приложение (Mac и PC)",
@@ -2067,7 +2067,7 @@ const I18N = {
     bgLabel:"पृष्ठभूमि रंग (थीम को ओवरराइड करता है)", useItLabel:"इस्तेमाल करें", resetColorsBtn:"रंग और लोगो रीसेट करें",
     proHeadFree:"Pro", proHeadLifetime:"Pro (आजीवन)", proHeadUnlocked:"Pro (अनलॉक)",
     proStatusUnlocked:"आपके पास पूरा संस्करण है: हर थीम, ध्वनि, फ़ॉन्ट और रंग। एक स्वतंत्र टूल का समर्थन करने के लिए धन्यवाद।",
-    proStatusLockedPrefix:"स्टाइल वेरिएंट के साथ सभी 23 थीम, घड़ी और स्टॉपवॉच मोड, आवाज़ अलर्ट, कस्टम रंग और लोगो, सुंदर फ़ॉन्ट और अपने खुद के अपलोड, 5 अंत ध्वनियाँ। एक बार भुगतान",
+    proStatusLockedPrefix:"स्टाइल वेरिएंट के साथ सभी 23 थीम, आवाज़ अलर्ट, कस्टम रंग और लोगो, सुंदर फ़ॉन्ट और अपने खुद के अपलोड, 5 अंत ध्वनियाँ। एक बार भुगतान",
     proStatusLockedSuffix:", हमेशा के लिए आपका, कोई सदस्यता नहीं।",
     getProBtn:"आजीवन Pro पाएं", haveKeyLabel:"पहले ही खरीद लिया? अपनी लाइसेंस कुंजी पेस्ट करें",
     installHeading:"ऐप के रूप में उपयोग करें (Mac और PC)",
@@ -2095,7 +2095,7 @@ const I18N = {
     bgLabel:"배경색 (테마를 덮어씀)", useItLabel:"사용", resetColorsBtn:"색상 & 로고 초기화",
     proHeadFree:"Pro", proHeadLifetime:"Pro (평생)", proHeadUnlocked:"Pro (잠금 해제됨)",
     proStatusUnlocked:"전체 버전을 사용 중입니다: 모든 테마, 사운드, 글꼴, 색상. 독립 도구를 지원해 주셔서 감사합니다.",
-    proStatusLockedPrefix:"스타일 변형이 있는 23가지 테마, 시계 & 스톱워치 모드, 음성 알림, 사용자 지정 색상 & 로고, 멋진 글꼴 & 직접 업로드, 5가지 종료음. 1회 결제",
+    proStatusLockedPrefix:"스타일 변형이 있는 23가지 테마, 음성 알림, 사용자 지정 색상 & 로고, 멋진 글꼴 & 직접 업로드, 5가지 종료음. 1회 결제",
     proStatusLockedSuffix:"로 평생 소유, 구독 없음.",
     getProBtn:"평생 Pro 구매", haveKeyLabel:"이미 구매하셨나요? 라이선스 키 붙여넣기",
     installHeading:"앱으로 사용하기 (Mac & PC)",
@@ -2182,7 +2182,7 @@ const THEME_DEFAULT_ACCENT = { disc:"#d5442f", terminal:"#4ade80" };
 // how the Theme picker in Settings is grouped — purely a display grouping,
 // doesn't affect THEMES itself or anything that reads it directly
 const THEME_GROUPS = [
-  {labelKey:"groupSimple",    ids:["midnight","disc","paper","flip","squiggle","egg"]},
+  {labelKey:"groupSimple",    ids:["disc","midnight","paper","flip","squiggle","egg"]},
   {labelKey:"groupAmbient",   ids:["days","sunset","strands","rings","aurora","orb","searchlight","sky","ocean","warp"]},
   {labelKey:"groupRetro",     ids:["nixie","terminal","lcars","bounce","lcd","web1","nasa"]}
 ];
@@ -2253,7 +2253,7 @@ function detectLang(){
 }
 const POMO_FOCUS_SEC = 25*60, POMO_BREAK_SEC = 5*60;
 let st = Object.assign({
-  duration: 600, theme:"midnight", sound:"chime", tick:false, tickAlways:false, tickSound:"chrono", muted:false, clock:false, voice:false, voice2min:false, voiceHalf:false, stopwatch:false,
+  duration: 600, theme:"disc", sound:"chime", tick:false, tickAlways:false, tickSound:"chrono", muted:false, clock:false, voice:false, voice2min:false, voiceHalf:false, stopwatch:false,
   pomodoro:false, pomoPhase:"focus",
   accent:"#d5442f", accentCustom:false, bg:"#101014", useBg:false, font:"helvetica", label:LABEL_DEFAULTS[detectLang()] || "Workshop Timer", labelCustom:false, appearance:null, lang:detectLang(),
   lc1:"SET PHASERS TO FUN", lc2:"SHIELDS: 98%", lc3:"WARP 9.9"
@@ -2334,7 +2334,7 @@ function applyUnlocked(){
   document.querySelectorAll(".pro-tag").forEach(el=>el.remove());
   applyBranding(); render(); refreshSettings();
 }
-function clockOn(){ return st.clock && isPro() && !running && !finished; }
+function clockOn(){ return st.clock && !running && !finished; }
 function swOn(){ return st.stopwatch; } // stopwatch is free for everyone
 let swStart = 0, swAccum = 0;
 
@@ -3320,7 +3320,7 @@ function render(){
     frac = st.duration ? remaining/st.duration : 0;
     secAngle = -((remaining%60)/60)*360;
     wordsHtml = timeWords(remaining);
-    const pomoWord = (st.pomodoro && isPro()) ? t(st.pomoPhase==="focus" ? "pomodoroFocusWord" : "pomodoroBreakWord") : "";
+    const pomoWord = st.pomodoro ? t(st.pomoPhase==="focus" ? "pomodoroFocusWord" : "pomodoroBreakWord") : "";
     elSub.textContent = running ? pomoWord : (remaining===st.duration ? pomoWord : t("paused"));
   }
   if(def.prog==="x") elProgress.style.transform = `scaleX(${Math.max(0,Math.min(1,frac))})`;
@@ -5492,7 +5492,7 @@ function loop(){
       announce("Attention please. Time to switch.");
     }
   }
-  if(remaining <= 0 && st.pomodoro && isPro()){
+  if(remaining <= 0 && st.pomodoro){
     // auto-flip focus/break and keep running — that's the whole point of
     // Pomodoro, no manual restart needed between phases
     st.pomoPhase = st.pomoPhase === "focus" ? "break" : "focus";
@@ -6068,14 +6068,14 @@ function refreshSettings(){
   tickAlwaysBox.checked = st.tickAlways;
   tickAlwaysBox.disabled = false;
   const clockBox = $("clockToggle");
-  clockBox.checked = st.clock && isPro();
-  clockBox.disabled = !isPro();
+  clockBox.checked = st.clock;
+  clockBox.disabled = false;
   const swBox = $("swToggle");
   swBox.checked = st.stopwatch;
   swBox.disabled = false;
   const pomodoroBox = $("pomodoroToggle");
-  pomodoroBox.checked = st.pomodoro && isPro();
-  pomodoroBox.disabled = !isPro();
+  pomodoroBox.checked = st.pomodoro;
+  pomodoroBox.disabled = false;
   // Countdown is the mode radio group's implicit "none of the above" state
   $("countdownToggle").checked = !swBox.checked && !clockBox.checked && !pomodoroBox.checked;
   $("muteNote").style.display = st.muted ? "block" : "none";
@@ -6127,7 +6127,6 @@ $("countdownToggle").addEventListener("change", e=>{
   save(); render(); refreshSettings();
 });
 $("clockToggle").addEventListener("change", e=>{
-  if(!isPro()){ $("countdownToggle").checked = true; return openModal(); }
   pause();
   st.clock = true; st.stopwatch = false; st.pomodoro = false;
   save(); render(); refreshSettings();
@@ -6140,7 +6139,6 @@ $("swToggle").addEventListener("change", e=>{
   save(); render(); refreshSettings();
 });
 $("pomodoroToggle").addEventListener("change", e=>{
-  if(!isPro()){ $("countdownToggle").checked = true; return openModal(); }
   pause();
   st.pomodoro = true;
   // pomodoro takes over the main countdown, so the other two modes step aside
@@ -6307,13 +6305,12 @@ $("overlay").addEventListener("click", e=>{ if(e.target.id==="overlay") closeMod
   $("lcDate").textContent = now.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}).toUpperCase();
   const doy = Math.floor((now - new Date(now.getFullYear(),0,0)) / 86400000);
   $("lcStar").textContent = "STARDATE " + ((now.getFullYear()-1946)*1000 + doy*2.74).toFixed(1);
-  if(!THEMES.find(t=>t.id===st.theme)) st.theme = "midnight"; // saved theme no longer exists
+  if(!THEMES.find(t=>t.id===st.theme)) st.theme = "disc"; // saved theme no longer exists
   if(!isPro()){
-    if((THEMES.find(t=>t.id===st.theme)||{}).pro) st.theme = "midnight";
+    if((THEMES.find(t=>t.id===st.theme)||{}).pro) st.theme = "disc";
     if(SOUNDS.find(s=>s.id===st.sound)?.pro) st.sound = "chime";
     if(FONTS.find(f=>f.id===st.font)?.pro) st.font = "helvetica";
-    st.clock = false; // clock mode is Pro
-    /* stopwatch stays — it's free for everyone */
+    /* stopwatch, clock and pomodoro modes are free for everyone */
   }
   if(isPro()) document.querySelectorAll(".pro-tag").forEach(el=>el.remove());
   applyBranding(); applyLang(); render(); refreshSettings();
