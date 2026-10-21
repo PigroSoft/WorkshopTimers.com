@@ -1285,21 +1285,26 @@
   #settings section{
     --note:#fff1a6; --tilt:-.6deg;
     position:relative; isolation:isolate; border-top:none;
-    padding:1.25rem 1.15rem 1.2rem; background:transparent;
+    padding:2.3rem 1.15rem 1.35rem; background:transparent;
   }
+  /* Each note is built from three stacked backgrounds, top layer first:
+     a folded bottom-right corner (28px, also paints the cut-away corner in
+     the board color), the adhesive band across the top (44px tall, stretches
+     sideways only) and a soft light-to-dark paper gradient. All three are
+     neutral white/black tints, so --note supplies the color. The two SVGs
+     were drawn in Figma and are about 0.5 KB each. */
   #settings section::after{
     content:""; position:absolute; inset:0; z-index:-1;
-    background:var(--note); transform:rotate(var(--tilt));
-    border-radius:2px 2px 3px 18px / 2px 2px 3px 12px;   /* curled bottom-left corner */
-    box-shadow:0 1px 1px rgba(60,45,10,.08), 0 10px 18px -10px rgba(60,45,10,.45);
-  }
-  /* a strip of tape holding each note up */
-  #settings section::before{
-    content:""; position:absolute; z-index:1; top:-.55rem; left:50%;
-    width:4.6rem; height:1.15rem; margin-left:-2.3rem;
-    background:rgba(255,255,255,.55); border:1px solid rgba(43,42,38,.06);
-    transform:rotate(calc(var(--tilt) * -4));
-    box-shadow:0 1px 2px rgba(0,0,0,.05);
+    background-color:var(--note); transform:rotate(var(--tilt));
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='21' y1='7' x2='7' y2='-7'%3E%3Cstop stop-color='%23fff' stop-opacity='.55'/%3E%3Cstop offset='.55' stop-color='%23fff' stop-opacity='.1'/%3E%3Cstop offset='1' stop-opacity='.12'/%3E%3C/linearGradient%3E%3Cpath d='M28 0v28H0z' fill='%23f3eee3'/%3E%3Cpath d='M28 0 0 28V0z' fill='url(%23a)' stroke='%23000' stroke-opacity='.1' stroke-width='.75'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='44' preserveAspectRatio='none'%3E%3ClinearGradient id='a' x2='0' y2='1'%3E%3Cstop stop-color='%23fff' stop-opacity='.45'/%3E%3Cstop offset='.05' stop-color='%23fff' stop-opacity='0'/%3E%3Cstop offset='.1' stop-opacity='.025'/%3E%3Cstop offset='.68' stop-opacity='.03'/%3E%3Cstop offset='.72' stop-opacity='.075'/%3E%3Cstop offset='.8' stop-opacity='0'/%3E%3C/linearGradient%3E%3Crect width='320' height='44' fill='url(%23a)'/%3E%3C/svg%3E"),
+      linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,0) 30%, rgba(0,0,0,.07));
+    background-repeat:no-repeat;
+    background-position:right bottom, left top, 0 0;
+    background-size:28px 28px, 100% 44px, 100% 100%;
+    border-radius:1px;
+    box-shadow:0 1px 1px rgba(60,45,10,.08), 0 10px 14px -8px rgba(60,45,10,.38);
   }
   #settings section:nth-of-type(6n+1){--note:#fff1a6; --tilt:-.6deg;}  /* yellow */
   #settings section:nth-of-type(6n+2){--note:#ffd6e3; --tilt:.5deg;}   /* pink */
@@ -1345,7 +1350,7 @@
   #settings section.flash::after{animation:noteFlashRing 1.5s ease;}
   @keyframes noteFlash{0%,100%{}}
   @keyframes noteFlashRing{
-    0%,100%{box-shadow:0 1px 1px rgba(60,45,10,.08), 0 10px 18px -10px rgba(60,45,10,.45);}
+    0%,100%{box-shadow:0 1px 1px rgba(60,45,10,.08), 0 10px 14px -8px rgba(60,45,10,.38);}
     25%{box-shadow:0 0 0 4px rgba(43,42,38,.45), 0 14px 24px -10px rgba(60,45,10,.5);}
   }
 
