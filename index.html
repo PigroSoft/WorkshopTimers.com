@@ -1255,7 +1255,6 @@
   .switch{display:flex; align-items:center; gap:.5rem; font-size:.85rem; cursor:pointer;}
   #trialStatus{font-size:.8rem; color:var(--muted); line-height:1.5;}
   #trialStatus b{color:var(--accent);}
-  .locked-section{opacity:.55; pointer-events:none;}
   .section-head{display:flex; align-items:center; justify-content:space-between;}
   .unlock-link{font-size:.75rem; color:var(--accent); cursor:pointer; pointer-events:auto; text-decoration:underline;}
   .help{font-size:.85rem; color:var(--muted); line-height:1.7;}
@@ -1561,13 +1560,13 @@
     </label>
     <div class="chip-row" id="tickSoundRow" style="margin-top:.6rem"></div>
     <label class="switch" style="margin-top:.8rem">
-      <input type="checkbox" id="voiceToggle"> <span data-i18n="voiceLabel">Voice alert at 30 seconds left</span> <span class="pro-tag">PRO</span>
+      <input type="checkbox" id="voiceToggle"> <span data-i18n="voiceLabel">Voice alert at 30 seconds left</span>
     </label>
     <label class="switch" style="margin-top:.8rem">
-      <input type="checkbox" id="voice2minToggle"> <span data-i18n="voice2minLabel">Voice alert at 2 minutes left</span> <span class="pro-tag">PRO</span>
+      <input type="checkbox" id="voice2minToggle"> <span data-i18n="voice2minLabel">Voice alert at 2 minutes left</span>
     </label>
     <label class="switch" style="margin-top:.8rem">
-      <input type="checkbox" id="voiceHalfToggle"> <span data-i18n="voiceHalfLabel">"Time to switch" alert halfway through</span> <span class="pro-tag">PRO</span>
+      <input type="checkbox" id="voiceHalfToggle"> <span data-i18n="voiceHalfLabel">"Time to switch" alert halfway through</span>
     </label>
   </section>
 
@@ -1577,9 +1576,8 @@
   </section>
 
   <section>
-    <h3><span data-i18n="fontHeading">Font</span> <span class="pro-tag">PRO</span></h3>
+    <h3><span data-i18n="fontHeading">Font</span></h3>
     <select id="fontSelect" style="width:100%; padding:.5rem .6rem; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--fg); font-family:inherit; font-size:.9rem"></select>
-    <div id="fontProNote" class="help" data-i18n="fontProNote" style="margin-top:.5rem; display:none">Free themes use their own default font. Pro unlocks a set of beautiful fonts and lets you upload your own.</div>
     <div id="customFontBox" style="display:none; margin-top:.8rem">
       <div class="field">
         <label data-i18n="uploadFontLabel">Upload your own font (.ttf, .otf, .woff, .woff2)</label>
@@ -1594,8 +1592,7 @@
 
   <section>
     <div class="section-head">
-      <h3><span data-i18n="colorsHeading">Your colors &amp; logo</span> <span class="pro-tag">PRO</span></h3>
-      <span class="unlock-link" id="brandUnlock" data-i18n="unlockLink" style="display:none">Unlock</span>
+      <h3><span data-i18n="colorsHeading">Your colors &amp; logo</span></h3>
     </div>
     <div id="brandBody">
       <div class="field">
@@ -1749,14 +1746,14 @@ const I18N = {
     soundHeading:"Sound", muteNote:"All sound is off. Previews and alerts are silenced. Press M or the speaker icon to unmute.",
     tickLabel:"Tick during final 10 seconds", tickAlwaysLabel:"Tick throughout the whole timer", voiceLabel:"Voice alert at 30 seconds left",
     voice2minLabel:"Voice alert at 2 minutes left", voiceHalfLabel:"\"Time to switch\" alert halfway through",
-    fontHeading:"Font", fontProNote:"Free themes use their own default font. Pro unlocks a set of beautiful fonts and lets you upload your own.",
+    fontHeading:"Font",
     uploadFontLabel:"Upload your own font (.ttf, .otf, .woff, .woff2)", weightLabel:"Weight:",
     colorsHeading:"Your colors & logo", unlockLink:"Unlock",
     logoLabel:"Logo (shown above the timer)", accentLabel:"Accent color (digits & highlights)",
     bgLabel:"Background color (overrides theme)", useItLabel:"use it", resetColorsBtn:"Reset colors & logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (lifetime)", proHeadUnlocked:"Pro (unlocked)",
-    proStatusUnlocked:"You have the full version: every theme, sound, font, and color. Thanks for supporting an independent tool.",
-    proStatusLockedPrefix:"All 23 themes with style variants, voice alert, custom colors & logo, beautiful fonts & your own uploads. One-time",
+    proStatusUnlocked:"You have every theme and colour variant. Thanks for supporting an independent tool.",
+    proStatusLockedPrefix:"Everything else is free. Pro unlocks all 23 themes and their colour variants. One-time",
     proStatusLockedSuffix:", yours forever, no subscription.",
     getProBtn:"Get Pro for Life", haveKeyLabel:"Already bought? Paste your license key",
     sourceText:"Open source under the MIT licence.", sourceLink:"View the code",
@@ -1780,14 +1777,14 @@ const I18N = {
     soundHeading:"Ton", muteNote:"Der Ton ist aus. Vorschauen und Signale sind stumm. M oder das Lautsprecher-Symbol schaltet den Ton wieder ein.",
     tickLabel:"Ticken in den letzten 10 Sekunden", tickAlwaysLabel:"Während des gesamten Timers ticken", voiceLabel:"Sprachansage bei 30 Sekunden",
     voice2minLabel:"Sprachansage bei 2 Minuten", voiceHalfLabel:"„Zeit zum Wechseln“-Ansage zur Halbzeit",
-    fontHeading:"Schrift", fontProNote:"Kostenlose Designs verwenden ihre eigene Standardschrift. Pro schaltet schöne Schriften frei und erlaubt eigene Uploads.",
+    fontHeading:"Schrift",
     uploadFontLabel:"Eigene Schrift hochladen (.ttf, .otf, .woff, .woff2)", weightLabel:"Stärke:",
     colorsHeading:"Farben & Logo", unlockLink:"Freischalten",
     logoLabel:"Logo (über dem Timer)", accentLabel:"Akzentfarbe (Ziffern & Hervorhebungen)",
     bgLabel:"Hintergrundfarbe (überschreibt Design)", useItLabel:"verwenden", resetColorsBtn:"Farben & Logo zurücksetzen",
     proHeadFree:"Pro", proHeadLifetime:"Pro (lebenslang)", proHeadUnlocked:"Pro (freigeschaltet)",
-    proStatusUnlocked:"Du hast die Vollversion: jedes Design, jeden Sound, jede Schrift und Farbe. Danke, dass du ein unabhängiges Tool unterstützt.",
-    proStatusLockedPrefix:"Alle 23 Designs mit Stilvarianten, Sprachansage, eigene Farben & Logo, schöne Schriften & eigene Uploads. Einmalig",
+    proStatusUnlocked:"Du hast alle Designs und Farbvarianten. Danke, dass du ein unabhängiges Tool unterstützt.",
+    proStatusLockedPrefix:"Alles andere ist kostenlos. Pro schaltet alle 23 Designs und ihre Farbvarianten frei. Einmalig",
     proStatusLockedSuffix:", für immer deins, kein Abo.",
     getProBtn:"Pro fürs Leben holen", haveKeyLabel:"Schon gekauft? Lizenzschlüssel einfügen",
     sourceText:"Open Source unter der MIT-Lizenz.", sourceLink:"Zum Quellcode",
@@ -1810,14 +1807,14 @@ const I18N = {
     soundHeading:"Son", muteNote:"Le son est coupé. Aperçus et alertes sont silencieux. Appuyez sur M ou l'icône haut-parleur pour réactiver.",
     tickLabel:"Tic-tac pendant les 10 dernières secondes", tickAlwaysLabel:"Tic-tac pendant tout le minuteur", voiceLabel:"Alerte vocale à 30 secondes",
     voice2minLabel:"Alerte vocale à 2 minutes", voiceHalfLabel:"Alerte « changez d'atelier » à mi-parcours",
-    fontHeading:"Police", fontProNote:"Les thèmes gratuits utilisent leur propre police par défaut. Pro débloque de belles polices et permet d'importer les vôtres.",
+    fontHeading:"Police",
     uploadFontLabel:"Importer votre police (.ttf, .otf, .woff, .woff2)", weightLabel:"Graisse :",
     colorsHeading:"Vos couleurs & logo", unlockLink:"Débloquer",
     logoLabel:"Logo (affiché au-dessus du minuteur)", accentLabel:"Couleur d'accent (chiffres & surbrillances)",
     bgLabel:"Couleur de fond (remplace le thème)", useItLabel:"utiliser", resetColorsBtn:"Réinitialiser couleurs & logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (à vie)", proHeadUnlocked:"Pro (débloqué)",
-    proStatusUnlocked:"Vous avez la version complète : chaque thème, son, police et couleur. Merci de soutenir un outil indépendant.",
-    proStatusLockedPrefix:"Les 23 thèmes avec variantes de style, alerte vocale, couleurs & logo personnalisés, belles polices & vos propres imports. Paiement unique",
+    proStatusUnlocked:"Vous avez tous les thèmes et leurs variantes de couleur. Merci de soutenir un outil indépendant.",
+    proStatusLockedPrefix:"Tout le reste est gratuit. Pro débloque les 23 thèmes et leurs variantes de couleur. Paiement unique",
     proStatusLockedSuffix:", à vous pour toujours, sans abonnement.",
     getProBtn:"Obtenir Pro à vie", haveKeyLabel:"Déjà acheté ? Collez votre clé de licence",
     installHeading:"Utiliser comme application (Mac & PC)",
@@ -1838,14 +1835,14 @@ const I18N = {
     soundHeading:"Sonido", muteNote:"El sonido está desactivado. Vistas previas y alertas están silenciadas. Pulsa M o el icono del altavoz para reactivar.",
     tickLabel:"Tictac en los últimos 10 segundos", tickAlwaysLabel:"Tictac durante todo el temporizador", voiceLabel:"Alerta de voz a los 30 segundos",
     voice2minLabel:"Alerta de voz a los 2 minutos", voiceHalfLabel:"Alerta de \"cambio de turno\" a mitad de tiempo",
-    fontHeading:"Fuente", fontProNote:"Los temas gratuitos usan su propia fuente predeterminada. Pro desbloquea fuentes bonitas y permite subir las tuyas.",
+    fontHeading:"Fuente",
     uploadFontLabel:"Sube tu propia fuente (.ttf, .otf, .woff, .woff2)", weightLabel:"Grosor:",
     colorsHeading:"Tus colores y logo", unlockLink:"Desbloquear",
     logoLabel:"Logo (se muestra sobre el temporizador)", accentLabel:"Color de acento (dígitos y detalles)",
     bgLabel:"Color de fondo (anula el tema)", useItLabel:"usar", resetColorsBtn:"Restablecer colores y logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (de por vida)", proHeadUnlocked:"Pro (desbloqueado)",
-    proStatusUnlocked:"Tienes la versión completa: todos los temas, sonidos, fuentes y colores. Gracias por apoyar una herramienta independiente.",
-    proStatusLockedPrefix:"Los 23 temas con variantes de estilo, alerta de voz, colores y logo personalizados, fuentes bonitas y tus propias subidas. Pago único",
+    proStatusUnlocked:"Tienes todos los temas y variantes de color. Gracias por apoyar una herramienta independiente.",
+    proStatusLockedPrefix:"Todo lo demás es gratis. Pro desbloquea los 23 temas y sus variantes de color. Pago único",
     proStatusLockedSuffix:", tuyo para siempre, sin suscripción.",
     getProBtn:"Consigue Pro de por vida", haveKeyLabel:"¿Ya lo compraste? Pega tu clave de licencia",
     installHeading:"Úsalo como app (Mac y PC)",
@@ -1866,14 +1863,14 @@ const I18N = {
     soundHeading:"声音", muteNote:"声音已关闭。预览和提醒均已静音。按 M 或喇叭图标可取消静音。",
     tickLabel:"最后10秒滴答声", tickAlwaysLabel:"全程滴答声", voiceLabel:"剩余30秒语音提醒",
     voice2minLabel:"剩余2分钟语音提醒", voiceHalfLabel:"中场“该换人了”语音提醒",
-    fontHeading:"字体", fontProNote:"免费主题使用各自的默认字体。Pro 解锁精美字体并支持上传自定义字体。",
+    fontHeading:"字体",
     uploadFontLabel:"上传你自己的字体（.ttf、.otf、.woff、.woff2）", weightLabel:"字重：",
     colorsHeading:"你的颜色与logo", unlockLink:"解锁",
     logoLabel:"Logo（显示在计时器上方）", accentLabel:"强调色（数字与高亮）",
     bgLabel:"背景色（覆盖主题）", useItLabel:"使用", resetColorsBtn:"重置颜色与logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro（终身）", proHeadUnlocked:"Pro（已解锁）",
-    proStatusUnlocked:"你已拥有完整版：所有主题、声音、字体与颜色。感谢支持这款独立工具。",
-    proStatusLockedPrefix:"全部23款主题及风格变体、语音提醒、自定义颜色与logo、精美字体及自定义上传。一次性付费",
+    proStatusUnlocked:"你已拥有所有主题及配色变体。感谢支持这款独立工具。",
+    proStatusLockedPrefix:"其他功能全部免费。Pro 解锁全部23款主题及其配色变体。一次性付费",
     proStatusLockedSuffix:"，永久属于你，无需订阅。",
     getProBtn:"获取终身版Pro", haveKeyLabel:"已购买？粘贴你的授权密钥",
     installHeading:"作为应用使用（Mac 与 PC）",
@@ -1894,14 +1891,14 @@ const I18N = {
     soundHeading:"Som", muteNote:"O som está desativado. Prévias e alertas estão silenciados. Pressione M ou o ícone do alto-falante para reativar.",
     tickLabel:"Tique-taque nos últimos 10 segundos", tickAlwaysLabel:"Tique-taque durante todo o cronômetro", voiceLabel:"Alerta de voz aos 30 segundos",
     voice2minLabel:"Alerta de voz aos 2 minutos", voiceHalfLabel:"Alerta de \"hora de trocar\" na metade do tempo",
-    fontHeading:"Fonte", fontProNote:"Temas gratuitos usam sua própria fonte padrão. O Pro desbloqueia fontes bonitas e permite enviar as suas.",
+    fontHeading:"Fonte",
     uploadFontLabel:"Envie sua própria fonte (.ttf, .otf, .woff, .woff2)", weightLabel:"Peso:",
     colorsHeading:"Suas cores e logo", unlockLink:"Desbloquear",
     logoLabel:"Logo (exibido acima do cronômetro)", accentLabel:"Cor de destaque (dígitos e realces)",
     bgLabel:"Cor de fundo (substitui o tema)", useItLabel:"usar", resetColorsBtn:"Redefinir cores e logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (vitalício)", proHeadUnlocked:"Pro (desbloqueado)",
-    proStatusUnlocked:"Você tem a versão completa: todos os temas, sons, fontes e cores. Obrigado por apoiar uma ferramenta independente.",
-    proStatusLockedPrefix:"Todos os 23 temas com variantes de estilo, alerta de voz, cores e logo personalizados, fontes bonitas e seus próprios envios. Pagamento único",
+    proStatusUnlocked:"Você tem todos os temas e variantes de cor. Obrigado por apoiar uma ferramenta independente.",
+    proStatusLockedPrefix:"Todo o resto é grátis. O Pro desbloqueia os 23 temas e suas variantes de cor. Pagamento único",
     proStatusLockedSuffix:", seu para sempre, sem assinatura.",
     getProBtn:"Obter Pro vitalício", haveKeyLabel:"Já comprou? Cole sua chave de licença",
     installHeading:"Usar como app (Mac e PC)",
@@ -1922,14 +1919,14 @@ const I18N = {
     soundHeading:"サウンド", muteNote:"サウンドはオフです。プレビューとアラートも無音になります。Mキーまたはスピーカーアイコンでミュート解除できます。",
     tickLabel:"最後の10秒間だけ秒針音を鳴らす", tickAlwaysLabel:"タイマー中ずっと秒針音を鳴らす", voiceLabel:"残り30秒で音声アラート",
     voice2minLabel:"残り2分で音声アラート", voiceHalfLabel:"折り返し地点で「交代の時間です」音声アラート",
-    fontHeading:"フォント", fontProNote:"無料テーマはそれぞれ専用のデフォルトフォントを使用します。Proでは美しいフォントが解放され、自分のフォントもアップロードできます。",
+    fontHeading:"フォント",
     uploadFontLabel:"独自のフォントをアップロード（.ttf、.otf、.woff、.woff2）", weightLabel:"太さ：",
     colorsHeading:"カラーとロゴ", unlockLink:"解除",
     logoLabel:"ロゴ（タイマーの上に表示）", accentLabel:"アクセントカラー（数字とハイライト）",
     bgLabel:"背景色（テーマを上書き）", useItLabel:"使用する", resetColorsBtn:"カラーとロゴをリセット",
     proHeadFree:"Pro", proHeadLifetime:"Pro（永久）", proHeadUnlocked:"Pro（解除済み）",
-    proStatusUnlocked:"フルバージョンをご利用中です：すべてのテーマ、サウンド、フォント、カラー。独立系ツールを応援いただきありがとうございます。",
-    proStatusLockedPrefix:"スタイルバリエーション付き全23テーマ、音声アラート、カラー＆ロゴのカスタマイズ、美しいフォント＆自分のフォントのアップロード。買い切り",
+    proStatusUnlocked:"すべてのテーマとカラーバリエーションをご利用中です。独立系ツールを応援いただきありがとうございます。",
+    proStatusLockedPrefix:"その他の機能はすべて無料です。Proでは全23テーマとそのカラーバリエーションが使えます。買い切り",
     proStatusLockedSuffix:"で永久にあなたのもの、サブスクリプションなし。",
     getProBtn:"Proを永久に入手", haveKeyLabel:"購入済みですか？ライセンスキーを貼り付け",
     installHeading:"アプリとして使う（Mac & PC）",
@@ -1950,14 +1947,14 @@ const I18N = {
     soundHeading:"Suono", muteNote:"L'audio è disattivato. Anteprime e avvisi sono silenziati. Premi M o l'icona dell'altoparlante per riattivare.",
     tickLabel:"Ticchettio negli ultimi 10 secondi", tickAlwaysLabel:"Ticchettio per tutto il timer", voiceLabel:"Avviso vocale a 30 secondi",
     voice2minLabel:"Avviso vocale a 2 minuti", voiceHalfLabel:"Avviso \"cambio turno\" a metà tempo",
-    fontHeading:"Carattere", fontProNote:"I temi gratuiti usano il proprio carattere predefinito. Pro sblocca caratteri eleganti e permette di caricarne di propri.",
+    fontHeading:"Carattere",
     uploadFontLabel:"Carica il tuo carattere (.ttf, .otf, .woff, .woff2)", weightLabel:"Peso:",
     colorsHeading:"I tuoi colori e logo", unlockLink:"Sblocca",
     logoLabel:"Logo (mostrato sopra il timer)", accentLabel:"Colore accento (cifre e evidenziazioni)",
     bgLabel:"Colore di sfondo (sostituisce il tema)", useItLabel:"usa", resetColorsBtn:"Reimposta colori e logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (a vita)", proHeadUnlocked:"Pro (sbloccato)",
-    proStatusUnlocked:"Hai la versione completa: ogni tema, suono, carattere e colore. Grazie per il supporto a uno strumento indipendente.",
-    proStatusLockedPrefix:"Tutti i 23 temi con varianti di stile, avviso vocale, colori e logo personalizzati, caratteri eleganti e caricamenti propri. Pagamento unico",
+    proStatusUnlocked:"Hai tutti i temi e le varianti di colore. Grazie per il supporto a uno strumento indipendente.",
+    proStatusLockedPrefix:"Tutto il resto è gratuito. Pro sblocca tutti i 23 temi e le loro varianti di colore. Pagamento unico",
     proStatusLockedSuffix:", tuo per sempre, senza abbonamento.",
     getProBtn:"Ottieni Pro a vita", haveKeyLabel:"Già acquistato? Incolla la tua chiave di licenza",
     installHeading:"Usalo come app (Mac e PC)",
@@ -1978,14 +1975,14 @@ const I18N = {
     soundHeading:"الصوت", muteNote:"الصوت متوقف. المعاينات والتنبيهات صامتة أيضًا. اضغط M أو أيقونة مكبر الصوت لإعادة تفعيل الصوت.",
     tickLabel:"صوت تكة خلال آخر 10 ثوانٍ", tickAlwaysLabel:"صوت تكة طوال المؤقت", voiceLabel:"تنبيه صوتي عند 30 ثانية",
     voice2minLabel:"تنبيه صوتي عند دقيقتين", voiceHalfLabel:"تنبيه \"حان وقت التبديل\" في منتصف الوقت",
-    fontHeading:"الخط", fontProNote:"تستخدم السمات المجانية خطها الافتراضي الخاص. يفتح Pro خطوطًا جميلة ويتيح رفع خطوطك الخاصة.",
+    fontHeading:"الخط",
     uploadFontLabel:"ارفع خطك الخاص (.ttf, .otf, .woff, .woff2)", weightLabel:"الوزن:",
     colorsHeading:"ألوانك وشعارك", unlockLink:"فتح",
     logoLabel:"الشعار (يظهر أعلى المؤقت)", accentLabel:"لون التمييز (الأرقام والتظليل)",
     bgLabel:"لون الخلفية (يتجاوز السمة)", useItLabel:"استخدام", resetColorsBtn:"إعادة تعيين الألوان والشعار",
     proHeadFree:"Pro", proHeadLifetime:"Pro (مدى الحياة)", proHeadUnlocked:"Pro (مفعّل)",
-    proStatusUnlocked:"لديك النسخة الكاملة: كل سمة وصوت وخط ولون. شكرًا لدعمك أداة مستقلة.",
-    proStatusLockedPrefix:"جميع السمات الـ23 مع تنويعات النمط، تنبيه صوتي، ألوان وشعار مخصصان، خطوط جميلة ورفع خطوطك الخاصة. دفعة واحدة",
+    proStatusUnlocked:"لديك كل السمات وتنويعاتها اللونية. شكرًا لدعمك أداة مستقلة.",
+    proStatusLockedPrefix:"كل شيء آخر مجاني. يفتح Pro جميع السمات الـ23 وتنويعاتها اللونية. دفعة واحدة",
     proStatusLockedSuffix:"، ملكك للأبد، بدون اشتراك.",
     getProBtn:"احصل على Pro مدى الحياة", haveKeyLabel:"اشتريت بالفعل؟ الصق مفتاح الترخيص",
     installHeading:"استخدمه كتطبيق (Mac و PC)",
@@ -2006,14 +2003,14 @@ const I18N = {
     soundHeading:"Звук", muteNote:"Звук выключен. Предпросмотр и оповещения также беззвучны. Нажмите M или значок динамика, чтобы включить звук.",
     tickLabel:"Тиканье в последние 10 секунд", tickAlwaysLabel:"Тиканье на протяжении всего таймера", voiceLabel:"Голосовое оповещение за 30 секунд",
     voice2minLabel:"Голосовое оповещение за 2 минуты", voiceHalfLabel:"Оповещение «время сменить группу» на середине",
-    fontHeading:"Шрифт", fontProNote:"Бесплатные темы используют собственный шрифт по умолчанию. Pro открывает красивые шрифты и позволяет загружать свои.",
+    fontHeading:"Шрифт",
     uploadFontLabel:"Загрузите свой шрифт (.ttf, .otf, .woff, .woff2)", weightLabel:"Насыщенность:",
     colorsHeading:"Ваши цвета и логотип", unlockLink:"Разблокировать",
     logoLabel:"Логотип (отображается над таймером)", accentLabel:"Акцентный цвет (цифры и выделения)",
     bgLabel:"Цвет фона (переопределяет тему)", useItLabel:"использовать", resetColorsBtn:"Сбросить цвета и логотип",
     proHeadFree:"Pro", proHeadLifetime:"Pro (навсегда)", proHeadUnlocked:"Pro (разблокировано)",
-    proStatusUnlocked:"У вас полная версия: все темы, звуки, шрифты и цвета. Спасибо за поддержку независимого инструмента.",
-    proStatusLockedPrefix:"Все 23 темы со стилевыми вариантами, голосовое оповещение, свои цвета и логотип, красивые шрифты и загрузка своих. Разовый платёж",
+    proStatusUnlocked:"У вас все темы и цветовые варианты. Спасибо за поддержку независимого инструмента.",
+    proStatusLockedPrefix:"Всё остальное бесплатно. Pro открывает все 23 темы и их цветовые варианты. Разовый платёж",
     proStatusLockedSuffix:", навсегда ваш, без подписки.",
     getProBtn:"Получить Pro навсегда", haveKeyLabel:"Уже купили? Вставьте лицензионный ключ",
     installHeading:"Использовать как приложение (Mac и PC)",
@@ -2034,14 +2031,14 @@ const I18N = {
     soundHeading:"ध्वनि", muteNote:"ध्वनि बंद है। पूर्वावलोकन और अलर्ट भी शांत हैं। ध्वनि फिर से चालू करने के लिए M दबाएं या स्पीकर आइकन पर क्लिक करें।",
     tickLabel:"आख़िरी 10 सेकंड में टिक ध्वनि", tickAlwaysLabel:"पूरे टाइमर के दौरान टिक ध्वनि", voiceLabel:"30 सेकंड शेष पर आवाज़ अलर्ट",
     voice2minLabel:"2 मिनट शेष पर आवाज़ अलर्ट", voiceHalfLabel:"आधे समय पर \"बदलने का समय\" अलर्ट",
-    fontHeading:"फ़ॉन्ट", fontProNote:"मुफ़्त थीम अपना डिफ़ॉल्ट फ़ॉन्ट उपयोग करती हैं। Pro सुंदर फ़ॉन्ट अनलॉक करता है और अपने खुद के अपलोड करने देता है।",
+    fontHeading:"फ़ॉन्ट",
     uploadFontLabel:"अपना फ़ॉन्ट अपलोड करें (.ttf, .otf, .woff, .woff2)", weightLabel:"मोटाई:",
     colorsHeading:"आपके रंग और लोगो", unlockLink:"अनलॉक करें",
     logoLabel:"लोगो (टाइमर के ऊपर दिखेगा)", accentLabel:"एक्सेंट रंग (अंक और हाइलाइट)",
     bgLabel:"पृष्ठभूमि रंग (थीम को ओवरराइड करता है)", useItLabel:"इस्तेमाल करें", resetColorsBtn:"रंग और लोगो रीसेट करें",
     proHeadFree:"Pro", proHeadLifetime:"Pro (आजीवन)", proHeadUnlocked:"Pro (अनलॉक)",
-    proStatusUnlocked:"आपके पास पूरा संस्करण है: हर थीम, ध्वनि, फ़ॉन्ट और रंग। एक स्वतंत्र टूल का समर्थन करने के लिए धन्यवाद।",
-    proStatusLockedPrefix:"स्टाइल वेरिएंट के साथ सभी 23 थीम, आवाज़ अलर्ट, कस्टम रंग और लोगो, सुंदर फ़ॉन्ट और अपने खुद के अपलोड। एक बार भुगतान",
+    proStatusUnlocked:"आपके पास हर थीम और उसके रंग वेरिएंट हैं। एक स्वतंत्र टूल का समर्थन करने के लिए धन्यवाद।",
+    proStatusLockedPrefix:"बाकी सब मुफ़्त है। Pro सभी 23 थीम और उनके रंग वेरिएंट अनलॉक करता है। एक बार भुगतान",
     proStatusLockedSuffix:", हमेशा के लिए आपका, कोई सदस्यता नहीं।",
     getProBtn:"आजीवन Pro पाएं", haveKeyLabel:"पहले ही खरीद लिया? अपनी लाइसेंस कुंजी पेस्ट करें",
     installHeading:"ऐप के रूप में उपयोग करें (Mac और PC)",
@@ -2062,14 +2059,14 @@ const I18N = {
     soundHeading:"사운드", muteNote:"소리가 꺼져 있습니다. 미리듣기와 알림도 음소거됩니다. M 키나 스피커 아이콘을 눌러 다시 켤 수 있습니다.",
     tickLabel:"마지막 10초 동안 똑딱 소리", tickAlwaysLabel:"타이머 내내 똑딱 소리", voiceLabel:"30초 남았을 때 음성 알림",
     voice2minLabel:"2분 남았을 때 음성 알림", voiceHalfLabel:"절반 지점에서 \"교대 시간\" 음성 알림",
-    fontHeading:"글꼴", fontProNote:"무료 테마는 각자의 기본 글꼴을 사용합니다. Pro는 멋진 글꼴을 잠금 해제하고 직접 업로드도 가능하게 합니다.",
+    fontHeading:"글꼴",
     uploadFontLabel:"나만의 글꼴 업로드 (.ttf, .otf, .woff, .woff2)", weightLabel:"굵기:",
     colorsHeading:"나만의 색상 & 로고", unlockLink:"잠금 해제",
     logoLabel:"로고 (타이머 위에 표시)", accentLabel:"강조 색상 (숫자 & 하이라이트)",
     bgLabel:"배경색 (테마를 덮어씀)", useItLabel:"사용", resetColorsBtn:"색상 & 로고 초기화",
     proHeadFree:"Pro", proHeadLifetime:"Pro (평생)", proHeadUnlocked:"Pro (잠금 해제됨)",
-    proStatusUnlocked:"전체 버전을 사용 중입니다: 모든 테마, 사운드, 글꼴, 색상. 독립 도구를 지원해 주셔서 감사합니다.",
-    proStatusLockedPrefix:"스타일 변형이 있는 23가지 테마, 음성 알림, 사용자 지정 색상 & 로고, 멋진 글꼴 & 직접 업로드. 1회 결제",
+    proStatusUnlocked:"모든 테마와 색상 변형을 사용 중입니다. 독립 도구를 지원해 주셔서 감사합니다.",
+    proStatusLockedPrefix:"나머지는 모두 무료입니다. Pro는 23가지 테마와 색상 변형을 모두 잠금 해제합니다. 1회 결제",
     proStatusLockedSuffix:"로 평생 소유, 구독 없음.",
     getProBtn:"평생 Pro 구매", haveKeyLabel:"이미 구매하셨나요? 라이선스 키 붙여넣기",
     installHeading:"앱으로 사용하기 (Mac & PC)",
@@ -2194,16 +2191,16 @@ const FONTS = [
   {id:"helvetica", name:"Helvetica Neue", pro:false, stack:"'Helvetica Neue',Helvetica,Arial,sans-serif"},
   {id:"thin",      name:"Thin",           pro:false, stack:"system-ui,-apple-system,'Segoe UI','Helvetica Neue',Arial,sans-serif", weight:200},
   {id:"slab",      name:"Chunky Slab",    pro:false, stack:"'Superclarendon','Rockwell','Bookman Old Style',Georgia,serif", weight:800},
-  {id:"georgia",   name:"Georgia",        pro:true,  stack:"Georgia,'Times New Roman',serif"},
-  {id:"avenir",    name:"Avenir",         pro:true,  stack:"'Avenir Next',Avenir,'Segoe UI',sans-serif"},
-  {id:"futura",    name:"Jost",           pro:true,  stack:"'Jost','Century Gothic','Trebuchet MS',sans-serif"},
-  {id:"mono",      name:"Mono",           pro:true,  stack:"Menlo,Consolas,'Courier New',monospace"},
-  {id:"roboto",    name:"Roboto",         pro:true,  stack:"'Roboto','Helvetica Neue',Helvetica,sans-serif"},
-  {id:"narrow",    name:"Condensed",      pro:true,  stack:"'Arial Narrow','Avenir Next Condensed','Helvetica Neue',sans-serif"},
+  {id:"georgia",   name:"Georgia",        pro:false, stack:"Georgia,'Times New Roman',serif"},
+  {id:"avenir",    name:"Avenir",         pro:false, stack:"'Avenir Next',Avenir,'Segoe UI',sans-serif"},
+  {id:"futura",    name:"Jost",           pro:false, stack:"'Jost','Century Gothic','Trebuchet MS',sans-serif"},
+  {id:"mono",      name:"Mono",           pro:false, stack:"Menlo,Consolas,'Courier New',monospace"},
+  {id:"roboto",    name:"Roboto",         pro:false, stack:"'Roboto','Helvetica Neue',Helvetica,sans-serif"},
+  {id:"narrow",    name:"Condensed",      pro:false, stack:"'Arial Narrow','Avenir Next Condensed','Helvetica Neue',sans-serif"},
   {id:"comic",     name:"Comic Sans",     pro:false, stack:"'Comic Sans MS','Comic Sans','Chalkboard SE',cursive"},
-  {id:"michroma",  name:"Michroma",       pro:true,  stack:"'Michroma','Arial Narrow',sans-serif"},
-  {id:"eckmann",   name:"Modak",          pro:true,  stack:"'Modak','Arial Rounded MT Bold',sans-serif"},
-  {id:"windsor",   name:"Fraunces",       pro:true,  stack:"'Fraunces',Georgia,'Times New Roman',serif"},
+  {id:"michroma",  name:"Michroma",       pro:false, stack:"'Michroma','Arial Narrow',sans-serif"},
+  {id:"eckmann",   name:"Modak",          pro:false, stack:"'Modak','Arial Rounded MT Bold',sans-serif"},
+  {id:"windsor",   name:"Fraunces",       pro:false, stack:"'Fraunces',Georgia,'Times New Roman',serif"},
 ];
 const PRESETS = [0.5,1,2,5,10,15,20,30,45,60];
 
@@ -2579,7 +2576,7 @@ function bindEditable(el, onInput){
 /* ----- time disc renderer: minimal pie ----- */
 function renderDisc(frac, text){
   const deg = Math.max(0,Math.min(1,frac))*360;
-  const color = !isPro() ? "#d5442f" : (st.accentCustom ? st.accent : (THEME_DEFAULT_ACCENT.disc || st.accent));
+  const color = (st.accentCustom ? st.accent : (THEME_DEFAULT_ACCENT.disc || st.accent));
   $("discPie").style.background = `conic-gradient(transparent 0deg ${360-deg}deg, ${color} ${360-deg}deg 360deg)`;
   elDiscTime.textContent = text;
   syncEditable($("discLabel"), st.label);
@@ -4839,7 +4836,7 @@ function ringsDraw(time){
   // default ring color flips for light mode -- near-white rings would be
   // invisible against the light background, so fall back to a dark charcoal
   const lightMode = document.body.classList.contains("mode-light");
-  const custom = isPro() && st.accentCustom;
+  const custom = st.accentCustom;
   const hex = custom ? st.accent : (lightMode ? "#000000" : "#f8f8f8");
   const [r,g,b] = ringsHexToRgb(hex);
   gl.uniform3f(u.uColor, r, g, b);
@@ -4902,7 +4899,7 @@ function starsHexToRgb(hex){
   return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
 }
 function starsColor(){
-  const hex = (isPro() && st.accentCustom) ? st.accent : "#ffffff";
+  const hex = st.accentCustom ? st.accent : "#ffffff";
   const [r,g,b] = starsHexToRgb(hex);
   return `${r},${g},${b}`;
 }
@@ -5461,13 +5458,13 @@ function loop(){
     lastWholeSec = whole;
     const shouldTick = (st.tick && whole<=10 && whole>0) || (st.tickAlways && whole>0);
     if(shouldTick) playTick();
-    if(st.voice && isPro() && !st.muted && whole===30){
+    if(st.voice && !st.muted && whole===30){
       announce("Attention please. Thirty seconds remaining.");
     }
-    if(st.voice2min && isPro() && !st.muted && whole===120){
+    if(st.voice2min && !st.muted && whole===120){
       announce("Attention please. Two minutes remaining.");
     }
-    if(st.voiceHalf && isPro() && !st.muted && st.duration>=60 && whole===Math.round(st.duration/2)){
+    if(st.voiceHalf && !st.muted && st.duration>=60 && whole===Math.round(st.duration/2)){
       announce("Attention please. Time to switch.");
     }
   }
@@ -5814,7 +5811,6 @@ async function loadCustomFont(dataUrl){
   }catch(e){ CUSTOM_FONT_READY = false; return false; }
 }
 function handleFontUpload(e){
-  if(!isPro()) return;
   const file = e.target.files && e.target.files[0];
   if(!file) return;
   const reader = new FileReader();
@@ -5829,17 +5825,14 @@ function handleFontUpload(e){
 }
 function renderFontSelect(){
   const selEl = $("fontSelect"); if(!selEl) return;
-  const pro = isPro();
-  const cur = pro ? (st.font || "default") : "default";
+  const cur = st.font || "default";
   let opts = '<option value="default">Theme default</option>';
   FONTS.forEach(f=>{ opts += `<option value="${f.id}">${f.name}</option>`; });
   opts += '<option value="custom">Custom (your upload)</option>';
   selEl.innerHTML = opts;
   selEl.value = cur;
-  selEl.disabled = !pro;
-  $("fontProNote").style.display = pro ? "none" : "block";
-  $("customFontBox").style.display = (pro && cur === "custom") ? "block" : "none";
-  $("customWeightRow").style.display = (pro && cur === "custom" && CUSTOM_FONT_READY) ? "block" : "none";
+  $("customFontBox").style.display = cur === "custom" ? "block" : "none";
+  $("customWeightRow").style.display = (cur === "custom" && CUSTOM_FONT_READY) ? "block" : "none";
   const cw = $("customWeight"), cv = $("customWeightVal");
   if(cw) cw.value = st.customWeight || 400;
   if(cv) cv.textContent = st.customWeight || 400;
@@ -5860,22 +5853,22 @@ function applyTheme(){
     document.body.classList.add("mode-"+effective);
     elAppearance.classList.toggle("mode-dark", effective==="dark");
   }
-  if(isPro() && st.useBg){
+  if(st.useBg){
     document.body.style.background = st.bg;
     document.body.style.setProperty("--bg", st.bg);
   } else {
     document.body.style.background = "";
     document.body.style.removeProperty("--bg");
   }
-  document.documentElement.style.setProperty("--accent", isPro()? st.accent : "#d5442f");
+  document.documentElement.style.setProperty("--accent", st.accent);
   // Time Disc's own pie color (see renderDisc) — kept as a var so the Start
-  // button can match it: red for free users, the picked accent for Pro.
-  document.documentElement.style.setProperty("--disc-accent", !isPro() ? "#d5442f" : (st.accentCustom ? st.accent : (THEME_DEFAULT_ACCENT.disc || st.accent)));
-  // Code theme (formerly Matrix): color now comes from the same Pro accent
+  // button can match it: the picked accent, or the theme default.
+  document.documentElement.style.setProperty("--disc-accent", (st.accentCustom ? st.accent : (THEME_DEFAULT_ACCENT.disc || st.accent)));
+  // Code theme (formerly Matrix): color now comes from the same accent
   // picker as everything else instead of its own Green/Amber/Ice/Crimson
   // swatches — set directly on body so it wins over the class's own --fg
   if(tid === "terminal"){
-    document.body.style.setProperty("--fg", !isPro() ? THEME_DEFAULT_ACCENT.terminal : (st.accentCustom ? st.accent : THEME_DEFAULT_ACCENT.terminal));
+    document.body.style.setProperty("--fg", st.accentCustom ? st.accent : THEME_DEFAULT_ACCENT.terminal);
   } else {
     document.body.style.removeProperty("--fg");
   }
@@ -5901,9 +5894,9 @@ function applyTheme(){
   document.body.dataset.flavor = vs ? ((isPro() || PV.id) ? (st.flavors[tid]||vs[0].id) : vs[0].id) : "";
   // during a preview, show the previewed theme's default font so it looks right;
   // otherwise use the picked font (free users get the free fonts)
-  // Free users (and any live preview) always get the theme's own default font.
-  // Pro users pick from the dropdown: a named font, "default", or "custom" (upload).
-  const sel = (PV.id || !isPro()) ? "default" : (st.font || "default");
+  // A live theme preview shows the theme's own default font; otherwise use the
+  // dropdown choice: a named font, "default", or "custom" (upload).
+  const sel = PV.id ? "default" : (st.font || "default");
   if(sel === "custom" && CUSTOM_FONT_READY){
     document.documentElement.style.setProperty("--font", `'${CUSTOM_FONT_NAME}',` + FONTS[0].stack);
     document.documentElement.style.setProperty("--fontw", st.customWeight || 400);
@@ -5990,7 +5983,7 @@ function syncSublineFont(){
   }
 }
 function applyBranding(){
-  const logo = isPro() ? localStorage.getItem(LS.logo) : null;
+  const logo = localStorage.getItem(LS.logo);
   if(logo){ elLogo.src = logo; elLogo.style.display="block"; }
   else elLogo.style.display="none";
   applyTheme();
@@ -6059,17 +6052,15 @@ function refreshSettings(){
   $("countdownToggle").checked = !swBox.checked && !clockBox.checked && !pomodoroBox.checked;
   $("muteNote").style.display = st.muted ? "block" : "none";
   const voiceBox = $("voiceToggle");
-  voiceBox.checked = st.voice && isPro();
-  voiceBox.disabled = !isPro();
+  voiceBox.checked = !!st.voice;
+  voiceBox.disabled = false;
   const voice2minBox = $("voice2minToggle");
-  voice2minBox.checked = st.voice2min && isPro();
-  voice2minBox.disabled = !isPro();
+  voice2minBox.checked = !!st.voice2min;
+  voice2minBox.disabled = false;
   const voiceHalfBox = $("voiceHalfToggle");
-  voiceHalfBox.checked = st.voiceHalf && isPro();
-  voiceHalfBox.disabled = !isPro();
+  voiceHalfBox.checked = !!st.voiceHalf;
+  voiceHalfBox.disabled = false;
 
-  $("brandBody").classList.toggle("locked-section", !isPro());
-  $("brandUnlock").style.display = isPro()? "none":"inline";
   { const rl = $("removeLicenseWrap"); if(rl) rl.style.display = (LICENSE_OK && !PRO_UNLOCKED) ? "block" : "none"; }
 
   const status = $("trialStatus"), btn = $("btnTrial"), head = $("proHead"), lbox = $("licenseBox");
@@ -6128,24 +6119,19 @@ $("pomodoroToggle").addEventListener("change", e=>{
   save(); render(); refreshSettings();
 });
 $("voiceToggle").addEventListener("change", e=>{
-  if(!isPro()){ e.target.checked=false; return openModal(); }
   st.voice = e.target.checked; save();
   if(st.voice && !st.muted) announce("Voice alerts enabled.");
 });
 $("voice2minToggle").addEventListener("change", e=>{
-  if(!isPro()){ e.target.checked=false; return openModal(); }
   st.voice2min = e.target.checked; save();
   if(st.voice2min && !st.muted) announce("Voice alerts enabled.");
 });
 $("voiceHalfToggle").addEventListener("change", e=>{
-  if(!isPro()){ e.target.checked=false; return openModal(); }
   st.voiceHalf = e.target.checked; save();
   if(st.voiceHalf && !st.muted) announce("Voice alerts enabled.");
 });
-$("brandUnlock").addEventListener("click", openModal);
 
 $("fontSelect").addEventListener("change", e=>{
-  if(!isPro()){ e.target.value = "default"; return openModal(); }
   st.font = e.target.value; save(); applyTheme(); renderFontSelect();
 });
 $("fontFile").addEventListener("change", handleFontUpload);
@@ -6387,8 +6373,7 @@ document.addEventListener("visibilitychange", ()=>{ if(document.visibilityState=
   if(!isPro()){
     if((THEMES.find(t=>t.id===st.theme)||{}).pro) st.theme = "disc";
     if(SOUNDS.find(s=>s.id===st.sound)?.pro) st.sound = "chime";
-    if(FONTS.find(f=>f.id===st.font)?.pro) st.font = "helvetica";
-    /* stopwatch, clock and pomodoro modes are free for everyone */
+    /* modes, sounds, voice alerts, fonts, colours and logo are free for everyone */
   }
   if(isPro()) document.querySelectorAll(".pro-tag").forEach(el=>el.remove());
   restoreRun();
