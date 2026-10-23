@@ -2248,18 +2248,22 @@ function deviceLabel(){
   return ("Workshop Timer · " + p + " · " + new Date().toISOString().slice(0,10)).slice(0,120);
 }
 
-/* Confirm an existing key (+ its device activation) is still granted. */
+/* Confirm an existing key (+ its device activation) is still granted.
+   Returns true (granted), false (Polar says no) or null (couldn't tell:
+   offline, Polar down, server error). Callers must treat null as "keep
+   what you had", so a paid unlock survives no network and outlives Polar. */
 async function validateKey(key, activationId){
-  if(!orgReady()) return false;
+  if(!orgReady()) return null;
   try{
     const body = { key:(key||"").trim(), organization_id: POLAR_ORG_ID };
     if(activationId) body.activation_id = activationId;
     const r = await fetch(LK_API + "/validate", { method:"POST", headers:LK_HEAD, body:JSON.stringify(body) });
-    if(!r.ok) return false;
+    if(r.status === 404 || r.status === 403) return false; // unknown or refused key
+    if(!r.ok) return null;                                  // 5xx, 429, etc.
     const d = await r.json().catch(()=>({}));
     if(d && d.status && d.status !== "granted") return false; // revoked / disabled
     return true;
-  }catch(e){ return false; }
+  }catch(e){ return null; }
 }
 
 /* First unlock on a device: reserve one of the key's activation slots.
@@ -2281,6 +2285,7 @@ async function unlockWithKey(key){
       if(detail.indexOf("limit") !== -1) return { ok:false, reason:"limit" };
       // activations not enabled on this key → fall back to plain validation
       const ok = await validateKey(key, null);
+      if(ok === null) return { ok:false, reason:"network" };
       return ok ? { ok:true, key, activationId:null } : { ok:false, reason:"invalid" };
     }
     return { ok:false, reason:"invalid" };
@@ -6241,7 +6246,8 @@ function openModal(){
   if(saved && saved.key){
     LICENSE_OK = true; // optimistic; re-checked below
     validateKey(saved.key, saved.activationId).then(ok=>{
-      if(!ok){ LICENSE_OK = false; clearLicense(); refreshSettings(); render(); }
+      // only a definite "no" from Polar revokes; offline or errors keep Pro
+      if(ok === false){ LICENSE_OK = false; clearLicense(); refreshSettings(); render(); }
     });
   }
   // restore a previously uploaded custom font (Pro)
