@@ -1231,6 +1231,7 @@
   }
   #lampHead{margin-top:0 !important; margin-bottom:.5rem;}
   .flavor-row .chip{border-radius:999px; padding:.4rem .9rem; font-size:.78rem;}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;}
   .pro-tag{
     display:inline-block; font-size:.62rem; font-weight:800; letter-spacing:.08em;
     background:var(--accent); color:#111; border-radius:4px; padding:.1rem .35rem;
@@ -1390,7 +1391,8 @@
   <div id="glassCard">
   <div id="label" contenteditable="true" spellcheck="false">Workshop Timer</div>
 
-  <div id="display">
+  <div id="srStatus" role="status" aria-live="polite" class="sr-only"></div>
+  <div id="display" role="button" tabindex="0">
     <!-- decorative generator-app window chrome around the Web 1.0 theme's
          timer — purely cosmetic, original markup/CSS, hidden for every other theme.
          The blue titlebar doubles as the editable "Workshop Timer" label. -->
@@ -1755,6 +1757,7 @@ const I18N = {
     getProBtn:"Get Pro for Life", haveKeyLabel:"Already bought? Paste your license key",
     proSoonShort:"Pro coming soon",
     proComingSoon:"Everything else is free. The extra themes will be a one-time Pro unlock once sales open; until then you can preview any of them for a few seconds from the theme list.",
+    titleEditTime:"Set the time: type 15, 10:30 or 1:00:00", srTimesUp:"Time's up",
     sourceText:"Open source under the MIT licence.", sourceLink:"View the code",
     dataHeading:"Your settings file", dataBody:"Your settings live only in this browser. Save them as a file to keep a backup or move your setup to another computer.", exportBtn:"Save settings file", importBtn:"Load settings file", importBad:"That doesn't look like a Workshop Timer settings file.",
     installHeading:"Use it as an app (Mac & PC)",
@@ -1788,6 +1791,7 @@ const I18N = {
     getProBtn:"Pro fürs Leben holen", haveKeyLabel:"Schon gekauft? Lizenzschlüssel einfügen",
     proSoonShort:"Pro kommt bald",
     proComingSoon:"Alles andere ist kostenlos. Die zusätzlichen Designs gibt es bald als einmaliges Pro-Upgrade; bis dahin kannst du jedes davon in der Designliste ein paar Sekunden lang ansehen.",
+    titleEditTime:"Zeit einstellen: 15, 10:30 oder 1:00:00 eingeben", srTimesUp:"Die Zeit ist um",
     sourceText:"Open Source unter der MIT-Lizenz.", sourceLink:"Zum Quellcode",
     dataHeading:"Deine Einstellungsdatei", dataBody:"Deine Einstellungen liegen nur in diesem Browser. Speichere sie als Datei, um ein Backup zu haben oder dein Setup auf einen anderen Computer mitzunehmen.", exportBtn:"Einstellungen speichern", importBtn:"Einstellungen laden", importBad:"Das sieht nicht nach einer Workshop-Timer-Einstellungsdatei aus.",
     installHeading:"Als App nutzen (Mac & PC)",
@@ -2096,6 +2100,9 @@ function applyLang(){
   $("btnFull").title = $("btnFull").dataset.tip = t("titleFull");
   $("btnReset").title = t("titleReset");
   $("btnPlus30").title = t("titlePlus30");
+  // icon-only buttons: give screen readers the same name as the tooltip
+  ["btnAppearance","btnMute","btnFull","btnReset","btnPlus30"].forEach(id=>{ const b=$(id); if(b) b.setAttribute("aria-label", b.title); });
+  $("display").setAttribute("aria-label", t("titleEditTime"));
   $("hint").textContent = t("hint");
   if(!running) elStart.textContent = t("startBtn");
   presetsRow.querySelectorAll("button.preset").forEach((b,i)=>{
@@ -5484,6 +5491,7 @@ function loop(){
     playEnd();
     if(navigator.vibrate) navigator.vibrate([200,100,200]);
     document.title = "⏰ Time's up!";
+    $("srStatus").textContent = t("srTimesUp");
     wakeLock?.release().catch(()=>{}); wakeLock = null;
     stopTicking();
     // the tick loop stops here, so nothing else would repaint the digits once
@@ -5509,6 +5517,7 @@ async function start(revealUI = true){
     return;
   }
   if(finished || remaining <= 0){ finished = false; remaining = st.duration; }
+  $("srStatus").textContent = "";
   audio().resume && audio().resume();
   deadline = Date.now() + remaining*1000;
   running = true; elStart.textContent = t("pauseBtn");
@@ -5562,6 +5571,8 @@ function showUI(){ clearTimeout(hideTimer); document.body.classList.remove("hide
 /* =========================================================
    TIME EDITING (click display, type "15", "10:30", "1:00:00")
    ========================================================= */
+// keyboard users: Enter on the focused time opens the same editor as a click
+$("display").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); $("display").click(); } });
 $("display").addEventListener("click", ()=>{
   if(running) return;
   $("display").style.display="none"; elInput.style.display="block";
