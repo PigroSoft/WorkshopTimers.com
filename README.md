@@ -43,4 +43,4 @@ Space start/pause · R reset · F fullscreen · T next theme · M mute · ↑↓
 
 ## Contact
 
-Bugs and questions: [support@pigrosoft.com](mailto:support@pigrosoft.com). WorkshopTimers.com is made by [PigroSoft](https://pigrosoft.com) in Berlin.
+Bugs and questions: [support@pigrosoft.com](mailto:support@pigrosoft.com). WorkshopTimers.com is made by Jeffrey Humble in Berlin; more of his projects are at [pigrosoft.com](https://pigrosoft.com).
