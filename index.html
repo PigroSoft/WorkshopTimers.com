@@ -1711,7 +1711,7 @@ function localPrice(){
 }
 const PRICE = localPrice();
 const PREVIEW_SECONDS = 15;
-const LS = { state:"wt_state_v3", logo:"wt_logo_v1", license:"wt_license_v1", customFont:"wt_font_v1", onboarded:"wt_onboarded_v1" };
+const LS = { state:"wt_state_v3", logo:"wt_logo_v1", license:"wt_license_v1", customFont:"wt_font_v1", onboarded:"wt_onboarded_v1", run:"wt_run_v1" };
 
 /* =========================================================
    LANGUAGE (free, EN + DE) — covers the Settings menu chrome and
@@ -6219,6 +6219,56 @@ function openModal(){
 }
 
 /* =========================================================
+   RUN PERSISTENCE — survive an accidental refresh mid-workshop.
+   Snapshots the countdown/stopwatch when the page is hidden or
+   unloaded, and restores it on load. A running countdown is stored
+   as its absolute deadline, so time keeps passing while the page is
+   gone. Paused snapshots older than 12 hours are ignored.
+   ========================================================= */
+const RUN_MAX_AGE = 12*60*60*1000;
+function saveRun(){
+  try{
+    localStorage.setItem(LS.run, JSON.stringify({
+      v:1, at:Date.now(), running, finished, remaining, deadline,
+      duration:st.duration, sw:swOn(), swStart, swAccum
+    }));
+  }catch(e){}
+}
+function restoreRun(){
+  let r; try{ r = JSON.parse(localStorage.getItem(LS.run)); }catch(e){ return; }
+  if(!r || r.v !== 1 || st.clock) return;
+  const now = Date.now();
+  if(r.sw && swOn()){
+    if(r.running){
+      if(now - r.swStart > RUN_MAX_AGE) return;
+      swStart = r.swStart; swAccum = r.swAccum || 0; running = true;
+    }else{
+      if(now - r.at > RUN_MAX_AGE || !(r.swAccum > 0)) return;
+      swAccum = r.swAccum; remaining = swAccum;
+    }
+  }else if(!r.sw && !swOn() && r.duration === st.duration){
+    if(r.running){
+      if(r.deadline > now){
+        deadline = r.deadline; remaining = (deadline - now)/1000; running = true;
+      }else if(!st.pomodoro && now - r.deadline < RUN_MAX_AGE){
+        remaining = 0; finished = true; finishedAt = r.deadline; // ran out while away
+      }else return;
+    }else{
+      if(now - r.at > RUN_MAX_AGE || r.finished) return;
+      if(r.remaining > 0 && r.remaining < st.duration) remaining = r.remaining;
+    }
+  }else return;
+  if(running){
+    lastWholeSec = Math.round(remaining);
+    elStart.textContent = t("pauseBtn");
+    startTicking(); armHideUI();
+    try{ navigator.wakeLock?.request("screen").then(l=>{ wakeLock = l; }).catch(()=>{}); }catch(e){}
+  }
+}
+window.addEventListener("pagehide", saveRun);
+document.addEventListener("visibilitychange", ()=>{ if(document.visibilityState==="hidden") saveRun(); });
+
+/* =========================================================
    INIT
    ========================================================= */
 (function init(){
@@ -6275,6 +6325,7 @@ function openModal(){
     /* stopwatch, clock and pomodoro modes are free for everyone */
   }
   if(isPro()) document.querySelectorAll(".pro-tag").forEach(el=>el.remove());
+  restoreRun();
   applyBranding(); applyLang(); render(); refreshSettings();
   // first-visit-only: open Settings automatically -- a short delay so it
   // doesn't flash in before the page has finished laying out. markOnboarded()
