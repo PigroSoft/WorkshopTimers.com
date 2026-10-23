@@ -1,0 +1,66 @@
+# Runs the browser tests on every push and pull request.
+# On main, the site is published to GitHub Pages only after every test passes.
+# Requires Settings → Pages → Source: "GitHub Actions".
+name: Test and deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: tests/requirements.txt
+
+      - name: Install test tools
+        run: |
+          pip install -r tests/requirements.txt
+          playwright install --with-deps chromium
+
+      - name: Run browser tests
+        run: pytest
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Collect the site files
+        run: |
+          mkdir _site
+          cp *.html sw.js CNAME LICENSE FONTS.md OFL.txt README.md _site/
+
+      - uses: actions/configure-pages@v6
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v5

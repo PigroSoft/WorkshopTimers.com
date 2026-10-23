@@ -22,6 +22,16 @@ Once unlocked on a device, Pro keeps working offline; it is only removed if Dodo
 
 Download `index.html` and `sw.js`, put them in the same folder, and either open `index.html` in a browser or serve the folder from any static host. Nothing else is needed. The service worker only registers over `https://` or `localhost`.
 
+## Tests
+
+`tests/` holds browser tests that run the real page in headless Chromium: every theme and mode, a timer surviving a refresh, the settings file round trip, what free users get, licence checks against mocked Dodo responses, keyboard and screen-reader basics, and the legal pages. GitHub Actions runs them on every push, and the site is only published to GitHub Pages when they all pass. To run them yourself:
+
+```sh
+pip install -r tests/requirements.txt
+playwright install chromium
+pytest
+```
+
 ## Licence
 
 The code is released under the [MIT licence](LICENSE), so you can use, change, fork and redistribute it, including commercially. The embedded fonts are separate works under the SIL Open Font License; [FONTS.md](FONTS.md) lists each one with its copyright.
