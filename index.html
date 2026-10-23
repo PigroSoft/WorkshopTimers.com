@@ -1690,18 +1690,15 @@
 // unlocked, no upsell). The free hosted version: false.
 const PRO_UNLOCKED = false;
 
-// CHECKOUT URL — where the single "Buy the app" button (in Settings → Pro)
-// points. Recommended: a Polar checkout link. Polar is a merchant of record,
-// so it handles global sales tax/VAT for you, and its product delivers
-// fullscreen-timer-pro.html as the download after payment.
-const BUY_URL = "https://buy.polar.sh/polar_cl_Pd1xuBwxDXlY8U0LOrKUcQwvOHKQXfNIcbqSD10RmEP";
-
-// Your Polar organization ID — lets the app validate/activate license keys
-// straight from the browser, no server needed.
-const POLAR_ORG_ID = "a74be805-a11e-48cc-bbd1-da06ad0b629a";
+// CHECKOUT URL — where the "Buy" button in Settings → Pro points: a Dodo
+// Payments checkout link for the one-time Pro product (with a License Keys
+// entitlement). Leave it empty until Dodo is set up: the Buy button and the
+// license-key box stay hidden and Pro shows as "coming soon".
+const BUY_URL = "";
+const SALES_OPEN = BUY_URL !== "";
 
 /* Localized price — every figure is the equivalent of €5 (the base price).
-   This is only the DISPLAYED number; Polar shows the real localized amount
+   This is only the DISPLAYED number; the checkout shows the real localized amount
    at checkout. Tweak these round numbers however you like. */
 const PRICES = { EUR:"€5", USD:"$5", GBP:"£4.50", CNY:"¥39" };
 const EURO_ZONE = new Set(["AT","BE","HR","CY","EE","FI","FR","DE","GR","IE","IT","LV","LT","LU","MT","NL","PT","SK","SI","ES"]);
@@ -1756,6 +1753,8 @@ const I18N = {
     proStatusLockedPrefix:"Everything else is free. Pro unlocks all 23 themes and their colour variants. One-time",
     proStatusLockedSuffix:", yours forever, no subscription.",
     getProBtn:"Get Pro for Life", haveKeyLabel:"Already bought? Paste your license key",
+    proSoonShort:"Pro coming soon",
+    proComingSoon:"Everything else is free. The extra themes will be a one-time Pro unlock once sales open; until then you can preview any of them for a few seconds from the theme list.",
     sourceText:"Open source under the MIT licence.", sourceLink:"View the code",
     dataHeading:"Your settings file", dataBody:"Your settings live only in this browser. Save them as a file to keep a backup or move your setup to another computer.", exportBtn:"Save settings file", importBtn:"Load settings file", importBad:"That doesn't look like a Workshop Timer settings file.",
     installHeading:"Use it as an app (Mac & PC)",
@@ -1787,6 +1786,8 @@ const I18N = {
     proStatusLockedPrefix:"Alles andere ist kostenlos. Pro schaltet alle 23 Designs und ihre Farbvarianten frei. Einmalig",
     proStatusLockedSuffix:", für immer deins, kein Abo.",
     getProBtn:"Pro fürs Leben holen", haveKeyLabel:"Schon gekauft? Lizenzschlüssel einfügen",
+    proSoonShort:"Pro kommt bald",
+    proComingSoon:"Alles andere ist kostenlos. Die zusätzlichen Designs gibt es bald als einmaliges Pro-Upgrade; bis dahin kannst du jedes davon in der Designliste ein paar Sekunden lang ansehen.",
     sourceText:"Open Source unter der MIT-Lizenz.", sourceLink:"Zum Quellcode",
     dataHeading:"Deine Einstellungsdatei", dataBody:"Deine Einstellungen liegen nur in diesem Browser. Speichere sie als Datei, um ein Backup zu haben oder dein Setup auf einen anderen Computer mitzunehmen.", exportBtn:"Einstellungen speichern", importBtn:"Einstellungen laden", importBad:"Das sieht nicht nach einer Workshop-Timer-Einstellungsdatei aus.",
     installHeading:"Als App nutzen (Mac & PC)",
@@ -2247,60 +2248,51 @@ function themeDef(){ return THEMES.find(t=>t.id===curThemeId()) || THEMES[0]; }
    ========================================================= */
 let LICENSE_OK = false;
 function isPro(){ return PRO_UNLOCKED || LICENSE_OK; }
-const LK_API = "https://api.polar.sh/v1/customer-portal/license-keys";
+// Dodo Payments' public license-key endpoints: no API key, safe to call from
+// the browser. https://docs.dodopayments.com/features/license-keys
+const LK_API = "https://live.dodopayments.com/licenses";
 const LK_HEAD = { "Content-Type":"application/json" };
-const orgReady = () => POLAR_ORG_ID.indexOf("REPLACE") !== 0;
 
-/* stored license = { key, activationId } */
+/* stored license = { key, activationId }  (activationId is Dodo's lki_… instance id) */
 function storedLicense(){ try{ return JSON.parse(localStorage.getItem(LS.license)) || null; }catch(e){ return null; } }
 function saveLicense(obj){ try{ localStorage.setItem(LS.license, JSON.stringify(obj)); }catch(e){} }
 function clearLicense(){ try{ localStorage.removeItem(LS.license); }catch(e){} }
-function deviceLabel(){
-  const p = (navigator.platform || "web").slice(0,40);
-  return ("Workshop Timer · " + p + " · " + new Date().toISOString().slice(0,10)).slice(0,120);
-}
+// shown to the buyer in Dodo's customer portal so they can tell devices apart;
+// deliberately carries nothing about the device itself
+function deviceLabel(){ return "Workshop Timer · activated " + new Date().toISOString().slice(0,10); }
 
-/* Confirm an existing key (+ its device activation) is still granted.
-   Returns true (granted), false (Polar says no) or null (couldn't tell:
-   offline, Polar down, server error). Callers must treat null as "keep
-   what you had", so a paid unlock survives no network and outlives Polar. */
+/* Confirm an existing key (+ its device activation) is still valid.
+   Returns true (valid), false (Dodo says no) or null (couldn't tell:
+   offline, Dodo down, server error). Callers must treat null as "keep
+   what you had", so a paid unlock survives no network and outlives Dodo. */
 async function validateKey(key, activationId){
-  if(!orgReady()) return null;
   try{
-    const body = { key:(key||"").trim(), organization_id: POLAR_ORG_ID };
-    if(activationId) body.activation_id = activationId;
+    const body = { license_key:(key||"").trim() };
+    if(activationId) body.license_key_instance_id = activationId;
     const r = await fetch(LK_API + "/validate", { method:"POST", headers:LK_HEAD, body:JSON.stringify(body) });
-    if(r.status === 404 || r.status === 403) return false; // unknown or refused key
+    if(r.status === 404 || r.status === 422) return false; // unknown key / malformed
     if(!r.ok) return null;                                  // 5xx, 429, etc.
-    const d = await r.json().catch(()=>({}));
-    if(d && d.status && d.status !== "granted") return false; // revoked / disabled
-    return true;
+    const d = await r.json().catch(()=>null);
+    if(!d || typeof d.valid !== "boolean") return null;
+    return d.valid;
   }catch(e){ return null; }
 }
 
 /* First unlock on a device: reserve one of the key's activation slots.
-   Returns { ok, key, activationId } or { ok:false, reason }. */
+   Returns { ok, key, activationId } or { ok:false, reason }. Only the
+   instance id is kept; the customer details Dodo returns are discarded. */
 async function unlockWithKey(key){
   key = (key || "").trim();
   if(!key) return { ok:false, reason:"empty" };
-  if(!orgReady()) return { ok:false, reason:"config" };
   try{
     const r = await fetch(LK_API + "/activate", {
       method:"POST", headers:LK_HEAD,
-      body: JSON.stringify({ key, organization_id: POLAR_ORG_ID, label: deviceLabel() })
+      body: JSON.stringify({ license_key:key, name: deviceLabel() })
     });
-    if(r.status === 200){ const d = await r.json().catch(()=>({})); return { ok:true, key, activationId:d.id||null }; }
-    if(r.status === 404) return { ok:false, reason:"invalid" };
-    if(r.status === 403){
-      const d = await r.json().catch(()=>({}));
-      const detail = (d.detail || "").toLowerCase();
-      if(detail.indexOf("limit") !== -1) return { ok:false, reason:"limit" };
-      // activations not enabled on this key → fall back to plain validation
-      const ok = await validateKey(key, null);
-      if(ok === null) return { ok:false, reason:"network" };
-      return ok ? { ok:true, key, activationId:null } : { ok:false, reason:"invalid" };
-    }
-    return { ok:false, reason:"invalid" };
+    if(r.ok){ const d = await r.json().catch(()=>({})); return { ok:true, key, activationId:(d && d.id) || null }; }
+    if(r.status === 422) return { ok:false, reason:"limit" };
+    if(r.status === 403 || r.status === 404) return { ok:false, reason:"invalid" };
+    return { ok:false, reason:"network" };
   }catch(e){ return { ok:false, reason:"network" }; }
 }
 
@@ -5741,12 +5733,13 @@ function previewTheme(id){
   PV.id = id; PV.left = PREVIEW_SECONDS;
   const name = (THEMES.find(t=>t.id===id)||{}).name || id;
   const b = $("previewBadge");
-  b.innerHTML = `${t("previewingLabel")} <b>${name}</b> · <span id="pvCount">${PV.left}</span>s · <u id="pvBuy">${t("getProBtn")} ${PRICE}</u>`;
+  const tail = SALES_OPEN ? `<u id="pvBuy">${t("getProBtn")} ${PRICE}</u>` : t("proSoonShort");
+  b.innerHTML = `${t("previewingLabel")} <b>${name}</b> · <span id="pvCount">${PV.left}</span>s · ${tail}`;
   b.style.display = "block";
-  // opens the real Polar checkout in a new tab (same as the main Buy button) —
-  // a plain window.open to Polar's hosted page, not an embedded iframe/script,
-  // so ad blockers that target checkout-embed scripts don't interfere with it
-  $("pvBuy").onclick = ()=>window.open(BUY_URL, "_blank");
+  // opens the hosted checkout in a new tab (same as the main Buy button) —
+  // a plain window.open, not an embedded iframe/script, so ad blockers that
+  // target checkout-embed scripts don't interfere with it
+  if(SALES_OPEN) $("pvBuy").onclick = ()=>window.open(BUY_URL, "_blank");
   applyTheme(); refreshSettings();
   // Count down visibly, then revert to your saved (free) theme — so the snap
   // back is expected, and Pro themes still aren't usable for free.
@@ -6069,6 +6062,11 @@ function refreshSettings(){
     status.innerHTML = t("proStatusUnlocked");
     btn.style.display = "none";
     if(lbox) lbox.style.display = "none";
+  }else if(!SALES_OPEN){
+    head.textContent = t("proHeadFree");
+    status.innerHTML = t("proComingSoon");
+    btn.style.display = "none";
+    if(lbox) lbox.style.display = "none";
   }else{
     head.textContent = t("proHeadFree");
     status.innerHTML = `${t("proStatusLockedPrefix")} <b>${PRICE}</b>${t("proStatusLockedSuffix")}`;
@@ -6145,8 +6143,7 @@ $("customWeight").addEventListener("input", e=>{
 const LICENSE_ERR = {
   invalid: "That key didn't validate. Double-check it and try again.",
   limit:   "This key has reached its device limit. Unlock an old device or contact support.",
-  network: "Couldn't reach the license server. Check your connection and try again.",
-  config:  "License checking isn't configured yet."
+  network: "Couldn't reach the license server. Check your connection and try again."
 };
 async function submitLicense(){
   const inp = $("licenseInput"), msg = $("licenseMsg"), btn = $("licenseBtn");
@@ -6168,14 +6165,14 @@ async function submitLicense(){
 $("licenseBtn").addEventListener("click", submitLicense);
 $("licenseInput").addEventListener("keydown", e=>{ e.stopPropagation(); if(e.key==="Enter"){ e.preventDefault(); submitLicense(); } });
 
-/* Remove license from this device — frees the activation slot on Polar (so it
+/* Remove license from this device — frees the activation slot on Dodo (so it
    can be re-used elsewhere), clears local storage, and re-locks Pro. */
 async function removeLicense(){
   const saved = storedLicense();
-  if(saved && saved.key && saved.activationId && orgReady()){
+  if(saved && saved.key && saved.activationId){
     try{
       await fetch(LK_API + "/deactivate", { method:"POST", headers:LK_HEAD,
-        body: JSON.stringify({ key:saved.key, organization_id:POLAR_ORG_ID, activation_id:saved.activationId }) });
+        body: JSON.stringify({ license_key:saved.key, license_key_instance_id:saved.activationId }) });
     }catch(e){}
   }
   clearLicense();
@@ -6348,7 +6345,7 @@ document.addEventListener("visibilitychange", ()=>{ if(document.visibilityState=
   if(saved && saved.key){
     LICENSE_OK = true; // optimistic; re-checked below
     validateKey(saved.key, saved.activationId).then(ok=>{
-      // only a definite "no" from Polar revokes; offline or errors keep Pro
+      // only a definite "no" from Dodo revokes; offline or errors keep Pro
       if(ok === false){ LICENSE_OK = false; clearLicense(); refreshSettings(); render(); }
     });
   }

@@ -1,7 +1,7 @@
 /* Workshop Timer service worker — makes the installed app launch offline.
    Strategy: network-first for the page (so code updates land immediately when
-   online), fall back to the cached copy when there's no connection. The Polar
-   license API is always network-only and never cached. */
+   online), fall back to the cached copy when there's no connection. The Dodo
+   Payments license API is always network-only and never cached. */
 const CACHE = "workshop-timer-v1";
 const SHELL = ["./", "./index.html"];
 
@@ -25,7 +25,7 @@ self.addEventListener("fetch", (e) => {
   try { url = new URL(req.url); } catch (_) { return; }
 
   // Never touch the license API — always hit the network.
-  if (url.hostname.endsWith("polar.sh")) return;
+  if (url.hostname.endsWith("dodopayments.com")) return;
 
   // The page itself: network-first, cache fallback (keeps buyers on latest).
   if (req.mode === "navigate" || (req.destination === "document")) {
