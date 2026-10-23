@@ -977,7 +977,7 @@
 
   /* ---------- LCARS starship console ---------- */
   body.theme-lcars #label{display:none;}
-  body.theme-lcars, body.theme-lcars #controls button, body.theme-lcars #modal{
+  body.theme-lcars, body.theme-lcars #controls button{
     font-family:'Arial Narrow','Avenir Next Condensed','Helvetica Neue',Arial,sans-serif;
   }
   #lcarsWrap{display:none; flex-direction:column; width:min(92vw,150vh); gap:1.2rem;}
@@ -1352,30 +1352,6 @@
     25%{box-shadow:0 0 0 4px rgba(43,42,38,.45), 0 14px 24px -10px rgba(60,45,10,.5);}
   }
 
-  /* ---------- modal ---------- */
-  #overlay{
-    position:fixed; inset:0; z-index:9; background:rgba(0,0,0,.55);
-    display:none; align-items:center; justify-content:center; padding:1rem;
-  }
-  #overlay.open{display:flex;}
-  #modal{
-    background:var(--panel); border:1px solid var(--border); border-radius:16px;
-    max-width:460px; width:100%; padding:2rem; text-align:center;
-    display:flex; flex-direction:column; gap:.9rem;
-    font-family:var(--font-ui);
-  }
-  #modal h2{font-size:1.3rem;}
-  #modal p{color:var(--muted); font-size:.92rem; line-height:1.55;}
-  #modal ul{text-align:left; color:var(--fg); font-size:.9rem; line-height:1.9; list-style:none;}
-  #modal ul li::before{content:"✓  "; color:var(--ok); font-weight:700;}
-  #modalMsg{font-size:.8rem; min-height:1.1em; color:var(--danger);}
-  #modal .fine{font-size:.72rem; color:var(--muted);}
-  .close-x{position:absolute; top:.8rem; right:1rem; background:none; border:none; color:var(--muted); font-size:1.3rem; cursor:pointer;}
-  #modalCard{position:relative;}
-  a.buy-btn{
-    display:block; background:var(--accent); color:#111; font-weight:800; text-decoration:none;
-    border-radius:999px; padding:.75rem 1.4rem; font-size:1.05rem; text-align:center;
-  }
   #btnTrial{border-radius:999px;}
 
   /* ---------- global overrides (title, TV centering, in-settings Pro) ---------- */
@@ -1696,23 +1672,6 @@
     <span class="eu-badge">A <a href="https://pigrosoft.com" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">PigroSoft</a> product</span>
   </div>
 </aside>
-
-<div id="overlay">
-  <div id="modalCard">
-    <div id="modal">
-      <button class="close-x" id="modalClose">✕</button>
-      <h2 id="modalTitle">Get Pro, yours forever</h2>
-      <p id="modalBody">One payment. No subscription, no account, no email list. You unlock every theme, font, sound, and color with a license key that's yours forever.</p>
-      <ul id="modalList">
-        <li>All 23 themes: countdown board, starship, LED clock &amp; more</li>
-        <li>Your logo + custom colors on the big screen</li>
-        <li>11 fonts, 5 end sounds, voice alert</li>
-      </ul>
-      <a class="buy-btn" id="buyBtn" href="#" target="_blank">Buy the app</a>
-      <p class="fine" id="modalFine">Instant download after checkout.</p>
-    </div>
-  </div>
-</div>
 
 <script>
 "use strict";
@@ -5652,7 +5611,7 @@ document.addEventListener("keydown", e=>{
   else if(k==="ArrowDown"){ e.preventDefault(); adjust(-60); }
   else if(k==="ArrowRight"){ e.preventDefault(); adjust(10); }
   else if(k==="ArrowLeft"){ e.preventDefault(); adjust(-10); }
-  else if(k==="Escape"){ $("settings").classList.remove("open"); $("btnSettings").classList.remove("open"); updateSettingsTip(); closeModal(); }
+  else if(k==="Escape"){ $("settings").classList.remove("open"); $("btnSettings").classList.remove("open"); updateSettingsTip(); }
   else if(/^[1-9]$/.test(k)) setDuration(PRESETS[+k-1]*60);
 });
 
@@ -6253,9 +6212,6 @@ function openModal(){
     setTimeout(()=>sec.classList.remove("flash"), 1500);
   }
 }
-function closeModal(){ $("overlay").classList.remove("open"); }
-$("modalClose").addEventListener("click", closeModal);
-$("overlay").addEventListener("click", e=>{ if(e.target.id==="overlay") closeModal(); });
 
 /* =========================================================
    INIT
