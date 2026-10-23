@@ -11,78 +11,203 @@
   a{color:#e8c15a;}
   h1{font-size:1.6rem; margin:.2rem 0 1.2rem;}
   h2{font-size:1.05rem; margin:1.8rem 0 .4rem;}
-  p{margin:.4rem 0;}
+  p, li{margin:.4rem 0;}
+  ul{padding-left:1.2rem;}
+  code{font-size:.85em; background:#1c1c22; padding:.05rem .3rem; border-radius:4px;}
   hr{border:none; border-top:1px solid #2b2b33; margin:2.6rem 0;}
   .lang{font-size:.75rem; letter-spacing:.12em; text-transform:uppercase; color:#7d7d86; margin:0 0 .6rem;}
   .back{display:inline-block; margin-bottom:1.4rem; font-size:.9rem; opacity:.8; text-decoration:none;}
-  .note{background:#1c1c22; border:1px solid #2b2b33; border-radius:8px; padding:.8rem 1rem; font-size:.85rem; color:#b7b7be; margin:0 0 1.6rem;}
+  .summary{background:#1c1c22; border:1px solid #2b2b33; border-radius:8px; padding:.8rem 1.1rem; margin:0 0 1.4rem;}
+  .meta{font-size:.85rem; color:#9a9aa3;}
 </style>
 </head>
 <body>
 <main>
   <a class="back" href="./">&larr; Workshop Timer</a>
-  <div class="note">Placeholder template &middot; Platzhalter-Vorlage. Not legal advice &middot; bitte vor Veröffentlichung rechtlich prüfen lassen.</div>
 
-  <p class="lang">English</p>
+  <p class="lang">English · <a href="#de">Deutsch</a></p>
   <h1>Privacy Policy</h1>
+  <p class="meta">Last updated 23 October 2026. Every change to this page is visible in the
+     <a href="https://github.com/PigroSoft/workshop-timers/commits/main/datenschutz.html">public history of this file</a>.</p>
 
-  <h2>Controller</h2>
-  <p>Jeffrey Humble, Peschkestr. 5, 12161 Berlin, Germany.
-     Email: <a href="mailto:support@pigrosoft.com">support@pigrosoft.com</a></p>
+  <div class="summary">
+    <p><b>The short version.</b> Workshop Timer has no accounts, no cookies, no analytics, no ads and no
+       tracking. Your settings stay in your own browser and never reach us. The only parties that can see
+       anything are GitHub, which hosts the page, and, only if you buy and enter a Pro licence key, our
+       payment provider Dodo Payments. We do not sell or share anyone's data.</p>
+  </div>
 
-  <h2>Overview</h2>
-  <p>Workshop Timer runs entirely in your browser. The app sets no tracking cookies and uses
-     no analytics or advertising services.</p>
+  <h2>1. Who is responsible</h2>
+  <p>Jeffrey Humble (PigroSoft), Peschkestr. 5, 12161 Berlin, Germany.
+     Email: <a href="mailto:support@pigrosoft.com">support@pigrosoft.com</a>.
+     Write to that address for any privacy question or to use your rights.</p>
 
-  <h2>Local storage</h2>
-  <p>Your settings (e.g. theme, font, title) and, if entered, your license key are stored only
-     locally in your browser (localStorage) and are not transmitted to us.</p>
+  <h2>2. What stays on your device</h2>
+  <p>The app saves what you set up in your browser's local storage, on your own device: your timer
+     settings (duration, label, theme, colours, sounds, font, language), a running or paused timer so a
+     refresh doesn't lose it, your logo and uploaded font if you add them, and your licence key if you
+     enter one. None of this is sent to us or to anyone else, except the licence key as described in
+     section 4. You can save it as a file under Settings, and delete it at any time by clearing this
+     site's data in your browser.</p>
+  <p>Legal basis: storing this on your device is strictly necessary to provide the timer you asked for
+     (§ 25 (2) no. 2 TDDDG). It is not used to identify or track you.</p>
 
-  <h2>Hosting</h2>
-  <p>The website is served via GitHub Pages (GitHub, Inc.). When you access it, the host
-     processes technically necessary access data (e.g. IP address) in server log files.
-     GitHub's own privacy policy also applies.</p>
+  <h2>3. Hosting by GitHub Pages</h2>
+  <p>The site is served by GitHub Pages, run by GitHub, Inc., 88 Colin P. Kelly Jr. Street,
+     San Francisco, CA 94107, USA. When you open it, your browser sends GitHub the technical data any
+     web server receives: your IP address, the date and time, the page requested, and your browser's
+     user-agent and referrer. GitHub uses this to deliver the page and keep the service secure. We do
+     not receive or look at these logs.</p>
+  <p>Legal basis: our legitimate interest in delivering a working, secure website (Art. 6 (1) (f) GDPR).
+     This data may be processed in the USA; GitHub describes how it protects transfers from the EU,
+     including under the EU-U.S. Data Privacy Framework principles, in its
+     <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">privacy statement</a>,
+     which also says how long GitHub keeps logs.</p>
 
-  <h2>Payments and license validation</h2>
-  <p>Purchases are handled by our payment provider Polar (merchant of record). When you enter
-     a license key, it is sent to Polar for validation. Polar's privacy terms apply.</p>
+  <h2>4. Pro licence and Dodo Payments</h2>
+  <p>Pro (the extra themes) is not on sale yet. Once it is, purchases will be handled by
+     Dodo Payments, which acts as merchant of record: you pay Dodo, and Dodo processes your name,
+     email address, billing country and payment details under its own
+     <a href="https://dodopayments.com/legal/privacy-policy">privacy policy</a>. Dodo states that it uses
+     the EU's standard contractual clauses for transfers outside the EU. We see the order details Dodo
+     shows its merchants, such as your name, email address and country, and use them only to help you
+     with your purchase and to keep the business records the law requires (usually up to ten years under
+     German tax and commercial law).</p>
+  <p>When you enter a licence key, your browser sends it directly to Dodo
+     (<code>live.dodopayments.com</code>) together with the label "Workshop Timer · activated" and the
+     date, so Dodo can confirm the key and count it against your device limit. Each time the app starts,
+     it asks Dodo whether the stored key is still valid. Dodo also sees your IP address for these
+     requests. If Dodo can't be reached, Pro keeps working. "Remove license from this device" in
+     Settings tells Dodo to free that device slot and deletes the key from your browser.</p>
+  <p>Legal basis: carrying out your purchase (Art. 6 (1) (b) GDPR) and our legal record-keeping duties
+     (Art. 6 (1) (c) GDPR).</p>
 
-  <h2>Your rights</h2>
-  <p>You have the right to access, rectification, erasure, restriction of processing, data
-     portability and objection, as well as the right to lodge a complaint with a supervisory
-     authority.</p>
+  <h2>5. Voice alerts</h2>
+  <p>Voice alerts use your browser's built-in speech voices. The app picks a voice that runs on your
+     device where one exists. If your browser only offers online voices, the browser's maker (for
+     example Google, in Chrome) may receive the fixed phrase being spoken, such as "Thirty seconds
+     remaining", under its own terms. The phrase contains nothing about you.</p>
+
+  <h2>6. No outside requests</h2>
+  <p>All fonts, sounds and images are built into the page. The app loads nothing from Google Fonts,
+     CDNs or other third parties. Links to GitHub, PigroSoft or Dodo only open when you click them.</p>
+
+  <h2>7. What we never do</h2>
+  <ul>
+    <li>No cookies, analytics, tracking pixels, advertising or fingerprinting.</li>
+    <li>No profiling and no automated decisions about you.</li>
+    <li>No selling, renting or sharing of personal data for marketing.</li>
+    <li>No email list, and no account to create.</li>
+  </ul>
+
+  <h2>8. Your rights</h2>
+  <p>You have the right to access the data we hold about you, and to have it corrected, deleted,
+     restricted or handed to you in a portable format (Art. 15 to 20 GDPR). You can object to processing
+     based on our legitimate interests at any time (Art. 21 GDPR). In practice we hold nothing about you
+     unless you buy Pro; for that, email us. You also have the right to complain to a data protection
+     authority (Art. 77 GDPR). The one responsible for us is the
+     <a href="https://www.datenschutz-berlin.de">Berlin Commissioner for Data Protection and Freedom of
+     Information</a>.</p>
+
+  <h2>9. The code is open</h2>
+  <p>Workshop Timer is open source, so you don't have to take this page on trust: you can read exactly
+     what the app does in its <a href="https://github.com/PigroSoft/workshop-timers">public source code</a>.</p>
 
   <hr>
 
-  <p class="lang">Deutsch</p>
+  <p class="lang" id="de">Deutsch · <a href="#">English</a></p>
   <h1>Datenschutzerklärung</h1>
+  <p class="meta">Stand: 23. Oktober 2026. Jede Änderung dieser Seite ist in der
+     <a href="https://github.com/PigroSoft/workshop-timers/commits/main/datenschutz.html">öffentlichen Versionsgeschichte</a> nachvollziehbar.</p>
 
-  <h2>Verantwortlicher</h2>
-  <p>Jeffrey Humble, Peschkestr. 5, 12161 Berlin, Deutschland.
-     E-Mail: <a href="mailto:support@pigrosoft.com">support@pigrosoft.com</a></p>
+  <div class="summary">
+    <p><b>Kurz gesagt.</b> Workshop Timer hat keine Konten, keine Cookies, keine Analyse, keine Werbung
+       und kein Tracking. Ihre Einstellungen bleiben in Ihrem eigenen Browser und erreichen uns nie.
+       Einblick haben nur GitHub, das die Seite ausliefert, und, nur wenn Sie einen Pro-Lizenzschlüssel
+       kaufen und eingeben, unser Zahlungsdienstleister Dodo Payments. Wir verkaufen oder teilen keine Daten.</p>
+  </div>
 
-  <h2>Überblick</h2>
-  <p>Workshop Timer läuft vollständig in Ihrem Browser. Die App setzt keine Tracking-Cookies
-     und verwendet keine Analyse- oder Werbedienste.</p>
+  <h2>1. Verantwortlicher</h2>
+  <p>Jeffrey Humble (PigroSoft), Peschkestr. 5, 12161 Berlin, Deutschland.
+     E-Mail: <a href="mailto:support@pigrosoft.com">support@pigrosoft.com</a>.
+     An diese Adresse können Sie sich mit allen Datenschutzfragen wenden und Ihre Rechte ausüben.</p>
 
-  <h2>Lokale Speicherung</h2>
-  <p>Ihre Einstellungen (z. B. Thema, Schriftart, Titel) und, falls eingegeben, Ihr
-     Lizenzschlüssel werden ausschließlich lokal in Ihrem Browser (localStorage) gespeichert
-     und nicht an uns übertragen.</p>
+  <h2>2. Was auf Ihrem Gerät bleibt</h2>
+  <p>Die App speichert Ihre Einstellungen im lokalen Speicher Ihres Browsers auf Ihrem eigenen Gerät:
+     Timer-Einstellungen (Dauer, Titel, Design, Farben, Töne, Schrift, Sprache), einen laufenden oder
+     pausierten Timer, damit ein Neuladen ihn nicht verliert, Ihr Logo und eine hochgeladene Schrift,
+     falls Sie diese hinzufügen, sowie Ihren Lizenzschlüssel, falls Sie einen eingeben. Nichts davon wird
+     an uns oder an Dritte übertragen, außer dem Lizenzschlüssel wie in Abschnitt 4 beschrieben. Sie
+     können alles in den Einstellungen als Datei speichern und jederzeit löschen, indem Sie die
+     Websitedaten dieser Seite in Ihrem Browser entfernen.</p>
+  <p>Rechtsgrundlage: Die Speicherung auf Ihrem Gerät ist unbedingt erforderlich, um den von Ihnen
+     gewünschten Timer bereitzustellen (§ 25 Abs. 2 Nr. 2 TDDDG). Sie dient nicht dazu, Sie zu
+     identifizieren oder zu verfolgen.</p>
 
-  <h2>Hosting</h2>
-  <p>Die Website wird über GitHub Pages (GitHub, Inc.) bereitgestellt. Beim Aufruf verarbeitet
-     der Hoster technisch notwendige Zugriffsdaten (z. B. IP-Adresse) in Server-Logfiles. Es
-     gilt zusätzlich die Datenschutzerklärung von GitHub.</p>
+  <h2>3. Hosting über GitHub Pages</h2>
+  <p>Die Website wird über GitHub Pages bereitgestellt, betrieben von GitHub, Inc., 88 Colin P. Kelly Jr.
+     Street, San Francisco, CA 94107, USA. Beim Aufruf übermittelt Ihr Browser die technischen Daten, die
+     jeder Webserver erhält: IP-Adresse, Datum und Uhrzeit, die angefragte Seite sowie User-Agent und
+     Referrer. GitHub nutzt diese Daten, um die Seite auszuliefern und den Dienst abzusichern. Wir
+     erhalten diese Logdaten nicht und sehen sie nicht ein.</p>
+  <p>Rechtsgrundlage: unser berechtigtes Interesse an einer funktionierenden, sicheren Website
+     (Art. 6 Abs. 1 lit. f DSGVO). Die Daten können in den USA verarbeitet werden; wie GitHub
+     Übermittlungen aus der EU absichert, unter anderem nach den Grundsätzen des EU-US Data Privacy
+     Framework, und wie lange Logs gespeichert werden, beschreibt GitHub in seiner
+     <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung</a>.</p>
 
-  <h2>Zahlungen und Lizenzprüfung</h2>
-  <p>Käufe werden über unseren Zahlungsdienstleister Polar (Merchant of Record) abgewickelt.
-     Bei Eingabe eines Lizenzschlüssels wird dieser zur Prüfung an Polar übermittelt. Es gelten
-     die Datenschutzbestimmungen von Polar.</p>
+  <h2>4. Pro-Lizenz und Dodo Payments</h2>
+  <p>Pro (die zusätzlichen Designs) ist noch nicht erhältlich. Sobald es angeboten wird, wickelt
+     Dodo Payments die Käufe als Merchant of Record ab: Sie bezahlen an Dodo, und Dodo verarbeitet Ihren
+     Namen, Ihre E-Mail-Adresse, Ihr Rechnungsland und Ihre Zahlungsdaten nach seiner eigenen
+     <a href="https://dodopayments.com/legal/privacy-policy">Datenschutzerklärung</a>. Nach eigenen Angaben
+     nutzt Dodo für Übermittlungen außerhalb der EU die Standardvertragsklauseln der EU. Wir sehen die
+     Bestelldaten, die Dodo Händlern anzeigt, etwa Name, E-Mail-Adresse und Land, und nutzen sie nur, um
+     Sie bei Ihrem Kauf zu unterstützen und die gesetzlich vorgeschriebenen Geschäftsunterlagen
+     aufzubewahren (nach Steuer- und Handelsrecht in der Regel bis zu zehn Jahre).</p>
+  <p>Wenn Sie einen Lizenzschlüssel eingeben, sendet Ihr Browser ihn direkt an Dodo
+     (<code>live.dodopayments.com</code>), zusammen mit der Bezeichnung „Workshop Timer · activated“ und
+     dem Datum, damit Dodo den Schlüssel bestätigen und auf Ihr Gerätelimit anrechnen kann. Bei jedem
+     Start fragt die App bei Dodo nach, ob der gespeicherte Schlüssel noch gültig ist. Dodo sieht dabei
+     auch Ihre IP-Adresse. Ist Dodo nicht erreichbar, bleibt Pro trotzdem aktiv. „Remove license from
+     this device“ in den Einstellungen gibt den Geräteplatz bei Dodo frei und löscht den Schlüssel aus
+     Ihrem Browser.</p>
+  <p>Rechtsgrundlage: Abwicklung Ihres Kaufs (Art. 6 Abs. 1 lit. b DSGVO) und unsere gesetzlichen
+     Aufbewahrungspflichten (Art. 6 Abs. 1 lit. c DSGVO).</p>
 
-  <h2>Ihre Rechte</h2>
-  <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung,
-     Datenübertragbarkeit und Widerspruch sowie ein Beschwerderecht bei einer Aufsichtsbehörde.</p>
+  <h2>5. Sprachansagen</h2>
+  <p>Sprachansagen nutzen die eingebauten Stimmen Ihres Browsers. Die App wählt, wo vorhanden, eine
+     Stimme, die auf Ihrem Gerät läuft. Bietet Ihr Browser nur Online-Stimmen an, kann der
+     Browserhersteller (zum Beispiel Google in Chrome) den gesprochenen festen Satz, etwa „Thirty seconds
+     remaining“, nach seinen eigenen Bedingungen erhalten. Der Satz enthält keine Angaben über Sie.</p>
+
+  <h2>6. Keine Anfragen an Dritte</h2>
+  <p>Alle Schriften, Töne und Bilder sind in die Seite eingebaut. Die App lädt nichts von Google Fonts,
+     CDNs oder anderen Drittanbietern. Links zu GitHub, PigroSoft oder Dodo öffnen sich nur, wenn Sie sie
+     anklicken.</p>
+
+  <h2>7. Was wir nie tun</h2>
+  <ul>
+    <li>Keine Cookies, keine Analyse, keine Tracking-Pixel, keine Werbung, kein Fingerprinting.</li>
+    <li>Kein Profiling und keine automatisierten Entscheidungen über Sie.</li>
+    <li>Kein Verkauf, keine Vermietung und keine Weitergabe personenbezogener Daten zu Werbezwecken.</li>
+    <li>Kein Newsletter und kein Konto, das Sie anlegen müssten.</li>
+  </ul>
+
+  <h2>8. Ihre Rechte</h2>
+  <p>Sie haben das Recht auf Auskunft über die bei uns gespeicherten Daten sowie auf Berichtigung,
+     Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit (Art. 15 bis 20 DSGVO). Einer
+     Verarbeitung auf Grundlage unserer berechtigten Interessen können Sie jederzeit widersprechen
+     (Art. 21 DSGVO). Tatsächlich speichern wir nichts über Sie, solange Sie Pro nicht kaufen; dafür
+     genügt eine E-Mail. Außerdem können Sie sich bei einer Datenschutzaufsichtsbehörde beschweren
+     (Art. 77 DSGVO). Für uns zuständig ist die
+     <a href="https://www.datenschutz-berlin.de">Berliner Beauftragte für Datenschutz und
+     Informationsfreiheit</a>.</p>
+
+  <h2>9. Der Code ist offen</h2>
+  <p>Workshop Timer ist Open Source. Sie müssen dieser Seite also nicht blind vertrauen: Was die App
+     genau tut, können Sie im <a href="https://github.com/PigroSoft/workshop-timers">öffentlichen
+     Quellcode</a> nachlesen.</p>
 </main>
 </body>
 </html>
