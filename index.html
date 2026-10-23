@@ -2416,11 +2416,15 @@ function announce(text){
   try{
     const u = new SpeechSynthesisUtterance(text);
     u.rate = 0.92; u.pitch = 1;
-    const vs = speechSynthesis.getVoices() || [];
-    u.voice =
+    // prefer voices that run on the device (localService), so the phrase
+    // isn't sent to an online speech service; fall back to any English voice
+    const all = speechSynthesis.getVoices() || [];
+    const local = all.filter(v=>v.localService);
+    const pick = vs =>
       vs.find(v=>/Samantha|Google US English|Serena|Karen|Daniel|Martha/i.test(v.name) && !/compact/i.test(v.name)) ||
       vs.find(v=>/^en/i.test(v.lang) && /natural|premium|enhanced/i.test(v.name)) ||
-      vs.find(v=>/^en/i.test(v.lang)) || null;
+      vs.find(v=>/^en/i.test(v.lang));
+    u.voice = pick(local) || pick(all) || null;
     speechSynthesis.speak(u);
   }catch(e){}
 }
