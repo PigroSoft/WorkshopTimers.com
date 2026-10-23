@@ -10,21 +10,25 @@ Everything you set up (duration, label, theme, colours, logo, sounds, language) 
 
 You can take your setup with you: Settings → **Your settings file** saves it as `workshop-timer-settings.json` and loads it back on another computer. The file holds your settings and logo; it leaves out your licence key and any font you uploaded.
 
-There are no analytics, no tracking cookies and no ads. The app only talks to the network in two cases. GitHub Pages serves the page and, like any web host, logs access data such as your IP address. If you buy Pro and paste a licence key, the key and a short device label (your browser's platform name and today's date) go to [Polar](https://polar.sh), the payment provider, to check it.
+There are no analytics, no tracking cookies and no ads, and nothing is loaded from third-party servers. The app only talks to the network in two cases. GitHub Pages serves the page and, like any web host, logs access data such as your IP address. If you buy Pro and paste a licence key, the key and the label "Workshop Timer · activated" with the date go to [Dodo Payments](https://dodopayments.com), the payment provider, to check it. Voice alerts prefer speech voices that run on your device. The full [privacy policy](https://workshoptimers.com/datenschutz.html) has the details.
 
 ## Free and Pro
 
-The timer, all four modes, three themes, all eight end sounds and every keyboard shortcut are free. A one-time Pro unlock (€5 or local equivalent, through Polar) adds the other themes and their colour variants, voice alerts, extra fonts and font upload, and your own colours and logo. Once unlocked on a device, Pro keeps working offline; it is only removed if Polar positively reports the key as invalid or revoked.
+Everything except the extra themes is free: the timer, all four modes, three themes, all eight end sounds, voice alerts, every font plus font upload, your own colours and logo, settings files and every keyboard shortcut. A one-time Pro unlock (€5 or local equivalent, through Dodo Payments) will add the other 20 themes and their colour variants. Sales haven't opened yet, so for now the app shows Pro as coming soon and you can preview any theme for 15 seconds.
+
+Once unlocked on a device, Pro keeps working offline; it is only removed if Dodo positively reports the key as invalid. To start selling, put the Dodo checkout link in `BUY_URL` near the top of the script in `index.html`.
 
 ## Run your own copy
 
 Download `index.html` and `sw.js`, put them in the same folder, and either open `index.html` in a browser or serve the folder from any static host. Nothing else is needed. The service worker only registers over `https://` or `localhost`.
 
-Note that there is no open-source licence yet, so the code is currently all rights reserved even though the repository is public.
+## Licence
+
+The code is released under the [MIT licence](LICENSE), so you can use, change, fork and redistribute it, including commercially. The embedded fonts are separate works under the SIL Open Font License; [FONTS.md](FONTS.md) lists each one with its copyright.
 
 ## Keyboard
 
-Space start/pause · R reset · F fullscreen · T next theme · M mute · ↑↓ ±1 min · ←→ ±10 sec · click the time to type one (`15`, `10:30`, `1:00:00`).
+Space start/pause · R reset · F fullscreen · T next theme · M mute · ↑↓ ±1 min · ←→ ±10 sec · click the time, or Tab to it and press Enter, to type one (`15`, `10:30`, `1:00:00`).
 
 ## Limitations
 
@@ -33,8 +37,8 @@ Space start/pause · R reset · F fullscreen · T next theme · M mute · ↑↓
 - Browsers block sound until you click or press a key on the page. If you refresh while a timer is running, the countdown carries on, but the end sound may stay silent unless someone touches the page before it finishes.
 - Voice alerts use your browser's built-in speech voices and are spoken in English only, whatever language the interface is in.
 - Several themes (Lava, Aurora, Ocean, Orb and others) draw animated WebGL backgrounds that can be slow on old or low-power machines. Time Disc, the default, is light.
-- Activating Pro on a new device needs a connection to Polar, and Polar enforces a per-key device limit.
-- The German legal pages (Impressum, Datenschutz, AGB, Widerruf) are still placeholder templates.
+- Activating Pro on a new device needs a connection to Dodo Payments, and Dodo enforces a per-key device limit.
+- The legal pages have not had a lawyer's review; the Impressum, AGB and Widerruf pages are still templates.
 - There are no automated tests yet.
 
 ## Contact
