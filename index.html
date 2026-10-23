@@ -6322,6 +6322,10 @@ function restoreRun(){
     lastWholeSec = Math.round(remaining);
     elStart.textContent = t("pauseBtn");
     startTicking(); armHideUI();
+    // browsers keep audio locked until the page gets a gesture; unlock it on
+    // the first click or key so the end sound isn't silent after a refresh
+    const unlock = ()=>{ try{ audio().resume && audio().resume(); }catch(e){} };
+    ["pointerdown","keydown"].forEach(ev=>document.addEventListener(ev, unlock, {once:true, capture:true}));
     try{ navigator.wakeLock?.request("screen").then(l=>{ wakeLock = l; }).catch(()=>{}); }catch(e){}
   }
 }
