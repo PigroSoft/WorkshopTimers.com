@@ -1633,6 +1633,17 @@
   </section>
 
   <section>
+    <h3 data-i18n="dataHeading">Your settings file</h3>
+    <div class="help" data-i18n="dataBody">Your settings live only in this browser. Save them as a file to keep a backup or move your setup to another computer.</div>
+    <div style="display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.7rem">
+      <button id="exportBtn" class="preset" data-i18n="exportBtn">Save settings file</button>
+      <button id="importBtn" class="preset" data-i18n="importBtn">Load settings file</button>
+      <input type="file" id="importFile" accept=".json,application/json" style="display:none">
+    </div>
+    <div id="importMsg" class="help" style="display:none; margin-top:.5rem"></div>
+  </section>
+
+  <section>
     <h3 data-i18n="installHeading">Use it as an app (Mac &amp; PC)</h3>
     <div class="help" data-i18n="installBody">
       Install WorkshopTimers.com so it opens in its own window, with no tabs or address bar, and launches like any native app.<br><br>
@@ -1748,6 +1759,7 @@ const I18N = {
     proStatusLockedPrefix:"All 23 themes with style variants, voice alert, custom colors & logo, beautiful fonts & your own uploads, 5 end sounds. One-time",
     proStatusLockedSuffix:", yours forever, no subscription.",
     getProBtn:"Get Pro for Life", haveKeyLabel:"Already bought? Paste your license key",
+    dataHeading:"Your settings file", dataBody:"Your settings live only in this browser. Save them as a file to keep a backup or move your setup to another computer.", exportBtn:"Save settings file", importBtn:"Load settings file", importBad:"That doesn't look like a Workshop Timer settings file.",
     installHeading:"Use it as an app (Mac & PC)",
     installBody:"Install WorkshopTimers.com so it opens in its own window, with no tabs or address bar, and launches like any native app.<br><br><b>Save as a Mac app (Safari):</b> File menu → <b>Add to Dock</b> → Add. Launch it from your Dock.<br><b>Save as a PC app (Chrome):</b> ⋮ menu → <b>Cast, Save &amp; Share → Install page as app</b>.<br><br>Once it's open, the timer runs entirely on your device, with no internet needed to keep time. Perfect for a projector or TV.",
     aboutHeading:"About",
@@ -1777,6 +1789,7 @@ const I18N = {
     proStatusLockedPrefix:"Alle 23 Designs mit Stilvarianten, Sprachansage, eigene Farben & Logo, schöne Schriften & eigene Uploads, 5 Endsignale. Einmalig",
     proStatusLockedSuffix:", für immer deins, kein Abo.",
     getProBtn:"Pro fürs Leben holen", haveKeyLabel:"Schon gekauft? Lizenzschlüssel einfügen",
+    dataHeading:"Deine Einstellungsdatei", dataBody:"Deine Einstellungen liegen nur in diesem Browser. Speichere sie als Datei, um ein Backup zu haben oder dein Setup auf einen anderen Computer mitzunehmen.", exportBtn:"Einstellungen speichern", importBtn:"Einstellungen laden", importBad:"Das sieht nicht nach einer Workshop-Timer-Einstellungsdatei aus.",
     installHeading:"Als App nutzen (Mac & PC)",
     installBody:"Installiere WorkshopTimers.com, damit es in einem eigenen Fenster ohne Tabs oder Adressleiste öffnet und wie eine native App startet.<br><br><b>Als Mac-App sichern (Safari):</b> Ablage-Menü → <b>Zum Dock hinzufügen</b> → Hinzufügen. Danach aus dem Dock starten.<br><b>Als PC-App sichern (Chrome):</b> ⋮-Menü → <b>Cast, Speichern &amp; Teilen → Seite als App installieren</b>.<br><br>Einmal geöffnet läuft der Timer komplett auf deinem Gerät, ganz ohne Internet. Perfekt für Beamer oder TV.",
     aboutHeading:"Über",
@@ -6219,6 +6232,51 @@ function openModal(){
 }
 
 /* =========================================================
+   SETTINGS FILE — export / import as plain JSON, so a setup can be
+   backed up or carried to another machine. Contains the settings
+   object and the logo (as a data URL). Leaves out the license key
+   (activated per device) and any uploaded font (you have the file).
+   ========================================================= */
+function exportSettings(){
+  let logo = null; try{ logo = localStorage.getItem(LS.logo); }catch(e){}
+  const data = { app:"workshoptimers.com", format:1, exported:new Date().toISOString(), settings:st, logo };
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], {type:"application/json"}));
+  a.download = "workshop-timer-settings.json";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+}
+function importSettings(text){
+  let d; try{ d = JSON.parse(text); }catch(e){ return false; }
+  if(!d || d.app !== "workshoptimers.com" || typeof d.settings !== "object" || !d.settings) return false;
+  // only take known keys with matching types; ignore anything else
+  const next = Object.assign({}, st);
+  for(const k of Object.keys(st)){
+    const v = d.settings[k];
+    if(v === undefined) continue;
+    if(st[k] === null || typeof v === typeof st[k]) next[k] = v;
+  }
+  if(typeof next.duration !== "number" || !(next.duration > 0)) next.duration = st.duration;
+  try{
+    localStorage.setItem(LS.state, JSON.stringify(next));
+    if(typeof d.logo === "string" && d.logo.startsWith("data:image/")) localStorage.setItem(LS.logo, d.logo);
+    localStorage.removeItem(LS.run); // the old run belongs to the old setup
+  }catch(e){ return false; }
+  return true;
+}
+$("exportBtn").addEventListener("click", exportSettings);
+$("importBtn").addEventListener("click", ()=>$("importFile").click());
+$("importFile").addEventListener("change", e=>{
+  const f = e.target.files && e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ()=>{
+    if(importSettings(String(r.result))){ runFrozen = true; location.reload(); return; }
+    const m = $("importMsg"); m.textContent = t("importBad"); m.style.display = "block";
+  };
+  r.readAsText(f); e.target.value = "";
+});
+
+/* =========================================================
    RUN PERSISTENCE — survive an accidental refresh mid-workshop.
    Snapshots the countdown/stopwatch when the page is hidden or
    unloaded, and restores it on load. A running countdown is stored
@@ -6226,7 +6284,9 @@ function openModal(){
    gone. Paused snapshots older than 12 hours are ignored.
    ========================================================= */
 const RUN_MAX_AGE = 12*60*60*1000;
+let runFrozen = false; // set while reloading after an import
 function saveRun(){
+  if(runFrozen) return;
   try{
     localStorage.setItem(LS.run, JSON.stringify({
       v:1, at:Date.now(), running, finished, remaining, deadline,
