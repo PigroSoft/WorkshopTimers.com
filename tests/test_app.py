@@ -295,7 +295,7 @@ def test_keyboard_and_screen_reader_basics(app):
 
 # ---------------------------------------------------------------- legal pages
 
-@pytest.mark.parametrize("page_name", ["impressum", "datenschutz", "agb", "widerruf"])
+@pytest.mark.parametrize("page_name", ["impressum", "datenschutz", "agb", "widerruf", "license"])
 def test_legal_pages_are_complete(browser, base_url, page_name):
     ctx = browser.new_context()
     page = ctx.new_page()
@@ -310,7 +310,7 @@ def test_legal_pages_are_complete(browser, base_url, page_name):
 
 # ---------------------------------------------------------------- favicon
 
-@pytest.mark.parametrize("page_name", ["index", "impressum", "datenschutz", "agb", "widerruf"])
+@pytest.mark.parametrize("page_name", ["index", "impressum", "datenschutz", "agb", "widerruf", "license"])
 def test_every_page_links_a_working_favicon(browser, base_url, page_name):
     ctx = browser.new_context()
     page = ctx.new_page()
