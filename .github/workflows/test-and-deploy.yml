@@ -54,7 +54,7 @@ jobs:
       - name: Collect the site files
         run: |
           mkdir _site
-          cp *.html sw.js CNAME LICENSE FONTS.md OFL.txt README.md _site/
+          cp *.html sw.js CNAME LICENSE FONTS.md OFL.txt README.md favicon.ico favicon-32.png apple-touch-icon.png _site/
 
       - uses: actions/configure-pages@v6
 

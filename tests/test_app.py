@@ -306,3 +306,16 @@ def test_legal_pages_are_complete(browser, base_url, page_name):
     assert "Jeffrey Humble" in text
     for stale in ["Placeholder", "Platzhalter", "Polar", "ec.europa.eu/consumers/odr", "trading name"]:
         assert stale not in text, f"{page_name}.html still mentions {stale!r}"
+
+
+# ---------------------------------------------------------------- favicon
+
+@pytest.mark.parametrize("page_name", ["index", "impressum", "datenschutz", "agb", "widerruf"])
+def test_every_page_links_a_working_favicon(browser, base_url, page_name):
+    ctx = browser.new_context()
+    page = ctx.new_page()
+    page.goto(f"{base_url}/{page_name}.html")
+    hrefs = page.evaluate("[...document.querySelectorAll('link[rel~=icon],link[rel=apple-touch-icon]')].map(l => l.href)")
+    codes = [ctx.request.get(h).status for h in hrefs]
+    ctx.close()
+    assert len(hrefs) == 3 and set(codes) == {200}
