@@ -2434,10 +2434,18 @@ function announce(text){
     // isn't sent to an online speech service; fall back to any English voice
     const all = speechSynthesis.getVoices() || [];
     const local = all.filter(v=>v.localService);
-    const pick = vs =>
-      vs.find(v=>/Samantha|Google US English|Serena|Karen|Daniel|Martha/i.test(v.name) && !/compact/i.test(v.name)) ||
-      vs.find(v=>/^en/i.test(v.lang) && /natural|premium|enhanced/i.test(v.name)) ||
-      vs.find(v=>/^en/i.test(v.lang));
+    // score English voices: neural/premium/enhanced builds sound far more human
+    // than the old compact ones, so they win over any name match
+    const score = v => {
+      if(!/^en(-|_|$)/i.test(v.lang)) return -1;
+      let n = 0;
+      if(/natural|neural|premium|enhanced|siri/i.test(v.name)) n += 10;
+      if(/Samantha|Google US English|Serena|Karen|Daniel|Martha|Aria|Jenny|Ava/i.test(v.name)) n += 5;
+      if(/compact|eloquence|espeak/i.test(v.name)) n -= 8;
+      if(/^en-(US|GB)/i.test(v.lang)) n += 1;
+      return n;
+    };
+    const pick = vs => vs.filter(v=>score(v)>=0).sort((x,y)=>score(y)-score(x))[0];
     u.voice = pick(local) || pick(all) || null;
     speechSynthesis.speak(u);
   }catch(e){}
