@@ -953,11 +953,19 @@
   #dotsWrap{display:none; flex-direction:column; align-items:center; gap:1.5rem;}
   #sunsetTime{
     font-weight:300; font-size:clamp(5.2rem,26vw,32vh); color:#fdf3e0;
-    letter-spacing:.12em; font-variant-numeric:tabular-nums; line-height:1;
+    letter-spacing:.12em; font-variant-numeric:tabular-nums; line-height:1; --dot:#fdf3e0;
     text-shadow:0 2px 30px rgba(120,40,90,.28); padding:0 .06em;
   }
-  body.theme-sunset.mode-dark #sunsetTime{color:#fff; text-shadow:none;}
-  body.theme-sunset.mode-light #sunsetTime{color:#181018; text-shadow:0 2px 20px rgba(255,255,255,.35);}
+  /* Modak's own colon fuses its two dots into one blob, so draw two round dots instead */
+  body[data-fontid="eckmann"] #sunsetTime .sc{
+    display:inline-block; width:.22em; height:.62em; vertical-align:middle;
+    color:transparent; text-shadow:none; margin:0 .06em;
+    background:
+      radial-gradient(circle closest-side, var(--dot) 96%, transparent 100%) top/100% .22em no-repeat,
+      radial-gradient(circle closest-side, var(--dot) 96%, transparent 100%) bottom/100% .22em no-repeat;
+  }
+  body.theme-sunset.mode-dark #sunsetTime{color:#fff; --dot:#fff; text-shadow:none;}
+  body.theme-sunset.mode-light #sunsetTime{color:#181018; --dot:#181018; text-shadow:0 2px 20px rgba(255,255,255,.35);}
   body.theme-sunset #label{
     font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-weight:400; letter-spacing:.01em;
     text-transform:uppercase; color:var(--muted);
@@ -3151,7 +3159,11 @@ function initMeter(){
 }
 function renderDots(text, frac){
   const el = $("sunsetTime");
-  if(el.textContent !== text) el.textContent = text;
+  if(el.dataset.t !== text){
+    el.dataset.t = text;
+    // the colon is its own span so Modak can draw it as two separate dots
+    el.innerHTML = text.replace(/:/g, '<span class="sc">:</span>');
+  }
   const x = (Math.max(0,Math.min(1,frac))*200).toFixed(1);
   $("meterCur").setAttribute("x1", x);
   $("meterCur").setAttribute("x2", x);
@@ -5905,12 +5917,14 @@ function applyTheme(){
   // dropdown choice: a named font, "default", or "custom" (upload).
   const sel = PV.id ? "default" : (st.font || "default");
   if(sel === "custom" && CUSTOM_FONT_READY){
+    document.body.dataset.fontid = "custom";
     document.documentElement.style.setProperty("--font", `'${CUSTOM_FONT_NAME}',` + FONTS[0].stack);
     document.documentElement.style.setProperty("--fontw", st.customWeight || 400);
   } else {
     const fid = (sel === "default" || sel === "custom") ? (themeDef().font || "helvetica") : sel;
     const f = FONTS.find(x=>x.id===fid) || FONTS[0];
     document.documentElement.style.setProperty("--font", f.stack);
+    document.body.dataset.fontid = f.id;
     // only force a weight when the picked font defines one; otherwise each theme
     // keeps its own default (midnight 700, nature 300, ...)
     if(f.weight) document.documentElement.style.setProperty("--fontw", f.weight);
