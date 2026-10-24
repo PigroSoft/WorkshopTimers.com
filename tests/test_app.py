@@ -148,26 +148,41 @@ def test_bad_settings_file_is_rejected(app, tmp_path):
 
 # ---------------------------------------------------------------- free vs Pro
 
-def test_everything_except_themes_is_free(app):
+def test_voice_and_logo_are_free_but_fonts_and_colours_are_pro(app):
     assert app.evaluate("isPro()") is False
     app.evaluate("document.getElementById('settings').classList.add('open')")
     app.check("#voiceToggle")
     app.check("#voice2minToggle")
     app.check("#voiceHalfToggle")
-    app.select_option("#fontSelect", "windsor")
-    app.fill("#accentInput", "#00aa55")
     app.evaluate("localStorage.setItem(LS.logo, 'data:image/png;base64,iVBORw0KGgo='); applyBranding()")
-    got = app.evaluate(
-        "({voice: [st.voice, st.voice2min, st.voiceHalf], font: st.font,"
+    locked = app.evaluate(
+        "['fontSelect','fontFile','customWeight','accentInput','bgInput','bgToggle']"
+        ".map(id => document.getElementById(id).disabled)"
+    )
+    assert all(locked), locked
+    # saved picks are kept but not applied for free users
+    app.evaluate("st.font='windsor'; st.accent='#00aa55'; st.accentCustom=true; st.useBg=true; st.bg='#123456'; applyTheme()")
+    free = app.evaluate(
+        "({font: getComputedStyle(document.documentElement).getPropertyValue('--font'),"
         " accent: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),"
-        " logo: elLogo.style.display,"
+        " bg: document.body.style.getPropertyValue('--bg')})"
+    )
+    assert "Fraunces" not in free["font"] and free["accent"] == "#d5442f" and free["bg"] == ""
+    got = app.evaluate(
+        "({voice: [st.voice, st.voice2min, st.voiceHalf], logo: elLogo.style.display,"
         " proTags: [...document.querySelectorAll('.pro-tag')].length})"
     )
     assert got["voice"] == [True, True, True]
-    assert got["font"] == "windsor"
-    assert got["accent"] == "#00aa55"
     assert got["logo"] == "block"
-    assert got["proTags"] == 1  # only the theme colour variants
+    assert got["proTags"] == 4  # theme colour variants, font, accent, background
+    # unlocking applies them
+    app.evaluate("LICENSE_OK = true; applyProLocks(); applyTheme()")
+    pro = app.evaluate(
+        "({font: getComputedStyle(document.documentElement).getPropertyValue('--font'),"
+        " accent: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),"
+        " bg: document.body.style.getPropertyValue('--bg'), off: document.getElementById('fontSelect').disabled})"
+    )
+    assert "Fraunces" in pro["font"] and pro["accent"] == "#00aa55" and pro["bg"] == "#123456" and not pro["off"]
 
 
 def test_voice_alert_fires_for_free_users(app):

@@ -14,7 +14,7 @@ There are no analytics, no tracking cookies and no ads, and nothing is loaded fr
 
 ## Free and Pro
 
-Everything except the extra themes is free: the timer, all four modes, three themes, all eight end sounds, voice alerts, every font plus font upload, your own colours and logo, settings files and every keyboard shortcut. A one-time Pro unlock (€5 or local equivalent, through Dodo Payments) will add the other 20 themes and their colour variants. Sales haven't opened yet, so for now the app shows Pro as coming soon and you can preview any theme for 15 seconds.
+Free: the timer, all four modes, three themes, all eight end sounds, voice alerts, your own logo, settings files and every keyboard shortcut. A one-time Pro unlock (€5 or local equivalent, through Dodo Payments) will add the other 20 themes and their colour variants, the font picker with font upload, and your own accent and background colours. Sales haven't opened yet, so for now the app shows Pro as coming soon and you can preview any theme for 15 seconds.
 
 Once unlocked on a device, Pro keeps working offline; it is only removed if Dodo positively reports the key as invalid. To start selling, put the Dodo checkout link in `BUY_URL` near the top of the script in `index.html`.
 
