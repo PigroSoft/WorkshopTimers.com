@@ -148,7 +148,7 @@ def test_bad_settings_file_is_rejected(app, tmp_path):
 
 # ---------------------------------------------------------------- free vs Pro
 
-def test_voice_and_logo_are_free_but_fonts_and_colours_are_pro(app):
+def test_voice_is_free_but_fonts_colours_and_logo_are_pro(app):
     assert app.evaluate("isPro()") is False
     app.evaluate("document.getElementById('settings').classList.add('open')")
     app.check("#voiceToggle")
@@ -156,7 +156,7 @@ def test_voice_and_logo_are_free_but_fonts_and_colours_are_pro(app):
     app.check("#voiceHalfToggle")
     app.evaluate("localStorage.setItem(LS.logo, 'data:image/png;base64,iVBORw0KGgo='); applyBranding()")
     locked = app.evaluate(
-        "['fontSelect','fontFile','customWeight','accentInput','bgInput','bgToggle']"
+        "['fontSelect','fontFile','customWeight','accentInput','bgInput','bgToggle','logoInput']"
         ".map(id => document.getElementById(id).disabled)"
     )
     assert all(locked), locked
@@ -169,12 +169,12 @@ def test_voice_and_logo_are_free_but_fonts_and_colours_are_pro(app):
     )
     assert "Fraunces" not in free["font"] and free["accent"] == "#d5442f" and free["bg"] == ""
     got = app.evaluate(
-        "({voice: [st.voice, st.voice2min, st.voiceHalf], logo: elLogo.style.display,"
+        "({voice: [st.voice, st.voice2min, st.voiceHalf], logo: getComputedStyle(elLogo).display,"
         " proTags: [...document.querySelectorAll('.pro-tag')].length})"
     )
     assert got["voice"] == [True, True, True]
-    assert got["logo"] == "block"
-    assert got["proTags"] == 4  # theme colour variants, font, accent, background
+    assert got["logo"] == "none"
+    assert got["proTags"] == 5  # theme colour variants, font, accent, background, logo
     # unlocking applies them
     app.evaluate("LICENSE_OK = true; applyProLocks(); applyTheme()")
     pro = app.evaluate(
@@ -183,6 +183,8 @@ def test_voice_and_logo_are_free_but_fonts_and_colours_are_pro(app):
         " bg: document.body.style.getPropertyValue('--bg'), off: document.getElementById('fontSelect').disabled})"
     )
     assert "Fraunces" in pro["font"] and pro["accent"] == "#00aa55" and pro["bg"] == "#123456" and not pro["off"]
+    app.evaluate("applyBranding()")
+    assert app.evaluate("getComputedStyle(elLogo).display") == "block"
 
 
 def test_voice_alert_fires_for_free_users(app):

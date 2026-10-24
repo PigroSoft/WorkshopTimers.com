@@ -1605,7 +1605,7 @@
     </div>
     <div id="brandBody">
       <div class="field">
-        <label data-i18n="logoLabel">Logo (shown above the timer)</label>
+        <label><span data-i18n="logoLabel">Logo (shown above the timer)</span> <span class="pro-tag">PRO</span></label>
         <input type="file" id="logoInput" accept="image/*">
       </div>
       <div class="field">
@@ -2314,7 +2314,7 @@ async function unlockWithKey(key){
    for free users, and their saved picks are kept (just not applied). */
 function applyProLocks(){
   const free = !isPro();
-  ["fontSelect","fontFile","customWeight","accentInput","bgInput","bgToggle"].forEach(id=>{
+  ["fontSelect","fontFile","customWeight","accentInput","bgInput","bgToggle","logoInput"].forEach(id=>{
     const el = $(id); if(el) el.disabled = free;
   });
 }
@@ -6022,7 +6022,7 @@ function syncSublineFont(){
 }
 function applyBranding(){
   const logo = localStorage.getItem(LS.logo);
-  if(logo){ elLogo.src = logo; elLogo.style.display="block"; }
+  if(logo && isPro()){ elLogo.src = logo; elLogo.style.display="block"; }
   else elLogo.style.display="none";
   applyTheme();
 }
@@ -6415,7 +6415,7 @@ document.addEventListener("visibilitychange", ()=>{ if(document.visibilityState=
   if(!isPro()){
     if((THEMES.find(t=>t.id===st.theme)||{}).pro) st.theme = "disc";
     if(SOUNDS.find(s=>s.id===st.sound)?.pro) st.sound = "chime";
-    /* modes, sounds, voice alerts and the logo are free; extra themes, custom fonts and custom colours are Pro */
+    /* modes, sounds, voice alerts are free; extra themes, custom fonts, colours and logo are Pro */
   }
   if(isPro()) document.querySelectorAll(".pro-tag").forEach(el=>el.remove());
   restoreRun();
