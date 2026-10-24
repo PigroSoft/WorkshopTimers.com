@@ -326,6 +326,7 @@ def test_every_page_links_a_working_favicon(browser, base_url, page_name):
 def test_repo_ships_only_the_locked_build():
     """The public repo and the published site must never carry the unlocked Pro build."""
     assert "const PRO_UNLOCKED = false;" in (ROOT / "index.html").read_text(encoding="utf-8")
+    assert not re.search(r"^const PRO_UNLOCKED = true;", (ROOT / "index.html").read_text(encoding="utf-8"), re.M)
     stray = [p.name for p in ROOT.rglob("*") if p.is_file() and ".git" not in p.parts
              and (p.name.endswith("-pro.html") or "pro-bundle" in p.parts or p.suffix == ".zip")]
     assert not stray, f"Pro files found in the repository: {stray}"

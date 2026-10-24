@@ -59,7 +59,7 @@ jobs:
 
       - name: Refuse to publish an unlocked build
         run: |
-          if grep -rq "PRO_UNLOCKED = true" _site; then
+          if grep -rqE '^const PRO_UNLOCKED = true;' _site; then
             echo "The Pro build must never be published." && exit 1
           fi
 
