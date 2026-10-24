@@ -54,7 +54,14 @@ jobs:
       - name: Collect the site files
         run: |
           mkdir _site
-          cp *.html sw.js CNAME LICENSE FONTS.md OFL.txt README.md favicon.ico favicon-32.png apple-touch-icon.png _site/
+          # An explicit list on purpose: a stray file in the repo root must never go live.
+          cp index.html agb.html datenschutz.html impressum.html widerruf.html sw.js CNAME LICENSE.md FONTS.md OFL.txt README.md favicon.ico favicon-32.png apple-touch-icon.png _site/
+
+      - name: Refuse to publish an unlocked build
+        run: |
+          if grep -rqE '^const PRO_UNLOCKED = true;' _site; then
+            echo "The Pro build must never be published." && exit 1
+          fi
 
       - uses: actions/configure-pages@v6
 

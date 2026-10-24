@@ -319,3 +319,37 @@ def test_every_page_links_a_working_favicon(browser, base_url, page_name):
     codes = [ctx.request.get(h).status for h in hrefs]
     ctx.close()
     assert len(hrefs) == 3 and set(codes) == {200}
+
+
+# ---------------------------------------------------------------- Pro build stays private
+
+def test_repo_ships_only_the_locked_build():
+    """The public repo and the published site must never carry the unlocked Pro build."""
+    assert "const PRO_UNLOCKED = false;" in (ROOT / "index.html").read_text(encoding="utf-8")
+    assert not re.search(r"^const PRO_UNLOCKED = true;", (ROOT / "index.html").read_text(encoding="utf-8"), re.M)
+    stray = [p.name for p in ROOT.rglob("*") if p.is_file() and ".git" not in p.parts
+             and (p.name.endswith("-pro.html") or "pro-bundle" in p.parts or p.suffix == ".zip")]
+    assert not stray, f"Pro files found in the repository: {stray}"
+    workflow = (ROOT / ".github/workflows/test-and-deploy.yml").read_text(encoding="utf-8")
+    assert "cp *.html" not in workflow, "the deploy step must list files, not use a wildcard"
+
+
+def test_pro_build_differs_by_one_line_and_lands_outside_the_repo(tmp_path):
+    import subprocess
+    import sys
+    out = tmp_path / "pro-bundle"
+    subprocess.run([sys.executable, "-I", str(ROOT / "scripts/build_pro.py"), str(out)], check=True)
+    free = (ROOT / "index.html").read_text(encoding="utf-8").splitlines()
+    pro = (out / "workshop-timer-pro.html").read_text(encoding="utf-8").splitlines()
+    assert len(free) == len(pro)
+    diff = [(a, b) for a, b in zip(free, pro) if a != b]
+    assert diff == [("const PRO_UNLOCKED = false;", "const PRO_UNLOCKED = true;")]
+    refused = subprocess.run([sys.executable, "-I", str(ROOT / "scripts/build_pro.py"), str(ROOT / "inside")])
+    assert refused.returncode != 0 and not (ROOT / "inside").exists()
+
+
+def test_licence_header_and_settings_line_name_the_new_licence(app):
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+    assert html.startswith("<!DOCTYPE html>\n<!--") and "Elastic License 2.0" in html[:600] and "Jeffrey Humble" in html[:600]
+    assert "MIT licence" not in html.split("<script>")[0]
+    assert "Elastic License 2.0" in app.inner_text("#settings")

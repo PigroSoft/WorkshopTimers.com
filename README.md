@@ -14,13 +14,13 @@ There are no analytics, no tracking cookies and no ads, and nothing is loaded fr
 
 ## Free and Pro
 
-Free: the timer, all four modes, three themes, all eight end sounds, voice alerts, settings files and every keyboard shortcut. A one-time Pro unlock (€5 or local equivalent, through Dodo Payments) will add the other 20 themes and their colour variants, the font picker with font upload, your own accent and background colours, and your own logo. Sales haven't opened yet, so for now the app shows Pro as coming soon and you can preview any theme for 15 seconds.
+Free: the timer, all four modes, three themes, all eight end sounds, voice alerts, settings files and every keyboard shortcut. A one-time Pro licence ($9.99, shown in your local currency at checkout by Dodo Payments) adds the other 20 themes and their colour variants, the font picker with font upload, your own accent and background colours, and your own logo. It also comes with a downloadable copy of the timer and a guide that lets you change that copy with any AI. One licence is for one person on up to 5 devices; a Team licence ($39) covers up to 5 people. Until sales open, the app shows Pro as coming soon and you can preview any theme for 15 seconds.
 
-Once unlocked on a device, Pro keeps working offline; it is only removed if Dodo positively reports the key as invalid. To start selling, put the Dodo checkout link in `BUY_URL` near the top of the script in `index.html`.
+Once unlocked on a device, Pro keeps working offline; it is only removed if Dodo positively reports the key as invalid. To start selling, put the Dodo checkout links in `BUY_URL` (Pro) and `TEAM_BUY_URL` (Team) near the top of the script in `index.html`. The Pro download is built outside this repository with `scripts/build_pro.py` and is never committed here.
 
 ## Run your own copy
 
-Download `index.html` and `sw.js`, put them in the same folder, and either open `index.html` in a browser or serve the folder from any static host. Nothing else is needed. The service worker only registers over `https://` or `localhost`.
+Download `index.html` and `sw.js`, put them in the same folder, and either open `index.html` in a browser or serve the folder from any static host for your own use. Nothing else is needed. The service worker only registers over `https://` or `localhost`. The licence below does not let you offer the app to others as a hosted service or unlock Pro without a licence.
 
 ## Tests
 
@@ -34,7 +34,9 @@ pytest
 
 ## Licence
 
-The code is released under the [MIT licence](LICENSE), so you can use, change, fork and redistribute it, including commercially. The embedded fonts are separate works under the SIL Open Font License; [FONTS.md](FONTS.md) lists each one with its copyright.
+The code is source-available under the [Elastic License 2.0](LICENSE.md). You can read, run, copy and change it, including at work. You can't offer it to other people as a hosted or managed service, and you can't get around the Pro licence-key features. Pro buyers also receive the right to change their own copy with any tool, under the terms in their bundle.
+
+Versions published before 24 October 2026 were released under the MIT licence and stay under it. The embedded fonts are separate works under the SIL Open Font License; [FONTS.md](FONTS.md) lists each one with its copyright, and the shader code in `index.html` keeps its own MIT notice.
 
 ## Keyboard
 

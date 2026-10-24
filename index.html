@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+<!--
+  Workshop Timer
+  Copyright 2026 Jeffrey Humble (licensor)
+  Licensed under the Elastic License 2.0. Full text and notes: LICENSE.md in
+  the repository, https://github.com/PigroSoft/workshop-timers
+  The Pro build (PRO_UNLOCKED = true) is for holders of a Pro licence and is
+  supplied under the Pro licence terms in their bundle.
+  DO NOT EDIT: licence header. Keep it at the top of this file in any copy.
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -13,6 +22,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="WorkshopTimers.com">
 <style>
+  /* CUSTOMIZE: colours, fonts and layout. Colours are the custom properties near
+     the top of the rules below (--accent, --fg, --bg ...) plus each theme's own
+     body.theme-<id> rules. Layout is the plain rules for the display, controls
+     and settings panel. */
+  /* DO NOT EDIT: the base64 font data in the @font-face rules below.
+     CUSTOMIZE: fonts. To add one, append another @font-face and an entry in FONTS. */
   /* Roboto (OFL) — Android's system font, embedded for the Squiggle theme */
   @font-face{
     font-family:'Roboto';
@@ -1520,6 +1535,7 @@
   <div id="hint">Space start · R reset · F fullscreen · T theme · ↑↓ ±1 min · ←→ ±10 sec · Click the Time or Any Label to Type</div>
 </div>
 
+<!-- CUSTOMIZE: settings panel. Add controls here and wire them up in SETTINGS UI. -->
 <aside id="settings">
   <div class="section-head">
     <h2 data-i18n="settingsTitle">Settings</h2>
@@ -1626,6 +1642,12 @@
     <h3 id="proHead">Pro</h3>
     <div id="trialStatus"></div>
     <button id="btnTrial" class="primary" style="margin-top:.7rem">Buy the app</button>
+    <button id="btnTeam" class="preset" style="display:none; margin-top:.5rem"></button>
+    <!-- CUSTOMIZE: gallery of AI-customized timers. Add 3-4 <figure> items, each an
+         <img> (a screenshot, as a file next to index.html or a data: URL) and a
+         <figcaption> holding the prompt that produced it, then remove "hidden":
+         <figure><img src="gallery-1.png" alt="..."><figcaption>"Match our brand colours and logo"</figcaption></figure> -->
+    <div id="proGallery" hidden style="margin-top:1rem; display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:.6rem"></div>
     <div id="licenseBox" style="margin-top:1rem">
       <label style="display:block; font-size:.8rem; color:var(--muted); margin-bottom:.4rem" data-i18n="haveKeyLabel">Already bought? Paste your license key</label>
       <div style="display:flex; gap:.5rem">
@@ -1667,7 +1689,7 @@
       <a href="agb.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Terms&nbsp;(AGB)</a> ·
       <a href="widerruf.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Refunds&nbsp;(Widerrufsrecht)</a>
     </div>
-    <div class="help" style="margin-top:.6rem;"><span data-i18n="sourceText">Open source under the MIT licence.</span> <a href="https://github.com/PigroSoft/workshop-timers" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline" data-i18n="sourceLink">View the code</a></div>
+    <div class="help" style="margin-top:.6rem;"><span data-i18n="sourceText">Source available under the Elastic License 2.0.</span> <a href="https://github.com/PigroSoft/workshop-timers" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline" data-i18n="sourceLink">View the code</a></div>
   </section>
 
   <div id="removeLicenseWrap" style="display:none; text-align:center; margin:.4rem 0 .2rem">
@@ -1694,36 +1716,26 @@
 /* =========================================================
    CONFIG
    ========================================================= */
-// BUILD FLAG — the file you sell has this set to true (everything
-// unlocked, no upsell). The free hosted version: false.
+// DO NOT EDIT: build flag. The hosted free build has false; the Pro build
+// (everything unlocked, no upsell) has true. It is generated from this file by
+// scripts/build_pro.py and must never be committed with true.
 const PRO_UNLOCKED = false;
 
-// CHECKOUT URL — where the "Buy" button in Settings → Pro points: a Dodo
-// Payments checkout link for the one-time Pro product (with a License Keys
-// entitlement). Leave it empty until Dodo is set up: the Buy button and the
+// CHECKOUT LINKS: where the buy buttons in Settings → Pro point. Both are Dodo
+// Payments checkout links. While BUY_URL is empty the buy buttons and the
 // license-key box stay hidden and Pro shows as "coming soon".
-const BUY_URL = "";
+//   BUY_URL      Pro, one person on up to 5 devices      $9.99 once
+//   TEAM_BUY_URL Team licence, up to 5 people            $39 once
+const BUY_URL = "https://checkout.dodopayments.com/buy/pdt_0NqROYR4UGkrdUiYychsa?quantity=1";
+const TEAM_BUY_URL = "https://checkout.dodopayments.com/buy/pdt_0NqROuwwC6qJysAEw5IXY?quantity=1";
 const SALES_OPEN = BUY_URL !== "";
 
-/* Localized price — every figure is the equivalent of €5 (the base price).
-   This is only the DISPLAYED number; the checkout shows the real localized amount
-   at checkout. Tweak these round numbers however you like. */
-const PRICES = { EUR:"€5", USD:"$5", GBP:"£4.50", CNY:"¥39" };
-const EURO_ZONE = new Set(["AT","BE","HR","CY","EE","FI","FR","DE","GR","IE","IT","LV","LT","LU","MT","NL","PT","SK","SI","ES"]);
-function localPrice(){
-  try{
-    const loc = navigator.language || "en-IE";
-    const region = (loc.split("-")[1] || "").toUpperCase();
-    if(region === "US") return PRICES.USD;
-    if(region === "GB") return PRICES.GBP;
-    if(region === "CN") return PRICES.CNY;
-    if(EURO_ZONE.has(region)) return PRICES.EUR;
-    if(loc.split("-")[0].toLowerCase() === "zh") return PRICES.CNY;
-    return PRICES.USD; // default price
-  }catch(e){ return PRICES.USD; }
-}
-const PRICE = localPrice();
+// Displayed on the buttons only. Dodo converts the USD base price into the
+// buyer's local currency at checkout, so there is no per-currency table here.
+const PRICE = "$9.99";
+const TEAM_PRICE = "$39";
 const PREVIEW_SECONDS = 15;
+// DO NOT EDIT: storage key names (renaming one silently drops people's saved setups)
 const LS = { state:"wt_state_v3", logo:"wt_logo_v1", license:"wt_license_v1", customFont:"wt_font_v1", onboarded:"wt_onboarded_v1", run:"wt_run_v1" };
 
 /* =========================================================
@@ -1741,6 +1753,7 @@ const LANGS = [
   {id:"ru", name:"РУ", pro:false}, {id:"ar", name:"العربية", pro:false}, {id:"hi", name:"हिन्दी", pro:false},
   {id:"zh", name:"中文", pro:false}, {id:"ja", name:"日本語", pro:false}, {id:"ko", name:"한국어", pro:false},
 ];
+// CUSTOMIZE: on-screen text, one block per language. Missing keys fall back to English.
 const I18N = {
   en: {
     settingsTitle:"Settings", languageHeading:"Language",
@@ -1758,13 +1771,13 @@ const I18N = {
     bgLabel:"Background color (overrides theme)", useItLabel:"use it", resetColorsBtn:"Reset colors & logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (lifetime)", proHeadUnlocked:"Pro (unlocked)",
     proStatusUnlocked:"You have every theme and colour variant. Thanks for supporting an independent tool.",
-    proStatusLockedPrefix:"Everything else is free. Pro unlocks all 23 themes and their colour variants. One-time",
-    proStatusLockedSuffix:", yours forever, no subscription.",
+    proPitch:"<b>Make it yours.</b> Pro gives you your own copy of Workshop Timer, licensed for your work, and a guide that lets any AI change it however you want. Your brand, your layout, your features, in minutes. {price} once, no subscription.",
+    teamBtn:"Team licence, up to 5 people, {price}",
     getProBtn:"Get Pro for Life", haveKeyLabel:"Already bought? Paste your license key",
     proSoonShort:"Pro coming soon",
     proComingSoon:"Everything else is free. The extra themes will be a one-time Pro unlock once sales open; until then you can preview any of them for a few seconds from the theme list.",
     titleEditTime:"Set the time: type 15, 10:30 or 1:00:00", srTimesUp:"Time's up",
-    sourceText:"Open source under the MIT licence.", sourceLink:"View the code",
+    sourceText:"Source available under the Elastic License 2.0.", sourceLink:"View the code",
     dataHeading:"Your settings file", dataBody:"Your settings live only in this browser. Save them as a file to keep a backup or move your setup to another computer.", exportBtn:"Save settings file", importBtn:"Load settings file", importBad:"That doesn't look like a Workshop Timer settings file.",
     installHeading:"Use it as an app (Mac & PC)",
     installBody:"Install WorkshopTimers.com so it opens in its own window, with no tabs or address bar, and launches like any native app.<br><br><b>Save as a Mac app (Safari):</b> File menu → <b>Add to Dock</b> → Add. Launch it from your Dock.<br><b>Save as a PC app (Chrome):</b> ⋮ menu → <b>Cast, Save &amp; Share → Install page as app</b>.<br><br>Once it's open, the timer runs entirely on your device, with no internet needed to keep time. Perfect for a projector or TV.",
@@ -1792,13 +1805,11 @@ const I18N = {
     bgLabel:"Hintergrundfarbe (überschreibt Design)", useItLabel:"verwenden", resetColorsBtn:"Farben & Logo zurücksetzen",
     proHeadFree:"Pro", proHeadLifetime:"Pro (lebenslang)", proHeadUnlocked:"Pro (freigeschaltet)",
     proStatusUnlocked:"Du hast alle Designs und Farbvarianten. Danke, dass du ein unabhängiges Tool unterstützt.",
-    proStatusLockedPrefix:"Alles andere ist kostenlos. Pro schaltet alle 23 Designs und ihre Farbvarianten frei. Einmalig",
-    proStatusLockedSuffix:", für immer deins, kein Abo.",
     getProBtn:"Pro fürs Leben holen", haveKeyLabel:"Schon gekauft? Lizenzschlüssel einfügen",
     proSoonShort:"Pro kommt bald",
     proComingSoon:"Alles andere ist kostenlos. Die zusätzlichen Designs gibt es bald als einmaliges Pro-Upgrade; bis dahin kannst du jedes davon in der Designliste ein paar Sekunden lang ansehen.",
     titleEditTime:"Zeit einstellen: 15, 10:30 oder 1:00:00 eingeben", srTimesUp:"Die Zeit ist um",
-    sourceText:"Open Source unter der MIT-Lizenz.", sourceLink:"Zum Quellcode",
+    sourceText:"Quellcode einsehbar unter der Elastic License 2.0.", sourceLink:"Zum Quellcode",
     dataHeading:"Deine Einstellungsdatei", dataBody:"Deine Einstellungen liegen nur in diesem Browser. Speichere sie als Datei, um ein Backup zu haben oder dein Setup auf einen anderen Computer mitzunehmen.", exportBtn:"Einstellungen speichern", importBtn:"Einstellungen laden", importBad:"Das sieht nicht nach einer Workshop-Timer-Einstellungsdatei aus.",
     installHeading:"Als App nutzen (Mac & PC)",
     installBody:"Installiere WorkshopTimers.com, damit es in einem eigenen Fenster ohne Tabs oder Adressleiste öffnet und wie eine native App startet.<br><br><b>Als Mac-App sichern (Safari):</b> Ablage-Menü → <b>Zum Dock hinzufügen</b> → Hinzufügen. Danach aus dem Dock starten.<br><b>Als PC-App sichern (Chrome):</b> ⋮-Menü → <b>Cast, Speichern &amp; Teilen → Seite als App installieren</b>.<br><br>Einmal geöffnet läuft der Timer komplett auf deinem Gerät, ganz ohne Internet. Perfekt für Beamer oder TV.",
@@ -1825,8 +1836,6 @@ const I18N = {
     bgLabel:"Couleur de fond (remplace le thème)", useItLabel:"utiliser", resetColorsBtn:"Réinitialiser couleurs & logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (à vie)", proHeadUnlocked:"Pro (débloqué)",
     proStatusUnlocked:"Vous avez tous les thèmes et leurs variantes de couleur. Merci de soutenir un outil indépendant.",
-    proStatusLockedPrefix:"Tout le reste est gratuit. Pro débloque les 23 thèmes et leurs variantes de couleur. Paiement unique",
-    proStatusLockedSuffix:", à vous pour toujours, sans abonnement.",
     getProBtn:"Obtenir Pro à vie", haveKeyLabel:"Déjà acheté ? Collez votre clé de licence",
     installHeading:"Utiliser comme application (Mac & PC)",
     installBody:"Installez WorkshopTimers.com pour qu'il s'ouvre dans sa propre fenêtre, sans onglets ni barre d'adresse, comme une application native.<br><br><b>Enregistrer comme app Mac (Safari) :</b> menu Fichier → <b>Ajouter au Dock</b> → Ajouter. Lancez-le ensuite depuis le Dock.<br><b>Enregistrer comme app PC (Chrome) :</b> menu ⋮ → <b>Caster, enregistrer &amp; partager → Installer la page comme application</b>.<br><br>Une fois ouvert, le minuteur fonctionne entièrement sur votre appareil, sans connexion Internet nécessaire. Parfait pour un projecteur ou une TV.",
@@ -1853,8 +1862,6 @@ const I18N = {
     bgLabel:"Color de fondo (anula el tema)", useItLabel:"usar", resetColorsBtn:"Restablecer colores y logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (de por vida)", proHeadUnlocked:"Pro (desbloqueado)",
     proStatusUnlocked:"Tienes todos los temas y variantes de color. Gracias por apoyar una herramienta independiente.",
-    proStatusLockedPrefix:"Todo lo demás es gratis. Pro desbloquea los 23 temas y sus variantes de color. Pago único",
-    proStatusLockedSuffix:", tuyo para siempre, sin suscripción.",
     getProBtn:"Consigue Pro de por vida", haveKeyLabel:"¿Ya lo compraste? Pega tu clave de licencia",
     installHeading:"Úsalo como app (Mac y PC)",
     installBody:"Instala WorkshopTimers.com para que se abra en su propia ventana, sin pestañas ni barra de direcciones, como una app nativa.<br><br><b>Guardar como app de Mac (Safari):</b> menú Archivo → <b>Añadir al Dock</b> → Añadir. Luego ábrelo desde el Dock.<br><b>Guardar como app de PC (Chrome):</b> menú ⋮ → <b>Convertir, guardar y compartir → Instalar página como app</b>.<br><br>Una vez abierto, el temporizador funciona totalmente en tu dispositivo, sin necesitar internet. Perfecto para un proyector o TV.",
@@ -1881,8 +1888,6 @@ const I18N = {
     bgLabel:"背景色（覆盖主题）", useItLabel:"使用", resetColorsBtn:"重置颜色与logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro（终身）", proHeadUnlocked:"Pro（已解锁）",
     proStatusUnlocked:"你已拥有所有主题及配色变体。感谢支持这款独立工具。",
-    proStatusLockedPrefix:"其他功能全部免费。Pro 解锁全部23款主题及其配色变体。一次性付费",
-    proStatusLockedSuffix:"，永久属于你，无需订阅。",
     getProBtn:"获取终身版Pro", haveKeyLabel:"已购买？粘贴你的授权密钥",
     installHeading:"作为应用使用（Mac 与 PC）",
     installBody:"安装 WorkshopTimers.com，使其在独立窗口中打开，没有标签页或地址栏，如同原生应用一样启动。<br><br><b>存为 Mac 应用（Safari）：</b>「文件」菜单 → <b>添加到程序坞</b> → 添加。之后从程序坞启动。<br><b>存为 PC 应用（Chrome）：</b>点击 ⋮ 菜单 → <b>投射、保存和分享 → 将网页安装为应用</b>。<br><br>打开后，计时器完全在你的设备上运行，无需联网即可计时。非常适合投影仪或电视。",
@@ -1909,8 +1914,6 @@ const I18N = {
     bgLabel:"Cor de fundo (substitui o tema)", useItLabel:"usar", resetColorsBtn:"Redefinir cores e logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (vitalício)", proHeadUnlocked:"Pro (desbloqueado)",
     proStatusUnlocked:"Você tem todos os temas e variantes de cor. Obrigado por apoiar uma ferramenta independente.",
-    proStatusLockedPrefix:"Todo o resto é grátis. O Pro desbloqueia os 23 temas e suas variantes de cor. Pagamento único",
-    proStatusLockedSuffix:", seu para sempre, sem assinatura.",
     getProBtn:"Obter Pro vitalício", haveKeyLabel:"Já comprou? Cole sua chave de licença",
     installHeading:"Usar como app (Mac e PC)",
     installBody:"Instale o WorkshopTimers.com para que ele abra em sua própria janela, sem abas ou barra de endereço, como um app nativo.<br><br><b>Salvar como app de Mac (Safari):</b> menu Arquivo → <b>Adicionar ao Dock</b> → Adicionar. Depois abra pelo Dock.<br><b>Salvar como app de PC (Chrome):</b> menu ⋮ → <b>Transmitir, salvar e compartilhar → Instalar página como app</b>.<br><br>Depois de aberto, o cronômetro roda totalmente no seu dispositivo, sem precisar de internet. Perfeito para um projetor ou TV.",
@@ -1937,8 +1940,6 @@ const I18N = {
     bgLabel:"背景色（テーマを上書き）", useItLabel:"使用する", resetColorsBtn:"カラーとロゴをリセット",
     proHeadFree:"Pro", proHeadLifetime:"Pro（永久）", proHeadUnlocked:"Pro（解除済み）",
     proStatusUnlocked:"すべてのテーマとカラーバリエーションをご利用中です。独立系ツールを応援いただきありがとうございます。",
-    proStatusLockedPrefix:"その他の機能はすべて無料です。Proでは全23テーマとそのカラーバリエーションが使えます。買い切り",
-    proStatusLockedSuffix:"で永久にあなたのもの、サブスクリプションなし。",
     getProBtn:"Proを永久に入手", haveKeyLabel:"購入済みですか？ライセンスキーを貼り付け",
     installHeading:"アプリとして使う（Mac & PC）",
     installBody:"WorkshopTimers.comをインストールすると、タブやアドレスバーのない独自のウィンドウで開き、ネイティブアプリのように起動します。<br><br><b>Macアプリとして保存（Safari）：</b>「ファイル」メニュー→<b>Dockに追加</b>→追加。その後Dockから起動してください。<br><b>PCアプリとして保存（Chrome）：</b>⋮メニュー→<b>キャスト、保存、共有→ページをアプリとしてインストール</b>。<br><br>開いた後は、タイマーはインターネット接続なしでデバイス上で完全に動作します。プロジェクターやテレビに最適です。",
@@ -1965,8 +1966,6 @@ const I18N = {
     bgLabel:"Colore di sfondo (sostituisce il tema)", useItLabel:"usa", resetColorsBtn:"Reimposta colori e logo",
     proHeadFree:"Pro", proHeadLifetime:"Pro (a vita)", proHeadUnlocked:"Pro (sbloccato)",
     proStatusUnlocked:"Hai tutti i temi e le varianti di colore. Grazie per il supporto a uno strumento indipendente.",
-    proStatusLockedPrefix:"Tutto il resto è gratuito. Pro sblocca tutti i 23 temi e le loro varianti di colore. Pagamento unico",
-    proStatusLockedSuffix:", tuo per sempre, senza abbonamento.",
     getProBtn:"Ottieni Pro a vita", haveKeyLabel:"Già acquistato? Incolla la tua chiave di licenza",
     installHeading:"Usalo come app (Mac e PC)",
     installBody:"Installa WorkshopTimers.com così si apre nella propria finestra, senza schede o barra degli indirizzi, come un'app nativa.<br><br><b>Salva come app Mac (Safari):</b> menu File → <b>Aggiungi al Dock</b> → Aggiungi. Poi avvialo dal Dock.<br><b>Salva come app PC (Chrome):</b> menu ⋮ → <b>Trasmetti, salva e condividi → Installa pagina come app</b>.<br><br>Una volta aperto, il timer funziona interamente sul tuo dispositivo, senza bisogno di internet. Perfetto per un proiettore o una TV.",
@@ -1993,8 +1992,6 @@ const I18N = {
     bgLabel:"لون الخلفية (يتجاوز السمة)", useItLabel:"استخدام", resetColorsBtn:"إعادة تعيين الألوان والشعار",
     proHeadFree:"Pro", proHeadLifetime:"Pro (مدى الحياة)", proHeadUnlocked:"Pro (مفعّل)",
     proStatusUnlocked:"لديك كل السمات وتنويعاتها اللونية. شكرًا لدعمك أداة مستقلة.",
-    proStatusLockedPrefix:"كل شيء آخر مجاني. يفتح Pro جميع السمات الـ23 وتنويعاتها اللونية. دفعة واحدة",
-    proStatusLockedSuffix:"، ملكك للأبد، بدون اشتراك.",
     getProBtn:"احصل على Pro مدى الحياة", haveKeyLabel:"اشتريت بالفعل؟ الصق مفتاح الترخيص",
     installHeading:"استخدمه كتطبيق (Mac و PC)",
     installBody:"ثبّت WorkshopTimers.com ليفتح في نافذته الخاصة، بدون تبويبات أو شريط عنوان، مثل تطبيق أصلي.<br><br><b>الحفظ كتطبيق Mac (Safari):</b> قائمة الملف → <b>إضافة إلى Dock</b> → إضافة. ثم شغّله من الـ Dock.<br><b>الحفظ كتطبيق كمبيوتر (Chrome):</b> قائمة ⋮ → <b>البث والحفظ والمشاركة → تثبيت الصفحة كتطبيق</b>.<br><br>بمجرد فتحه، يعمل المؤقت بالكامل على جهازك، دون الحاجة إلى إنترنت. مثالي لجهاز عرض أو تلفاز.",
@@ -2021,8 +2018,6 @@ const I18N = {
     bgLabel:"Цвет фона (переопределяет тему)", useItLabel:"использовать", resetColorsBtn:"Сбросить цвета и логотип",
     proHeadFree:"Pro", proHeadLifetime:"Pro (навсегда)", proHeadUnlocked:"Pro (разблокировано)",
     proStatusUnlocked:"У вас все темы и цветовые варианты. Спасибо за поддержку независимого инструмента.",
-    proStatusLockedPrefix:"Всё остальное бесплатно. Pro открывает все 23 темы и их цветовые варианты. Разовый платёж",
-    proStatusLockedSuffix:", навсегда ваш, без подписки.",
     getProBtn:"Получить Pro навсегда", haveKeyLabel:"Уже купили? Вставьте лицензионный ключ",
     installHeading:"Использовать как приложение (Mac и PC)",
     installBody:"Установите WorkshopTimers.com, чтобы он открывался в отдельном окне, без вкладок и адресной строки, как настоящее приложение.<br><br><b>Сохранить как приложение Mac (Safari):</b> меню «Файл» → <b>Добавить в Dock</b> → Добавить. Затем запускайте из Dock.<br><b>Сохранить как приложение ПК (Chrome):</b> меню ⋮ → <b>Трансляция, сохранение и общий доступ → Установить страницу как приложение</b>.<br><br>После открытия таймер полностью работает на вашем устройстве, интернет не нужен. Отлично подходит для проектора или ТВ.",
@@ -2049,8 +2044,6 @@ const I18N = {
     bgLabel:"पृष्ठभूमि रंग (थीम को ओवरराइड करता है)", useItLabel:"इस्तेमाल करें", resetColorsBtn:"रंग और लोगो रीसेट करें",
     proHeadFree:"Pro", proHeadLifetime:"Pro (आजीवन)", proHeadUnlocked:"Pro (अनलॉक)",
     proStatusUnlocked:"आपके पास हर थीम और उसके रंग वेरिएंट हैं। एक स्वतंत्र टूल का समर्थन करने के लिए धन्यवाद।",
-    proStatusLockedPrefix:"बाकी सब मुफ़्त है। Pro सभी 23 थीम और उनके रंग वेरिएंट अनलॉक करता है। एक बार भुगतान",
-    proStatusLockedSuffix:", हमेशा के लिए आपका, कोई सदस्यता नहीं।",
     getProBtn:"आजीवन Pro पाएं", haveKeyLabel:"पहले ही खरीद लिया? अपनी लाइसेंस कुंजी पेस्ट करें",
     installHeading:"ऐप के रूप में उपयोग करें (Mac और PC)",
     installBody:"WorkshopTimers.com इंस्टॉल करें ताकि यह बिना टैब या एड्रेस बार के अपनी खुद की विंडो में खुले, एक नेटिव ऐप की तरह।<br><br><b>Mac ऐप के रूप में सेव करें (Safari):</b> फ़ाइल मेनू → <b>Dock में जोड़ें</b> → जोड़ें। फिर इसे Dock से खोलें।<br><b>PC ऐप के रूप में सेव करें (Chrome):</b> ⋮ मेनू → <b>कास्ट, सेव और शेयर → पेज को ऐप के रूप में इंस्टॉल करें</b>।<br><br>एक बार खुलने पर, टाइमर पूरी तरह आपके डिवाइस पर चलता है, इंटरनेट की ज़रूरत नहीं। प्रोजेक्टर या टीवी के लिए एकदम सही।",
@@ -2077,8 +2070,6 @@ const I18N = {
     bgLabel:"배경색 (테마를 덮어씀)", useItLabel:"사용", resetColorsBtn:"색상 & 로고 초기화",
     proHeadFree:"Pro", proHeadLifetime:"Pro (평생)", proHeadUnlocked:"Pro (잠금 해제됨)",
     proStatusUnlocked:"모든 테마와 색상 변형을 사용 중입니다. 독립 도구를 지원해 주셔서 감사합니다.",
-    proStatusLockedPrefix:"나머지는 모두 무료입니다. Pro는 23가지 테마와 색상 변형을 모두 잠금 해제합니다. 1회 결제",
-    proStatusLockedSuffix:"로 평생 소유, 구독 없음.",
     getProBtn:"평생 Pro 구매", haveKeyLabel:"이미 구매하셨나요? 라이선스 키 붙여넣기",
     installHeading:"앱으로 사용하기 (Mac & PC)",
     installBody:"WorkshopTimers.com를 설치하면 탭이나 주소 표시줄 없이 독립된 창에서 열리며, 네이티브 앱처럼 실행됩니다.<br><br><b>Mac 앱으로 저장 (Safari):</b> 파일 메뉴 → <b>Dock에 추가</b> → 추가. 이후 Dock에서 실행하세요.<br><b>PC 앱으로 저장 (Chrome):</b> ⋮ 메뉴 → <b>캐스트, 저장 및 공유 → 페이지를 앱으로 설치</b>.<br><br>열리고 나면 타이머는 인터넷 없이 기기에서 완전히 작동합니다. 프로젝터나 TV에 완벽합니다.",
@@ -2134,6 +2125,7 @@ function numWordsDE(n){
 /* Themes — ordered by typical use: everyday timers first, then countdown &
    ambient, then the retro/fun set. First three are free.
    mode: how the time renders · prog: progress · font: default font id */
+// CUSTOMIZE: themes. Each theme also has body.theme-<id> CSS and is applied by applyTheme().
 const THEMES = [
   {id:"midnight", name:"Bold",        pro:false, mode:"digits",   prog:"x",    font:"helvetica"},
   {id:"disc",     name:"Time Disc",   pro:false, mode:"disc",     prog:"none", font:"helvetica"},
@@ -2159,6 +2151,7 @@ const THEMES = [
   {id:"orb",      name:"Orb",         pro:true,  mode:"digits",   prog:"none", font:"helvetica"},
   {id:"searchlight", name:"Searchlight", pro:true, mode:"digits", prog:"none", font:"helvetica"},
 ];
+// CUSTOMIZE: theme colours
 // per-theme default accent color — shown until a Pro user actually touches
 // the accent picker (st.accentCustom), at which point their pick applies
 // everywhere as before. Themes not listed here keep the app-wide gold
@@ -2201,6 +2194,7 @@ const VARIANTS = {
   aurora:  [{id:"green",name:"Green",pro:true},{id:"violet",name:"Violet",pro:true},{id:"sunset",name:"Sunset",pro:true},{id:"ice",name:"Ice",pro:true}],
   strands: [{id:"violet",name:"Violet",pro:true},{id:"sunset",name:"Sunset",pro:true},{id:"ocean",name:"Ocean",pro:true},{id:"emerald",name:"Emerald",pro:true}],
 };
+// CUSTOMIZE: fonts. A non-system font also needs a base64 @font-face in the style block.
 const FONTS = [
   {id:"helvetica", name:"Helvetica Neue", pro:false, stack:"'Helvetica Neue',Helvetica,Arial,sans-serif"},
   {id:"thin",      name:"Thin",           pro:false, stack:"system-ui,-apple-system,'Segoe UI','Helvetica Neue',Arial,sans-serif", weight:200},
@@ -2237,6 +2231,8 @@ function detectLang(){
   }catch(e){ return "en"; }
 }
 const POMO_FOCUS_SEC = 25*60, POMO_BREAK_SEC = 5*60;
+// CUSTOMIZE: default settings (duration, theme, sound, font, label, language ...).
+// Add a new setting here, a control in the settings panel, and save it with save().
 let st = Object.assign({
   duration: 600, theme:"disc", sound:"chime", tick:false, tickAlways:false, tickSound:"chrono", muted:false, clock:false, voice:false, voice2min:false, voiceHalf:false, stopwatch:false,
   pomodoro:false, pomoPhase:"focus",
@@ -2259,6 +2255,7 @@ function themeDef(){ return THEMES.find(t=>t.id===curThemeId()) || THEMES[0]; }
 /* =========================================================
    PRO
    ========================================================= */
+// DO NOT EDIT: licence check (LICENSE_OK, validateKey, activation). Leave the PRO_UNLOCKED logic as it is.
 let LICENSE_OK = false;
 function isPro(){ return PRO_UNLOCKED || LICENSE_OK; }
 // Dodo Payments' public license-key endpoints: no API key, safe to call from
@@ -2331,6 +2328,7 @@ let swStart = 0, swAccum = 0;
 /* =========================================================
    AUDIO (synthesized — no files, works offline)
    ========================================================= */
+// CUSTOMIZE: sounds. They are synthesized in code, so there are no audio files to keep in sync.
 let actx = null;
 function audio(){ if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)(); return actx; }
 function tone(freq, start, dur, type="sine", gain=0.22){
@@ -3391,6 +3389,7 @@ function render(){
 /* =========================================================
    FX: matrix rain + flying toasters
    ========================================================= */
+// CUSTOMIZE: decorative effects. They must never write the time or touch the timer engine.
 const fxCanvas = $("fx");
 let fxRaf = null, fxCols = [], fxLast = 0;
 const MATRIX_CHARS = "アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEF";
@@ -5463,6 +5462,7 @@ function stopBounce(){
    Zoom's "screen sharing is paused" auto-pause. setInterval
    keeps firing for an unfocused-but-visible window.
    ========================================================= */
+// DO NOT EDIT: timing engine. Remaining time comes from a deadline, never from counting ticks.
 function startTicking(){
   stopTicking();
   tickTimer = setInterval(loop, 250);
@@ -5650,6 +5650,7 @@ bindEditable($("lcP3"), v=>{ st.lc3 = v; });
 /* =========================================================
    KEYBOARD SHORTCUTS
    ========================================================= */
+// DO NOT EDIT: keyboard shortcuts. Add new ones only on keys not used here.
 document.addEventListener("keydown", e=>{
   if(e.target.tagName==="INPUT" || e.target.isContentEditable) return;
   const k = e.key;
@@ -5798,6 +5799,7 @@ function previewSound(id){
 /* =========================================================
    SETTINGS UI
    ========================================================= */
+// CUSTOMIZE: settings panel wiring. Keep save() and the settings-file export/import in step with any new setting.
 function chip(list, row, current, onPick, onLocked){
   row.innerHTML="";
   list.forEach(item=>{
@@ -6100,7 +6102,8 @@ function refreshSettings(){
 
   { const rl = $("removeLicenseWrap"); if(rl) rl.style.display = (LICENSE_OK && !PRO_UNLOCKED) ? "block" : "none"; }
 
-  const status = $("trialStatus"), btn = $("btnTrial"), head = $("proHead"), lbox = $("licenseBox");
+  const status = $("trialStatus"), btn = $("btnTrial"), team = $("btnTeam"), head = $("proHead"), lbox = $("licenseBox");
+  if(team) team.style.display = "none";
   if(isPro()){
     head.textContent = PRO_UNLOCKED ? t("proHeadLifetime") : t("proHeadUnlocked");
     status.innerHTML = t("proStatusUnlocked");
@@ -6113,10 +6116,15 @@ function refreshSettings(){
     if(lbox) lbox.style.display = "none";
   }else{
     head.textContent = t("proHeadFree");
-    status.innerHTML = `${t("proStatusLockedPrefix")} <b>${PRICE}</b>${t("proStatusLockedSuffix")}`;
+    status.innerHTML = t("proPitch").replace("{price}", PRICE);
     btn.textContent = t("getProBtn") + " " + PRICE;
     btn.style.display="block";
     btn.onclick = ()=>window.open(BUY_URL,"_blank");
+    if(team && TEAM_BUY_URL !== ""){
+      team.textContent = t("teamBtn").replace("{price}", TEAM_PRICE);
+      team.style.display = "block";
+      team.onclick = ()=>window.open(TEAM_BUY_URL,"_blank");
+    }
     if(lbox) lbox.style.display = "block";
   }
 }
@@ -6312,6 +6320,7 @@ $("importFile").addEventListener("change", e=>{
    as its absolute deadline, so time keeps passing while the page is
    gone. Paused snapshots older than 12 hours are ignored.
    ========================================================= */
+// DO NOT EDIT: run persistence (a refresh mid-session must restore the timer).
 const RUN_MAX_AGE = 12*60*60*1000;
 let runFrozen = false; // set while reloading after an import
 function saveRun(){
@@ -6377,6 +6386,7 @@ document.addEventListener("visibilitychange", ()=>{ if(document.visibilityState=
     document.head.appendChild(mlink);
   }catch(e){}
 
+  // DO NOT EDIT: offline support.
   // Register the service worker so the installed app launches fully offline.
   // (Needs sw.js sitting next to index.html in the repo root.)
   if("serviceWorker" in navigator){

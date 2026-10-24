@@ -1,2 +1,8 @@
 __pycache__/
 .pytest_cache/
+
+# The Pro build and the buyer bundle must never be committed. They are built
+# outside the repository (see scripts/build_pro.py); these are a backstop.
+*-pro.html
+pro-bundle/
+*.zip
