@@ -1291,96 +1291,256 @@
   .help b{color:var(--fg);}
   body.theme-web1 .help b{color:#000;}
 
-  /* ---------- settings: post-it board ----------
-     Overrides the fixed Time Disc palette above. The drawer is a warm paper
-     board and every <section> is a sticky note in a rotating color. It stays
-     bright in dark mode too, on purpose: it's a menu, not the stage. The note
-     color and tilt live on a ::after layer behind the content, so the text
-     itself is never rotated and stays crisp on projectors and low-DPI screens.
-     Red accent is gone from this panel: selected states and the buy button
-     are dark "marker ink" instead. */
+  /* ---------- top bar and settings panel ----------
+     Product chrome only: it never sets a theme's colours, fonts or layout.
+     The top bar floats over the theme and borrows the theme's own --fg,
+     --muted, --panel and --border, so it reads on every theme. The panel has
+     its own fixed light palette, because it's a menu, not the stage. */
+  :root{
+    --brand:#df432e;
+    --font-shell:'Avenir Next',Avenir,'Segoe UI',system-ui,-apple-system,sans-serif;
+    --bar-h:4.4rem;
+  }
+
+  /* top bar */
+  #topBar{
+    position:fixed; top:0; left:0; right:0; z-index:6; height:var(--bar-h);
+    display:flex; align-items:center; justify-content:space-between; gap:1rem;
+    padding:0 1rem 0 1.4rem; pointer-events:none;
+    transition:opacity .4s, transform .4s;
+  }
+  #topBar > *{pointer-events:auto;}
+  body.hide-ui #topBar{opacity:0; transform:translateY(-10px);}
+  body.hide-ui #topBar *{pointer-events:none;}
+  .tb-brand{
+    display:flex; align-items:center; gap:.55rem; color:var(--fg); opacity:.88;
+    font:800 1.12rem/1 var(--font-shell); letter-spacing:-.035em; white-space:nowrap; user-select:none;
+  }
+  .brand-mark{
+    display:inline-block; width:1.55rem; height:1.55rem; flex:none; border-radius:50%;
+    background:conic-gradient(from 45deg, var(--brand) 0deg 315deg, transparent 315deg 360deg);
+  }
+  :fullscreen #tbBrand, .tb-brand[hidden]{display:none;}
+  /* Strands draws near-black digits on black, so its --fg is too dark for the bar */
+  body.theme-strands:not(.mode-light) .tb-brand, body.theme-strands:not(.mode-light) #topBar #btnSettings{color:rgba(255,255,255,.62);}
+  .tb-actions{display:flex; align-items:center; gap:.3rem; margin-left:auto;}
+  #topBar #topLeft, #topBar button.icon{position:static; inset:auto; transform:none;}
+  #topBar #topLeft{display:flex;}
+  body.hide-ui #topBar #topLeft, body.hide-ui #topBar button.icon{transform:none;}
+  #topBar button.icon{width:2.6rem; height:2.6rem; padding:.62rem;}
+  #topBar #btnSettings{
+    width:auto; flex-direction:row; gap:.45rem; padding:.55rem .85rem .55rem .7rem;
+    font:600 .85rem/1 var(--font-shell); color:var(--fg); opacity:.8;
+  }
+  #topBar #btnSettings svg{width:1.15rem; height:1.15rem;}
+  #topBar #btnSettings > span.tb-settings-word{
+    display:inline; width:auto; height:auto; background:none; border-radius:0;
+    transform:none !important; opacity:1 !important;
+  }
+  #topBar #btnSettings.open{opacity:1; background:var(--panel); border-color:var(--border);}
+  /* tooltips drop below the bar instead of popping off the top of the screen */
+  #topBar .icon[data-tip]::after{top:100%; bottom:auto; margin-top:.6rem; margin-bottom:0; left:auto; right:0;}
+  #topBar #btnSettings.open[data-tip]::after{display:none;}
+
+  /* settings panel: a floating card below the bar */
   body #settings, body.mode-dark #settings{
-    --bg:#fffdf6; --bg2:rgba(255,255,255,.5); --fg:#2b2a26; --muted:#57534a;
-    --panel:#f3eee3; --border:rgba(43,42,38,.16); --accent:#2b2a26;
-    --danger:#b3261e; --ok:#2e7d4f; --ink:#2b2a26;
-    background-color:#f3eee3;
-    background-image:radial-gradient(rgba(43,42,38,.09) 1px, transparent 1.2px);
-    background-size:18px 18px;
-    border-left:1px solid rgba(43,42,38,.12);
-    gap:1.7rem; padding:1.6rem 1.35rem 2.2rem;
+    --sh-bg:#f7f6f2; --sh-surface:#fffefa; --sh-ink:#272723; --sh-muted:#66645b;
+    --sh-line:#e4e2d9; --sh-soft:#eeede6; --sh-tint:#fbece7;
+    --bg:var(--sh-bg); --bg2:var(--sh-soft); --fg:var(--sh-ink); --muted:var(--sh-muted);
+    --panel:var(--sh-surface); --border:var(--sh-line); --accent:var(--brand); --ink:var(--sh-ink);
+    --danger:#b3261e; --ok:#2e7d4f;
+    top:var(--bar-h); right:.75rem; bottom:.75rem; width:min(420px, calc(100vw - 1.5rem));
+    padding:0; gap:0; display:flex; flex-direction:column; overflow:hidden;
+    background:var(--sh-surface); color:var(--sh-ink); font-family:var(--font-shell);
+    border:1px solid var(--sh-line); border-radius:16px;
+    transform:translateX(calc(100% + 2rem));
+    box-shadow:0 18px 50px rgba(20,20,16,.18), 0 2px 6px rgba(20,20,16,.06);
   }
-  #settings h2{font-size:1.5rem; font-weight:800; letter-spacing:-.02em; color:var(--ink);}
+  body #settings.open{transform:none; box-shadow:0 18px 50px rgba(20,20,16,.22), 0 2px 6px rgba(20,20,16,.06);}
+  #settings .settings-header{padding:1.25rem 1.4rem 0; flex:none;}
+  #settings .settings-title-row{display:flex; align-items:center; justify-content:space-between; gap:.6rem;}
+  #settings h2{font-size:1.5rem; font-weight:750; letter-spacing:-.035em; color:var(--sh-ink); margin:0;}
+  #settings button.sp-close{
+    width:2.2rem; height:2.2rem; padding:.5rem; border-radius:10px; display:inline-flex;
+    align-items:center; justify-content:center; background:transparent; border:1px solid var(--sh-line); color:var(--sh-muted);
+  }
+  #settings button.sp-close svg{width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round;}
+  #settingsTabs{display:flex; gap:1.4rem; border-bottom:1px solid var(--sh-line); margin-top:1.1rem;}
+  #settings #settingsTabs button{
+    padding:0 0 .75rem; margin-bottom:-1px; border:0; border-bottom:2px solid transparent; border-radius:0;
+    background:transparent; color:var(--sh-muted); font:600 .85rem/1.4 var(--font-shell);
+  }
+  #settings #settingsTabs button:hover{background:transparent; color:var(--sh-ink);}
+  #settings #settingsTabs button[aria-selected=true]{color:var(--sh-ink); border-bottom-color:var(--brand);}
+  #settings .settings-content{flex:1; overflow-y:auto; padding:1.3rem 1.4rem .4rem; overscroll-behavior:contain;}
+  #settings .settings-bottom{flex:none; padding:.2rem 1.4rem .7rem; border-top:1px solid var(--sh-line);}
+  #settings .settings-content > section.pro-card{margin:.4rem 0 1.2rem;}
+  #settings [role=tabpanel][hidden]{display:none;}
+
   #settings section{
-    --note:#fff1a6; --tilt:-.6deg;
-    position:relative; isolation:isolate; border-top:none;
-    padding:1.35rem 1.15rem 1.35rem; background:transparent;
+    position:static; border:0; padding:0; margin:0 0 1.5rem; background:none;
   }
-  /* Each note is built from two stacked backgrounds, top layer first:
-     a folded bottom-right corner (28px SVG drawn in Figma, ~0.4 KB, which
-     also paints the cut-away corner in the board color) and a soft
-     light-to-dark paper gradient. Both are neutral white/black tints, so
-     --note supplies the color. */
-  #settings section::after{
-    content:""; position:absolute; inset:0; z-index:-1;
-    background-color:var(--note); transform:rotate(var(--tilt));
-    background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='21' y1='7' x2='7' y2='-7'%3E%3Cstop stop-color='%23fff' stop-opacity='.55'/%3E%3Cstop offset='.55' stop-color='%23fff' stop-opacity='.1'/%3E%3Cstop offset='1' stop-opacity='.12'/%3E%3C/linearGradient%3E%3Cpath d='M28 0v28H0z' fill='%23f3eee3'/%3E%3Cpath d='M28 0 0 28V0z' fill='url(%23a)' stroke='%23000' stroke-opacity='.1' stroke-width='.75'/%3E%3C/svg%3E"),
-      linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,0) 30%, rgba(0,0,0,.07));
-    background-repeat:no-repeat;
-    background-position:right bottom, 0 0;
-    background-size:28px 28px, 100% 100%;
-    border-radius:1px;
-    box-shadow:0 1px 1px rgba(60,45,10,.08), 0 10px 14px -8px rgba(60,45,10,.38);
+  #settings section::after{display:none;}
+  #settings h3{
+    font-size:.8rem; font-weight:700; text-transform:none; letter-spacing:0; line-height:1.45;
+    color:var(--sh-ink); opacity:1; margin:0 0 .7rem;
   }
-  #settings section:nth-of-type(6n+1){--note:#fff1a6; --tilt:-.6deg;}  /* yellow */
-  #settings section:nth-of-type(6n+2){--note:#ffd6e3; --tilt:.5deg;}   /* pink */
-  #settings section:nth-of-type(6n+3){--note:#cfe7ff; --tilt:-.35deg;} /* blue */
-  #settings section:nth-of-type(6n+4){--note:#d4f3c6; --tilt:.7deg;}   /* green */
-  #settings section:nth-of-type(6n+5){--note:#ffdcb4; --tilt:-.5deg;}  /* orange */
-  #settings section:nth-of-type(6n+6){--note:#e5dbff; --tilt:.4deg;}   /* lilac */
+  #settings h3 label{font:inherit; color:inherit;}
+  #settings h3.legal-head, #settings h3.sp-subhead{margin-top:1rem;}
+  #settings .help{color:var(--sh-muted); font-size:.8rem; line-height:1.7;}
+  #settings .help b{color:var(--sh-ink);}
+  #settings .help a{color:inherit;}
+  #settings .sp-note{font-size:.75rem; color:var(--sh-muted); line-height:1.6; margin:.6rem 0 0;}
+  #settings .sp-error{font-size:.78rem; color:var(--danger); line-height:1.5; margin:.5rem 0 0;}
+  #settings .field-head{display:flex; align-items:center; justify-content:space-between; gap:.6rem; margin-bottom:.7rem;}
+  #settings .field-head h3{margin:0;}
+  #settings .field-head small{font-size:.7rem; color:var(--sh-muted);}
 
-  #settings h3{color:var(--ink); opacity:.75; font-weight:800;}
-  #settings h3.brand-head{opacity:1; font-size:1.45rem;}
-  #settings .help{color:var(--muted);}
-  #settings .theme-group-label{color:var(--ink); opacity:.6;}
-
-  /* buttons and chips: white paper tabs sitting on the note */
+  /* buttons, chips and inputs */
   #settings button{
-    background:rgba(255,255,255,.62); color:var(--ink);
-    border:1px solid rgba(43,42,38,.14); border-radius:8px;
+    font-family:var(--font-shell); font-size:.8rem; color:var(--sh-ink); background:var(--sh-surface);
+    border:1px solid var(--sh-line); border-radius:9px; box-shadow:none;
   }
-  #settings button:hover{background:#fff; border-color:rgba(43,42,38,.32);}
-  #settings .chip.active{
-    background:var(--ink); color:#fffdf6; border-color:var(--ink); font-weight:600;
-  }
-  #settings button.preset{background:transparent; border-color:transparent; color:var(--ink); opacity:.65;}
-  #settings button.preset:hover{opacity:1; background:rgba(255,255,255,.6); border-color:rgba(43,42,38,.2);}
+  #settings button:hover{background:var(--sh-soft); border-color:var(--sh-line);}
+  #settings button.preset{opacity:1; color:var(--sh-ink); padding:.55rem .85rem;}
   #settings button.primary{
-    background:var(--ink); color:#fff1a6; border-color:var(--ink);
-    box-shadow:0 3px 0 rgba(0,0,0,.18);
+    background:var(--brand); color:#fffaf5; border:0; font-weight:700; padding:.8rem 1rem; border-radius:10px; box-shadow:none;
   }
-  #settings button.primary:hover{background:#000; color:#fff;}
-  #settings .pro-tag{background:var(--ink); color:#fff1a6;}
-  #settings .unlock-link, #settings #trialStatus b{color:var(--ink);}
-  #settings #lampWell{background:rgba(255,255,255,.5); border-color:rgba(43,42,38,.12);}
-  #settings select, #settings input[type=text]{
-    background:rgba(255,255,255,.7) !important; border-color:rgba(43,42,38,.2) !important;
+  #settings button.primary:hover{background:var(--brand); filter:brightness(.93); color:#fffaf5;}
+  #settings button.sp-mini{display:inline-flex; align-items:center; gap:.35rem; padding:.35rem .7rem; font-size:.75rem; font-weight:600;}
+  #settings button.sp-mini svg{width:.8rem; height:.8rem; fill:currentColor; stroke:none;}
+  #settings button:disabled{opacity:.45; cursor:not-allowed;}
+  #settings .chip-row{gap:.4rem;}
+  #settings .chip{padding:.45rem .75rem; font-size:.8rem; border-radius:9px; background:var(--sh-surface); border:1px solid var(--sh-line); color:var(--sh-ink);}
+  #settings .chip:hover{background:var(--sh-soft);}
+  #settings .chip.active{background:var(--sh-tint); border-color:var(--brand); color:var(--sh-ink); font-weight:600; box-shadow:0 0 0 1px var(--brand) inset;}
+  #settings .chip .lock{opacity:.5;}
+  #settings .theme-group-label{font-size:.66rem; letter-spacing:.1em; color:var(--sh-muted); opacity:1; margin:1rem 0 .5rem;}
+  #settings .theme-group-label:first-child{margin-top:0;}
+  #settings #lampWell{background:var(--sh-bg); border:1px solid var(--sh-line); border-radius:12px; padding:.75rem; margin-top:.8rem;}
+  #settings #lampHead{margin-bottom:.55rem;}
+  #settings .flavor-row .chip{border-radius:999px; padding:.35rem .8rem; font-size:.75rem;}
+  #settings input[type=text], #settings select{
+    width:100%; min-height:2.5rem; padding:.6rem .7rem; border-radius:9px;
+    border:1px solid var(--sh-line) !important; background:var(--sh-surface) !important; color:var(--sh-ink);
+    font:400 .85rem/1.3 var(--font-shell);
   }
-  #settings input[type=radio], #settings input[type=checkbox], #settings input[type=range]{accent-color:var(--ink);}
-  #settings #muteNote{background:rgba(179,38,30,.1); border-color:rgba(179,38,30,.35); color:var(--danger);}
-  #settings .eu-badge{color:var(--ink);}
-  #settings h3.legal-head{margin-top:0;}
-  /* the old flash faded the section's background to transparent, which
-     would hide the note itself; nudge the note with a ring instead */
-  #settings section.flash{animation:noteFlash 1.5s ease;}
-  #settings section.flash::after{animation:noteFlashRing 1.5s ease;}
-  @keyframes noteFlash{0%,100%{}}
-  @keyframes noteFlashRing{
-    0%,100%{box-shadow:0 1px 1px rgba(60,45,10,.08), 0 10px 14px -8px rgba(60,45,10,.38);}
-    25%{box-shadow:0 0 0 4px rgba(43,42,38,.45), 0 14px 24px -10px rgba(60,45,10,.5);}
+  #settings input[type=text]:focus, #settings select:focus{outline:2px solid var(--brand); outline-offset:1px;}
+  #settings .input-row{display:flex; gap:.45rem; align-items:stretch;}
+  #settings .input-row input{flex:1; min-width:0;}
+  #settings .input-row button{flex:none; padding:0 .95rem; font-weight:600;}
+  #settings input[type=radio], #settings input[type=checkbox], #settings input[type=range]{accent-color:var(--brand);}
+  #settings .field label{color:var(--sh-muted); font-size:.78rem;}
+  #settings .pro-tag{background:var(--sh-soft); color:var(--sh-muted); font-size:.58rem; padding:.12rem .35rem; border-radius:4px; letter-spacing:.06em;}
+
+  /* mode cards */
+  #settings .mode-grid{display:grid; grid-template-columns:1fr 1fr; gap:.55rem;}
+  #settings .mode-choice{
+    position:relative; display:flex; flex-direction:column; align-items:flex-start; gap:.3rem;
+    min-height:5.3rem; padding:.75rem; border:1px solid var(--sh-line); border-radius:11px; cursor:pointer;
+  }
+  #settings .mode-choice:hover{background:var(--sh-bg);}
+  #settings .mode-choice:has(input:checked){background:var(--sh-tint); border-color:var(--brand);}
+  #settings .mode-choice input{position:absolute; right:.75rem; top:.8rem; margin:0; width:.85rem; height:.85rem;}
+  #settings .mode-choice .mode-icon{color:var(--sh-muted); font-size:1.1rem; line-height:1;}
+  #settings .mode-choice strong{font-size:.8rem; font-weight:650;}
+  #settings .mode-choice small{font-size:.68rem; color:var(--sh-muted); line-height:1.45;}
+
+  /* light/dark segments */
+  #settings .segments{display:flex; gap:.25rem; padding:.25rem; border-radius:11px; background:var(--sh-soft);}
+  #settings .segments button{
+    flex:1; display:flex; align-items:center; justify-content:center; gap:.4rem; padding:.55rem .4rem;
+    border:0; border-radius:8px; background:transparent; color:var(--sh-muted); font-weight:600;
+  }
+  #settings .segments button svg{width:1rem; height:1rem; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;}
+  #settings .segments button[aria-pressed=true]{background:var(--sh-surface); color:var(--sh-ink); box-shadow:0 1px 3px rgba(0,0,0,.08);}
+
+  /* switches */
+  #settings .switch{
+    display:flex; flex-direction:row-reverse; justify-content:space-between; align-items:center; gap:1rem;
+    padding:.75rem 0; margin:0; border-bottom:1px solid var(--sh-line); font-size:.8rem; line-height:1.5; color:var(--sh-ink);
+  }
+  #settings .switch input[type=checkbox]{
+    appearance:none; -webkit-appearance:none; position:relative; flex:none; width:2.1rem; height:1.25rem; margin:0;
+    border-radius:999px; background:var(--sh-line); cursor:pointer; transition:background .15s;
+  }
+  #settings .switch input[type=checkbox]::before{
+    content:""; position:absolute; left:.19rem; top:.19rem; width:.87rem; height:.87rem; border-radius:50%;
+    background:#fffaf5; box-shadow:0 1px 2px rgba(0,0,0,.2); transition:left .15s;
+  }
+  #settings .switch input[type=checkbox]:checked{background:var(--brand);}
+  #settings .switch input[type=checkbox]:checked::before{left:1.04rem;}
+  #settings .switch input[type=checkbox]:focus-visible{outline:2px solid var(--brand); outline-offset:2px;}
+  #settings .switch.switch-inline{flex-direction:row; padding:0; border:0; gap:.5rem; font-size:.78rem;}
+
+  /* collapsible groups */
+  #settings details{border-top:1px solid var(--sh-line); padding:.9rem 0; margin:0;}
+  #settings details:last-child{border-bottom:1px solid var(--sh-line); margin-bottom:1rem;}
+  #settings summary{
+    display:flex; align-items:center; gap:.4rem; cursor:pointer; list-style:none;
+    font-size:.8rem; font-weight:650; color:var(--sh-ink); line-height:1.6;
+  }
+  #settings summary::-webkit-details-marker{display:none;}
+  #settings summary::after{content:"\203A"; margin-left:auto; color:var(--sh-muted); font-size:1.1rem; transform:rotate(90deg); transition:transform .15s;}
+  #settings details[open] > summary::after{transform:rotate(-90deg);}
+  #settings details > div{margin-top:.9rem;}
+
+  /* Pro card */
+  #settings section.pro-card{
+    margin:0; padding:1rem 1.05rem; border:1px solid var(--sh-line); border-radius:14px; background:var(--sh-bg);
+  }
+  #settings #proHead{font-size:.95rem; font-weight:750; letter-spacing:-.01em; margin-bottom:.35rem;}
+  #settings #trialStatus{font-size:.8rem; color:var(--sh-muted); line-height:1.6;}
+  #settings #trialStatus b{color:var(--sh-ink);}
+  #settings #btnTrial{display:block; width:100%; margin-top:.8rem !important;}
+  #settings #btnTeam{width:100%; padding:.6rem .8rem; font-weight:600;}
+  #settings #licenseBox{margin-top:.85rem !important;}
+  #settings #licenseBox input{min-height:2.3rem; font-size:.78rem !important;}
+  #settings section.flash{animation:proRing 1.5s ease;}
+  @keyframes proRing{0%,100%{box-shadow:0 0 0 0 rgba(223,67,46,0);} 25%{box-shadow:0 0 0 4px rgba(223,67,46,.35);}}
+  .panel-footer{display:flex; align-items:center; justify-content:space-between; gap:.6rem; padding-top:.6rem;}
+  #settings .eu-badge{color:var(--sh-muted); opacity:1; font-size:.68rem; margin:0; padding:0;}
+  #settings .eu-badge svg{width:22px; height:22px;}
+  .saved-indicator{font-size:.68rem; color:var(--sh-muted);}
+  .saved-indicator::before{content:"\2713\00a0";}
+  #settings #muteNote{background:var(--sh-tint); border:1px solid #f0c4b9; color:var(--danger); font-size:.75rem; border-radius:9px; margin-bottom:.9rem !important;}
+
+  /* confirm dialog */
+  dialog.wt-dialog{
+    width:min(400px, calc(100vw - 2rem)); margin:auto; padding:1.6rem; border:1px solid #e4e2d9; border-radius:18px;
+    background:#fffefa; color:#272723; font-family:var(--font-shell); box-shadow:0 24px 80px rgba(0,0,0,.25);
+  }
+  dialog.wt-dialog::backdrop{background:rgba(20,20,16,.45); backdrop-filter:blur(3px);}
+  dialog.wt-dialog h2{font-size:1.3rem; font-weight:750; letter-spacing:-.03em; margin:0 0 .5rem;}
+  dialog.wt-dialog p{font-size:.88rem; color:#66645b; line-height:1.6; margin:0;}
+  dialog.wt-dialog .dialog-actions{display:flex; justify-content:flex-end; flex-wrap:wrap; gap:.5rem; margin-top:1.4rem;}
+  dialog.wt-dialog button{
+    font:600 .85rem/1 var(--font-shell); padding:.75rem 1rem; border-radius:10px; cursor:pointer;
+    border:1px solid #e4e2d9; background:#fffefa; color:#272723;
+  }
+  dialog.wt-dialog button.primary{background:var(--brand); border-color:var(--brand); color:#fffaf5;}
+
+  /* phones: the panel becomes a full-height sheet over everything */
+  @media (max-width:640px){
+    :root{--bar-h:3.9rem;}
+    #topBar{padding:0 .5rem 0 1rem;}
+    .tb-brand{font-size:.98rem;}
+    .brand-mark{width:1.3rem; height:1.3rem;}
+    #topBar #btnSettings .tb-settings-word{display:none;}
+    #topBar #btnSettings{padding:.55rem;}
+    .tb-actions{gap:.05rem;}
+    #topBar button.icon{width:2.3rem; height:2.3rem; padding:.55rem;}
+    body #settings, body.mode-dark #settings{top:0; right:0; bottom:0; width:100%; border-radius:0; border:0; z-index:8;}
+  }
+  @media (max-width:340px){ .tb-word{display:none;} }
+  @media (pointer:coarse){
+    #settings .chip, #settings button.preset, #settings summary, #settings .mode-choice{min-height:2.75rem;}
+    #settings input[type=text], #settings select{font-size:16px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    #topBar, #settings, #settings .switch input::before{transition:none;}
   }
 
-  #btnTrial{border-radius:999px;}
 
   /* ---------- global overrides (title, TV centering, in-settings Pro) ---------- */
   /* The editable title is shown in Title Case exactly as typed, in every theme
@@ -1394,7 +1554,6 @@
   body.theme-days  #label{ display:block; }
   /* Gentle highlight when a locked feature nudges you to the Pro section
      (kept inside Settings — no pop-ups over the timer) */
-  #settings section.flash{ animation:proFlash 1.5s ease; border-radius:10px; }
   @keyframes proFlash{ 0%,100%{ background:transparent } 22%{ background:rgba(232,193,90,.16) } }
 </style>
 </head>
@@ -1501,25 +1660,30 @@
   <div id="subline"></div>
 </div>
 
-<div id="topLeft">
-  <button class="icon" id="btnAppearance" title="Light / dark" style="display:none">
+<!-- CUSTOMIZE: top bar (brand and corner buttons). It floats over every theme,
+     fades out with the controls while a timer runs, and drops the brand in fullscreen. -->
+<header id="topBar">
+  <div class="tb-brand" id="tbBrand"><span class="brand-mark" aria-hidden="true"></span><span class="tb-word">WorkshopTimers.com</span></div>
+  <div class="tb-actions">
+    <div id="topLeft">
+      <button class="icon" id="btnAppearance" title="Light / dark" style="display:none">
     <svg class="app-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
     <svg class="app-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
-</div>
-
-<button class="icon hamburger" id="btnSettings" title="Settings" aria-label="Settings">
-  <span></span><span></span><span></span>
-</button>
-
-<button class="icon corner-bl" id="btnMute" title="Sound on/off (M)">
+    </div>
+    <button class="icon corner-bl" id="btnMute" title="Sound on/off (M)">
   <svg class="snd-on" viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L13 19V5L7.5 9.5H4z"/><path d="M16 9a4.5 4.5 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg>
   <svg class="snd-off" viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L13 19V5L7.5 9.5H4z"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5"/></svg>
 </button>
-
-<button class="icon corner-br" id="btnFull" title="Fullscreen (F)">
+    <button class="icon corner-br" id="btnFull" title="Fullscreen (F)">
   <svg viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg>
 </button>
+    <button class="icon hamburger" id="btnSettings" title="Settings" aria-label="Settings" aria-controls="settings">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+      <span class="tb-settings-word" data-i18n="settingsTitle">Settings</span>
+    </button>
+  </div>
+</header>
 
 <div id="controls">
   <div class="row">
@@ -1536,33 +1700,123 @@
 </div>
 
 <!-- CUSTOMIZE: settings panel. Add controls here and wire them up in SETTINGS UI. -->
-<aside id="settings">
-  <div class="section-head">
-    <h2 data-i18n="settingsTitle">Settings</h2>
+<aside id="settings" aria-label="Settings">
+  <div class="settings-header">
+    <div class="settings-title-row">
+      <h2 data-i18n="settingsTitle">Settings</h2>
+      <button type="button" class="sp-close" id="closeSettings" aria-label="Close settings">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg>
+      </button>
+    </div>
+    <div id="settingsTabs" role="tablist" aria-label="Settings">
+      <button type="button" role="tab" id="tab-timer" aria-controls="panel-timer" aria-selected="false" tabindex="-1" data-i18n="tabTimer">Timer</button>
+      <button type="button" role="tab" id="tab-look" aria-controls="panel-look" aria-selected="true" data-i18n="tabLook">Look &amp; feel</button>
+      <button type="button" role="tab" id="tab-sound" aria-controls="panel-sound" aria-selected="false" tabindex="-1" data-i18n="tabSound">Sound</button>
+    </div>
   </div>
 
-  <img class="brand-logo" alt="WorkshopTimers.com" width="680" height="130" src="data:image/webp;base64,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">
+  <div class="settings-content">
+    <div id="panel-timer" role="tabpanel" aria-labelledby="tab-timer" hidden>
+      <section>
+        <h3 data-i18n="modeHeading">Mode</h3>
+        <div class="mode-grid" id="modeGrid">
+          <label class="mode-choice">
+            <input type="radio" name="modeRadio" id="countdownToggle" checked>
+            <span class="mode-icon" aria-hidden="true">&#9716;</span>
+            <strong data-i18n="modeCountdown">Countdown</strong>
+            <small data-i18n="modeCountdownDesc">Count down to zero</small>
+          </label>
+          <label class="mode-choice">
+            <input type="radio" name="modeRadio" id="swToggle">
+            <span class="mode-icon" aria-hidden="true">&#9719;</span>
+            <strong data-i18n="modeStopwatch">Stopwatch</strong>
+            <small data-i18n="modeStopwatchDesc">Count up from zero</small>
+          </label>
+          <label class="mode-choice">
+            <input type="radio" name="modeRadio" id="clockToggle">
+            <span class="mode-icon" aria-hidden="true">&#9718;</span>
+            <strong data-i18n="modeClock">Clock</strong>
+            <small data-i18n="modeClockDesc">The time of day</small>
+          </label>
+          <label class="mode-choice">
+            <input type="radio" name="modeRadio" id="pomodoroToggle">
+            <span class="mode-icon" aria-hidden="true">&#9717;</span>
+            <strong data-i18n="modePomodoro">Pomodoro</strong>
+            <small data-i18n="modePomodoroDesc">25 min focus, 5 min break</small>
+          </label>
+        </div>
+        <p class="sp-note" data-i18n="modeHelp">Changing mode resets the timer.</p>
+      </section>
 
-  <section>
-    <h3 data-i18n="modeHeading">Mode</h3>
-    <label class="switch">
-      <input type="radio" name="modeRadio" id="countdownToggle" checked> <span data-i18n="countdownLabel">Countdown (the default timer)</span>
-    </label>
-    <label class="switch" style="margin-top:.8rem">
-      <input type="radio" name="modeRadio" id="swToggle"> <span data-i18n="stopwatchLabel">Stopwatch (count up instead)</span>
-    </label>
-    <label class="switch" style="margin-top:.8rem">
-      <input type="radio" name="modeRadio" id="clockToggle"> <span data-i18n="clockLabel">Clock mode (show the time of day)</span>
-    </label>
-    <label class="switch" style="margin-top:.8rem">
-      <input type="radio" name="modeRadio" id="pomodoroToggle"> <span data-i18n="pomodoroLabel">Pomodoro mode (25 min focus / 5 min break, auto-repeats)</span>
-    </label>
-  </section>
+      <section>
+        <div class="field-head">
+          <h3><label for="durationSetting" data-i18n="durationHeading">Duration</label></h3>
+          <small data-i18n="durationFormat">minutes, mm:ss or h:mm:ss</small>
+        </div>
+        <div class="input-row">
+          <input type="text" id="durationSetting" inputmode="numeric" autocomplete="off" spellcheck="false">
+          <button type="button" id="applyDuration" data-i18n="applyBtn">Apply</button>
+        </div>
+        <p class="sp-error" id="durationError" role="alert" hidden data-i18n="durationError">Type minutes, mm:ss or h:mm:ss, like 15, 10:30 or 1:00:00.</p>
+        <p class="sp-note" id="durationOff" hidden data-i18n="durationOff">Not used in Stopwatch or Clock mode.</p>
+      </section>
 
-  <section>
-    <h3 data-i18n="themeHeading">Theme</h3>
-    <div id="themeRow"></div>
-    <div id="lampSec" style="display:grid; grid-template-rows:0fr; transition:grid-template-rows .22s ease; overflow:hidden">
+      <section>
+        <h3><label for="sessionLabel" data-i18n="sessionNameHeading">Session name</label></h3>
+        <input type="text" id="sessionLabel" maxlength="80" autocomplete="off" spellcheck="false">
+      </section>
+
+      <details>
+        <summary data-i18n="languageHeading">Language</summary>
+        <div><div class="chip-row" id="langRow"></div></div>
+      </details>
+
+      <details id="backupDetails">
+        <summary data-i18n="backupHeading">Settings backup</summary>
+        <div>
+          <h3 data-i18n="dataHeading">Your settings file</h3>
+    <div class="help" data-i18n="dataBody">Your settings live only in this browser. Save them as a file to keep a backup or move your setup to another computer.</div>
+    <div style="display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.7rem">
+      <button id="exportBtn" class="preset" data-i18n="exportBtn">Save settings file</button>
+      <button id="importBtn" class="preset" data-i18n="importBtn">Load settings file</button>
+      <input type="file" id="importFile" accept=".json,application/json" style="display:none">
+    </div>
+    <div id="importMsg" class="help" style="display:none; margin-top:.5rem"></div>
+        </div>
+      </details>
+
+      <details>
+        <summary data-i18n="helpAbout">Help &amp; about</summary>
+        <div>
+          <h3 data-i18n="installHeading">Use it as an app (Mac &amp; PC)</h3>
+          <div class="help" data-i18n="installBody">
+      Install WorkshopTimers.com so it opens in its own window, with no tabs or address bar, and launches like any native app.<br><br>
+      <b>Mac · Safari:</b> File menu → <b>Add to Dock</b> → Add. Launch it from your Dock.<br>
+      <b>Mac &amp; PC · Chrome:</b> click the <b>install icon</b> (monitor with a down-arrow) at the right edge of the address bar → <b>Install</b>. Or ⋮ menu → <b>Cast, Save &amp; Share → Install page as app</b>.<br>
+      <b>PC · Edge:</b> ⋯ menu → <b>Apps → Install this site as an app</b>.<br><br>
+      Once it's open, the timer runs entirely on your device, with no internet needed to keep time. Perfect for a projector or TV.
+    </div>
+          <div class="help" data-i18n="legalBody">
+      <h3 class="legal-head">Legal</h3>
+      <a href="impressum.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Legal&nbsp;Notice&nbsp;(Impressum)</a> ·
+      <a href="datenschutz.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Privacy&nbsp;(Datenschutz)</a> ·
+      <a href="agb.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Terms&nbsp;(AGB)</a> ·
+      <a href="widerruf.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Refunds&nbsp;(Widerrufsrecht)</a>
+    </div>
+          <div class="help" style="margin-top:.6rem;"><span data-i18n="sourceText">Licensed under the Elastic License 2.0.</span> <a href="https://workshoptimers.com/license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline" data-i18n="sourceLink">Learn more</a></div>
+          <h3 class="legal-head">Support</h3>
+          <div class="help">
+      Found a bug or something looks wrong? Email <a href="mailto:support@pigrosoft.com" style="color:inherit; text-decoration:underline">support@pigrosoft.com</a> with what you were doing, which theme/browser you were using, and a screenshot if you can grab one — that's usually enough to track it down.
+    </div>
+        </div>
+      </details>
+    </div>
+
+    <div id="panel-look" role="tabpanel" aria-labelledby="tab-look">
+      <section>
+        <h3 data-i18n="themeHeading">Theme</h3>
+        <div id="themeRow"></div>
+        <div id="lampSec" style="display:grid; grid-template-rows:0fr; transition:grid-template-rows .22s ease; overflow:hidden">
       <div style="overflow:hidden; min-height:0">
         <div id="lampWell">
           <h3 id="lampHead"><span data-i18n="themeStyleHeading">Color</span> <span class="pro-tag">PRO</span></h3>
@@ -1570,55 +1824,26 @@
         </div>
       </div>
     </div>
-  </section>
+      </section>
 
-  <section>
-    <h3 data-i18n="soundHeading">Sound</h3>
-    <div id="muteNote" data-i18n="muteNote" style="display:none; margin-bottom:.8rem">All sound is off. Previews and alerts are silenced. Press M or the speaker icon to unmute.</div>
-    <div class="chip-row" id="soundRow"></div>
-    <label class="switch" style="margin-top:.8rem">
-      <input type="checkbox" id="tickToggle"> <span data-i18n="tickLabel">Tick during final 10 seconds</span>
-    </label>
-    <label class="switch" style="margin-top:.8rem">
-      <input type="checkbox" id="tickAlwaysToggle"> <span data-i18n="tickAlwaysLabel">Tick throughout the whole timer</span>
-    </label>
-    <div class="chip-row" id="tickSoundRow" style="margin-top:.6rem"></div>
-    <label class="switch" style="margin-top:.8rem">
-      <input type="checkbox" id="voiceToggle"> <span data-i18n="voiceLabel">Voice alert at 30 seconds left</span>
-    </label>
-    <label class="switch" style="margin-top:.8rem">
-      <input type="checkbox" id="voice2minToggle"> <span data-i18n="voice2minLabel">Voice alert at 2 minutes left</span>
-    </label>
-    <label class="switch" style="margin-top:.8rem">
-      <input type="checkbox" id="voiceHalfToggle"> <span data-i18n="voiceHalfLabel">"Time to switch" alert halfway through</span>
-    </label>
-  </section>
+      <section id="appearanceSec" hidden>
+        <h3 data-i18n="appearanceHeading">Appearance</h3>
+        <div class="segments" role="group" aria-label="Appearance">
+          <button type="button" data-appearance="light" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"/></svg>
+            <span data-i18n="lightBtn">Light</span>
+          </button>
+          <button type="button" data-appearance="dark" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15A8 8 0 0 1 9 4a8 8 0 1 0 11 11Z"/></svg>
+            <span data-i18n="darkBtn">Dark</span>
+          </button>
+        </div>
+      </section>
 
-  <section>
-    <h3 data-i18n="languageHeading">Language</h3>
-    <div class="chip-row" id="langRow"></div>
-  </section>
-
-  <section>
-    <h3><span data-i18n="fontHeading">Font</span> <span class="pro-tag">PRO</span></h3>
-    <select id="fontSelect" style="width:100%; padding:.5rem .6rem; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--fg); font-family:inherit; font-size:.9rem"></select>
-    <div id="customFontBox" style="display:none; margin-top:.8rem">
-      <div class="field">
-        <label data-i18n="uploadFontLabel">Upload your own font (.ttf, .otf, .woff, .woff2)</label>
-        <input type="file" id="fontFile" accept=".ttf,.otf,.woff,.woff2,font/*">
-      </div>
-      <div class="field" id="customWeightRow" style="display:none">
-        <label><span data-i18n="weightLabel">Weight:</span> <span id="customWeightVal">400</span></label>
-        <input type="range" id="customWeight" min="100" max="900" step="100" value="400" style="width:100%">
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="section-head">
-      <h3><span data-i18n="colorsHeading">Your colors &amp; logo</span></h3>
-    </div>
-    <div id="brandBody">
+      <details id="brandDetails">
+        <summary><span data-i18n="colorsHeading">Your colors &amp; logo</span> <span class="pro-tag">PRO</span></summary>
+        <div>
+          <div id="brandBody">
       <div class="field">
         <label><span data-i18n="logoLabel">Logo (shown above the timer)</span> <span class="pro-tag">PRO</span></label>
         <input type="file" id="logoInput" accept="image/*">
@@ -1631,15 +1856,55 @@
         <label><span data-i18n="bgLabel">Background color (overrides theme)</span> <span class="pro-tag">PRO</span></label>
         <div style="display:flex;gap:.6rem;align-items:center">
           <input type="color" id="bgInput" value="#101014">
-          <label class="switch" style="font-size:.78rem"><input type="checkbox" id="bgToggle"> <span data-i18n="useItLabel">use it</span></label>
+          <label class="switch switch-inline"><input type="checkbox" id="bgToggle"> <span data-i18n="useItLabel">use it</span></label>
         </div>
       </div>
       <button id="brandReset" class="preset" data-i18n="resetColorsBtn">Reset colors &amp; logo</button>
     </div>
-  </section>
+          <h3 class="legal-head"><span data-i18n="fontHeading">Font</span> <span class="pro-tag">PRO</span></h3>
+          <select id="fontSelect" style="width:100%; padding:.5rem .6rem; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--fg); font-family:inherit; font-size:.9rem"></select>
+    <div id="customFontBox" style="display:none; margin-top:.8rem">
+      <div class="field">
+        <label data-i18n="uploadFontLabel">Upload your own font (.ttf, .otf, .woff, .woff2)</label>
+        <input type="file" id="fontFile" accept=".ttf,.otf,.woff,.woff2,font/*">
+      </div>
+      <div class="field" id="customWeightRow" style="display:none">
+        <label><span data-i18n="weightLabel">Weight:</span> <span id="customWeightVal">400</span></label>
+        <input type="range" id="customWeight" min="100" max="900" step="100" value="400" style="width:100%">
+      </div>
+    </div>
+        </div>
+      </details>
+    </div>
 
-  <section>
-    <h3 id="proHead">Pro</h3>
+    <div id="panel-sound" role="tabpanel" aria-labelledby="tab-sound" hidden>
+      <section>
+        <div id="muteNote" data-i18n="muteNote" style="display:none; margin-bottom:.8rem">All sound is off. Previews and alerts are silenced. Press M or the speaker icon to unmute.</div>
+        <div class="field-head">
+          <h3 data-i18n="endSoundHeading">End sound</h3>
+          <button type="button" id="previewSoundBtn" class="sp-mini">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg>
+            <span data-i18n="previewBtn">Preview</span>
+          </button>
+        </div>
+        <div class="chip-row" id="soundRow"></div>
+      </section>
+      <section>
+        <label class="switch"><input type="checkbox" id="tickToggle"> <span data-i18n="tickLabel">Tick during final 10 seconds</span></label>
+        <label class="switch"><input type="checkbox" id="tickAlwaysToggle"> <span data-i18n="tickAlwaysLabel">Tick throughout the whole timer</span></label>
+        <h3 class="sp-subhead" data-i18n="tickSoundHeading">Tick sound</h3>
+        <div class="chip-row" id="tickSoundRow"></div>
+      </section>
+      <section>
+        <label class="switch"><input type="checkbox" id="voiceToggle"> <span data-i18n="voiceLabel">Voice alert at 30 seconds left</span></label>
+        <label class="switch"><input type="checkbox" id="voice2minToggle"> <span data-i18n="voice2minLabel">Voice alert at 2 minutes left</span></label>
+        <label class="switch"><input type="checkbox" id="voiceHalfToggle"> <span data-i18n="voiceHalfLabel">&quot;Time to switch&quot; alert halfway through</span></label>
+        <p class="sp-note" data-i18n="soundNote">Browsers only play sound after you click or tap the page once.</p>
+      </section>
+    </div>
+
+    <section class="pro-card" id="proSec">
+      <h3 id="proHead">Pro</h3>
     <div id="trialStatus"></div>
     <button id="btnTrial" class="primary" style="margin-top:.7rem">Buy the app</button>
     <button id="btnTeam" class="preset" style="display:none; margin-top:.5rem"></button>
@@ -1657,59 +1922,32 @@
       </div>
       <div id="licenseMsg" style="margin-top:.5rem; font-size:.8rem; display:none"></div>
     </div>
-  </section>
-
-  <section>
-    <h3 data-i18n="dataHeading">Your settings file</h3>
-    <div class="help" data-i18n="dataBody">Your settings live only in this browser. Save them as a file to keep a backup or move your setup to another computer.</div>
-    <div style="display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.7rem">
-      <button id="exportBtn" class="preset" data-i18n="exportBtn">Save settings file</button>
-      <button id="importBtn" class="preset" data-i18n="importBtn">Load settings file</button>
-      <input type="file" id="importFile" accept=".json,application/json" style="display:none">
-    </div>
-    <div id="importMsg" class="help" style="display:none; margin-top:.5rem"></div>
-  </section>
-
-  <section>
-    <h3 data-i18n="installHeading">Use it as an app (Mac &amp; PC)</h3>
-    <div class="help" data-i18n="installBody">
-      Install WorkshopTimers.com so it opens in its own window, with no tabs or address bar, and launches like any native app.<br><br>
-      <b>Mac · Safari:</b> File menu → <b>Add to Dock</b> → Add. Launch it from your Dock.<br>
-      <b>Mac &amp; PC · Chrome:</b> click the <b>install icon</b> (monitor with a down-arrow) at the right edge of the address bar → <b>Install</b>. Or ⋮ menu → <b>Cast, Save &amp; Share → Install page as app</b>.<br>
-      <b>PC · Edge:</b> ⋯ menu → <b>Apps → Install this site as an app</b>.<br><br>
-      Once it's open, the timer runs entirely on your device, with no internet needed to keep time. Perfect for a projector or TV.
-    </div>
-  </section>
-
-  <section>
-    <div class="help" data-i18n="legalBody">
-      <h3 class="legal-head">Legal</h3>
-      <a href="impressum.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Legal&nbsp;Notice&nbsp;(Impressum)</a> ·
-      <a href="datenschutz.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Privacy&nbsp;(Datenschutz)</a> ·
-      <a href="agb.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Terms&nbsp;(AGB)</a> ·
-      <a href="widerruf.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Refunds&nbsp;(Widerrufsrecht)</a>
-    </div>
-    <div class="help" style="margin-top:.6rem;"><span data-i18n="sourceText">Licensed under the Elastic License 2.0.</span> <a href="https://workshoptimers.com/license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline" data-i18n="sourceLink">Learn more</a></div>
-  </section>
-
-  <div id="removeLicenseWrap" style="display:none; text-align:center; margin:.4rem 0 .2rem">
+      <div id="removeLicenseWrap" style="display:none; text-align:center; margin:.4rem 0 .2rem">
     <a href="#" id="removeLicense" style="font-size:.68rem; color:var(--muted); opacity:.5; text-decoration:underline; cursor:pointer">Remove license from this device</a>
   </div>
+    </section>
+  </div>
 
-  <section>
-    <h3>Support</h3>
-    <div class="help">
-      Found a bug or something looks wrong? Email <a href="mailto:support@pigrosoft.com" style="color:inherit; text-decoration:underline">support@pigrosoft.com</a> with what you were doing, which theme/browser you were using, and a screenshot if you can grab one — that's usually enough to track it down.
-    </div>
-  </section>
-
-  <div style="margin-top:.8rem; display:flex; flex-wrap:wrap; gap:.5rem; justify-content:center">
-    <span class="eu-badge">
+  <div class="settings-bottom">
+    <div class="panel-footer">
+      <span class="eu-badge">
       <svg viewBox="0 0 20 20" width="36" height="36" aria-hidden="true"><defs><polygon id="s" points="0.000,-0.900 0.202,-0.278 0.856,-0.278 0.327,0.106 0.529,0.728 0.000,0.344 -0.529,0.728 -0.327,0.106 -0.856,-0.278 -0.202,-0.278"/></defs><circle cx="10" cy="10" r="9.3" fill="#003399"/><g fill="#ffcc00"><use href="#s" transform="translate(10,2.8) scale(1.05)"/><use href="#s" transform="translate(13.6,3.76) scale(1.05)"/><use href="#s" transform="translate(16.24,6.4) scale(1.05)"/><use href="#s" transform="translate(17.2,10) scale(1.05)"/><use href="#s" transform="translate(16.24,13.6) scale(1.05)"/><use href="#s" transform="translate(13.6,16.24) scale(1.05)"/><use href="#s" transform="translate(10,17.2) scale(1.05)"/><use href="#s" transform="translate(6.4,16.24) scale(1.05)"/><use href="#s" transform="translate(3.76,13.6) scale(1.05)"/><use href="#s" transform="translate(2.8,10) scale(1.05)"/><use href="#s" transform="translate(3.76,6.4) scale(1.05)"/><use href="#s" transform="translate(6.4,3.76) scale(1.05)"/></g></svg>
       Made in the EU
     </span>
+      <span class="saved-indicator" data-i18n="savedOnDevice">Saved on this device</span>
+    </div>
   </div>
 </aside>
+
+<!-- Asked before a running timer is replaced (new time or new mode). -->
+<dialog id="confirmDialog" class="wt-dialog" aria-labelledby="confirmTitle">
+  <h2 id="confirmTitle" data-i18n="confirmTitle">Start a new session?</h2>
+  <p data-i18n="confirmBody">This stops the timer that's running now.</p>
+  <div class="dialog-actions">
+    <button type="button" id="confirmKeep" data-i18n="confirmKeep">Keep it running</button>
+    <button type="button" id="confirmGo" class="primary" data-i18n="confirmGo">Start new session</button>
+  </div>
+</dialog>
 
 <script>
 "use strict";
@@ -1778,6 +2016,7 @@ const I18N = {
     proComingSoon:"Everything else is free. The extra themes will be a one-time Pro unlock once sales open; until then you can preview any of them for a few seconds from the theme list.",
     titleEditTime:"Set the time: type 15, 10:30 or 1:00:00", srTimesUp:"Time's up",
     sourceText:"Licensed under the Elastic License 2.0.", sourceLink:"Learn more",
+    tabTimer:"Timer", tabLook:"Look & feel", tabSound:"Sound", modeCountdown:"Countdown", modeCountdownDesc:"Count down to zero", modeStopwatch:"Stopwatch", modeStopwatchDesc:"Count up from zero", modeClock:"Clock", modeClockDesc:"The time of day", modePomodoro:"Pomodoro", modePomodoroDesc:"25 min focus, 5 min break", modeHelp:"Changing mode resets the timer.", durationHeading:"Duration", durationFormat:"minutes, mm:ss or h:mm:ss", applyBtn:"Apply", durationError:"Type minutes, mm:ss or h:mm:ss, like 15, 10:30 or 1:00:00.", durationOff:"Not used in Stopwatch or Clock mode.", sessionNameHeading:"Session name", backupHeading:"Settings backup", helpAbout:"Help & about", appearanceHeading:"Appearance", lightBtn:"Light", darkBtn:"Dark", endSoundHeading:"End sound", previewBtn:"Preview", tickSoundHeading:"Tick sound", soundNote:"Browsers only play sound after you click or tap the page once.", savedOnDevice:"Saved on this device", confirmTitle:"Start a new session?", confirmBody:"This stops the timer that's running now.", confirmKeep:"Keep it running", confirmGo:"Start new session", titleCloseSettingsShort:"Close settings",
     dataHeading:"Your settings file", dataBody:"Your settings live only in this browser. Save them as a file to keep a backup or move your setup to another computer.", exportBtn:"Save settings file", importBtn:"Load settings file", importBad:"That doesn't look like a Workshop Timer settings file.",
     installHeading:"Use it as an app (Mac & PC)",
     installBody:"Install WorkshopTimers.com so it opens in its own window, with no tabs or address bar, and launches like any native app.<br><br><b>Save as a Mac app (Safari):</b> File menu → <b>Add to Dock</b> → Add. Launch it from your Dock.<br><b>Save as a PC app (Chrome):</b> ⋮ menu → <b>Cast, Save &amp; Share → Install page as app</b>.<br><br>Once it's open, the timer runs entirely on your device, with no internet needed to keep time. Perfect for a projector or TV.",
@@ -1810,6 +2049,7 @@ const I18N = {
     proComingSoon:"Alles andere ist kostenlos. Die zusätzlichen Designs gibt es bald als einmaliges Pro-Upgrade; bis dahin kannst du jedes davon in der Designliste ein paar Sekunden lang ansehen.",
     titleEditTime:"Zeit einstellen: 15, 10:30 oder 1:00:00 eingeben", srTimesUp:"Die Zeit ist um",
     sourceText:"Lizenziert unter der Elastic License 2.0.", sourceLink:"Mehr erfahren",
+    tabTimer:"Timer", tabLook:"Aussehen", tabSound:"Ton", modeCountdown:"Countdown", modeCountdownDesc:"Läuft bis null", modeStopwatch:"Stoppuhr", modeStopwatchDesc:"Zählt von null aufwärts", modeClock:"Uhr", modeClockDesc:"Die aktuelle Uhrzeit", modePomodoro:"Pomodoro", modePomodoroDesc:"25 Min. Fokus, 5 Min. Pause", modeHelp:"Ein Moduswechsel setzt den Timer zurück.", durationHeading:"Dauer", durationFormat:"Minuten, mm:ss oder h:mm:ss", applyBtn:"Übernehmen", durationError:"Gib Minuten, mm:ss oder h:mm:ss ein, etwa 15, 10:30 oder 1:00:00.", durationOff:"Im Stoppuhr- und Uhrmodus nicht verwendet.", sessionNameHeading:"Name der Sitzung", backupHeading:"Sicherung", helpAbout:"Hilfe & Info", appearanceHeading:"Darstellung", lightBtn:"Hell", darkBtn:"Dunkel", endSoundHeading:"Endsignal", previewBtn:"Anhören", tickSoundHeading:"Tick-Geräusch", soundNote:"Browser spielen Ton erst ab, nachdem du einmal auf die Seite geklickt oder getippt hast.", savedOnDevice:"Auf diesem Gerät gespeichert", confirmTitle:"Neue Sitzung starten?", confirmBody:"Damit wird der laufende Timer angehalten.", confirmKeep:"Weiterlaufen lassen", confirmGo:"Neue Sitzung starten", titleCloseSettingsShort:"Einstellungen schließen",
     dataHeading:"Deine Einstellungsdatei", dataBody:"Deine Einstellungen liegen nur in diesem Browser. Speichere sie als Datei, um ein Backup zu haben oder dein Setup auf einen anderen Computer mitzunehmen.", exportBtn:"Einstellungen speichern", importBtn:"Einstellungen laden", importBad:"Das sieht nicht nach einer Workshop-Timer-Einstellungsdatei aus.",
     installHeading:"Als App nutzen (Mac & PC)",
     installBody:"Installiere WorkshopTimers.com, damit es in einem eigenen Fenster ohne Tabs oder Adressleiste öffnet und wie eine native App startet.<br><br><b>Als Mac-App sichern (Safari):</b> Ablage-Menü → <b>Zum Dock hinzufügen</b> → Hinzufügen. Danach aus dem Dock starten.<br><b>Als PC-App sichern (Chrome):</b> ⋮-Menü → <b>Cast, Speichern &amp; Teilen → Seite als App installieren</b>.<br><br>Einmal geöffnet läuft der Timer komplett auf deinem Gerät, ganz ohne Internet. Perfekt für Beamer oder TV.",
@@ -5725,7 +5965,7 @@ document.addEventListener("click", e=>{
   // corner buttons (sound, appearance, fullscreen) toggle their own state
   // without needing the settings panel to close — leave it open so the
   // user can keep adjusting other settings right after
-  if(path.includes(s) || path.includes($("btnSettings")) || path.includes($("btnMute")) || path.includes($("btnAppearance")) || path.includes($("btnFull"))) return;
+  if(path.includes(s) || path.includes($("btnSettings")) || path.includes($("btnMute")) || path.includes($("btnAppearance")) || path.includes($("btnFull")) || path.includes($("confirmDialog"))) return;
   s.classList.remove("open");
   $("btnSettings").classList.remove("open");
   updateSettingsTip();
@@ -6025,6 +6265,8 @@ function applyBranding(){
   const logo = localStorage.getItem(LS.logo);
   if(logo && isPro()){ elLogo.src = logo; elLogo.style.display="block"; }
   else elLogo.style.display="none";
+  // the WorkshopTimers.com brand in the top bar is for free users; Pro is their own
+  const tb = $("tbBrand"); if(tb) tb.hidden = isPro();
   applyTheme();
 }
 
@@ -6089,6 +6331,7 @@ function refreshSettings(){
   pomodoroBox.disabled = false;
   // Countdown is the mode radio group's implicit "none of the above" state
   $("countdownToggle").checked = !swBox.checked && !clockBox.checked && !pomodoroBox.checked;
+  syncPanelFields();
   $("muteNote").style.display = st.muted ? "block" : "none";
   const voiceBox = $("voiceToggle");
   voiceBox.checked = !!st.voice;
@@ -6248,6 +6491,154 @@ $("brandReset").addEventListener("click", ()=>{
   $("accentInput").value=st.accent; $("bgInput").value=st.bg; $("bgToggle").checked=false;
   save(); applyBranding();
 });
+
+/* =========================================================
+   SETTINGS PANEL — tabs, duration and name fields, light/dark
+   segments, sound preview, and the "start a new session?" check.
+   ========================================================= */
+// CUSTOMIZE: settings panel behaviour. It only calls the existing timer
+// functions (setDuration, applyTheme, save ...), never the timing engine itself.
+const PANEL_TABS = ["timer", "look", "sound"];
+function selectTab(name, focus){
+  PANEL_TABS.forEach(n=>{
+    const tab = $("tab-" + n), pane = $("panel-" + n), on = n === name;
+    tab.setAttribute("aria-selected", on ? "true" : "false");
+    tab.tabIndex = on ? 0 : -1;
+    pane.hidden = !on;
+    if(on && focus) tab.focus();
+  });
+}
+PANEL_TABS.forEach((n, i)=>{
+  const tab = $("tab-" + n);
+  tab.addEventListener("click", ()=>selectTab(n));
+  tab.addEventListener("keydown", e=>{
+    if(e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    e.preventDefault(); e.stopPropagation();
+    const next = PANEL_TABS[(i + (e.key === "ArrowRight" ? 1 : -1) + PANEL_TABS.length) % PANEL_TABS.length];
+    selectTab(next, true);
+  });
+});
+$("closeSettings").addEventListener("click", ()=>{
+  $("settings").classList.remove("open");
+  $("btnSettings").classList.remove("open");
+  updateSettingsTip();
+  $("btnSettings").focus();
+});
+
+// "15" = 15 minutes, "10:30" = mm:ss, "1:00:00" = h:mm:ss; null if it isn't a time
+function parseTimeText(v){
+  v = (v || "").trim();
+  if(!/^\d{1,4}(:\d{1,2}){0,2}$/.test(v)) return null;
+  const p = v.split(":").map(n=>parseInt(n, 10));
+  const sec = p.length === 1 ? p[0]*60 : p.length === 2 ? p[0]*60 + p[1] : p[0]*3600 + p[1]*60 + p[2];
+  return sec > 0 ? sec : null;
+}
+function fmtTimeText(sec){
+  const h = Math.floor(sec/3600), m = Math.floor(sec%3600/60), s = sec%60;
+  const pad = n=>String(n).padStart(2, "0");
+  return h ? `${h}:${pad(m)}:${pad(s)}` : `${m}:${pad(s)}`;
+}
+
+// Asks before a running timer is replaced. Arrow keys and +30s only adjust a
+// running timer, so they never ask; neither do the 1-9 keyboard shortcuts.
+let confirmYes = null, confirmNo = null;
+function guardRunning(action, onCancel){
+  const d = $("confirmDialog");
+  if(!running || !d || typeof d.showModal !== "function"){ action(); return; }
+  confirmYes = action; confirmNo = onCancel || null;
+  d.showModal();
+  $("confirmKeep").focus();
+}
+function closeConfirm(go){
+  const d = $("confirmDialog"), yes = confirmYes, no = confirmNo;
+  confirmYes = confirmNo = null;
+  if(d.open) d.close();
+  if(go && yes) yes(); else if(!go && no) no();
+}
+$("confirmGo").addEventListener("click", ()=>closeConfirm(true));
+$("confirmKeep").addEventListener("click", ()=>closeConfirm(false));
+$("confirmDialog").addEventListener("cancel", e=>{ e.preventDefault(); closeConfirm(false); });
+// keep timer shortcuts (Space, R, T ...) from firing behind the dialog
+$("confirmDialog").addEventListener("keydown", e=>{ if(e.key !== "Escape") e.stopPropagation(); });
+
+// presets under the timer: intercept before their own click handler runs
+presetsRow.addEventListener("click", e=>{
+  const b = e.target.closest("button.preset");
+  if(!b || !running || swOn()) return;
+  e.stopPropagation(); e.preventDefault();
+  const i = [...presetsRow.querySelectorAll("button.preset")].indexOf(b);
+  guardRunning(()=>setDuration(PRESETS[i]*60));
+}, true);
+// mode cards: same idea, before the radio changes
+$("modeGrid").addEventListener("click", e=>{
+  const card = e.target.closest("label.mode-choice");
+  if(!card || !running) return;
+  const radio = card.querySelector("input");
+  if(radio.checked) return;
+  e.preventDefault(); e.stopPropagation();
+  guardRunning(()=>{ radio.checked = true; radio.dispatchEvent(new Event("change", {bubbles:true})); });
+}, true);
+
+// duration field
+function applyDurationField(){
+  const sec = parseTimeText($("durationSetting").value);
+  $("durationError").hidden = sec !== null;
+  if(sec === null) return;
+  guardRunning(()=>{ setDuration(sec); syncPanelFields(); }, syncPanelFields);
+}
+$("applyDuration").addEventListener("click", applyDurationField);
+$("durationSetting").addEventListener("keydown", e=>{
+  e.stopPropagation();
+  if(e.key === "Enter"){ e.preventDefault(); applyDurationField(); }
+});
+$("durationSetting").addEventListener("input", ()=>{ $("durationError").hidden = true; });
+
+// session name: the same label as the editable title on the timer
+$("sessionLabel").addEventListener("input", e=>{
+  const v = e.target.value.trim() || LABEL_DEFAULTS[st.lang] || LABEL_DEFAULTS.en;
+  st.label = v; st.labelCustom = true; save();
+  [elLabel, $("lcTitle"), $("discLabel"), $("w1Title"), $("eggLabel"), $("squigLabel"), $("nasaTitle")]
+    .forEach(el=>{ if(el) syncEditable(el, v); });
+  if(typeof autofitOrbLabel === "function") autofitOrbLabel();
+});
+$("sessionLabel").addEventListener("keydown", e=>{
+  e.stopPropagation();
+  if(e.key === "Enter"){ e.preventDefault(); e.target.blur(); }
+});
+
+// light/dark segments mirror the top-bar button, on themes that have both
+document.querySelectorAll("#appearanceSec [data-appearance]").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    if(!APPEARANCE_THEMES[curThemeId()]) return;
+    st.appearance = b.dataset.appearance;
+    save(); applyTheme(); syncPanelFields();
+  });
+});
+
+// sound preview plays the chosen end sound
+$("previewSoundBtn").addEventListener("click", ()=>{
+  if(!st.muted) (PLAYERS[st.sound] || PLAYERS.chime)();
+});
+
+function syncPanelFields(){
+  const ds = $("durationSetting"), off = swOn() || st.clock;
+  if(document.activeElement !== ds) ds.value = fmtTimeText(st.duration);
+  ds.disabled = $("applyDuration").disabled = off;
+  $("durationOff").hidden = !off;
+  const sl = $("sessionLabel");
+  if(document.activeElement !== sl) sl.value = st.label || "";
+  const natural = APPEARANCE_THEMES[curThemeId()];
+  $("appearanceSec").hidden = !natural;
+  const effective = st.appearance || natural;
+  document.querySelectorAll("#appearanceSec [data-appearance]").forEach(b=>{
+    b.setAttribute("aria-pressed", b.dataset.appearance === effective ? "true" : "false");
+  });
+  $("previewSoundBtn").disabled = !!st.muted;
+}
+
+// the top-bar light/dark and sound buttons change state the panel shows
+elAppearance.addEventListener("click", ()=>syncPanelFields());
+elMute.addEventListener("click", ()=>syncPanelFields());
 
 /* =========================================================
    BUY MODAL
