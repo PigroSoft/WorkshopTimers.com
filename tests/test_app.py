@@ -113,6 +113,8 @@ def test_settings_file_round_trip(app, browser, tmp_path):
     )
     app.click("#btnSettings")
     app.wait_for_timeout(400)
+    app.click("#tab-timer")
+    app.click("#backupDetails summary")
     app.locator("#exportBtn").scroll_into_view_if_needed()
     with app.expect_download() as dl:
         app.click("#exportBtn")
@@ -150,7 +152,8 @@ def test_bad_settings_file_is_rejected(app, tmp_path):
 
 def test_voice_is_free_but_fonts_colours_and_logo_are_pro(app):
     assert app.evaluate("isPro()") is False
-    app.evaluate("document.getElementById('settings').classList.add('open')")
+    app.click("#btnSettings")
+    app.click("#tab-sound")
     app.check("#voiceToggle")
     app.check("#voice2minToggle")
     app.check("#voiceHalfToggle")
@@ -174,7 +177,7 @@ def test_voice_is_free_but_fonts_colours_and_logo_are_pro(app):
     )
     assert got["voice"] == [True, True, True]
     assert got["logo"] == "none"
-    assert got["proTags"] == 5  # theme colour variants, font, accent, background, logo
+    assert got["proTags"] == 8  # more-themes heading, colours & logo group, brand switch, colour variants, font, accent, background, logo
     # unlocking applies them
     app.evaluate("LICENSE_OK = true; applyProLocks(); applyTheme()")
     pro = app.evaluate(
@@ -352,4 +355,92 @@ def test_licence_header_and_settings_line_name_the_new_licence(app):
     html = (ROOT / "index.html").read_text(encoding="utf-8")
     assert html.startswith("<!DOCTYPE html>\n<!--") and "Elastic License 2.0" in html[:600] and "Jeffrey Humble" in html[:600]
     assert "MIT licence" not in html.split("<script>")[0]
-    assert "Elastic License 2.0" in app.inner_text("#settings")
+    assert "Elastic License 2.0" in app.text_content("#settings")  # sits under Help & about
+
+
+# ---------------------------------------------------------------- settings panel (tabs, duration, confirm)
+
+def test_new_time_while_running_asks_first(app):
+    app.keyboard.press("Space")
+    app.wait_for_timeout(300)
+    app.locator("#presets button.preset").nth(3).click()  # 5 min
+    assert app.evaluate("document.getElementById('confirmDialog').open")
+    app.click("#confirmKeep")
+    assert app.evaluate("[running, st.duration]") == [True, 600]
+    app.locator("#presets button.preset").nth(3).click()  # 5 min
+    app.click("#confirmGo")
+    assert app.evaluate("[running, st.duration, document.getElementById('confirmDialog').open]") == [False, 300, False]
+
+
+def test_preset_when_stopped_does_not_ask(app):
+    app.locator("#presets button.preset").nth(3).click()  # 5 min
+    assert app.evaluate("[st.duration, document.getElementById('confirmDialog').open]") == [300, False]
+
+
+def test_mode_change_while_running_asks_first(app):
+    app.click("#btnSettings")
+    app.click("#tab-timer")
+    app.evaluate("start(false)")
+    app.wait_for_timeout(200)
+    app.click("label.mode-choice:has(#swToggle)")
+    assert app.evaluate("document.getElementById('confirmDialog').open")
+    app.click("#confirmKeep")
+    assert app.evaluate("[running, st.stopwatch, document.getElementById('swToggle').checked]") == [True, False, False]
+    app.click("label.mode-choice:has(#swToggle)")
+    app.click("#confirmGo")
+    assert app.evaluate("st.stopwatch") is True
+
+
+def test_duration_field_sets_the_time_and_rejects_nonsense(app):
+    app.click("#btnSettings")
+    app.click("#tab-timer")
+    app.fill("#durationSetting", "nonsense")
+    app.click("#applyDuration")
+    assert app.is_visible("#durationError")
+    app.fill("#durationSetting", "12:30")
+    app.click("#applyDuration")
+    assert app.evaluate("[st.duration, remaining]") == [750, 750]
+    assert not app.is_visible("#durationError")
+
+
+def test_session_name_field_renames_the_timer(app):
+    app.click("#btnSettings")
+    app.click("#tab-timer")
+    app.fill("#sessionLabel", "Retro, team blue")
+    assert app.evaluate("[st.label, st.labelCustom, elLabel.textContent]") == ["Retro, team blue", True, "Retro, team blue"]
+
+
+def test_theme_picker_shows_thumbnails_and_separates_pro(app):
+    app.click("#btnSettings")
+    app.click("#tab-look")
+    cards = app.evaluate(
+        "[...document.querySelectorAll('#themeRow .theme-card')].map(b => [b.dataset.theme, b.classList.contains('locked'),"
+        " (b.querySelector('img') || {}).src ? 1 : 0])"
+    )
+    assert len(cards) == 23 and all(c[2] == 1 for c in cards), cards       # every theme has its thumbnail
+    assert [c[0] for c in cards[:3]] == ["disc", "midnight", "paper"]      # included themes come first
+    assert not any(c[1] for c in cards[:3]) and all(c[1] for c in cards[3:])
+    app.click('#themeRow .theme-card[data-theme="nixie"]')                 # a locked theme previews live
+    assert app.evaluate("[PV.id, st.theme]") == ["nixie", "disc"]
+
+
+def test_pro_can_hide_or_show_the_brand(app):
+    assert app.evaluate("document.getElementById('tbBrand').hidden") is False
+    app.evaluate("LICENSE_OK = true; applyBranding(); refreshSettings()")
+    assert app.evaluate("document.getElementById('tbBrand').hidden") is True
+    app.click("#btnSettings")
+    app.click("#tab-look")
+    app.click("#brandDetails summary")
+    app.click("#brandToggle")
+    assert app.evaluate("[st.showBrand, document.getElementById('tbBrand').hidden]") == [True, False]
+
+
+def test_removing_the_licence_takes_two_clicks(app):
+    app.evaluate("LICENSE_OK = true; localStorage.setItem(LS.license, JSON.stringify({key:'K-1', activationId:'lki_1'}));"
+                 " refreshSettings(); applyProLocks()")
+    app.evaluate("(()=>{ const rl = document.getElementById('removeLicenseWrap'); rl.style.display = 'block'; })()")
+    app.click("#btnSettings")
+    app.locator("#removeLicense").scroll_into_view_if_needed()
+    app.click("#removeLicense")
+    assert app.evaluate("localStorage.getItem(LS.license) !== null")    # first click only asks
+    assert app.inner_text("#removeLicense") == "Click again to remove"
