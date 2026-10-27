@@ -177,7 +177,7 @@ def test_voice_is_free_but_fonts_colours_and_logo_are_pro(app):
     )
     assert got["voice"] == [True, True, True]
     assert got["logo"] == "none"
-    assert got["proTags"] == 6  # colours & logo group, theme colour variants, font, accent, background, logo
+    assert got["proTags"] == 8  # more-themes heading, colours & logo group, brand switch, colour variants, font, accent, background, logo
     # unlocking applies them
     app.evaluate("LICENSE_OK = true; applyProLocks(); applyTheme()")
     pro = app.evaluate(
@@ -408,3 +408,39 @@ def test_session_name_field_renames_the_timer(app):
     app.click("#tab-timer")
     app.fill("#sessionLabel", "Retro, team blue")
     assert app.evaluate("[st.label, st.labelCustom, elLabel.textContent]") == ["Retro, team blue", True, "Retro, team blue"]
+
+
+def test_theme_picker_shows_thumbnails_and_separates_pro(app):
+    app.click("#btnSettings")
+    app.click("#tab-look")
+    cards = app.evaluate(
+        "[...document.querySelectorAll('#themeRow .theme-card')].map(b => [b.dataset.theme, b.classList.contains('locked'),"
+        " (b.querySelector('img') || {}).src ? 1 : 0])"
+    )
+    assert len(cards) == 23 and all(c[2] == 1 for c in cards), cards       # every theme has its thumbnail
+    assert [c[0] for c in cards[:3]] == ["disc", "midnight", "paper"]      # included themes come first
+    assert not any(c[1] for c in cards[:3]) and all(c[1] for c in cards[3:])
+    app.click('#themeRow .theme-card[data-theme="nixie"]')                 # a locked theme previews live
+    assert app.evaluate("[PV.id, st.theme]") == ["nixie", "disc"]
+
+
+def test_pro_can_hide_or_show_the_brand(app):
+    assert app.evaluate("document.getElementById('tbBrand').hidden") is False
+    app.evaluate("LICENSE_OK = true; applyBranding(); refreshSettings()")
+    assert app.evaluate("document.getElementById('tbBrand').hidden") is True
+    app.click("#btnSettings")
+    app.click("#tab-look")
+    app.click("#brandDetails summary")
+    app.click("#brandToggle")
+    assert app.evaluate("[st.showBrand, document.getElementById('tbBrand').hidden]") == [True, False]
+
+
+def test_removing_the_licence_takes_two_clicks(app):
+    app.evaluate("LICENSE_OK = true; localStorage.setItem(LS.license, JSON.stringify({key:'K-1', activationId:'lki_1'}));"
+                 " refreshSettings(); applyProLocks()")
+    app.evaluate("(()=>{ const rl = document.getElementById('removeLicenseWrap'); rl.style.display = 'block'; })()")
+    app.click("#btnSettings")
+    app.locator("#removeLicense").scroll_into_view_if_needed()
+    app.click("#removeLicense")
+    assert app.evaluate("localStorage.getItem(LS.license) !== null")    # first click only asks
+    assert app.inner_text("#removeLicense") == "Click again to remove"
