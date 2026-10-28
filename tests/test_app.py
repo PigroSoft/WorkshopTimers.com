@@ -444,3 +444,29 @@ def test_removing_the_licence_takes_two_clicks(app):
     app.click("#removeLicense")
     assert app.evaluate("localStorage.getItem(LS.license) !== null")    # first click only asks
     assert app.inner_text("#removeLicense") == "Click again to remove"
+
+
+# ---------------------------------------------------------------- languages and voice clips
+
+def test_every_language_translates_the_whole_panel(app):
+    keys = app.evaluate("[...new Set([...document.querySelectorAll('[data-i18n]')].map(e => e.dataset.i18n))]")
+    missing = app.evaluate("keys => Object.keys(I18N).map(l => [l, keys.filter(k => !(k in I18N[l]))]).filter(x => x[1].length)", keys)
+    assert missing == [], missing
+    app.evaluate("st.lang = 'ja'; applyLang(); refreshSettings()")
+    assert app.inner_text("#tab-sound") == "サウンド"
+
+
+def test_voice_alerts_play_recorded_clips_in_the_app_language(app):
+    app.evaluate("""window.__played = []; window.Audio = function(src){ window.__played.push(src);
+        return { play(){ return Promise.resolve(); }, set onerror(f){} }; }""")
+    app.evaluate("st.lang = 'fr'; announce('Attention please. Thirty seconds remaining.')")
+    app.evaluate("st.lang = 'de'; announce('Attention please. Two minutes remaining.')")   # no German clips: English
+    played = [u for u in app.evaluate("window.__played") if isinstance(u, str) and u.startswith("voice/")]
+    assert played == ["voice/fr/s30.mp3", "voice/en/m2.mp3"]
+
+
+def test_every_voice_clip_exists():
+    langs = ["en", "es", "fr", "it", "pt", "hi", "ja", "zh"]
+    missing = [f"{l}/{k}.mp3" for l in langs for k in ["s30", "m2", "half", "on"]
+               if not (ROOT / "voice" / l / f"{k}.mp3").is_file()]
+    assert not missing, missing

@@ -47,7 +47,7 @@ Space start/pause · R reset · F fullscreen · T next theme · M mute · ↑↓
 - Settings live in one browser. A private window, cleared site data or a different browser starts from scratch unless you load a settings file.
 - The first visit needs a network connection; after that, the installed app or a cached page opens offline.
 - Browsers block sound until you click or press a key on the page. If you refresh while a timer is running, the countdown carries on, but the end sound may stay silent unless someone touches the page before it finishes.
-- Voice alerts use your browser's built-in speech voices and are spoken in English only, whatever language the interface is in.
+- Voice alerts are recorded clips in English, Spanish, French, Italian, Portuguese, Hindi, Japanese and Chinese; other interface languages hear English. If a clip can't play, the browser's own speech voice takes over. The clips are made with the open Kokoro voice model; see [VOICES.md](VOICES.md).
 - Several themes (Lava, Aurora, Ocean, Orb and others) draw animated WebGL backgrounds that can be slow on old or low-power machines. Time Disc, the default, is light.
 - Activating Pro on a new device needs a connection to Dodo Payments, and Dodo enforces a per-key device limit.
 - The legal pages have not had a lawyer's review; the Impressum, AGB and Widerruf pages are still templates.

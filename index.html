@@ -1829,8 +1829,8 @@
       <a href="widerruf.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline">Refunds&nbsp;(Widerrufsrecht)</a>
     </div>
           <div class="help" style="margin-top:.6rem;"><span data-i18n="sourceText">Licensed under the Elastic License 2.0.</span> <a href="https://workshoptimers.com/license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline" data-i18n="sourceLink">Learn more</a></div>
-          <h3 class="legal-head">Support</h3>
-          <div class="help">
+          <h3 class="legal-head" data-i18n="supportHeading">Support</h3>
+          <div class="help" data-i18n="supportBody">
       Found a bug or something looks wrong? Email <a href="mailto:support@pigrosoft.com" style="color:inherit; text-decoration:underline">support@pigrosoft.com</a> with what you were doing, which theme/browser you were using, and a screenshot if you can grab one — that's usually enough to track it down.
     </div>
         </div>
@@ -1959,7 +1959,7 @@
     <div class="panel-footer">
       <span class="eu-badge">
       <svg viewBox="0 0 20 20" width="36" height="36" aria-hidden="true"><defs><polygon id="s" points="0.000,-0.900 0.202,-0.278 0.856,-0.278 0.327,0.106 0.529,0.728 0.000,0.344 -0.529,0.728 -0.327,0.106 -0.856,-0.278 -0.202,-0.278"/></defs><circle cx="10" cy="10" r="9.3" fill="#003399"/><g fill="#ffcc00"><use href="#s" transform="translate(10,2.8) scale(1.05)"/><use href="#s" transform="translate(13.6,3.76) scale(1.05)"/><use href="#s" transform="translate(16.24,6.4) scale(1.05)"/><use href="#s" transform="translate(17.2,10) scale(1.05)"/><use href="#s" transform="translate(16.24,13.6) scale(1.05)"/><use href="#s" transform="translate(13.6,16.24) scale(1.05)"/><use href="#s" transform="translate(10,17.2) scale(1.05)"/><use href="#s" transform="translate(6.4,16.24) scale(1.05)"/><use href="#s" transform="translate(3.76,13.6) scale(1.05)"/><use href="#s" transform="translate(2.8,10) scale(1.05)"/><use href="#s" transform="translate(3.76,6.4) scale(1.05)"/><use href="#s" transform="translate(6.4,3.76) scale(1.05)"/></g></svg>
-      Made in the EU
+      <span data-i18n="madeInEU">Made in the EU</span>
     </span>
       <span class="saved-indicator" data-i18n="savedOnDevice">Saved on this device</span>
     </div>
@@ -2053,7 +2053,9 @@ const I18N = {
     titleAppearance:"Light / dark", titleSettings:"Settings", titleCloseSettings:"Close settings", titleMute:"Sound on/off (M)", titleFull:"Fullscreen (F)",
     titleReset:"Reset (R)", titlePlus30:"Add 30 seconds", titleShuffle:"Shuffle theme", shortcut:"Shortcut:",
     startBtn:"Start", pauseBtn:"Pause", sec:"sec", min:"min", previewingLabel:"Previewing",
-    paused:"paused", stopwatchWord:"stopwatch", timesUp:"time's up", remaining:"remaining", oclock:"o'clock"
+    paused:"paused", stopwatchWord:"stopwatch", timesUp:"time's up", remaining:"remaining", oclock:"o'clock",
+    supportHeading:"Support", supportBody:"Found a bug or something looks wrong? Email <a href=\"mailto:support@pigrosoft.com\">support@pigrosoft.com</a> with what you were doing, which theme and browser you were using, and a screenshot if you can.", madeInEU:"Made in the EU", licErrInvalid:"That key didn't validate. Double-check it and try again.", licErrLimit:"This key has reached its device limit. Remove the licence on an old device or contact support.", licErrNetwork:"Couldn't reach the licence server. Check your connection and try again.",
+    fontDefault:"Theme default", fontCustom:"Custom (your upload)",
   },
   de: {
     settingsTitle:"Einstellungen", languageHeading:"Sprache",
@@ -2086,7 +2088,9 @@ const I18N = {
     titleAppearance:"Hell / Dunkel", titleSettings:"Einstellungen", titleCloseSettings:"Einstellungen schließen", titleMute:"Ton an/aus (M)", titleFull:"Vollbild (F)",
     titleReset:"Reset (R)", titlePlus30:"30 Sekunden hinzufügen", titleShuffle:"Design mischen", shortcut:"Kürzel:",
     startBtn:"Start", pauseBtn:"Pause", sec:"Sek", min:"Min", previewingLabel:"Vorschau:",
-    paused:"pausiert", stopwatchWord:"Stoppuhr", timesUp:"Zeit ist um", remaining:"verbleibend", oclock:"Uhr"
+    paused:"pausiert", stopwatchWord:"Stoppuhr", timesUp:"Zeit ist um", remaining:"verbleibend", oclock:"Uhr",
+    proPitch:"<b>Mach ihn zu deinem.</b> Mit Pro bekommst du deine eigene Kopie von Workshop Timer, lizenziert für deine Arbeit, und eine Anleitung, mit der jede KI ihn nach deinen Wünschen ändern kann. Deine Marke, dein Layout, deine Funktionen, in Minuten. {price} einmalig, kein Abo.", teamBtn:"Teamlizenz, bis zu 5 Personen, {price}", supportHeading:"Support", supportBody:"Einen Fehler gefunden oder sieht etwas falsch aus? Schreib an <a href=\"mailto:support@pigrosoft.com\">support@pigrosoft.com</a>, was du gerade gemacht hast, welches Design und welchen Browser du nutzt, und wenn möglich mit Screenshot.", madeInEU:"Hergestellt in der EU", licErrInvalid:"Dieser Schlüssel wurde nicht bestätigt. Prüfe ihn und versuch es noch einmal.", licErrLimit:"Dieser Schlüssel hat sein Gerätelimit erreicht. Entferne die Lizenz auf einem alten Gerät oder wende dich an den Support.", licErrNetwork:"Der Lizenzserver war nicht erreichbar. Prüfe deine Verbindung und versuch es noch einmal.",
+    fontDefault:"Standard des Designs", fontCustom:"Eigene (hochgeladen)",
   },
   fr: {
     settingsTitle:"Réglages", languageHeading:"Langue",
@@ -2112,7 +2116,9 @@ const I18N = {
     titleAppearance:"Clair / sombre", titleSettings:"Réglages", titleCloseSettings:"Fermer les réglages", titleMute:"Son on/off (M)", titleFull:"Plein écran (F)",
     titleReset:"Réinitialiser (R)", titlePlus30:"Ajouter 30 secondes", titleShuffle:"Thème aléatoire", shortcut:"Raccourci :",
     startBtn:"Démarrer", pauseBtn:"Pause", sec:"s", min:"min", previewingLabel:"Aperçu",
-    paused:"en pause", stopwatchWord:"chronomètre", timesUp:"c'est l'heure", remaining:"restant", oclock:"heures"
+    paused:"en pause", stopwatchWord:"chronomètre", timesUp:"c'est l'heure", remaining:"restant", oclock:"heures",
+    appearanceHeading:"Apparence", applyBtn:"Appliquer", backupHeading:"Sauvegarde des réglages", confirmBody:"Le minuteur en cours sera arrêté.", confirmGo:"Nouvelle session", confirmKeep:"Continuer", confirmTitle:"Commencer une nouvelle session ?", darkBtn:"Sombre", dataBody:"Vos réglages restent uniquement dans ce navigateur. Enregistrez-les dans un fichier pour en garder une copie ou les utiliser sur un autre ordinateur.", dataHeading:"Votre fichier de réglages", durationError:"Saisissez des minutes, mm:ss ou h:mm:ss, par exemple 15, 10:30 ou 1:00:00.", durationFormat:"minutes, mm:ss ou h:mm:ss", durationHeading:"Durée", durationOff:"Non utilisé en mode Chronomètre ou Horloge.", endSoundHeading:"Son de fin", exportBtn:"Enregistrer le fichier", helpAbout:"Aide et infos", importBad:"Ce fichier ne ressemble pas à un fichier de réglages Workshop Timer.", importBtn:"Charger un fichier", includedThemes:"Inclus", lightBtn:"Clair", modeClock:"Horloge", modeClockDesc:"L'heure actuelle", modeCountdown:"Compte à rebours", modeCountdownDesc:"Décompte jusqu'à zéro", modeHelp:"Changer de mode réinitialise le minuteur.", modePomodoro:"Pomodoro", modePomodoroDesc:"25 min de travail, 5 min de pause", modeStopwatch:"Chronomètre", modeStopwatchDesc:"Compte à partir de zéro", moreThemes:"Plus de thèmes", moreThemesHint:"Cliquez sur un thème pour l'essayer 15 secondes sur votre minuteur.", previewBtn:"Écouter", proComingSoon:"Tout le reste est gratuit. Les thèmes supplémentaires seront un achat Pro unique dès l'ouverture des ventes ; d'ici là, vous pouvez les essayer quelques secondes depuis la liste.", proPitch:"<b>Faites-le vôtre.</b> Pro vous donne votre propre copie de Workshop Timer, sous licence pour votre travail, et un guide qui permet à n'importe quelle IA de la modifier comme vous le souhaitez. Votre marque, votre mise en page, vos fonctions, en quelques minutes. {price} une seule fois, sans abonnement.", proSoonShort:"Pro bientôt disponible", removeLicenceBtn:"Retirer la licence de cet appareil", removeLicenceConfirm:"Cliquez à nouveau pour retirer", removeLicenceHelp:"Vous changez d'ordinateur ? Retirez d'abord la licence ici pour libérer un de vos appareils. Vous pourrez la réactiver à tout moment avec votre clé.", savedOnDevice:"Enregistré sur cet appareil", sessionNameHeading:"Nom de la session", showBrandLabel:"Afficher WorkshopTimers.com dans la barre du haut", soundNote:"Les navigateurs ne jouent du son qu'après un premier clic ou appui sur la page.", sourceLink:"En savoir plus", sourceText:"Sous licence Elastic License 2.0.", srTimesUp:"Temps écoulé", tabLook:"Apparence", tabSound:"Son", tabTimer:"Minuteur", teamBtn:"Licence équipe, jusqu'à 5 personnes, {price}", tickSoundHeading:"Son du tic-tac", titleEditTime:"Réglez le temps : tapez 15, 10:30 ou 1:00:00", supportHeading:"Assistance", supportBody:"Un bug ou quelque chose qui cloche ? Écrivez à <a href=\"mailto:support@pigrosoft.com\">support@pigrosoft.com</a> en précisant ce que vous faisiez, le thème et le navigateur utilisés, et une capture d'écran si possible.", madeInEU:"Fabriqué dans l'UE", licErrInvalid:"Cette clé n'a pas été validée. Vérifiez-la et réessayez.", licErrLimit:"Cette clé a atteint sa limite d'appareils. Retirez la licence d'un ancien appareil ou contactez l'assistance.", licErrNetwork:"Impossible de joindre le serveur de licences. Vérifiez votre connexion et réessayez.",
+    fontDefault:"Police du thème", fontCustom:"Personnalisée (votre fichier)",
   },
   es: {
     settingsTitle:"Ajustes", languageHeading:"Idioma",
@@ -2138,7 +2144,9 @@ const I18N = {
     titleAppearance:"Claro / oscuro", titleSettings:"Ajustes", titleCloseSettings:"Cerrar ajustes", titleMute:"Sonido on/off (M)", titleFull:"Pantalla completa (F)",
     titleReset:"Reiniciar (R)", titlePlus30:"Añadir 30 segundos", titleShuffle:"Tema aleatorio", shortcut:"Atajo:",
     startBtn:"Iniciar", pauseBtn:"Pausa", sec:"seg", min:"min", previewingLabel:"Vista previa",
-    paused:"en pausa", stopwatchWord:"cronómetro", timesUp:"se acabó el tiempo", remaining:"restante", oclock:"en punto"
+    paused:"en pausa", stopwatchWord:"cronómetro", timesUp:"se acabó el tiempo", remaining:"restante", oclock:"en punto",
+    appearanceHeading:"Apariencia", applyBtn:"Aplicar", backupHeading:"Copia de seguridad", confirmBody:"Esto detiene el temporizador en marcha.", confirmGo:"Nueva sesión", confirmKeep:"Seguir", confirmTitle:"¿Empezar una nueva sesión?", darkBtn:"Oscuro", dataBody:"Tus ajustes solo se guardan en este navegador. Guárdalos en un archivo para tener una copia o usarlos en otro ordenador.", dataHeading:"Tu archivo de ajustes", durationError:"Escribe minutos, mm:ss o h:mm:ss, por ejemplo 15, 10:30 o 1:00:00.", durationFormat:"minutos, mm:ss o h:mm:ss", durationHeading:"Duración", durationOff:"No se usa en los modos Cronómetro y Reloj.", endSoundHeading:"Sonido final", exportBtn:"Guardar archivo", helpAbout:"Ayuda e información", importBad:"Ese archivo no parece un archivo de ajustes de Workshop Timer.", importBtn:"Cargar archivo", includedThemes:"Incluidos", lightBtn:"Claro", modeClock:"Reloj", modeClockDesc:"La hora actual", modeCountdown:"Cuenta atrás", modeCountdownDesc:"Hasta llegar a cero", modeHelp:"Cambiar de modo reinicia el temporizador.", modePomodoro:"Pomodoro", modePomodoroDesc:"25 min de foco, 5 min de pausa", modeStopwatch:"Cronómetro", modeStopwatchDesc:"Cuenta desde cero", moreThemes:"Más temas", moreThemesHint:"Haz clic en uno para probarlo 15 segundos en tu temporizador.", previewBtn:"Escuchar", proComingSoon:"Todo lo demás es gratis. Los temas extra serán una compra Pro única cuando abran las ventas; mientras tanto puedes probarlos unos segundos desde la lista.", proPitch:"<b>Hazlo tuyo.</b> Pro te da tu propia copia de Workshop Timer, con licencia para tu trabajo, y una guía para que cualquier IA la cambie como quieras. Tu marca, tu diseño, tus funciones, en minutos. {price} una sola vez, sin suscripción.", proSoonShort:"Pro muy pronto", removeLicenceBtn:"Quitar la licencia de este dispositivo", removeLicenceConfirm:"Haz clic otra vez para quitarla", removeLicenceHelp:"¿Cambias de ordenador? Quita aquí la licencia primero para liberar uno de tus dispositivos. Puedes volver a añadirla cuando quieras con tu clave.", savedOnDevice:"Guardado en este dispositivo", sessionNameHeading:"Nombre de la sesión", showBrandLabel:"Mostrar WorkshopTimers.com en la barra superior", soundNote:"Los navegadores solo reproducen sonido después de que hagas clic o toques la página una vez.", sourceLink:"Más información", sourceText:"Con licencia Elastic License 2.0.", srTimesUp:"Se acabó el tiempo", tabLook:"Aspecto", tabSound:"Sonido", tabTimer:"Temporizador", teamBtn:"Licencia de equipo, hasta 5 personas, {price}", tickSoundHeading:"Sonido del tictac", titleEditTime:"Ajusta el tiempo: escribe 15, 10:30 o 1:00:00", supportHeading:"Soporte", supportBody:"¿Has encontrado un fallo o algo se ve mal? Escribe a <a href=\"mailto:support@pigrosoft.com\">support@pigrosoft.com</a> contando qué hacías, qué tema y navegador usabas y, si puedes, una captura de pantalla.", madeInEU:"Hecho en la UE", licErrInvalid:"Esa clave no se ha validado. Revísala e inténtalo de nuevo.", licErrLimit:"Esta clave ha alcanzado su límite de dispositivos. Quita la licencia de un dispositivo antiguo o contacta con soporte.", licErrNetwork:"No se pudo conectar con el servidor de licencias. Revisa tu conexión e inténtalo de nuevo.",
+    fontDefault:"La del tema", fontCustom:"Personalizada (tu archivo)",
   },
   zh: {
     settingsTitle:"设置", languageHeading:"语言",
@@ -2164,7 +2172,9 @@ const I18N = {
     titleAppearance:"浅色 / 深色", titleSettings:"设置", titleCloseSettings:"关闭设置", titleMute:"声音开关 (M)", titleFull:"全屏 (F)",
     titleReset:"重置 (R)", titlePlus30:"增加30秒", titleShuffle:"随机主题", shortcut:"快捷键：",
     startBtn:"开始", pauseBtn:"暂停", sec:"秒", min:"分", previewingLabel:"预览中",
-    paused:"已暂停", stopwatchWord:"秒表", timesUp:"时间到", remaining:"剩余", oclock:"点整"
+    paused:"已暂停", stopwatchWord:"秒表", timesUp:"时间到", remaining:"剩余", oclock:"点整",
+    appearanceHeading:"外观", applyBtn:"应用", backupHeading:"设置备份", confirmBody:"这会停止正在运行的计时器。", confirmGo:"开始新会话", confirmKeep:"继续计时", confirmTitle:"开始新的会话？", darkBtn:"深色", dataBody:"你的设置只保存在这个浏览器中。可将其保存为文件，用作备份或迁移到另一台电脑。", dataHeading:"你的设置文件", durationError:"请输入分钟数、mm:ss 或 h:mm:ss，例如 15、10:30 或 1:00:00。", durationFormat:"分钟、mm:ss 或 h:mm:ss", durationHeading:"时长", durationOff:"秒表和时钟模式下不使用。", endSoundHeading:"结束提示音", exportBtn:"保存设置文件", helpAbout:"帮助与关于", importBad:"这不像是 Workshop Timer 的设置文件。", importBtn:"载入设置文件", includedThemes:"免费包含", lightBtn:"浅色", modeClock:"时钟", modeClockDesc:"显示当前时间", modeCountdown:"倒计时", modeCountdownDesc:"倒数到零", modeHelp:"切换模式会重置计时器。", modePomodoro:"番茄钟", modePomodoroDesc:"专注 25 分钟，休息 5 分钟", modeStopwatch:"秒表", modeStopwatchDesc:"从零开始计时", moreThemes:"更多主题", moreThemesHint:"点击任一主题，可在计时器上试用 15 秒。", previewBtn:"试听", proComingSoon:"其他功能全部免费。额外主题将在开售后作为一次性 Pro 购买提供；在此之前，你可以在列表中试用几秒钟。", proPitch:"<b>打造你自己的版本。</b>Pro 为你提供一份属于你自己的 Workshop Timer，授权用于你的工作，并附带一份指南，让任何 AI 按你的想法修改它。你的品牌、你的布局、你的功能，几分钟搞定。一次性 {price}，无需订阅。", proSoonShort:"Pro 即将推出", removeLicenceBtn:"从此设备移除授权", removeLicenceConfirm:"再次点击以移除", removeLicenceHelp:"要换电脑？请先在这里移除授权，以释放一个设备名额。之后随时可以用你的密钥重新添加。", savedOnDevice:"已保存在此设备", sessionNameHeading:"会话名称", showBrandLabel:"在顶部栏显示 WorkshopTimers.com", soundNote:"浏览器需要你先在页面上点击或轻触一次，才会播放声音。", sourceLink:"了解更多", sourceText:"采用 Elastic License 2.0 许可。", srTimesUp:"时间到", tabLook:"外观", tabSound:"声音", tabTimer:"计时器", teamBtn:"团队授权，最多 5 人，{price}", tickSoundHeading:"滴答声", titleEditTime:"设置时间：输入 15、10:30 或 1:00:00", supportHeading:"支持", supportBody:"发现了错误或显示不正常？请发邮件至 <a href=\"mailto:support@pigrosoft.com\">support@pigrosoft.com</a>，说明你当时在做什么、使用的主题和浏览器，如果可以请附上截图。", madeInEU:"欧盟制造", licErrInvalid:"此密钥未通过验证。请检查后重试。", licErrLimit:"此密钥已达到设备上限。请在旧设备上移除授权，或联系支持。", licErrNetwork:"无法连接授权服务器。请检查网络后重试。",
+    fontDefault:"主题默认", fontCustom:"自定义（你上传的）",
   },
   pt: {
     settingsTitle:"Configurações", languageHeading:"Idioma",
@@ -2190,7 +2200,9 @@ const I18N = {
     titleAppearance:"Claro / escuro", titleSettings:"Configurações", titleCloseSettings:"Fechar configurações", titleMute:"Som on/off (M)", titleFull:"Tela cheia (F)",
     titleReset:"Reiniciar (R)", titlePlus30:"Adicionar 30 segundos", titleShuffle:"Tema aleatório", shortcut:"Atalho:",
     startBtn:"Iniciar", pauseBtn:"Pausar", sec:"seg", min:"min", previewingLabel:"Pré-visualizando",
-    paused:"pausado", stopwatchWord:"cronômetro", timesUp:"o tempo acabou", remaining:"restante", oclock:"em ponto"
+    paused:"pausado", stopwatchWord:"cronômetro", timesUp:"o tempo acabou", remaining:"restante", oclock:"em ponto",
+    appearanceHeading:"Aparência", applyBtn:"Aplicar", backupHeading:"Backup das configurações", confirmBody:"Isso para o timer que está rodando.", confirmGo:"Nova sessão", confirmKeep:"Continuar", confirmTitle:"Começar uma nova sessão?", darkBtn:"Escuro", dataBody:"Suas configurações ficam só neste navegador. Salve-as em um arquivo para ter um backup ou levar sua configuração para outro computador.", dataHeading:"Seu arquivo de configurações", durationError:"Digite minutos, mm:ss ou h:mm:ss, como 15, 10:30 ou 1:00:00.", durationFormat:"minutos, mm:ss ou h:mm:ss", durationHeading:"Duração", durationOff:"Não usado nos modos Cronômetro e Relógio.", endSoundHeading:"Som final", exportBtn:"Salvar arquivo", helpAbout:"Ajuda e sobre", importBad:"Esse arquivo não parece ser um arquivo de configurações do Workshop Timer.", importBtn:"Carregar arquivo", includedThemes:"Incluídos", lightBtn:"Claro", modeClock:"Relógio", modeClockDesc:"A hora atual", modeCountdown:"Contagem regressiva", modeCountdownDesc:"Conta até zero", modeHelp:"Mudar de modo reinicia o timer.", modePomodoro:"Pomodoro", modePomodoroDesc:"25 min de foco, 5 min de pausa", modeStopwatch:"Cronômetro", modeStopwatchDesc:"Conta a partir de zero", moreThemes:"Mais temas", moreThemesHint:"Clique em um para testá-lo no seu timer por 15 segundos.", previewBtn:"Ouvir", proComingSoon:"Todo o resto é grátis. Os temas extras serão uma compra Pro única quando as vendas abrirem; até lá, você pode testá-los por alguns segundos na lista.", proPitch:"<b>Faça do seu jeito.</b> O Pro dá a você sua própria cópia do Workshop Timer, licenciada para o seu trabalho, e um guia para que qualquer IA a altere como você quiser. Sua marca, seu layout, seus recursos, em minutos. {price} uma única vez, sem assinatura.", proSoonShort:"Pro em breve", removeLicenceBtn:"Remover a licença deste dispositivo", removeLicenceConfirm:"Clique de novo para remover", removeLicenceHelp:"Vai trocar de computador? Remova a licença aqui primeiro para liberar um dos seus dispositivos. Você pode adicioná-la de novo quando quiser com sua chave.", savedOnDevice:"Salvo neste dispositivo", sessionNameHeading:"Nome da sessão", showBrandLabel:"Mostrar WorkshopTimers.com na barra superior", soundNote:"Os navegadores só tocam som depois que você clica ou toca na página uma vez.", sourceLink:"Saiba mais", sourceText:"Licenciado sob a Elastic License 2.0.", srTimesUp:"O tempo acabou", tabLook:"Visual", tabSound:"Som", tabTimer:"Timer", teamBtn:"Licença de equipe, até 5 pessoas, {price}", tickSoundHeading:"Som do tique-taque", titleEditTime:"Defina o tempo: digite 15, 10:30 ou 1:00:00", supportHeading:"Suporte", supportBody:"Encontrou um bug ou algo parece errado? Escreva para <a href=\"mailto:support@pigrosoft.com\">support@pigrosoft.com</a> contando o que você estava fazendo, qual tema e navegador usava e, se puder, um print da tela.", madeInEU:"Feito na UE", licErrInvalid:"Essa chave não foi validada. Confira e tente de novo.", licErrLimit:"Esta chave atingiu o limite de dispositivos. Remova a licença de um dispositivo antigo ou fale com o suporte.", licErrNetwork:"Não foi possível falar com o servidor de licenças. Confira sua conexão e tente de novo.",
+    fontDefault:"Padrão do tema", fontCustom:"Personalizada (seu arquivo)",
   },
   ja: {
     settingsTitle:"設定", languageHeading:"言語",
@@ -2216,7 +2228,9 @@ const I18N = {
     titleAppearance:"ライト / ダーク", titleSettings:"設定", titleCloseSettings:"設定を閉じる", titleMute:"サウンド オン/オフ (M)", titleFull:"全画面 (F)",
     titleReset:"リセット (R)", titlePlus30:"30秒追加", titleShuffle:"テーマをシャッフル", shortcut:"ショートカット：",
     startBtn:"開始", pauseBtn:"一時停止", sec:"秒", min:"分", previewingLabel:"プレビュー中",
-    paused:"一時停止中", stopwatchWord:"ストップウォッチ", timesUp:"時間になりました", remaining:"残り", oclock:"時"
+    paused:"一時停止中", stopwatchWord:"ストップウォッチ", timesUp:"時間になりました", remaining:"残り", oclock:"時",
+    appearanceHeading:"表示", applyBtn:"適用", backupHeading:"設定のバックアップ", confirmBody:"実行中のタイマーは停止されます。", confirmGo:"新しいセッション", confirmKeep:"このまま続ける", confirmTitle:"新しいセッションを始めますか？", darkBtn:"ダーク", dataBody:"設定はこのブラウザにのみ保存されます。ファイルに保存すると、バックアップや別のパソコンへの移行に使えます。", dataHeading:"設定ファイル", durationError:"分、mm:ss、h:mm:ss の形式で入力してください（例：15、10:30、1:00:00）。", durationFormat:"分、mm:ss、h:mm:ss", durationHeading:"時間", durationOff:"ストップウォッチと時計モードでは使いません。", endSoundHeading:"終了音", exportBtn:"設定ファイルを保存", helpAbout:"ヘルプと情報", importBad:"Workshop Timer の設定ファイルではないようです。", importBtn:"設定ファイルを読み込む", includedThemes:"標準テーマ", lightBtn:"ライト", modeClock:"時計", modeClockDesc:"現在の時刻", modeCountdown:"カウントダウン", modeCountdownDesc:"ゼロまで数える", modeHelp:"モードを切り替えるとタイマーはリセットされます。", modePomodoro:"ポモドーロ", modePomodoroDesc:"集中25分、休憩5分", modeStopwatch:"ストップウォッチ", modeStopwatchDesc:"ゼロから数える", moreThemes:"その他のテーマ", moreThemesHint:"テーマをクリックすると、タイマーで15秒間お試しできます。", previewBtn:"試聴", proComingSoon:"その他の機能はすべて無料です。追加テーマは販売開始後に Pro の買い切りで利用できます。それまではリストから数秒間お試しできます。", proPitch:"<b>自分仕様に。</b>Pro では、お仕事用にライセンスされた Workshop Timer のあなた専用コピーと、どんな AI でも思いどおりに変更できるガイドが手に入ります。ブランドもレイアウトも機能も、数分で。{price} の買い切り、サブスクなし。", proSoonShort:"Pro まもなく登場", removeLicenceBtn:"この端末からライセンスを削除", removeLicenceConfirm:"もう一度クリックで削除", removeLicenceHelp:"別のパソコンに移りますか？先にここでライセンスを削除すると、端末の枠が1つ空きます。キーがあればいつでも再登録できます。", savedOnDevice:"この端末に保存済み", sessionNameHeading:"セッション名", showBrandLabel:"上部バーに WorkshopTimers.com を表示", soundNote:"ブラウザは、ページを一度クリックまたはタップした後でないと音を鳴らしません。", sourceLink:"詳しく見る", sourceText:"Elastic License 2.0 のもとでライセンスされています。", srTimesUp:"時間です", tabLook:"外観", tabSound:"サウンド", tabTimer:"タイマー", teamBtn:"チームライセンス（最大5人）{price}", tickSoundHeading:"チクタク音", titleEditTime:"時間を設定：15、10:30、1:00:00 のように入力", supportHeading:"サポート", supportBody:"不具合や表示のおかしな点を見つけたら、<a href=\"mailto:support@pigrosoft.com\">support@pigrosoft.com</a> までご連絡ください。何をしていたか、使っていたテーマとブラウザ、できればスクリーンショットも添えてください。", madeInEU:"EU製", licErrInvalid:"このキーは認証されませんでした。確認してもう一度お試しください。", licErrLimit:"このキーは端末数の上限に達しています。古い端末でライセンスを削除するか、サポートにご連絡ください。", licErrNetwork:"ライセンスサーバーに接続できませんでした。接続を確認してもう一度お試しください。",
+    fontDefault:"テーマの標準", fontCustom:"カスタム（アップロード）",
   },
   it: {
     settingsTitle:"Impostazioni", languageHeading:"Lingua",
@@ -2242,7 +2256,9 @@ const I18N = {
     titleAppearance:"Chiaro / scuro", titleSettings:"Impostazioni", titleCloseSettings:"Chiudi impostazioni", titleMute:"Audio on/off (M)", titleFull:"Schermo intero (F)",
     titleReset:"Reimposta (R)", titlePlus30:"Aggiungi 30 secondi", titleShuffle:"Tema casuale", shortcut:"Scorciatoia:",
     startBtn:"Avvia", pauseBtn:"Pausa", sec:"sec", min:"min", previewingLabel:"Anteprima",
-    paused:"in pausa", stopwatchWord:"cronometro", timesUp:"tempo scaduto", remaining:"rimanente", oclock:"in punto"
+    paused:"in pausa", stopwatchWord:"cronometro", timesUp:"tempo scaduto", remaining:"rimanente", oclock:"in punto",
+    appearanceHeading:"Aspetto", applyBtn:"Applica", backupHeading:"Backup delle impostazioni", confirmBody:"Il timer in corso verrà fermato.", confirmGo:"Nuova sessione", confirmKeep:"Continua", confirmTitle:"Iniziare una nuova sessione?", darkBtn:"Scuro", dataBody:"Le tue impostazioni restano solo in questo browser. Salvale in un file per averne una copia o usarle su un altro computer.", dataHeading:"Il tuo file di impostazioni", durationError:"Scrivi minuti, mm:ss o h:mm:ss, per esempio 15, 10:30 o 1:00:00.", durationFormat:"minuti, mm:ss o h:mm:ss", durationHeading:"Durata", durationOff:"Non usato nelle modalità Cronometro e Orologio.", endSoundHeading:"Suono finale", exportBtn:"Salva file", helpAbout:"Aiuto e informazioni", importBad:"Questo file non sembra un file di impostazioni di Workshop Timer.", importBtn:"Carica file", includedThemes:"Inclusi", lightBtn:"Chiaro", modeClock:"Orologio", modeClockDesc:"L'ora attuale", modeCountdown:"Conto alla rovescia", modeCountdownDesc:"Fino a zero", modeHelp:"Cambiare modalità azzera il timer.", modePomodoro:"Pomodoro", modePomodoroDesc:"25 min di concentrazione, 5 min di pausa", modeStopwatch:"Cronometro", modeStopwatchDesc:"Conta da zero", moreThemes:"Altri temi", moreThemesHint:"Fai clic su un tema per provarlo sul timer per 15 secondi.", previewBtn:"Ascolta", proComingSoon:"Tutto il resto è gratuito. I temi extra saranno un acquisto Pro una tantum all'apertura delle vendite; fino ad allora puoi provarli per qualche secondo dall'elenco.", proPitch:"<b>Rendilo tuo.</b> Pro ti dà la tua copia di Workshop Timer, con licenza per il tuo lavoro, e una guida che permette a qualsiasi IA di modificarla come vuoi. Il tuo marchio, il tuo layout, le tue funzioni, in pochi minuti. {price} una volta sola, senza abbonamento.", proSoonShort:"Pro in arrivo", removeLicenceBtn:"Rimuovi la licenza da questo dispositivo", removeLicenceConfirm:"Fai clic di nuovo per rimuovere", removeLicenceHelp:"Cambi computer? Rimuovi prima qui la licenza per liberare uno dei tuoi dispositivi. Puoi aggiungerla di nuovo quando vuoi con la tua chiave.", savedOnDevice:"Salvato su questo dispositivo", sessionNameHeading:"Nome della sessione", showBrandLabel:"Mostra WorkshopTimers.com nella barra in alto", soundNote:"I browser riproducono suoni solo dopo un primo clic o tocco sulla pagina.", sourceLink:"Scopri di più", sourceText:"Con licenza Elastic License 2.0.", srTimesUp:"Tempo scaduto", tabLook:"Aspetto", tabSound:"Suono", tabTimer:"Timer", teamBtn:"Licenza team, fino a 5 persone, {price}", tickSoundHeading:"Suono del ticchettio", titleEditTime:"Imposta il tempo: scrivi 15, 10:30 o 1:00:00", supportHeading:"Assistenza", supportBody:"Hai trovato un bug o qualcosa non va? Scrivi a <a href=\"mailto:support@pigrosoft.com\">support@pigrosoft.com</a> indicando cosa stavi facendo, il tema e il browser che usavi e, se puoi, uno screenshot.", madeInEU:"Prodotto nell'UE", licErrInvalid:"Questa chiave non è stata convalidata. Controllala e riprova.", licErrLimit:"Questa chiave ha raggiunto il limite di dispositivi. Rimuovi la licenza da un vecchio dispositivo o contatta l'assistenza.", licErrNetwork:"Impossibile raggiungere il server delle licenze. Controlla la connessione e riprova.",
+    fontDefault:"Predefinito del tema", fontCustom:"Personalizzato (il tuo file)",
   },
   ar: {
     settingsTitle:"الإعدادات", languageHeading:"اللغة",
@@ -2268,7 +2284,9 @@ const I18N = {
     titleAppearance:"فاتح / داكن", titleSettings:"الإعدادات", titleCloseSettings:"إغلاق الإعدادات", titleMute:"الصوت تشغيل/إيقاف (M)", titleFull:"ملء الشاشة (F)",
     titleReset:"إعادة تعيين (R)", titlePlus30:"إضافة 30 ثانية", titleShuffle:"سمة عشوائية", shortcut:"اختصار:",
     startBtn:"ابدأ", pauseBtn:"إيقاف مؤقت", sec:"ث", min:"د", previewingLabel:"معاينة",
-    paused:"متوقف مؤقتًا", stopwatchWord:"ساعة إيقاف", timesUp:"انتهى الوقت", remaining:"متبقٍ", oclock:"تمامًا"
+    paused:"متوقف مؤقتًا", stopwatchWord:"ساعة إيقاف", timesUp:"انتهى الوقت", remaining:"متبقٍ", oclock:"تمامًا",
+    appearanceHeading:"المظهر", applyBtn:"تطبيق", backupHeading:"نسخة احتياطية من الإعدادات", confirmBody:"سيؤدي هذا إلى إيقاف المؤقت الجاري.", confirmGo:"بدء جلسة جديدة", confirmKeep:"متابعة التشغيل", confirmTitle:"هل تريد بدء جلسة جديدة؟", darkBtn:"داكن", dataBody:"تبقى إعداداتك في هذا المتصفح فقط. احفظها في ملف للاحتفاظ بنسخة احتياطية أو لنقلها إلى جهاز آخر.", dataHeading:"ملف الإعدادات", durationError:"اكتب الدقائق أو mm:ss أو h:mm:ss، مثل 15 أو 10:30 أو 1:00:00.", durationFormat:"دقائق أو mm:ss أو h:mm:ss", durationHeading:"المدة", durationOff:"لا تُستخدم في وضعي ساعة الإيقاف والساعة.", endSoundHeading:"صوت الانتهاء", exportBtn:"حفظ ملف الإعدادات", helpAbout:"المساعدة والمعلومات", importBad:"لا يبدو هذا ملف إعدادات لـ Workshop Timer.", importBtn:"تحميل ملف الإعدادات", includedThemes:"المضمّنة", lightBtn:"فاتح", modeClock:"الساعة", modeClockDesc:"الوقت الحالي", modeCountdown:"عدّ تنازلي", modeCountdownDesc:"العدّ حتى الصفر", modeHelp:"تغيير الوضع يعيد ضبط المؤقت.", modePomodoro:"بومودورو", modePomodoroDesc:"25 دقيقة تركيز و5 دقائق استراحة", modeStopwatch:"ساعة الإيقاف", modeStopwatchDesc:"العدّ من الصفر", moreThemes:"سمات إضافية", moreThemesHint:"انقر على أي سمة لتجربتها على المؤقت لمدة 15 ثانية.", previewBtn:"استماع", proComingSoon:"كل شيء آخر مجاني. ستتوفر السمات الإضافية كشراء Pro لمرة واحدة عند فتح المبيعات؛ وحتى ذلك الحين يمكنك تجربتها لبضع ثوانٍ من القائمة.", proPitch:"<b>اجعله خاصًا بك.</b> يمنحك Pro نسختك الخاصة من Workshop Timer، مرخّصة لعملك، ودليلًا يتيح لأي ذكاء اصطناعي تعديلها كما تريد. علامتك وتصميمك وميزاتك، في دقائق. {price} مرة واحدة، دون اشتراك.", proSoonShort:"Pro قريبًا", removeLicenceBtn:"إزالة الترخيص من هذا الجهاز", removeLicenceConfirm:"انقر مرة أخرى للإزالة", removeLicenceHelp:"هل تنتقل إلى جهاز آخر؟ أزل الترخيص من هنا أولًا لتحرير أحد أجهزتك. يمكنك إضافته مجددًا في أي وقت باستخدام مفتاحك.", savedOnDevice:"محفوظ على هذا الجهاز", sessionNameHeading:"اسم الجلسة", showBrandLabel:"إظهار WorkshopTimers.com في الشريط العلوي", soundNote:"لا تشغّل المتصفحات الصوت إلا بعد النقر على الصفحة أو لمسها مرة واحدة.", sourceLink:"اعرف المزيد", sourceText:"مرخّص بموجب Elastic License 2.0.", srTimesUp:"انتهى الوقت", tabLook:"الشكل", tabSound:"الصوت", tabTimer:"المؤقت", teamBtn:"ترخيص فريق، حتى 5 أشخاص، {price}", tickSoundHeading:"صوت التكتكة", titleEditTime:"اضبط الوقت: اكتب 15 أو 10:30 أو 1:00:00", supportHeading:"الدعم", supportBody:"وجدت خطأ أو شيئًا يبدو غير صحيح؟ راسلنا على <a href=\"mailto:support@pigrosoft.com\">support@pigrosoft.com</a> واذكر ما كنت تفعله، والسمة والمتصفح اللذين تستخدمهما، وأرفق لقطة شاشة إن أمكن.", madeInEU:"صُنع في الاتحاد الأوروبي", licErrInvalid:"لم يتم التحقق من هذا المفتاح. تحقق منه وحاول مجددًا.", licErrLimit:"وصل هذا المفتاح إلى حد الأجهزة. أزل الترخيص من جهاز قديم أو تواصل مع الدعم.", licErrNetwork:"تعذّر الوصول إلى خادم التراخيص. تحقق من اتصالك وحاول مجددًا.",
+    fontDefault:"افتراضي السمة", fontCustom:"مخصص (ملفك)",
   },
   ru: {
     settingsTitle:"Настройки", languageHeading:"Язык",
@@ -2294,7 +2312,9 @@ const I18N = {
     titleAppearance:"Светлая / тёмная", titleSettings:"Настройки", titleCloseSettings:"Закрыть настройки", titleMute:"Звук вкл/выкл (M)", titleFull:"Во весь экран (F)",
     titleReset:"Сброс (R)", titlePlus30:"Добавить 30 секунд", titleShuffle:"Случайная тема", shortcut:"Клавиша:",
     startBtn:"Старт", pauseBtn:"Пауза", sec:"сек", min:"мин", previewingLabel:"Предпросмотр",
-    paused:"пауза", stopwatchWord:"секундомер", timesUp:"время вышло", remaining:"осталось", oclock:"ровно"
+    paused:"пауза", stopwatchWord:"секундомер", timesUp:"время вышло", remaining:"осталось", oclock:"ровно",
+    appearanceHeading:"Оформление", applyBtn:"Применить", backupHeading:"Резервная копия настроек", confirmBody:"Текущий таймер будет остановлен.", confirmGo:"Новая сессия", confirmKeep:"Продолжить", confirmTitle:"Начать новую сессию?", darkBtn:"Тёмная", dataBody:"Ваши настройки хранятся только в этом браузере. Сохраните их в файл, чтобы сделать резервную копию или перенести на другой компьютер.", dataHeading:"Файл настроек", durationError:"Введите минуты, мм:сс или ч:мм:сс, например 15, 10:30 или 1:00:00.", durationFormat:"минуты, мм:сс или ч:мм:сс", durationHeading:"Длительность", durationOff:"Не используется в режимах секундомера и часов.", endSoundHeading:"Звук окончания", exportBtn:"Сохранить файл", helpAbout:"Справка и информация", importBad:"Это не похоже на файл настроек Workshop Timer.", importBtn:"Загрузить файл", includedThemes:"Бесплатные", lightBtn:"Светлая", modeClock:"Часы", modeClockDesc:"Текущее время", modeCountdown:"Обратный отсчёт", modeCountdownDesc:"Отсчёт до нуля", modeHelp:"Смена режима сбрасывает таймер.", modePomodoro:"Помодоро", modePomodoroDesc:"25 мин работы, 5 мин отдыха", modeStopwatch:"Секундомер", modeStopwatchDesc:"Отсчёт от нуля", moreThemes:"Ещё темы", moreThemesHint:"Нажмите на тему, чтобы попробовать её на таймере 15 секунд.", previewBtn:"Прослушать", proComingSoon:"Всё остальное бесплатно. Дополнительные темы станут разовой покупкой Pro после начала продаж; а пока их можно попробовать на несколько секунд из списка.", proPitch:"<b>Сделайте его своим.</b> Pro даёт вам собственную копию Workshop Timer с лицензией для работы и руководство, с которым любой ИИ изменит её как вам нужно. Ваш бренд, ваш макет, ваши функции, за минуты. {price} один раз, без подписки.", proSoonShort:"Pro скоро", removeLicenceBtn:"Удалить лицензию с этого устройства", removeLicenceConfirm:"Нажмите ещё раз, чтобы удалить", removeLicenceHelp:"Переходите на другой компьютер? Сначала удалите здесь лицензию, чтобы освободить одно из ваших устройств. Вы сможете снова добавить её ключом в любой момент.", savedOnDevice:"Сохранено на этом устройстве", sessionNameHeading:"Название сессии", showBrandLabel:"Показывать WorkshopTimers.com в верхней панели", soundNote:"Браузеры воспроизводят звук только после того, как вы один раз нажмёте на страницу.", sourceLink:"Подробнее", sourceText:"Распространяется по лицензии Elastic License 2.0.", srTimesUp:"Время вышло", tabLook:"Вид", tabSound:"Звук", tabTimer:"Таймер", teamBtn:"Командная лицензия, до 5 человек, {price}", tickSoundHeading:"Звук тиканья", titleEditTime:"Задайте время: введите 15, 10:30 или 1:00:00", supportHeading:"Поддержка", supportBody:"Нашли ошибку или что-то выглядит не так? Напишите на <a href=\"mailto:support@pigrosoft.com\">support@pigrosoft.com</a>, что вы делали, какую тему и браузер использовали, и по возможности приложите скриншот.", madeInEU:"Сделано в ЕС", licErrInvalid:"Ключ не прошёл проверку. Проверьте его и попробуйте снова.", licErrLimit:"Для этого ключа достигнут лимит устройств. Удалите лицензию на старом устройстве или напишите в поддержку.", licErrNetwork:"Не удалось связаться с сервером лицензий. Проверьте подключение и попробуйте снова.",
+    fontDefault:"Как в теме", fontCustom:"Свой (загруженный)",
   },
   hi: {
     settingsTitle:"सेटिंग्स", languageHeading:"भाषा",
@@ -2320,7 +2340,9 @@ const I18N = {
     titleAppearance:"हल्का / गहरा", titleSettings:"सेटिंग्स", titleCloseSettings:"सेटिंग्स बंद करें", titleMute:"ध्वनि चालू/बंद (M)", titleFull:"फ़ुलस्क्रीन (F)",
     titleReset:"रीसेट (R)", titlePlus30:"30 सेकंड जोड़ें", titleShuffle:"थीम बदलें", shortcut:"शॉर्टकट:",
     startBtn:"शुरू करें", pauseBtn:"रोकें", sec:"सेकंड", min:"मिनट", previewingLabel:"पूर्वावलोकन",
-    paused:"रुका हुआ", stopwatchWord:"स्टॉपवॉच", timesUp:"समय समाप्त", remaining:"शेष", oclock:"बजे"
+    paused:"रुका हुआ", stopwatchWord:"स्टॉपवॉच", timesUp:"समय समाप्त", remaining:"शेष", oclock:"बजे",
+    appearanceHeading:"रूप-रंग", applyBtn:"लागू करें", backupHeading:"सेटिंग्स का बैकअप", confirmBody:"इससे चल रहा टाइमर रुक जाएगा।", confirmGo:"नया सत्र शुरू करें", confirmKeep:"चलने दें", confirmTitle:"नया सत्र शुरू करें?", darkBtn:"डार्क", dataBody:"आपकी सेटिंग्स सिर्फ़ इसी ब्राउज़र में रहती हैं। बैकअप रखने या दूसरे कंप्यूटर पर ले जाने के लिए इन्हें फ़ाइल में सेव करें।", dataHeading:"आपकी सेटिंग्स फ़ाइल", durationError:"मिनट, mm:ss या h:mm:ss लिखें, जैसे 15, 10:30 या 1:00:00।", durationFormat:"मिनट, mm:ss या h:mm:ss", durationHeading:"अवधि", durationOff:"स्टॉपवॉच और घड़ी मोड में उपयोग नहीं होता।", endSoundHeading:"समाप्ति की आवाज़", exportBtn:"सेटिंग्स फ़ाइल सेव करें", helpAbout:"सहायता और जानकारी", importBad:"यह Workshop Timer की सेटिंग्स फ़ाइल नहीं लगती।", importBtn:"सेटिंग्स फ़ाइल लोड करें", includedThemes:"शामिल", lightBtn:"लाइट", modeClock:"घड़ी", modeClockDesc:"अभी का समय", modeCountdown:"उल्टी गिनती", modeCountdownDesc:"शून्य तक गिनती", modeHelp:"मोड बदलने पर टाइमर रीसेट हो जाता है।", modePomodoro:"पोमोडोरो", modePomodoroDesc:"25 मिनट फ़ोकस, 5 मिनट ब्रेक", modeStopwatch:"स्टॉपवॉच", modeStopwatchDesc:"शून्य से गिनती", moreThemes:"और थीम", moreThemesHint:"किसी थीम पर क्लिक करें और उसे 15 सेकंड के लिए अपने टाइमर पर आज़माएँ।", previewBtn:"सुनें", proComingSoon:"बाकी सब मुफ़्त है। बिक्री शुरू होने पर अतिरिक्त थीम एक बार की Pro खरीद होंगी; तब तक आप सूची से इन्हें कुछ सेकंड आज़मा सकते हैं।", proPitch:"<b>इसे अपना बनाएँ।</b> Pro से आपको Workshop Timer की अपनी कॉपी मिलती है, जो आपके काम के लिए लाइसेंस्ड है, और एक गाइड जिससे कोई भी AI इसे आपकी मर्ज़ी से बदल सके। आपका ब्रांड, आपका लेआउट, आपकी सुविधाएँ, मिनटों में। {price} एक बार, कोई सदस्यता नहीं।", proSoonShort:"Pro जल्द आ रहा है", removeLicenceBtn:"इस डिवाइस से लाइसेंस हटाएँ", removeLicenceConfirm:"हटाने के लिए फिर क्लिक करें", removeLicenceHelp:"दूसरे कंप्यूटर पर जा रहे हैं? पहले यहाँ से लाइसेंस हटाएँ ताकि आपके डिवाइस में से एक जगह खाली हो जाए। अपनी कुंजी से आप इसे कभी भी फिर जोड़ सकते हैं।", savedOnDevice:"इस डिवाइस पर सेव है", sessionNameHeading:"सत्र का नाम", showBrandLabel:"ऊपर की पट्टी में WorkshopTimers.com दिखाएँ", soundNote:"ब्राउज़र तभी आवाज़ चलाते हैं जब आप पेज पर एक बार क्लिक या टैप कर लें।", sourceLink:"और जानें", sourceText:"Elastic License 2.0 के तहत लाइसेंस्ड।", srTimesUp:"समय समाप्त", tabLook:"रूप", tabSound:"आवाज़", tabTimer:"टाइमर", teamBtn:"टीम लाइसेंस, 5 लोगों तक, {price}", tickSoundHeading:"टिक-टिक की आवाज़", titleEditTime:"समय सेट करें: 15, 10:30 या 1:00:00 लिखें", supportHeading:"सहायता", supportBody:"कोई गड़बड़ी मिली या कुछ ठीक नहीं दिख रहा? <a href=\"mailto:support@pigrosoft.com\">support@pigrosoft.com</a> पर लिखें कि आप क्या कर रहे थे, कौन-सी थीम और ब्राउज़र इस्तेमाल कर रहे थे, और हो सके तो एक स्क्रीनशॉट भेजें।", madeInEU:"EU में बना", licErrInvalid:"यह कुंजी सत्यापित नहीं हुई। इसे जाँचकर फिर कोशिश करें।", licErrLimit:"यह कुंजी अपनी डिवाइस सीमा तक पहुँच गई है। किसी पुराने डिवाइस से लाइसेंस हटाएँ या सहायता से संपर्क करें।", licErrNetwork:"लाइसेंस सर्वर से संपर्क नहीं हो सका। अपना कनेक्शन जाँचकर फिर कोशिश करें।",
+    fontDefault:"थीम का डिफ़ॉल्ट", fontCustom:"कस्टम (आपका अपलोड)",
   },
   ko: {
     settingsTitle:"설정", languageHeading:"언어",
@@ -2346,7 +2368,9 @@ const I18N = {
     titleAppearance:"라이트 / 다크", titleSettings:"설정", titleCloseSettings:"설정 닫기", titleMute:"사운드 켜기/끄기 (M)", titleFull:"전체화면 (F)",
     titleReset:"초기화 (R)", titlePlus30:"30초 추가", titleShuffle:"테마 무작위", shortcut:"단축키:",
     startBtn:"시작", pauseBtn:"일시정지", sec:"초", min:"분", previewingLabel:"미리보기",
-    paused:"일시정지됨", stopwatchWord:"스톱워치", timesUp:"시간 종료", remaining:"남음", oclock:"정각"
+    paused:"일시정지됨", stopwatchWord:"스톱워치", timesUp:"시간 종료", remaining:"남음", oclock:"정각",
+    appearanceHeading:"모양", applyBtn:"적용", backupHeading:"설정 백업", confirmBody:"실행 중인 타이머가 멈춥니다.", confirmGo:"새 세션 시작", confirmKeep:"계속 진행", confirmTitle:"새 세션을 시작할까요?", darkBtn:"어둡게", dataBody:"설정은 이 브라우저에만 저장됩니다. 파일로 저장해 백업하거나 다른 컴퓨터로 옮길 수 있습니다.", dataHeading:"설정 파일", durationError:"분, mm:ss 또는 h:mm:ss 형식으로 입력하세요. 예: 15, 10:30, 1:00:00.", durationFormat:"분, mm:ss 또는 h:mm:ss", durationHeading:"시간", durationOff:"스톱워치와 시계 모드에서는 사용하지 않습니다.", endSoundHeading:"종료음", exportBtn:"설정 파일 저장", helpAbout:"도움말 및 정보", importBad:"Workshop Timer 설정 파일이 아닌 것 같습니다.", importBtn:"설정 파일 불러오기", includedThemes:"기본 테마", lightBtn:"밝게", modeClock:"시계", modeClockDesc:"현재 시각", modeCountdown:"카운트다운", modeCountdownDesc:"0까지 세기", modeHelp:"모드를 바꾸면 타이머가 초기화됩니다.", modePomodoro:"뽀모도로", modePomodoroDesc:"25분 집중, 5분 휴식", modeStopwatch:"스톱워치", modeStopwatchDesc:"0부터 세기", moreThemes:"더 많은 테마", moreThemesHint:"테마를 클릭하면 타이머에서 15초 동안 써 볼 수 있습니다.", previewBtn:"미리 듣기", proComingSoon:"나머지는 모두 무료입니다. 추가 테마는 판매가 시작되면 Pro 1회 구매로 제공됩니다. 그 전까지는 목록에서 몇 초간 미리 써 볼 수 있습니다.", proPitch:"<b>나만의 타이머로.</b> Pro를 구매하면 업무용으로 라이선스된 Workshop Timer 사본과, 어떤 AI로든 원하는 대로 바꿀 수 있는 가이드를 드립니다. 브랜드도, 레이아웃도, 기능도 몇 분이면 됩니다. {price} 1회 결제, 구독 없음.", proSoonShort:"Pro 출시 예정", removeLicenceBtn:"이 기기에서 라이선스 제거", removeLicenceConfirm:"한 번 더 클릭하면 제거됩니다", removeLicenceHelp:"다른 컴퓨터로 옮기시나요? 먼저 여기서 라이선스를 제거하면 기기 자리 하나가 비워집니다. 키로 언제든 다시 추가할 수 있습니다.", savedOnDevice:"이 기기에 저장됨", sessionNameHeading:"세션 이름", showBrandLabel:"상단 바에 WorkshopTimers.com 표시", soundNote:"브라우저는 페이지를 한 번 클릭하거나 탭한 뒤에만 소리를 재생합니다.", sourceLink:"자세히 보기", sourceText:"Elastic License 2.0에 따라 라이선스됩니다.", srTimesUp:"시간 종료", tabLook:"모양", tabSound:"소리", tabTimer:"타이머", teamBtn:"팀 라이선스, 최대 5명, {price}", tickSoundHeading:"째깍 소리", titleEditTime:"시간 설정: 15, 10:30, 1:00:00처럼 입력", supportHeading:"지원", supportBody:"버그를 찾았거나 이상한 점이 있나요? <a href=\"mailto:support@pigrosoft.com\">support@pigrosoft.com</a>로 무엇을 하고 있었는지, 사용한 테마와 브라우저, 가능하면 스크린샷을 보내 주세요.", madeInEU:"EU에서 제작", licErrInvalid:"이 키는 확인되지 않았습니다. 다시 확인한 뒤 시도해 주세요.", licErrLimit:"이 키는 기기 한도에 도달했습니다. 이전 기기에서 라이선스를 제거하거나 지원팀에 문의하세요.", licErrNetwork:"라이선스 서버에 연결할 수 없습니다. 연결을 확인하고 다시 시도해 주세요.",
+    fontDefault:"테마 기본값", fontCustom:"사용자 지정(업로드)",
   }
 };
 function t(key){ return (I18N[st.lang] && I18N[st.lang][key]) || I18N.en[key] || key; }
@@ -2700,7 +2724,38 @@ function playEnd(){ if(!st.muted) (PLAYERS[st.sound]||PLAYERS.chime)(); }
 function playTick(){ if(!st.muted) (PLAYERS[st.tickSound]||PLAYERS.chrono)(); }
 
 /* airport-announcement style voice: pick the most natural voice available */
+// CUSTOMIZE: voice alerts. Each phrase is a recorded clip in voice/<lang>/
+// (made with scripts/make_voices.py and the open Kokoro voice model). Languages
+// without clips use the English ones; if a clip can't play, the browser's
+// own speech voice reads the phrase instead.
+const VOICE_LANGS = ["en","es","fr","it","pt","hi","ja","zh"];
+const VOICE_KEYS = {
+  "Attention please. Thirty seconds remaining.":"s30",
+  "Attention please. Two minutes remaining.":"m2",
+  "Attention please. Time to switch.":"half",
+  "Voice alerts enabled.":"on"
+};
+function voiceUrl(key){ return `voice/${VOICE_LANGS.includes(st.lang) ? st.lang : "en"}/${key}.mp3`; }
 function announce(text){
+  const key = VOICE_KEYS[text];
+  if(!key) return speakWithBrowser(text);
+  let fellBack = false;
+  const fallback = ()=>{ if(!fellBack){ fellBack = true; speakWithBrowser(text); } };
+  try{
+    const a = new Audio(voiceUrl(key));
+    a.onerror = fallback;
+    const p = a.play();
+    if(p && p.catch) p.catch(fallback);
+  }catch(e){ fallback(); }
+}
+// fetch the current language's clips once, so the service worker has them offline
+let voicesWarmFor = null;
+function warmVoices(){
+  if(!/^https?:$/.test(location.protocol) || voicesWarmFor === st.lang) return;
+  voicesWarmFor = st.lang;
+  Object.values(VOICE_KEYS).forEach(k=>fetch(voiceUrl(k)).catch(()=>{}));
+}
+function speakWithBrowser(text){
   try{
     const u = new SpeechSynthesisUtterance(text);
     u.rate = 0.92; u.pitch = 1;
@@ -6068,12 +6123,17 @@ function previewSound(id){
    SETTINGS UI
    ========================================================= */
 // CUSTOMIZE: settings panel wiring. Keep save() and the settings-file export/import in step with any new setting.
+// Sound and colour-variant names in each language, keyed by the English name
+// (anything not listed, like theme and font names, stays as it is).
+const NAME_I18N = {"de": {"Chime": "Glockenspiel","Digital": "Digital","Bell": "Glocke","Gong": "Gong","Fanfare": "Fanfare","Alarm Bell": "Alarmglocke","Digital Alarm": "Digitaler Wecker","Ring Tone": "Klingelton","Analog": "Analog","Stopwatch": "Stoppuhr","Blue": "Blau","Classic": "Klassisch","Emerald": "Smaragd","Green": "Grün","Ice": "Eis","Magma": "Magma","Ocean": "Ozean","Orange": "Orange","Red": "Rot","Sunset": "Sonnenuntergang","Violet": "Violett","Volt": "Volt","White": "Weiß"},"fr": {"Chime": "Carillon","Digital": "Numérique","Bell": "Cloche","Gong": "Gong","Fanfare": "Fanfare","Alarm Bell": "Sonnerie d'alarme","Digital Alarm": "Réveil numérique","Ring Tone": "Sonnerie","Analog": "Analogique","Stopwatch": "Chronomètre","Blue": "Bleu","Classic": "Classique","Emerald": "Émeraude","Green": "Vert","Ice": "Glace","Magma": "Magma","Ocean": "Océan","Orange": "Orange","Red": "Rouge","Sunset": "Coucher de soleil","Violet": "Violet","Volt": "Volt","White": "Blanc"},"es": {"Chime": "Campanilla","Digital": "Digital","Bell": "Campana","Gong": "Gong","Fanfare": "Fanfarria","Alarm Bell": "Timbre de alarma","Digital Alarm": "Alarma digital","Ring Tone": "Tono de llamada","Analog": "Analógico","Stopwatch": "Cronómetro","Blue": "Azul","Classic": "Clásico","Emerald": "Esmeralda","Green": "Verde","Ice": "Hielo","Magma": "Magma","Ocean": "Océano","Orange": "Naranja","Red": "Rojo","Sunset": "Atardecer","Violet": "Violeta","Volt": "Voltio","White": "Blanco"},"pt": {"Chime": "Carrilhão","Digital": "Digital","Bell": "Sino","Gong": "Gongo","Fanfare": "Fanfarra","Alarm Bell": "Campainha de alarme","Digital Alarm": "Alarme digital","Ring Tone": "Toque","Analog": "Analógico","Stopwatch": "Cronômetro","Blue": "Azul","Classic": "Clássico","Emerald": "Esmeralda","Green": "Verde","Ice": "Gelo","Magma": "Magma","Ocean": "Oceano","Orange": "Laranja","Red": "Vermelho","Sunset": "Pôr do sol","Violet": "Violeta","Volt": "Volt","White": "Branco"},"it": {"Chime": "Carillon","Digital": "Digitale","Bell": "Campana","Gong": "Gong","Fanfare": "Fanfara","Alarm Bell": "Campanella d'allarme","Digital Alarm": "Sveglia digitale","Ring Tone": "Suoneria","Analog": "Analogico","Stopwatch": "Cronometro","Blue": "Blu","Classic": "Classico","Emerald": "Smeraldo","Green": "Verde","Ice": "Ghiaccio","Magma": "Magma","Ocean": "Oceano","Orange": "Arancione","Red": "Rosso","Sunset": "Tramonto","Violet": "Viola","Volt": "Volt","White": "Bianco"},"zh": {"Chime": "风铃","Digital": "电子音","Bell": "铃声","Gong": "锣","Fanfare": "号角","Alarm Bell": "警铃","Digital Alarm": "电子闹钟","Ring Tone": "电话铃","Analog": "机械","Stopwatch": "秒表","Blue": "蓝","Classic": "经典","Emerald": "翡翠","Green": "绿","Ice": "冰","Magma": "岩浆","Ocean": "海洋","Orange": "橙","Red": "红","Sunset": "日落","Violet": "紫","Volt": "荧光","White": "白"},"ja": {"Chime": "チャイム","Digital": "デジタル","Bell": "ベル","Gong": "ゴング","Fanfare": "ファンファーレ","Alarm Bell": "非常ベル","Digital Alarm": "デジタルアラーム","Ring Tone": "着信音","Analog": "アナログ","Stopwatch": "ストップウォッチ","Blue": "ブルー","Classic": "クラシック","Emerald": "エメラルド","Green": "グリーン","Ice": "アイス","Magma": "マグマ","Ocean": "オーシャン","Orange": "オレンジ","Red": "レッド","Sunset": "サンセット","Violet": "バイオレット","Volt": "ボルト","White": "ホワイト"},"ko": {"Chime": "차임","Digital": "디지털","Bell": "종소리","Gong": "징","Fanfare": "팡파르","Alarm Bell": "비상벨","Digital Alarm": "디지털 알람","Ring Tone": "벨소리","Analog": "아날로그","Stopwatch": "스톱워치","Blue": "파랑","Classic": "클래식","Emerald": "에메랄드","Green": "초록","Ice": "아이스","Magma": "마그마","Ocean": "오션","Orange": "주황","Red": "빨강","Sunset": "노을","Violet": "보라","Volt": "볼트","White": "흰색"},"ru": {"Chime": "Перезвон","Digital": "Цифровой","Bell": "Колокол","Gong": "Гонг","Fanfare": "Фанфары","Alarm Bell": "Сигнальный звонок","Digital Alarm": "Цифровой будильник","Ring Tone": "Рингтон","Analog": "Аналоговый","Stopwatch": "Секундомер","Blue": "Синий","Classic": "Классика","Emerald": "Изумрудный","Green": "Зелёный","Ice": "Лёд","Magma": "Магма","Ocean": "Океан","Orange": "Оранжевый","Red": "Красный","Sunset": "Закат","Violet": "Фиолетовый","Volt": "Вольт","White": "Белый"},"ar": {"Chime": "رنين","Digital": "رقمي","Bell": "جرس","Gong": "صنج","Fanfare": "نفير","Alarm Bell": "جرس إنذار","Digital Alarm": "منبه رقمي","Ring Tone": "نغمة رنين","Analog": "تناظري","Stopwatch": "ساعة إيقاف","Blue": "أزرق","Classic": "كلاسيكي","Emerald": "زمردي","Green": "أخضر","Ice": "جليدي","Magma": "ماغما","Ocean": "محيط","Orange": "برتقالي","Red": "أحمر","Sunset": "غروب","Violet": "بنفسجي","Volt": "فولت","White": "أبيض"},"hi": {"Chime": "घंटी की धुन","Digital": "डिजिटल","Bell": "घंटी","Gong": "घंटा","Fanfare": "धूमधाम","Alarm Bell": "अलार्म घंटी","Digital Alarm": "डिजिटल अलार्म","Ring Tone": "रिंगटोन","Analog": "एनालॉग","Stopwatch": "स्टॉपवॉच","Blue": "नीला","Classic": "क्लासिक","Emerald": "पन्ना","Green": "हरा","Ice": "बर्फ़","Magma": "मैग्मा","Ocean": "महासागर","Orange": "नारंगी","Red": "लाल","Sunset": "सूर्यास्त","Violet": "बैंगनी","Volt": "वोल्ट","White": "सफ़ेद"}};
+function trName(n){ const m = NAME_I18N[st.lang]; return (m && m[n]) || n; }
+
 function chip(list, row, current, onPick, onLocked){
   row.innerHTML="";
   list.forEach(item=>{
     const b=document.createElement("button");
     b.className = "chip" + (current===item.id ? " active":"");
-    b.innerHTML = item.name + (item.pro && !isPro() ? '<svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>' : "");
+    b.innerHTML = trName(item.name) + (item.pro && !isPro() ? '<svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>' : "");
     b.addEventListener("click", ()=>{
       if(item.pro && !isPro()) return (onLocked || openModal)(item.id);
       onPick(item.id);
@@ -6188,9 +6248,9 @@ function handleFontUpload(e){
 function renderFontSelect(){
   const selEl = $("fontSelect"); if(!selEl) return;
   const cur = st.font || "default";
-  let opts = '<option value="default">Theme default</option>';
+  let opts = `<option value="default">${t("fontDefault")}</option>`;
   FONTS.forEach(f=>{ opts += `<option value="${f.id}">${f.name}</option>`; });
-  opts += '<option value="custom">Custom (your upload)</option>';
+  opts += `<option value="custom">${t("fontCustom")}</option>`;
   selEl.innerHTML = opts;
   selEl.value = cur;
   $("customFontBox").style.display = cur === "custom" ? "block" : "none";
@@ -6521,11 +6581,7 @@ $("customWeight").addEventListener("input", e=>{
 });
 
 /* license key entry */
-const LICENSE_ERR = {
-  invalid: "That key didn't validate. Double-check it and try again.",
-  limit:   "This key has reached its device limit. Unlock an old device or contact support.",
-  network: "Couldn't reach the license server. Check your connection and try again."
-};
+const LICENSE_ERR = { invalid:"licErrInvalid", limit:"licErrLimit", network:"licErrNetwork" }; // I18N keys
 async function submitLicense(){
   const inp = $("licenseInput"), msg = $("licenseMsg"), btn = $("licenseBtn");
   const key = (inp.value || "").trim();
@@ -6540,7 +6596,7 @@ async function submitLicense(){
     applyUnlocked();
   }else{
     msg.style.display = "block"; msg.style.color = "#e03131";
-    msg.textContent = LICENSE_ERR[res.reason] || LICENSE_ERR.invalid;
+    msg.textContent = t(LICENSE_ERR[res.reason] || LICENSE_ERR.invalid);
   }
 }
 $("licenseBtn").addEventListener("click", submitLicense);
@@ -6736,10 +6792,14 @@ function syncPanelFields(){
     b.setAttribute("aria-pressed", b.dataset.appearance === effective ? "true" : "false");
   });
   $("previewSoundBtn").disabled = !!st.muted;
+  if(st.voice || st.voice2min || st.voiceHalf) warmVoices();
   const bt = $("brandToggle");
   bt.checked = !isPro() || !!st.showBrand;
   bt.disabled = !isPro();
 }
+
+if(st.voice || st.voice2min || st.voiceHalf) warmVoices();
+["voiceToggle","voice2minToggle","voiceHalfToggle"].forEach(id=>$(id).addEventListener("change", warmVoices));
 
 // the top-bar light/dark and sound buttons change state the panel shows
 elAppearance.addEventListener("click", ()=>syncPanelFields());
