@@ -56,6 +56,7 @@ jobs:
           mkdir _site
           # An explicit list on purpose: a stray file in the repo root must never go live.
           cp index.html agb.html datenschutz.html impressum.html widerruf.html license.html sw.js CNAME LICENSE.md FONTS.md OFL.txt README.md favicon.ico favicon-32.png apple-touch-icon.png _site/
+          cp -r voice _site/
 
       - name: Refuse to publish an unlocked build
         run: |
